@@ -8,13 +8,14 @@
       color: rgba(255,255,255,0.7);
     }
 
+      
     .tab a:hover,
     .tab a.active {
-      color: #fff;
+      color: $primary-color;
     }
 
     .indicator {
-      background-color: #fff;
+      background-color: transparent;
     }
   }
 
@@ -28,7 +29,15 @@
               flex-grow: 1;
     }
   }
-
+    &.login-tabs {
+        .left-tab {
+            border-right: 1px solid $primary-color-dark;
+        }
+        .right-tab {
+            border-left: 1px solid $primary-color-dark;
+        }
+    }
+    
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;

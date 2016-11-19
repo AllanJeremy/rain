@@ -4,7 +4,6 @@
             <img class="background" src="images/MASAI-13.jpg" width="300">
             <!--<a href="#" onclick="hideSideNav()" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
             -->
-            <!--<a href="#!user" class=""><img class="circle" src="images/ppic.jpg"></a>-->
             <a id="name" href="#!name" class="no-padding"><span class="white-text name">Student Name</span></a>
             <p><span class="white-text class">class 10B</span></p>
             <br>
@@ -15,8 +14,8 @@
             <a class="collapsible-header active">Assignments<span class="new badge">14</span></a>
             <div class="collapsible-body">
                 <ul>
-                    <li class="">
-                        <a id="r_Assignments_link" data-activates="recievedAssignments" class="active" href="">received assignments</a>
+                    <li class="active">
+                        <a id="r_Assignments_link" data-activates="recievedAssignments" class="" href="">received assignments</a>
                     </li>
                     <li>
                         <a hidden="" id="s_Assignments_link" data-activates="sentAssignments" class="" href="">sent assignments</a>

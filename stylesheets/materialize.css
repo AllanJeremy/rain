@@ -5585,27 +5585,35 @@ small {
 .tabs.tabs-transparent .tab.disabled a:hover {
   color: rgba(255, 255, 255, 0.7);
 }
-/* line 11, ../sass/components/_tabs.scss */
+/* line 12, ../sass/components/_tabs.scss */
 .tabs.tabs-transparent .tab a:hover,
 .tabs.tabs-transparent .tab a.active {
-  color: #fff;
+  color: #781822;
 }
-/* line 16, ../sass/components/_tabs.scss */
+/* line 17, ../sass/components/_tabs.scss */
 .tabs.tabs-transparent .indicator {
-  background-color: #fff;
+  background-color: transparent;
 }
-/* line 21, ../sass/components/_tabs.scss */
+/* line 22, ../sass/components/_tabs.scss */
 .tabs.tabs-fixed-width {
   display: flex;
 }
-/* line 24, ../sass/components/_tabs.scss */
+/* line 25, ../sass/components/_tabs.scss */
 .tabs.tabs-fixed-width .tab {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
 }
-/* line 41, ../sass/components/_tabs.scss */
+/* line 33, ../sass/components/_tabs.scss */
+.tabs.login-tabs .left-tab {
+  border-right: 1px solid #5a121a;
+}
+/* line 36, ../sass/components/_tabs.scss */
+.tabs.login-tabs .right-tab {
+  border-left: 1px solid #5a121a;
+}
+/* line 50, ../sass/components/_tabs.scss */
 .tabs .tab {
   display: inline-block;
   text-align: center;
@@ -5615,7 +5623,7 @@ small {
   margin: 0;
   text-transform: uppercase;
 }
-/* line 50, ../sass/components/_tabs.scss */
+/* line 59, ../sass/components/_tabs.scss */
 .tabs .tab a {
   color: rgba(120, 24, 34, 0.7);
   display: block;
@@ -5627,17 +5635,17 @@ small {
   overflow: hidden;
   transition: color .28s ease;
 }
-/* line 51, ../sass/components/_tabs.scss */
+/* line 60, ../sass/components/_tabs.scss */
 .tabs .tab a:hover, .tabs .tab a.active {
   background-color: transparent;
   color: #781822;
 }
-/* line 68, ../sass/components/_tabs.scss */
+/* line 77, ../sass/components/_tabs.scss */
 .tabs .tab.disabled a, .tabs .tab.disabled a:hover {
   color: rgba(120, 24, 34, 0.7);
   cursor: default;
 }
-/* line 74, ../sass/components/_tabs.scss */
+/* line 83, ../sass/components/_tabs.scss */
 .tabs .indicator {
   position: absolute;
   bottom: 0;
@@ -5647,18 +5655,18 @@ small {
 }
 
 @media only screen and (max-width: 992px) {
-  /* line 85, ../sass/components/_tabs.scss */
+  /* line 94, ../sass/components/_tabs.scss */
   .tabs {
     display: flex;
   }
-  /* line 88, ../sass/components/_tabs.scss */
+  /* line 97, ../sass/components/_tabs.scss */
   .tabs .tab {
     -webkit-box-flex: 1;
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
   }
-  /* line 94, ../sass/components/_tabs.scss */
+  /* line 103, ../sass/components/_tabs.scss */
   .tabs .tab a {
     padding: 0 12px;
   }

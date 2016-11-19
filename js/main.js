@@ -19,7 +19,12 @@ $(function() {
     $('main .main-tab').addClass('hide');
     $('main .active-bar').removeClass('hide');
     
-    //on click side-nav panel actions
+    //on click none-collapsible-headers side-nav panel actions
+    $('.side-nav a.collapsible-header').click(function() {
+        //$('.side-nav a:not(.collapsible-header)').parent().removeClass('active');
+    });
+    
+    //on click none-collapsible-headers side-nav panel actions
     $('.side-nav a:not(.collapsible-header)').click(function(e) {
         
         //console.log($(this).attr('data-activates'));
@@ -31,9 +36,16 @@ $(function() {
             
             e.preventDefault();
             
-            $('.side-nav a:not(.collapsible-header)').removeClass('active');
-            
-            $(this).addClass('active');
+            $('.side-nav a:not(.collapsible-header)').parent().removeClass('active');
+            if($(this).parent().parent().parent().hasClass('collapsible-body') === true) {
+                //console.log('is a collapsible list');
+                
+            } else {
+                //console.log('not a collapsible list');
+                
+                $('.side-nav a.collapsible-header').parent().removeClass('active');
+            }
+            $(this).parent().addClass('active');
             
             $('main .active-bar').addClass('hide');
             
@@ -44,6 +56,11 @@ $(function() {
             $('main .active-bar').removeClass('hide');
             
             console.log('bar-clicked');
+            console.log('setting header text');
+            
+            var pageTitle = $(this).text();
+            
+            $('a#pageTitle').text(pageTitle);
             
         } else {
             
@@ -56,6 +73,21 @@ $(function() {
     
     /**************
     TABS SWITCH FUNCTIONALITIES END
+    ************/
+    
+    /**************
+    SEARCHBAR FUNCTIONALITIES
+    ************/
+    
+    function openSearchBar() {
+        
+    }
+    
+    function closeSearchBar() {
+        
+    }
+    /**************
+    SEARCHBAR FUNCTIONALITIES END
     ************/
     
 }, jQuery); // end of document ready

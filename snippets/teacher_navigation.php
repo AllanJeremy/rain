@@ -15,14 +15,14 @@
             <a class="collapsible-header active">Assignments<span class="new badge">4</span></a>
             <div class="collapsible-body">
                 <ul>
-                    <li class="">
-                        <a id="createAssignments" class="active" href="">Create an assignment</a>
+                    <li class="active">
+                        <a id="createAssignments" data-activates="createAssignmentsTab" class="" href="">Create an assignment</a>
                     </li>
                     <li>
-                        <a hidden="" id="sentAssignments" class="" href="">Sent assignments</a>
+                        <a id="sentAssignments" data-activates="sentAssignmentsTab" class="" href="">Sent assignments</a>
                     </li>
                     <li>
-                        <a hidden="" id="receivedAssignments" class="" href="">Received assignments</a>
+                        <a id="receivedAssignments" class="" data-activates="receivedAssignmentsTab" href="">Received assignments</a>
                     </li>
                 </ul>
             </div>
@@ -32,13 +32,13 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a class="" id="takeATest" href="">Create test</a>
+                        <a class="" id="createTest" data-activates="createTestTab" href="">Create test</a>
                     </li>
                     <li>
-                        <a href="" id="testResults" class="">View students' test results</a>
+                        <a href="" id="testResults" data-activates="viewStudentsTestResultTab" class="">View students' test results</a>
                     </li>
                     <li>
-                        <a href="" id="testResults" class="">Take a test</a>
+                        <a href="" id="takeATest" data-activates="takeTestTab" class="">Take a test</a>
                     </li>
                 </ul>
             </div>
@@ -48,20 +48,20 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a href="" id="myGrades" class="">My subject grades</a>
+                        <a href="" id="mySubjectGrades" data-activates="mySubjectGradesTab" class="">My subject grades</a>
                     </li>
                     <li>
-                        <a href="" id="gradeBook" class="">Gradebook</a>
+                        <a href="" id="gradeBook" data-activates="gradeBookTab" class="">Gradebook</a>
                     </li>
                 </ul>
             </div>
         </li>
     </ul>
     <li>
-        <a href="#!" class="">Schedules</a>
+        <a href="#!" id="schedules" data-activates="schedulesTab" class="">Schedules</a>
     </li>
     <li>
-        <a href="#!" class="">Create classroom</a>
+        <a href="#!" data-activates="classroomTab" id="classroom" class="">Classroom</a>
     </li>
     <li>
         <a href="#!" class="hide">Chat</a>

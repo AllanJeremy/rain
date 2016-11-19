@@ -6,15 +6,20 @@
             -->
             <a href="#!user" class="hide"><img class="circle" src="images/ppic.jpg"></a>
             <a href="#!name" class="no-padding"><span class="white-text name">Super-user Name</span></a>
-            <!--<p><span class="white-text class">class 10B</span></p>-->
             <br>
         </div>
     </li>
     <li class="active">
-        <a href="#!" class="">Dashboard</a>
+        <a href="#!" id="d_Dashboard_link" data-activates="dashboardTab" class="">Dashboard</a>
     </li>
-    <li>
-        <a href="#!" class="hide">Groups</a>
+    <li class="">
+        <a href="#!" id="d_Students_link" data-activates="studentsTab" class="">Students</a>
+    </li>
+    <li class="">
+        <a href="#!" id="d_Teachers_link" data-activates="teachersTab" class="">Teachers</a>
+    </li>
+    <li class="">
+        <a href="#!" id="d_Principal_link" data-activates="principalTab" class="">Principal</a>
     </li>
     <li>
         <div class="divider"></div>

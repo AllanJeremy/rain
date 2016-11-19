@@ -17,17 +17,12 @@
                         <div class="row no-margin">
                             <div class="col s2">
                                 <a href="index.php" class="">
-                                    <i class="material-icons">back</i>
+                                    <i class="material-icons">arrow_back</i>
                                 </a>
                             </div>
                             <div class="col s10">
                                 <a class="page-title center-align">Test title</a>
                             </div>
-                            <!--<div class="col s2">
-                                <a class="right-align" href="#!searchBar">
-                                    <i class="material-icons">search</i>
-                                </a>
-                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -94,20 +89,14 @@
         <footer>
         </footer>
         
-        <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/tests.functions.js"></script>
         
         <script>
         $(document).ready(function() {
-            /*
-            $(".mobile-button-collapse").click(function() {
-                $('.side-nav').animate({
-                    left: '0'
-                }, '400');
-            });
-            */
+           
         });
         </script>
     </body>

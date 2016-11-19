@@ -21,9 +21,58 @@
                                 </a>
                             </div>
                             <div class="col s8">
-                                <a class="page-title center-align">RECEIVED ASSIGNMENTS</a>
+                                <a class="page-title center-align" id="pageTitle">
+                                    
+                                    
+                                    <?php
+                                    
+                                    //Account type - from session variable storing the account type of the currently logged in user
+                                    $snippet_folder = "snippets/";
+                                    $accType = "superuser";
+                                    
+                                    //Setting the active page title according to the account type
+                                    //Hiding the search icon according to the account type
+                                    switch ($accType) {
+                                            
+                                        case "student":
+                                            $pageTitle = 'Received assignments';
+                                            $searchBar = '';
+                                            
+                                            echo $pageTitle;
+                                            
+                                            break;
+                                        case "teacher":
+                                            $pageTitle = 'Create an assignment';
+                                            $searchBar = '';
+                                            
+                                            echo $pageTitle;
+                                            
+                                            break;
+                                        case "principal":
+                                            $pageTitle = 'Stats overview';
+                                            $searchBar = '';
+                                            
+                                            echo $pageTitle;
+                                            
+                                            break;
+                                        case "superuser":
+                                            $pageTitle = 'Dashboard';
+                                            $searchBar = 'hide';
+                                            
+                                            echo $pageTitle;
+                                            
+                                            break;
+                                        default:
+                                            $pageTitle = 'Dashboard';
+                                            $searchBar = '';
+                                            
+                                            echo $pageTitle;
+                                    }
+                                    
+                                    ?>
+                                </a>
                             </div>
-                            <div class="col s2">
+                            <div class="col s2 <?php echo $searchBar; ?>">
                                 <a class="right-align" href="#!searchBar">
                                     <i class="material-icons">search</i>
                                 </a>
@@ -34,11 +83,6 @@
             </nav>
 
             <?php
-            
-            //Account type - from session variable storing the account type of the currently logged in user
-            $snippet_folder = "snippets/";
-            $accType = "student";
-            
             include_once($snippet_folder . $accType."_navigation.php");
             ?>
 
@@ -52,39 +96,20 @@
         <footer>
         </footer>
         
-        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         
         <script>
         $(document).ready(function() {
-            /*
-            $(".mobile-button-collapse").click(function() {
-                $('.side-nav').animate({
-                    left: '0'
-                }, '400');
-            });
-            */
+            $('select').material_select();
         });
             
             function hideSideNav() {
                 $(".mobile-button-collapse").sideNav('hide');
-                /*
-                $('.side-nav').animate({
-                    left: '-300'
-                }, '400');
-                $('header').animate({
-                    paddingLeft: '0'
-                }, '400');
-                $('main').animate({
-                    paddingLeft: '0'
-                }, '400');
-                $('footer').animate({
-                    paddingLeft: '0'
-                }, '400');
-                 */
-                console.log('already open');
+                
+                //console.log('already open');
             }
 
 

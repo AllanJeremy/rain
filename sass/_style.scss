@@ -2,6 +2,22 @@
 /***************
   HTML Styles
 ***************/
+html {
+    &.login-bg {
+        height: 100%;
+        overflow-y: scroll;
+        //background-image: url('../images/dark_Tire.png');
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+        background-color: color("grey", "darken-4");
+    }
+    
+    body {
+        background-color: transparent;
+    }
+    
+}
 body {
   background-color: #fcfcfc;
 }
@@ -30,7 +46,6 @@ h5 > span {
 .name {
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
 }
-
 nav {
   // background-color: color("materialize-red", "lighten-2");
 
@@ -40,6 +55,13 @@ nav {
   ul li a:hover, ul li.active {
     background-color: color("brookhurst-theme-primary", "base");
   }
+}
+form {
+    a.mini-link {
+        font-size: 12px;
+        line-height: inherit;
+        opacity: .78;
+    }
 }
 
 .header {
@@ -166,7 +188,7 @@ ul.side-nav.fixed {
     color: color("shades", "white");
     }
 
-    .collapsible-body li a {
+    .collapsible-body li {
       font-weight: 400;
       padding: 0 37.5px 0 45px;
       background-color: color("shades", "black");
@@ -209,6 +231,7 @@ nav.top-nav {
         &.page-title {
           font-size: 24px;
           font-weight: 400;
+          text-transform: uppercase;
         }
     }
     @media #{$medium-and-down} {
@@ -254,6 +277,7 @@ a.button-collapse.top-nav {
       }
     a.page-title {
       font-size: 36px;
+      text-transform: capitalize;
     }
   }
 }
@@ -296,6 +320,15 @@ a.button-collapse.top-nav {
 /*****************
   Chrome Browser
 *****************/
+
+/* Change the white to any color ;) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
 $bottomColor: #1a1a1a;
 $topColor: lighten($bottomColor, 2%);
 
