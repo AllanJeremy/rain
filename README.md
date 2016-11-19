@@ -1,11 +1,11 @@
-# Upgraded E-learning Experience
+# UPGRADED E-LEARNING EXPERIENCE
 There are 3 major types of accounts : 
  Superuser account
  Principal account
  Teacher Account
  Student Accounts
 
-#*FUNCTIONALITY*
+#*Functionality*
 **Superuser account**
 - Superuser can create teacher,principal and student accounts
 - (Superuser) Import students database and create automatic accounts for each student
