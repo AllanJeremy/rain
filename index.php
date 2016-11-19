@@ -36,22 +36,23 @@
             <?php
             
             //Account type - from session variable storing the account type of the currently logged in user
+            $snippet_folder = "snippets/";
             $accType = "student";
             
-            include_once($accType."_navigation.php");
+            include_once($snippet_folder . $accType."_navigation.php");
             ?>
 
         </header>
         <main>
             <br>
             <?php
-            include_once($accType.'_tabs.php');
+            include_once($snippet_folder . $accType.'_tabs.php');
             ?>
         </main>
         <footer>
         </footer>
         
-        <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script src="js/masonry.pkgd.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
