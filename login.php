@@ -10,15 +10,16 @@
     </head>
 
     <body>
-        <header>
-            
-            <?php
-            
-            //Account type - from session variable storing the account type of the currently logged in user
-            $accType = "";
-            
-            ?>
 
+    <?php
+        require_once("handlers/session_handler.php"); #Access session functions
+
+        $redirectPath = "index.php"; #if user is logged in, redirect them to this file
+
+        //Only show the contents of the login page if no user is logged in
+        if (!(MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn())):
+    ?>
+        <header>
         </header>
         <main>
             <br>
@@ -138,6 +139,11 @@
         <footer>
         </footer>
         
+        <?php
+            else:
+                header("Location:".$redirectPath);
+            endif;
+        ?>
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
