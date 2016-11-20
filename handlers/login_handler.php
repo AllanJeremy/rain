@@ -1,9 +1,13 @@
 <?php
 
+require_once("session_handler.php");#Handles sessions - included first so that session_start is at the beginning of this file
+
 require_once("db_connect.php");#Connection to the database
 require_once("pass_encrypt.php");#Password encryption and verification
 
 require_once("classes/admin_account.php");#Checking if an admin account exists
+require_once("classes/student.php");#checking if the student account exists
+
 
 include_once("error_handler.php");#Printing debug information
 
