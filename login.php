@@ -41,6 +41,11 @@
                         <br>
                         <br>
                         <br>
+                        <!--Invalid login information shown here, has class hide to hide by default, visibility to be controlled by ajax-->
+                        <div class="hide col s12 chip red darken-4 red-text center text-lighten-2" id="invalid_student_login">
+                            Invalid username or password.
+                        </div>
+
                         <form class="col s12" method="post" action="">
                             <div class="row">
                                 <div class="input-field col s12">
@@ -70,6 +75,11 @@
                         <br>
                         <br>
                         <br>
+                        <!--Invalid login information shown here, has class hide to hide by default, visibility to be controlled by ajax-->
+                        <div class="hide col s12 chip red darken-4 red-text center text-lighten-2" id="invalid_admin_login">
+                            Invalid username or password.
+                        </div>
+
                         <form class="col s12" method="post" action="">
                             <div class="row">
                                 <div class="input-field col s12">
@@ -151,6 +161,9 @@
         <script>
         $(document).ready(function() {
             $('select').material_select();
+
+            //Ensure labels don't overlap text fields
+            Materialize.updateTextFields(); //doesn't work
         });
         </script>
     </body>

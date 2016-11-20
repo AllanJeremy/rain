@@ -160,15 +160,18 @@
         <script>
         $(document).ready(function() {
             $('select').material_select();
+
+            //Ensure labels don't overlap text fields
+            Materialize.updateTextFields();//doesn't work
         });
             
-            function hideSideNav() {
-                $(".mobile-button-collapse").sideNav('hide');
-                
-                //console.log('already open');
-            }
+        function hideSideNav() {
+            $(".mobile-button-collapse").sideNav('hide');
+            
+            //console.log('already open');
+        }
 
-
+        
         </script>
     </body>
 </html>
