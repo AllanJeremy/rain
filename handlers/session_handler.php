@@ -7,6 +7,9 @@ require_once ("db_info.php");#Retrieving database information
 #HANDLES SESSIONS, LOGIN INFORMATION AND OTHER SESSION INFO.
 class MySessionHandler
 {
+
+    const LOGOUT_REDIRECT_PAGE = "login.php";#Users will be redirected to this page when they logout
+
 /*----------------------------------------------------------------------------------------------------------*/
                                             /*ADMIN SECTION*/
 /*----------------------------------------------------------------------------------------------------------*/
@@ -46,15 +49,22 @@ class MySessionHandler
     //Logs the admin account off - deletes all session variables
     public static function AdminLogout()
     {
-        unset(
-            $_SESSION["admin_first_name"],
-            $_SESSION["admin_last_name"],
-            $_SESSION["admin_username"],
-            $_SESSION["admin_email"],
-            $_SESSION["admin_phone"],
-            $_SESSION["admin_account_type"],
-            $_SESSION["admin_password"]
-        );
+        
+        #Only unset the session variables if they are set
+        if(self::AdminIsLoggedIn())
+        {
+            unset(
+                $_SESSION["admin_first_name"],
+                $_SESSION["admin_last_name"],
+                $_SESSION["admin_username"],
+                $_SESSION["admin_email"],
+                $_SESSION["admin_phone"],
+                $_SESSION["admin_account_type"],
+                $_SESSION["admin_password"]
+            );
+
+            header("Location:".self::LOGOUT_REDIRECT_PAGE);#redirect logged out user to this page
+        }
     }
     
     //Returns true if the admin is logged in and false if the admin is not logged in
@@ -120,19 +130,26 @@ class MySessionHandler
     //Logs the student account off - deletes all session variables
     public static function StudentLogout()
     {
-        unset(
-            $_SESSION["student_adm_no"],
-            $_SESSION["student_first_name"],
-            $_SESSION["student_last_name"],
-            $_SESSION["student_username"],
-            $_SESSION["student_password"],
-            $_SESSION["student_email"],
-            $_SESSION["student_personal_phone"],
-            $_SESSION["student_parent_name"],
-            $_SESSION["student_parent_phone"],
-            $_SESSION["student_full_name"],
-            $_SESSION["student_class_ids"]
-        );
+        
+        #Only unset the session variables if they are set
+        if(self::StudentIsLoggedIn())
+        {
+            unset(
+                $_SESSION["student_adm_no"],
+                $_SESSION["student_first_name"],
+                $_SESSION["student_last_name"],
+                $_SESSION["student_username"],
+                $_SESSION["student_password"],
+                $_SESSION["student_email"],
+                $_SESSION["student_personal_phone"],
+                $_SESSION["student_parent_name"],
+                $_SESSION["student_parent_phone"],
+                $_SESSION["student_full_name"],
+                $_SESSION["student_class_ids"]
+            );
+
+            header("Location:".self::LOGOUT_REDIRECT_PAGE);#redirect logged out user to this page
+         }
     }
     
     //Returns true if the student is logged in and false if the admin is not logged in

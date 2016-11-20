@@ -28,10 +28,18 @@
                 if(MySessionHandler::AdminIsLoggedIn())
                 {
                     $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
+
+
                 }
                 else if(MySessionHandler::StudentIsLoggedIn())
                 {
                     $accType = "student";#corresponds with file name prefix
+                }
+
+                //Check to see if the logout action has been triggered
+                if(isset($_GET["action"]))
+                {
+                    
                 }
         ?>
 

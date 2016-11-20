@@ -60,6 +60,6 @@
         <div class="divider"></div>
     </li>
     <li>
-        <a class="waves-effect" href="#!">Logout</a>
+        <a class="waves-effect student_logout_link" href="#!">Logout</a>
     </li>
 </ul>
