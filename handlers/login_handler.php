@@ -1,4 +1,7 @@
 <?php
+
+ob_start();#enable output buffering, allows for sending of headers within the file, prevents errors
+
 require_once("session_handler.php");#Handles sessions - included first so that session_start is at the beginning of this file
 
 require_once("db_connect.php");#Connection to the database
@@ -108,6 +111,7 @@ if(StudentLoginSet())
         $student_username = htmlspecialchars($_POST["student_username"]);
         
         MySessionHandler::StudentLogin($student_username);
+        header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
     }
     else
     {
@@ -124,6 +128,8 @@ else if (AdminLoginSet())//if the student variables have not been set, then chec
         $admin_acc_type = htmlspecialchars($_POST["staff_acc_type"]);
         
         MySessionHandler::AdminLogin($admin_username,$admin_acc_type);
+        header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
+
     }
     else
     {

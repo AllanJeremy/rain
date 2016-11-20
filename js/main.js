@@ -75,44 +75,6 @@ $(function() {
     AJAX FUNCTIONS
     ************/
 
-    //Logout of admin account [placeholder]
-    function adminLogout()
-    {
-       
-        $.ajax(
-            {
-                url:"../index.php?action=admin_logout",
-                // data:{"action":"admin_logout"},
-            }
-        );
-
-        $.success
-        {
-         console.log("admin logged out");
-        }
-    }
-
-    //Logout of admin account [placeholder]
-    function studentLogout()
-    {
-        console.log("Student logged out.");
-    }
-
-    /**************
-    LOGGING OUT FUNCTIONS
-    ************/
-    //Admin logout link clicked
-    $(".admin_logout_link").click(function()
-    {
-        adminLogout()
-    }); 
-
-    //Student logout link clicked
-    $(".student_logout_link").click(function()
-    {
-        
-    });
-
 
     /**************
     TABS SWITCH FUNCTIONALITIES END

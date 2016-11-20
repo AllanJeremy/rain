@@ -112,7 +112,7 @@
                 //Handles all login operations for both students and staff
                 require_once("handlers/login_handler.php");
 
-
+/*
                 //DEBUG INFORMATION
                 include_once("handlers/error_handler.php");
 
@@ -133,7 +133,7 @@
                 {
                      ErrorHandler::PrintError("Student not logged in");
                 }                
-           
+*/          
              ?>
         </main>
         <footer>

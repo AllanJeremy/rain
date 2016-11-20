@@ -37,9 +37,27 @@
                 }
 
                 //Check to see if the logout action has been triggered
+
+                
                 if(isset($_GET["action"]))
                 {
-                    
+                    $actionVariable = htmlspecialchars($_GET["action"]);#sanitized action variable to get the GET action variable
+                    switch($actionVariable)
+                    {
+                        case "student_logout":
+                            MySessionHandler::StudentLogout();#logout
+                            unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
+                        break;
+
+                        case "admin_logout":#admin logs out
+                            MySessionHandler::AdminLogout();
+                            unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
+                        break;
+
+                        default:#invalid entry, anything we hadn't planned for
+                            unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
+
+                    }
                 }
         ?>
 

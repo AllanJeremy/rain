@@ -1,4 +1,5 @@
 <?php
+ob_start();#enable output buffering, allows for sending of headers within the file, prevents errors
 
 @session_start();
 
@@ -9,7 +10,7 @@ class MySessionHandler
 {
 
     const LOGOUT_REDIRECT_PAGE = "login.php";#Users will be redirected to this page when they logout
-
+    const LOGIN_REDIRECT_PAGE = "index.php";#Users will be redirected to this page when they login
 /*----------------------------------------------------------------------------------------------------------*/
                                             /*ADMIN SECTION*/
 /*----------------------------------------------------------------------------------------------------------*/
@@ -43,6 +44,7 @@ class MySessionHandler
         {
             ErrorHandler::PrintError("Could not retrieve the admin account requested for use in the session handler.");
         }
+
     }
 
 
@@ -123,7 +125,6 @@ class MySessionHandler
             ErrorHandler::PrintError("Could not retrieve the student account requested for use in the session handler.");
         }
 
-        
     }
 
 
