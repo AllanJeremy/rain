@@ -10,13 +10,13 @@ include_once("error_handler.php");#Printing debug information
 //Returns true if the admin login POST variables are set, false otherwise
 function AdminLoginSet()
 {
-    return (isset($_POST["staff_acc_type"]) && isset($_POST["staff_username"]) && isset($_POST["staff_password"]));
+    return (isset($_POST["staff_acc_type"],$_POST["staff_username"],$_POST["staff_password"]));
 }
 
 //Returns true if the student login POST variables are set, false otherwise
 function StudentLoginSet()
 {
-    return (isset($_POST["student_username"]) && isset($_POST["student_password"]));
+    return (isset($_POST["student_username"],$_POST["student_password"]));
 }
 
 //Check if admin login credentials are valid - returns true if valid and false if not
