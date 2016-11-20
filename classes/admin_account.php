@@ -30,9 +30,11 @@ class AdminAccount
         #Database connection - mysqli object
         global $dbCon;
 
+        $prepare_error = "Couldn't prepare query to check if account exists. <br><br> Technical information : ";  
+
         #Select acc_id instead of * to increase speed of execution (optimization)
         $search_query = "SELECT username FROM admin_accounts WHERE username=? AND account_type=?";
-
+        
         if($search_stmt = $dbCon->prepare($search_query))
         {
             $search_stmt->bind_param("ss",$username,$acc_type);
@@ -52,7 +54,7 @@ class AdminAccount
         }
         else #if the query cannot be prepared
         {
-            ErrorHandler::PrintError("Couldn't prepare query to check if account exists. <br><br> Technical information : ".$dbCon->error);
+            ErrorHandler::PrintError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -95,6 +97,8 @@ class AdminAccount
     {
         global $dbCon;
 
+        $prepare_error = "Couldn't prepare query to check if password is valid. <br><br> Technical information : "; #displayed if prepare fails
+
         $search_query = "SELECT password FROM admin_accounts WHERE username=?";
 
         if($search_stmt = $dbCon->prepare($search_query))
@@ -111,7 +115,6 @@ class AdminAccount
                 foreach ($search_result as $result) {
                     //Returns true if valid, false if not
                     return PasswordEncrypt::Verify($password_input,$result["password"]);
-                    break;
                 }
                 unset($result);
             }
@@ -122,7 +125,7 @@ class AdminAccount
         }
         else
         {
-            ErrorHandler::PrintError("Couldn't prepare query to check if password is valid. <br><br> Technical information : ".$dbCon->error);
+            ErrorHandler::PrintError($prepare_error . $dbCon->error);
         }
     }
 
