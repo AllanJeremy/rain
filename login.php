@@ -43,13 +43,13 @@
                         <form class="col s12" method="post" action="">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" type="text" class="validate" name="student_username">
+                                    <input id="username" type="text" class="validate" name="student_username" required>
                                     <label for="student_username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate" name="student_password">
+                                    <input id="password" type="password" class="validate" name="student_password" required>
                                     <label for="password">Password</label>
                                 </div>
                             </div>
@@ -82,13 +82,13 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" type="text" class="validate" name="staff_username">
+                                    <input id="username" type="text" class="validate" name="staff_username" required>
                                     <label for="staff_username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate" name="staff_password">
+                                    <input id="password" type="password" class="validate" name="staff_password" required>
                                     <label for="password">Password</label>
                                 </div>
                             </div>
@@ -107,9 +107,8 @@
                     </div>
                 </div>
             </div>
-            <?php include_once("classes/superuser.php");
-                $super = new Superuser();
-                
+            <?php 
+
              ?>
         </main>
         <footer>

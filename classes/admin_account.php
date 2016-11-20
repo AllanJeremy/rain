@@ -37,8 +37,10 @@ class AdminAccount
         {
             $search_stmt->bind_param("ss",$username,$acc_type);
             $search_stmt->execute();
+            $search_result = $search_stmt->get_result();
 
-            if($search_stmt->num_rows>0)
+            
+            if($search_result->num_rows>0)
             {
                 return true;
             }
@@ -79,10 +81,11 @@ class AdminAccount
                 ErrorHandler::PrintError("Couldn't prepare query to create a " . 
                 $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
             }
+            ErrorHandler::PrintSmallSuccess("Successfully created a ".$this->accType." account");
         }
         else
         {
-            ErrorHandler::PrintSmallError("Failed to create account as it already exists.");
+            ErrorHandler::PrintSmallError("Failed to create a ".$this->accType." account with the username ".$this->username." as it already exists.");
         }
     }
 };
