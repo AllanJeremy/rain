@@ -58,7 +58,7 @@
                                     <a class="mini-link" href="forgot.php">Forgot my password</a>
                                 </div>
                                 <div class="input-field col s6">
-                                    <a class="right btn" type="submit" >LOGIN</a>
+                                    <button class="right btn" type="submit" >LOGIN</button>
                                 </div>
                             </div>
                         </form>
@@ -72,7 +72,7 @@
                         <form class="col s12" method="post" action="">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <select name="staff_acc_type">
+                                    <select name="staff_acc_type" required>
                                         <option value="teacher" selected>Teacher</option>
                                         <option value="principal">Principal</option>
                                         <option value="superuser">Superuser</option>
@@ -108,7 +108,8 @@
                 </div>
             </div>
             <?php 
-
+                //Handles all login operations for both students and staff
+                require_once("handlers/login_handler.php");
              ?>
         </main>
         <footer>
