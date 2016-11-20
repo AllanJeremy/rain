@@ -12,7 +12,27 @@
     <body class="side-nav-page">
 
         <?php 
-            @session_start();
+            require_once("handlers/session_handler.php");
+            
+            #If user is not logged in, they will be redirected to this file
+            $redirectPath = "login.php";
+
+            //If statement that determines whether content can be viewed
+            if (MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn()):
+               
+                //Account type - from session variable storing the account type of the currently logged in user
+                $snippet_folder = "snippets/";#folder that contains snippets
+
+                $accType="";
+                //Determine what type of account is logged in and set accType to the appropriate value
+                if(MySessionHandler::AdminIsLoggedIn())
+                {
+                    $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
+                }
+                else if(MySessionHandler::StudentIsLoggedIn())
+                {
+                    $accType = "student";#corresponds with file name prefix
+                }
         ?>
 
         <header>
@@ -31,9 +51,6 @@
                                     
                                     <?php
                                     
-                                    //Account type - from session variable storing the account type of the currently logged in user
-                                    $snippet_folder = "snippets/";
-                                    $accType = "superuser";#should be dynamic
                                     
                                     //Setting the active page title according to the account type
                                     //Hiding the search icon according to the account type
@@ -88,6 +105,7 @@
             </nav>
 
             <?php
+                # show the side navigation for respective account types
                 include_once($snippet_folder . $accType."_navigation.php");
             ?>
 
@@ -95,11 +113,18 @@
         <main>
             <br>
             <?php
+                #show respective tabs for the respective account type
                 include_once($snippet_folder . $accType.'_tabs.php');
             ?>
         </main>
         <footer>
         </footer>
+        
+        <?php
+            else:#redirect user to the login page
+                header('Location:'.$redirectPath);
+            endif;#end the main if statement
+        ?>
         
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>

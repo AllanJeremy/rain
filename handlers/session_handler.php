@@ -1,6 +1,6 @@
 <?php
 
-
+@session_start();
 
 require_once ("db_info.php");#Retrieving database information
 
