@@ -13,7 +13,8 @@ class Superuser extends AdminAccount
 
     }
 
-    //Create a superuser account
+    //Create a superuser account - call this to create  a superuser account
+    //TODO Add the various account properties as parameters to the function
     function CreateSuperuser()
     {
         $this->staffId = 1;

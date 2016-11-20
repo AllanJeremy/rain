@@ -69,7 +69,7 @@
                         <br>
                         <br>
                         <br>
-                        <form class="col s12" method="get" action="">
+                        <form class="col s12" method="post" action="">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <select name="staff_acc_type">
