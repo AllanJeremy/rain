@@ -24,7 +24,7 @@ class AdminAccount
         
     }
 
-    //returns true if the account exists false if it doesn't
+    //returns true if the account exists false if it doesn't - faster than the db_info function, selects one column
     public static function AccountExists($username,$acc_type)
     {
         #Database connection - mysqli object
@@ -74,8 +74,15 @@ class AdminAccount
 
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
-                $insert_stmt->bind_param("isssssss",$this->staffId,$this->firstName,$this->lastName,
-                $this->username,$this->email,$this->phone,$this->accType,$this->encrypted_password);        
+                $insert_stmt->bind_param("isssssss",
+                    $this->staffId,
+                    $this->firstName,
+                    $this->lastName,
+                    $this->username,
+                    $this->email,
+                    $this->phone,
+                    $this->accType,
+                    $this->encrypted_password);        
 
             $insert_stmt->execute();
             }

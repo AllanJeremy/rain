@@ -1,5 +1,4 @@
 <?php
-
 require_once("session_handler.php");#Handles sessions - included first so that session_start is at the beginning of this file
 
 require_once("db_connect.php");#Connection to the database
@@ -7,7 +6,6 @@ require_once("pass_encrypt.php");#Password encryption and verification
 
 require_once("classes/admin_account.php");#Checking if an admin account exists
 require_once("classes/student.php");#checking if the student account exists
-
 
 include_once("error_handler.php");#Printing debug information
 
@@ -66,7 +64,36 @@ function AdminInfoValid()
 //Check if student login credentials are valid - returns true if valid and false if not
 function StudentInfoValid()
 {
+    $student_username = htmlspecialchars($_POST["student_username"]);
+    $student_password = htmlspecialchars($_POST["student_password"]);
 
+    //If the account exists check if the credentials are valid
+    if (Student::AccountExists($student_username) == true)
+    {
+        
+        if(Student::LoginInfoValid($student_username,$student_password))
+        {
+            //Cleanup - we don't need this anymore
+            unset($student_username);
+            unset($student_password);           
+            return true;
+        }
+        else
+        {
+            //Cleanup - we don't need this anymore
+            unset($student_username);
+            unset($student_password);           
+            return false;
+        }
+        
+    }
+    else //The account does not exist. Return false
+    {
+        //Cleanup - we don't need this anymore
+        unset($student_username);
+        unset($student_password);  
+        return false;
+    }
 }
 
 
@@ -78,10 +105,14 @@ if(StudentLoginSet())
     if(StudentInfoValid())
     {
         //If the info is valid, log them in
+        $student_username = htmlspecialchars($_POST["student_username"]);
+        
+        MySessionHandler::StudentLogin($student_username);
     }
     else
     {
         //if the info is invalid deny login
+        ErrorHandler::PrintSmallError("Invalid student credentials, failed to logged in");
     }
 }
 else if (AdminLoginSet())//if the student variables have not been set, then check if the admin variables have been set
@@ -89,12 +120,15 @@ else if (AdminLoginSet())//if the student variables have not been set, then chec
     if(AdminInfoValid())
     {
         //If the info is valid, log them in
-        ErrorHandler::PrintSmallSuccess("Successfully logged in");
+        $admin_username = htmlspecialchars($_POST["staff_username"]);
+        $admin_acc_type = htmlspecialchars($_POST["staff_acc_type"]);
+        
+        MySessionHandler::AdminLogin($admin_username,$admin_acc_type);
     }
     else
     {
         //if the info is invalid deny login
-        ErrorHandler::PrintSmallError("Invalid credentials, failed to logged in");
+        ErrorHandler::PrintSmallError("Invalid admin credentials, failed to logged in");
     }
 }
 

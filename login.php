@@ -110,6 +110,29 @@
             <?php 
                 //Handles all login operations for both students and staff
                 require_once("handlers/login_handler.php");
+
+
+                //DEBUG INFORMATION
+                include_once("handlers/error_handler.php");
+
+                if(MySessionHandler::AdminIsLoggedIn())
+                {
+                    ErrorHandler::PrintSuccess("Admin (".$_SESSION["admin_username"].") logged in on a ".$_SESSION["admin_account_type"]." account");
+                }
+                else
+                {
+                     ErrorHandler::PrintError("Admin not logged in");
+                }
+
+                if(MySessionHandler::StudentIsLoggedIn())
+                {
+                    ErrorHandler::PrintSuccess("Student logged in");
+                }
+                else
+                {
+                     ErrorHandler::PrintError("Student not logged in");
+                }                
+           
              ?>
         </main>
         <footer>

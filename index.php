@@ -10,6 +10,11 @@
     </head>
 
     <body class="side-nav-page">
+
+        <?php 
+            @session_start();
+        ?>
+
         <header>
             <nav class="top-nav">
                 <div class="container ">
@@ -28,7 +33,7 @@
                                     
                                     //Account type - from session variable storing the account type of the currently logged in user
                                     $snippet_folder = "snippets/";
-                                    $accType = "superuser";
+                                    $accType = "superuser";#should be dynamic
                                     
                                     //Setting the active page title according to the account type
                                     //Hiding the search icon according to the account type
@@ -83,16 +88,14 @@
             </nav>
 
             <?php
-            include_once($snippet_folder . $accType."_navigation.php");
+                include_once($snippet_folder . $accType."_navigation.php");
             ?>
 
         </header>
         <main>
             <br>
             <?php
-            include_once($snippet_folder . $accType.'_tabs.php');
-
-            include_once("classes/superuser.php");
+                include_once($snippet_folder . $accType.'_tabs.php');
             ?>
         </main>
         <footer>

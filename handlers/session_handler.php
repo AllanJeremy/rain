@@ -1,17 +1,17 @@
 <?php
 
-session_start();
+
 
 require_once ("db_info.php");#Retrieving database information
 
 #HANDLES SESSIONS, LOGIN INFORMATION AND OTHER SESSION INFO.
-class SessionHandler
+class MySessionHandler
 {
 /*----------------------------------------------------------------------------------------------------------*/
                                             /*ADMIN SECTION*/
 /*----------------------------------------------------------------------------------------------------------*/
     //Initialize admin session variables soon as they login - return null if the admin account is not found 
-    private function AdminInitSession($username,$acc_type) #only callable from within the class
+    private static function AdminInitSession($username,$acc_type) #only callable from within the class
     {
         $admin_acc = DbInfo::GetAdminAccount($username,$acc_type);
         if (!isset($admin_acc))
@@ -28,13 +28,15 @@ class SessionHandler
         $_SESSION["admin_phone"]= $admin_acc["phone"];
         $_SESSION["admin_account_type"]= $admin_acc["account_type"];
         $_SESSION["admin_password"]= $admin_acc["password"];
+
+        return true;
     }
 
     //Logs the admin in - initializes all session variables
     public static function AdminLogin($username,$acc_type)
     {
         #Attempt to initialize session variables, if this fails, print the error message
-        if(!$this->AdminInitSession($username,$acc_type))
+        if(!self::AdminInitSession($username,$acc_type))
         {
             ErrorHandler::PrintError("Could not retrieve the admin account requested for use in the session handler.");
         }
@@ -99,6 +101,7 @@ class SessionHandler
         $_SESSION["student_full_name"] = $student_acc["full_name"];
         $_SESSION["student_class_ids"] = $student_acc["class_ids"];
 
+        return true;
     }
 
     //Logs the student in - initializes all session variables
