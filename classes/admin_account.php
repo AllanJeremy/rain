@@ -61,20 +61,28 @@ class AdminAccount
         #Database connection - mysqli object
         global $dbCon;
 
-        #query for inserting the information to the database
-        $insert_query = "INSERT INTO admin_accounts(staff_id,first_name,last_name,username,email,phone,account_type,password) 
-        VALUES(?,?,?,?,?,?,?,?)";
+        if($this->AccountExists($this->username,$this->accType)==false)
+        {  
+            #query for inserting the information to the database
+            $insert_query = "INSERT INTO admin_accounts(staff_id,first_name,last_name,username,email,phone,account_type,password) 
+            VALUES(?,?,?,?,?,?,?,?)"; 
 
-        if($insert_stmt = $dbCon->prepare($insert_query))
-        {
-            $insert_stmt->bind_param("isssssss",$this->staffId,$this->firstName,$this->lastName,
-            $this->username,$this->email,$this->phone,$this->accType,$this->encrypted_password);        
+            if($insert_stmt = $dbCon->prepare($insert_query))
+            {
+                $insert_stmt->bind_param("isssssss",$this->staffId,$this->firstName,$this->lastName,
+                $this->username,$this->email,$this->phone,$this->accType,$this->encrypted_password);        
 
-           $insert_stmt->execute();
+            $insert_stmt->execute();
+            }
+            else #if the query cannot be prepared
+            {
+                ErrorHandler::PrintError("Couldn't prepare query to create a " . 
+                $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
+            }
         }
-        else #if the query cannot be prepared
+        else
         {
-            ErrorHandler::PrintError("Couldn't prepare query to create a " . $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
+            ErrorHandler::PrintSmallError("Failed to create account as it already exists.");
         }
     }
 };
