@@ -83,7 +83,7 @@
                         <form class="col s12" method="post" action="">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <select name="staff_acc_type" required>
+                                    <select name="staff_acc_type" required class='grey-text text-lighten-2'>
                                         <option value="teacher" selected>Teacher</option>
                                         <option value="principal">Principal</option>
                                         <option value="superuser">Superuser</option>
