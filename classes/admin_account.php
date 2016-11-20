@@ -25,25 +25,41 @@ class AdminAccount
     }
 
     //returns true if the account exists false if it doesn't
-    protected function AccountExists($acc_type,$username)
+    protected function AccountExists($username,$acc_type)
     {
+        #Database connection - mysqli object
         global $dbCon;
-        $search_query = "SELECT * FROM admin_accounts WHERE username=? AND account_type=?";
+
+        #Select acc_id instead of * to increase speed of execution (optimization)
+        $search_query = "SELECT acc_id FROM admin_accounts WHERE username=? AND account_type=?";
 
         if($search_stmt = $dbCon->prepare($search_query))
         {
+            $search_stmt->bind_param("ss",$username,$acc_type);
+            $search_stmt->execute();
+
+            if($search_stmt->num_rows>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
         else #if the query cannot be prepared
         {
             ErrorHandler::PrintError("Couldn't prepare query to check if account exists. <br><br> Technical information : ".$dbCon->error);
+            return null;
         }
     }
 
     //Create an account - used by all classes that inherit from this class ie. teacher, principal, superuser
     protected function CreateAccount()
     {
-        global $dbCon;#connection to the database
+        #Database connection - mysqli object
+        global $dbCon;
 
         #query for inserting the information to the database
         $insert_query = "INSERT INTO admin_accounts(staff_id,first_name,last_name,username,email,phone,account_type,password) 
