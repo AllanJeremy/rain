@@ -69,14 +69,13 @@
                         <br>
                         <br>
                         <br>
-                        <form class="col s12" method="post" action="">
+                        <form class="col s12" method="get" action="">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <select>
-                                        <option value="" disabled selected>Choose your account type</option>
-                                        <option value="1">Teacher</option>
-                                        <option value="2">Principle</option>
-                                        <option value="3">Superuser</option>
+                                    <select name="staff_acc_type">
+                                        <option value="teacher" selected>Teacher</option>
+                                        <option value="principal">Principal</option>
+                                        <option value="superuser">Superuser</option>
                                     </select>
                                     <label>Account type</label>
                                 </div>
@@ -101,13 +100,17 @@
                                     
                                 </div>
                                 <div class="input-field col s6">
-                                    <a class="right btn" type="submit" >LOGIN</a>
+                                    <button class="right btn" type="submit" >LOGIN</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            <?php include_once("classes/superuser.php");
+                $super = new Superuser();
+                
+             ?>
         </main>
         <footer>
         </footer>

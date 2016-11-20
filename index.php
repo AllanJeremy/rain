@@ -91,6 +91,8 @@
             <br>
             <?php
             include_once($snippet_folder . $accType.'_tabs.php');
+
+            include_once("classes/superuser.php");
             ?>
         </main>
         <footer>
