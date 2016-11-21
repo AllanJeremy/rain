@@ -24,6 +24,7 @@ class MySessionHandler
         }
 
         #If the admin account was successfully created, initialize the session variables
+        $_SESSION["admin_acc_id"]= $admin_acc["acc_id"];
         $_SESSION["admin_staff_id"]= $admin_acc["staff_id"];
         $_SESSION["admin_first_name"]= $admin_acc["first_name"];
         $_SESSION["admin_last_name"]= $admin_acc["last_name"];
@@ -56,6 +57,8 @@ class MySessionHandler
         if(self::AdminIsLoggedIn())
         {
             unset(
+                $_SESSION["admin_acc_id"],
+                $_SESSION["admin_staff_id"],
                 $_SESSION["admin_first_name"],
                 $_SESSION["admin_last_name"],
                 $_SESSION["admin_username"],
@@ -75,6 +78,8 @@ class MySessionHandler
         return 
         (
             isset(
+                $_SESSION["admin_acc_id"],
+                $_SESSION["admin_staff_id"],
                 $_SESSION["admin_first_name"],
                 $_SESSION["admin_last_name"],
                 $_SESSION["admin_username"],
@@ -101,6 +106,7 @@ class MySessionHandler
         }
 
         #If the student account was successfully created, initialize the session variables
+        $_SESSION["student_acc_id"] = $student_acc["acc_id"];
         $_SESSION["student_adm_no"] = $student_acc["adm_no"];
         $_SESSION["student_first_name"] = $student_acc["first_name"];
         $_SESSION["student_last_name"] = $student_acc["last_name"];
@@ -136,6 +142,7 @@ class MySessionHandler
         if(self::StudentIsLoggedIn())
         {
             unset(
+                $_SESSION["student_acc_id"],
                 $_SESSION["student_adm_no"],
                 $_SESSION["student_first_name"],
                 $_SESSION["student_last_name"],
@@ -159,6 +166,7 @@ class MySessionHandler
         return
         (
             isset(
+                $_SESSION["student_acc_id"],
                 $_SESSION["student_adm_no"],
                 $_SESSION["student_first_name"],
                 $_SESSION["student_last_name"],
