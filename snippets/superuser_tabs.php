@@ -1,17 +1,17 @@
 <div class="container">
     <div class="row main-tab active-bar" id="dashboardTab">
-        <p class="grey-text">Account</p>
+        <p class="grey-text">Account Information</p>
         <div class="divider"></div>
         <br>
-        <?php
-        
-        $userData['username'] = 'GaMuchiri';
-        $userData['accType'] = 'superuser';
-        
-        ?>
-        
-        <p>Username: <span> <?php echo $userData['username']; ?> </span></p>
-        <p>Account type: <span> <?php echo $userData['accType']; ?> </span></p>
+
+        <div class="card-panel">
+            <p><b>First Name: </b><span> <?php echo $_SESSION["admin_first_name"]; ?> </span></p>
+            <p><b>Last Name: </b><span> <?php echo $_SESSION["admin_last_name"]; ?> </span></p>
+            <p><b>Email Address: </b><span> <?php echo $_SESSION["admin_email"]; ?> </span></p>
+            <p><b>Phone Number: </b><span> <?php echo  $_SESSION["admin_phone"]; ?> </span></p>
+            <p><b>Username: </b><span> <?php echo $_SESSION["admin_username"]; ?> </span></p>
+            <p><b>Account type: </b><span> <?php echo $_SESSION["admin_account_type"]; ?> </span></p>
+        </div>
         <br>
         <br>
         <div class="">

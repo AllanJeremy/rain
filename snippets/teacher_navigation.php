@@ -5,7 +5,9 @@
             <!--<a href="#" onclick="hideSideNav()" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
             -->
             <a href="#!user" class="hide"><img class="circle" src="images/ppic.jpg"></a>
-            <a href="#!name" class="no-padding"><span class="white-text name">Teacher Name</span></a>
+            <a href="#!name" class="no-padding">
+                <span class="white-text name"><?php echo $_SESSION["admin_username"] ?></span>
+            </a>
             <!--<p><span class="white-text class">class 10B</span></p>-->
             <br>
         </div>

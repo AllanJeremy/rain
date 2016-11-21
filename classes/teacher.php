@@ -84,10 +84,6 @@ class Teacher extends AdminAccount
             );
 
 
-        }#endif
-        else
-        {
-            ErrorHandler::PrintError("Missing field. Failed to created a teacher account");#debug information
         }
     }
 };
