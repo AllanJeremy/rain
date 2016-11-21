@@ -69,12 +69,12 @@ All assignments";
     {
         if (MySessionHandler::StudentIsLoggedIn()) #student logged in
         {
-            $author = $_SESSION["student_first_name"] . " " . $_SESSION["student_last_name"];
+            self::$author = $_SESSION["student_first_name"] . " " . $_SESSION["student_last_name"];
             self::$description .= " | " . self::STUDENT_DESCRIPTION; 
         }
         else if(MySessionHandler::AdminIsLoggedIn()) #admin logged in
         {
-            $author = $_SESSION["admin_first_name"] . " " . $_SESSION["admin_last_name"];
+            self::$author = $_SESSION["admin_first_name"] . " " . $_SESSION["admin_last_name"];
 
             switch($_SESSION["admin_account_type"])
             {
@@ -96,6 +96,7 @@ All assignments";
         }
         else
         {
+            self::$author = "Deflix Enterprises";
             self::$description .= " | " . self::DEFAULT_DESCRIPTION;
         }
 ?>

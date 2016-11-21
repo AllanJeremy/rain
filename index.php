@@ -6,6 +6,7 @@
 
         <title><?php echo MyHeaderHandler::GetPageTitle();?></title>
 
+        <!--Site metadata-->
         <?php MyHeaderHandler::GetMetaData(); ?>
         
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>

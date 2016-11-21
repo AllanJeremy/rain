@@ -5,8 +5,10 @@
         <?php require_once("handlers/header_handler.php");?>
         
         <title>Login | <?php echo MyHeaderHandler::GetPageTitle();?> </title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        
+        <!--Site metadata-->
+        <?php MyHeaderHandler::GetMetaData(); ?>
+        
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
