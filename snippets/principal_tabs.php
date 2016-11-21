@@ -2,173 +2,59 @@
                 <!--<p class="grey-text">Assignments (overview headers)</p>
                 <div class="divider"></div>
                 <br>-->
-                <div class="row main-tab active-bar" id="recievedAssignments">
-                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                        <h5 class="center-align valign grey-text " id="noAssignmentMessage">You have done all the assignments.<br>Keep it up!</h5>
-                    </div>
+                <div class="row main-tab active-bar" id="statsOverviewTab">
+                    
                     <div class="col card-col">
-                        <div class="card white">
-                            <div class="assignment-warning red lighten-1 z-depth-2"><p class="white-text">Due tomorrow!</p></div>
+                        <div class="card blue-grey lighten-2">
+                            
                             <div class="card-content">
-                                <span class="card-title">Assignment title</span>
+                                <span class="card-title ">Schedules overview</span>
 
-                                <ul class="collapsible " data-collapsible="accordion">
-                                    <li>
-                                        <div class="collapsible-header">Instructions<i class="material-icons right">arrow_drop_down</i></div>
-                                        <div class="collapsible-body">
-                                            <p>1. Make a girl run three times using your 
-fingers only then write a report of 2,500 words 
-about how you came to achieve this.<br>2. Make a boy sing three times using your 
-boobs only then write a report of 1,000 words 
-about how you came to achieve this.</p>
-                                        </div>
-                                    </li>
-                                </ul>
-        
-                                <p>From: <span class="php-data">Tr.Jessica</span></p>
-                                <p>Subject: <span class="php-data">Physical education</span></p>
-                                <p>Date sent: <span class="php-data">24th Aug 2016</span></p>
-                                <p>Due date: <span class="php-data">2nd Sept 2016</span></p>
-                                <p>Resources: <span class="php-data"><a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a></span></p>
+                                <p>total Schedules: <span class="php-data">20,000</span></p>
+                                
+                                <p>Done schedules: <span class="php-data">19,878</span></p>
+                                
+                                <p>Schedules not done: <span class="php-data">100</span></p>
+                                
+                                <p>Overdue schedules: <span class="php-data">22</span></p>
+                                
                             </div>
                             <div class="card-action right-align">
-                                <a href="#" class="">Submit</a>
+                                <a href="#" class="">more details</a>
                             </div>
                         </div>
                     </div>
                     
                 </div>
-                <div class="row main-tab" id="sentAssignments">
-                    <div class="col card-col">
-                        <div class="card white">
-                            <div class="card-content">
-                                <span class="card-title">Assignment title</span>
-
-                                <ul class="collapsible " data-collapsible="accordion">
-                                    <li>
-                                        <div class="collapsible-header">Instructions<i class="material-icons right">arrow_drop_down</i></div>
-                                        <div class="collapsible-body">
-                                            <p>1. Make a girl run three times using your 
-fingers only then write a report of 2,500 words 
-about how you came to achieve this.<br>2. Make a boy sing three times using your 
-boobs only then write a report of 1,000 words 
-about how you came to achieve this.</p>
-                                        </div>
-                                    </li>
-                                </ul>
-        
-                                <p>From: <span class="php-data">Tr.Jessica</span></p>
-                                <p>Subject: <span class="php-data">Physical education</span></p>
-                                <p>Date sent: <span class="php-data">24th Aug 2016</span></p>
-                                <p>Date handed in: <span class="php-data">1st Sept 2016</span></p>
-                                <p>Due date: <span class="php-data">2nd Sept 2016</span></p>
-                                <p>Resources: <span class="php-data"><a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a></span></p>
-                            </div>
-                            <div class="card-action center-align brookhurst-theme-primary assignment-results">
-                                <p class="white-text">Grade given: <span class="php-data">90%</span></p>
-                            </div>
-                        </div>
-                    </div>
+                
+                <div class="row main-tab" id="principalSchedulesTab">
+                    principal Schedules tab
                 </div>
-                <div class="row main-tab" id="takeATest">
-                    <div class="row" id="tests">
-                        <div class="col card-col">
-                            <div class="card blue-grey darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card indigo darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card green darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card pink darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card brown darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                
+                <div class="row main-tab" id="principleAssignmentsTab">
+                    principle Assignments tab
                 </div>
-                <div class="row main-tab" id="testResults">
-                    testResults tab
+                
+                <div class="row main-tab" id="principleStudentGradesTab">
+                    principle Student Grades tab
                 </div>
-                <div class="row main-tab" id="myGrades">
-                    myGrades tab
+                
+                <div class="row main-tab" id="principleGradebookTab">
+                    principle Gradebook tab
                 </div>
-                <div class="row main-tab" id="gradeBook">
-                    gradeBook tab
+                
+                <div class="row main-tab" id="principalStudentsTab">
+                    principal Students tab
                 </div>
-                <div class="row main-tab" id="chat">
-                    chat tab
+                
+                <div class="row main-tab" id="principalTeachersTab">
+                    principal Teachers tab
                 </div>
-                <!--<p class="grey-text">Tests</p>
-                <div class="divider"></div>-->
+                
+                <div class="row main-tab" id="principalGroupsTab">
+                    principal Groups tab
+                </div>
+                
                 <br>
                 
             </div>

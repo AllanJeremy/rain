@@ -1,7 +1,7 @@
 <ul id="slide-out" class="side-nav fixed">
     <li>
         <div class="userView">
-            <img class="background" src="images/MASAI-13.jpg" width="300">
+            <img class="background" src="images/esomo-nav-bg-02.jpg" width="300">
             <!--<a href="#" onclick="hideSideNav()" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
             -->
             <a href="#!user" class="hide"><img class="circle" src="images/ppic.jpg"></a>
