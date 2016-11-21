@@ -83,6 +83,10 @@
                                     switch ($accType) {
                                             
                                         case "student":
+                                            require_once("classes/student.php");
+                                            
+                                            $student = new Student();#object to access student functions
+
                                             $pageTitle = 'Received assignments';
                                             $searchBar = '';
                                             
@@ -90,6 +94,10 @@
                                             
                                             break;
                                         case "teacher":
+                                            require_once("classes/teacher.php");
+
+                                            $teacher = new Teacher();#object to access teacher functions
+
                                             $pageTitle = 'Create an assignment';
                                             $searchBar = '';
                                             
@@ -97,6 +105,10 @@
                                             
                                             break;
                                         case "principal":
+                                            require_once("classes/principal.php");
+                                            
+                                            $principal = new Principal();#object to access principal functions
+
                                             $pageTitle = 'Stats overview';
                                             $searchBar = '';
                                             
@@ -104,6 +116,15 @@
                                             
                                             break;
                                         case "superuser":
+                                            require_once("classes/superuser.php");
+                                            require_once("classes/teacher.php");
+
+                                            // $superuser = new Superuser();
+                                            // $superuser->CreateSuperuser(); #run function to create account. only creates if values have been set
+                                            
+                                            $teacher = new Teacher();
+                                            $teacher->CreateTeacher();
+
                                             $pageTitle = 'Dashboard';
                                             $searchBar = 'hide';
                                             

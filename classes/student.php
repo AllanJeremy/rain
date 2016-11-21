@@ -53,7 +53,7 @@ class Student
 
     //Create an account - used by all classes that inherit from this class ie. teacher, principal, superuser
   
-    protected function CreateAccount($args = 
+    protected static function CreateStudentAccount($args = 
     array("adm_no" => "","first_name" => "","last_name" => "","username" => "","password" => "","email" => "",
     "personal_phone" => "","parent_names" => "","parent_phone" => "","full_name" => "","class_ids" => ""))
     {

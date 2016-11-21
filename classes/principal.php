@@ -13,6 +13,25 @@ class Principal extends AdminAccount
         $this->accType = "principal";
     }
 
-    //Other Code here
+    #Other Code here
+    //Create a superuser account - call this to create  a superuser account
+    //TODO Add the various account properties as parameters to the function
+    public function CreatePrincipal()
+    {
+        #Properties
+    /*
+        $this->staffId
+        $this->firstName
+        $this->lastName
+        $this->username
+        $this->email
+        $this->phone
+        $this->password
+    */
 
+    
+        $args = parent::GetArgsArray();
+
+        parent::CreateAccount($args);
+    }
 };

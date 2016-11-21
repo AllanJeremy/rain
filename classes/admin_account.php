@@ -8,15 +8,15 @@ require_once ("handlers/pass_encrypt.php"); #Allows encryption of passwords
 class AdminAccount
 {
     //Variable initialization
-    protected $staffId;
-    protected $firstName;
-    protected $lastName;
-    protected $username;
-    protected $email;
-    protected $phone;
-    protected $password;
-    protected $encrypted_password;
-    protected $accType;
+    public $staffId;
+    public $firstName;
+    public $lastName;
+    public $username;
+    public $email;
+    public $phone;
+    public $password;
+    public $encrypted_password;
+    public $accType;
 
     //Constructor
     function __construct()
@@ -61,7 +61,9 @@ class AdminAccount
 
 
     //Create an account - used by all classes that inherit from this class ie. teacher, principal, superuser
-    protected function CreateAccount()
+    protected function CreateAccount($args = 
+            array("staffId"=>999,"firstName"=>"","lastName"=>"","username"=>"","email"=>"",
+                "phone"=>"","accType"=>"","encrypted_password"=>""))
     {
         #Database connection - mysqli object
         global $dbCon;
@@ -75,14 +77,14 @@ class AdminAccount
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
                 $insert_stmt->bind_param("isssssss",
-                    $this->staffId,
-                    $this->firstName,
-                    $this->lastName,
-                    $this->username,
-                    $this->email,
-                    $this->phone,
-                    $this->accType,
-                    $this->encrypted_password);        
+                    $args["staffId"],
+                    $args["firstName"],
+                    $args["lastName"],
+                    $args["username"],
+                    $args["email"],
+                    $args["phone"],
+                    $args["accType"],
+                    $args["encrypted_password"]);  
 
             $insert_stmt->execute();
             }
@@ -91,7 +93,6 @@ class AdminAccount
                 ErrorHandler::PrintError("Couldn't prepare query to create a " . 
                 $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
             }
-            ErrorHandler::PrintSmallSuccess("Successfully created a ".$this->accType." account");
         }
         else
         {
@@ -136,4 +137,24 @@ class AdminAccount
         }
     }
 
+
+    //returns an array where the $this variables have been set as args
+    protected function GetArgsArray()
+    {
+         #encrypt the current password
+         $this->encrypted_password = PasswordEncrypt::EncryptPass($this->password);
+         
+         $args = array(
+         "staffId"=>$this->staffId,
+         "firstName"=>$this->firstName,
+         "lastName"=>$this->lastName,
+         "username"=>$this->username,
+         "email"=>$this->email,
+         "phone"=>$this->phone,
+         "accType"=>$this->accType,
+         "encrypted_password"=>$this->encrypted_password
+         );
+
+         return $args;
+    }
 };
