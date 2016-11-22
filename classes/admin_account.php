@@ -70,7 +70,7 @@ class AdminAccount
         #Database connection - mysqli object
         global $dbCon;
         
-        if($this::AccountExists($this->username,$this->accType)==false)
+        if(self::AccountExists($this->username,$this->accType)==false)
         {  
             #query for inserting the information to the database
             $insert_query = "INSERT INTO admin_accounts(staff_id,first_name,last_name,username,email,phone,account_type,password) 

@@ -99,32 +99,32 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentFirstName" type="text" class="validate" name="new_student_first_name">
-                            <label for="newStudentFirstName" required>First name<sup>*</sup></label>
+                            <input id="newStudentFirstName" type="text" class="validate" name="new_student_first_name" required>
+                            <label for="newStudentFirstName" >First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentSecondName" type="text" class="validate" name="new_student_second_name">
-                            <label for="newStudentSecondName" required>Second name<sup>*</sup></label>
+                            <input id="newStudentLastName" type="text" class="validate" name="new_student_last_name" required>
+                            <label for="newStudentLastName">Last name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentUsername" type="text" class="validate" name="new_student_username">
-                            <label for="newStudentUsername" required>Username<sup>*</sup></label>
+                            <input id="newStudentUsername" type="text" class="validate" name="new_student_username" required>
+                            <label for="newStudentUsername" >Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentPassword" type="password" class="validate" name="new_student_password">
-                            <label for="newStudentPassword" required>Password<sup>*</sup></label>
+                            <input id="newStudentPassword" type="password" class="validate" name="new_student_password" required>
+                            <label for="newStudentPassword" >Password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentConfirmPassword" type="password" class="validate" name="new_student_confirm_password">
-                            <label for="newStudentConfirmPassword" required>Confirm password<sup>*</sup></label>
+                            <input id="newStudentConfirmPassword" type="password" class="validate" name="new_student_confirm_password" required>
+                            <label for="newStudentConfirmPassword" >Confirm password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -312,7 +312,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_staff_id">
+                            <input id="newStaffId" type="number" class="validate" name="new_teacher_staff_id">
                             <label for="newStaffId" required>Staff ID<sup>*</sup></label>
                         </div>
                     </div>
@@ -477,7 +477,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_staff_id" required>
+                            <input id="newStaffId" type="number" class="validate" name="new_principal_staff_id" required>
                             <label for="newStaffId">Staff ID<sup>*</sup></label>
                         </div>
                     </div>

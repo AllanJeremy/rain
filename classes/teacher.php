@@ -33,7 +33,7 @@ class Teacher extends AdminAccount
         if (Validator::TeacherSignupValid())
         {         
             #set the class variable values to the post variable values
-            $this->staffId = htmlspecialchars($_POST["new_staff_id"]);
+            $this->staffId = htmlspecialchars($_POST["new_teacher_staff_id"]);
             $this->firstName = htmlspecialchars($_POST["new_teacher_first_name"]);
             $this->lastName = htmlspecialchars($_POST["new_teacher_last_name"]);
             $this->username = htmlspecialchars($_POST["new_teacher_username"]);
@@ -59,12 +59,14 @@ class Teacher extends AdminAccount
                 $_POST["new_teacher_last_name"],
                 $_POST["new_teacher_email"],
                 $_POST["new_teacher_username"],
-                $_POST["new_staff_id"],
+                $_POST["new_teacher_staff_id"],
                 $_POST["new_teacher_password"],
                 $_POST["new_teacher_confirm_password"]
             );
 
             return parent::CreateAccount($args);
         }
+
+        return false;
     }
 };

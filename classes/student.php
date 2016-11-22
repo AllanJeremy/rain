@@ -10,7 +10,18 @@ require_once ("handlers/validation_handler.php");#Handles validation of form dat
 class Student
 {
     //Variable initialization
-    
+    public $student_id;
+    public $first_name;
+    public $last_name;
+    public $full_name;   
+    public $username;
+    public $email;
+    public $personal_phone;
+    public $parent_names;
+    public $parent_phone;
+    public $password;
+    public $encrypted_password;
+
     //Constructor
     function __construct()
     {
@@ -26,7 +37,7 @@ class Student
         $prepare_error = "Couldn't prepare query to check if account exists. <br><br> Technical information : ";  
 
         #Select acc_id instead of * to increase speed of execution (optimization)
-        $search_query = "SELECT username FROM student_accounts WHERE username=?";
+        $search_query = "SELECT acc_id FROM student_accounts WHERE username=?";
         
         if($search_stmt = $dbCon->prepare($search_query))
         {
@@ -52,17 +63,15 @@ class Student
         }
     }
 
-
-    //Create an account - used by all classes that inherit from this class ie. teacher, principal, superuser
-  
-    protected static function CreateStudentAccount($args = 
-    array("adm_no" => "","first_name" => "","last_name" => "","username" => "","password" => "","email" => "",
+    //Deals with database operations of creating the account - protected function
+    protected static function CreateAccount($args = 
+    array("adm_no" => "","first_name" => "","last_name" => "","username" => "","encrypted_password" => "","email" => "",
     "personal_phone" => "","parent_names" => "","parent_phone" => "","full_name" => "","class_ids" => ""))
     {
         #Database connection - mysqli object
         global $dbCon;
         
-        if($this::AccountExists($args["username"])==false)
+        if(self::AccountExists($args["username"])==false)
         {  
             #query for inserting the information to the database
             $insert_query = "INSERT INTO 
@@ -76,7 +85,7 @@ class Student
                 $args["first_name"],
                 $args["last_name"],
                 $args["username"],
-                $args["password"],
+                $args["encrypted_password"],
                 $args["email"],
                 $args["personal_phone"],
                 $args["parent_names"],
@@ -85,8 +94,17 @@ class Student
                 $args["class_ids"]
                 );        
 
-            $insert_stmt->execute();
-            return true;#return true if account was successfully created
+                if ($insert_stmt->execute())
+                {
+                    echo "<p class='pink-text'>Succeeded in creating the student account</p>";
+                }
+                else
+                {
+                    
+                    echo "<p class='teal-text'>Failed in creating the student account<br>".$dbCon->error."</p>";
+                }
+                
+                return true;#return true if account was successfully created
             }
             else #if the query cannot be prepared
             {
@@ -94,7 +112,7 @@ class Student
                 $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
                 return false;#return false if account creation failed
             }
-           
+
         }
         else#account already exists
         {
@@ -137,7 +155,54 @@ class Student
         else
         {
             ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
         }
     }
 
+    //Public function that can be called to create the student account
+    public function CreateStudentAccount()
+    {
+        #if the teacher details are set (form data filled,phone can be left blank), create account
+        if (Validator::StudentSignupValid())
+        {         
+            #set the class variable values to the post variable values
+            $this->student_id = htmlspecialchars($_POST["new_student_id"]);
+            $this->first_name = htmlspecialchars($_POST["new_student_first_name"]);
+            $this->last_name = htmlspecialchars($_POST["new_student_last_name"]); 
+
+            $this->full_name = $this->first_name . " " . $this->last_name;#full name is first name + last name
+
+            $this->username = htmlspecialchars($_POST["new_student_username"]);
+            $this->password = htmlspecialchars($_POST["new_student_password"]);
+
+            $args = $this->GetArgsArray();
+
+            return self::CreateAccount($args);
+        }
+
+        return false;#failed to create account
+    }
+
+    //returns an array where the $this variables have been set as args
+    protected function GetArgsArray()
+    {
+        #encrypt the current password
+        $this->encrypted_password = PasswordEncrypt::EncryptPass($this->password);
+        
+        $args = array(
+                    "adm_no" => $this->student_id,
+                    "first_name" => $this->first_name,
+                    "last_name" => $this->last_name,
+                    "username" => $this->username,
+                    "encrypted_password" => $this->encrypted_password,
+                    "email" => "",
+                    "personal_phone" => "",
+                    "parent_names" => "",
+                    "parent_phone" => "",
+                    "full_name" => $this->full_name,
+                    "class_ids" => ""
+                );
+
+         return $args;
+    }
 };

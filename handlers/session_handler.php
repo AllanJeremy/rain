@@ -126,7 +126,7 @@ class MySessionHandler
     public static function StudentLogin($username)
     {
         #Attempt to initialize session variables, if this fails, print the error message
-        if(!$this->StudentInitSession($username))
+        if(!self::StudentInitSession($username))
         {
             ErrorHandler::PrintError("Could not retrieve the student account requested for use in the session handler.");
         }

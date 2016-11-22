@@ -121,13 +121,21 @@
                                             break;
                                         case "superuser":
                                             require_once("classes/superuser.php");
+                                            require_once("classes/principal.php");
                                             require_once("classes/teacher.php");
+                                            require_once("classes/student.php");
 
-                                            // $superuser = new Superuser();
-                                            // $superuser->CreateSuperuser(); #run function to create account. only creates if values have been set
-                                            
                                             $teacher = new Teacher();
                                             $teacher->CreateTeacher();
+                                            
+                                            $principal = new Principal();
+                                            $principal->CreatePrincipal();
+                                            
+                                            $superuser = new Superuser();
+                                            $superuser->CreateSuperuser();
+
+                                            $student = new Student();
+                                            $student->CreateStudentAccount();
 
                                             $pageTitle = 'Dashboard';
                                             $searchBar = 'hide';
