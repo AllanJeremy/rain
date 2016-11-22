@@ -150,7 +150,7 @@
                 else
                 {
                      ErrorHandler::PrintError("Student not logged in");
-                }                
+                }
 */          
              ?>
         </main>
