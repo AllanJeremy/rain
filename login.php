@@ -126,44 +126,16 @@
             </div>
             <?php 
                 //Handles all login operations for both students and staff
-<<<<<<< HEAD
-=======
                 require_once("handlers/login_handler.php");
-                
->>>>>>> 75d1eb4dd1f02bc7e788efb791d9f029876d033a
-                
-
             
-/*  
-
+            /*  
                 //DEBUG INFORMATION
                 include_once("handlers/error_handler.php");
 
-<<<<<<< HEAD
                 //Create the account
                 $superuser->CreateDefaultSuperuser();
-*/             ?>
-=======
-                if(MySessionHandler::AdminIsLoggedIn())
-                {
-                    ErrorHandler::PrintSuccess("Admin (".$_SESSION["admin_username"].") logged in on a ".$_SESSION["admin_account_type"]." account");
-                }
-                else
-                {
-                     ErrorHandler::PrintError("Admin not logged in");
-                }
-
-                if(MySessionHandler::StudentIsLoggedIn())
-                {
-                    ErrorHandler::PrintSuccess("Student logged in");
-                }
-                else
-                {
-                     ErrorHandler::PrintError("Student not logged in");
-                }
-*/          
-             ?>
->>>>>>> 75d1eb4dd1f02bc7e788efb791d9f029876d033a
+            */             
+            ?>
         </main>
         <footer>
         </footer>

@@ -4,7 +4,7 @@ require_once (realpath(dirname(__FILE__) . "/../handlers/error_handler.php")); #
 require_once (realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Allows connection to database
 require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Allows encryption of passwords
 
-require_once ("handlers/validation_handler.php");#Handles validation of form data
+require_once (dirname(__FILE__) ."/../handlers/validation_handler.php");#Handles validation of form data
 
 #HANDLES STUDENT RELATED FUNCTIONS
 class Student

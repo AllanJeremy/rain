@@ -105,15 +105,15 @@ function StudentInfoValid()
     }
 }
 
-ErrorHandler::PrintSmallSuccess($_SESSION["student_acc_id"]);
-ErrorHandler::PrintSmallSuccess($_SESSION["student_adm_no"]);
-ErrorHandler::PrintSmallSuccess($_SESSION["student_first_name"]);
-ErrorHandler::PrintSmallSuccess($_SESSION["student_last_name"]);
-ErrorHandler::PrintSmallSuccess($_SESSION["student_username"]);
-ErrorHandler::PrintSmallSuccess($_SESSION["student_password"]);
-ErrorHandler::PrintSmallSuccess($_SESSION["student_email"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_acc_id"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_adm_no"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_first_name"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_last_name"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_username"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_password"]);
+// ErrorHandler::PrintSmallSuccess($_SESSION["student_email"]);
 #RUN THIS CODE WHEN THIS FILE IS REFERENCED - when the user attempts to login
-    ErrorHandler::PrintSuccess("LoginHandler");
+    // ErrorHandler::PrintSuccess("LoginHandler");
 //Check if the student login variables have been set
 if(StudentLoginSet())
 {
@@ -124,13 +124,9 @@ if(StudentLoginSet())
         $student_username = htmlspecialchars($_POST["student_username"]);
         
         MySessionHandler::StudentLogin($student_username);
-<<<<<<< HEAD
-        ErrorHandler::PrintSuccess("Successfully logged you in");
-        header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
-=======
+
         //header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
         echo '1';
->>>>>>> 75d1eb4dd1f02bc7e788efb791d9f029876d033a
     }
     else
     {
@@ -161,5 +157,5 @@ else if (AdminLoginSet())
 }
 else
 {
-     ErrorHandler::PrintSuccess("no information is set");
+    //  ErrorHandler::PrintSuccess("no information is set");
 }
