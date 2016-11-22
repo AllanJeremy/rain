@@ -26,7 +26,7 @@
                         <div class="row">
                             <div class="input-field col s12 m5 offset-m1">
                                 <input id="newUsername" type="text" class="validate" name="new_username">
-                                <label for="new_username">New username</label>
+                                <label for="newUsername">New username</label>
                             </div>
                             <div class="input-field col s12 m5 right-align">
                                 <a type="submit" class="btn">Change username</a>
@@ -45,17 +45,17 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <input id="currentPassword" type="password" class="validate" name="current_password">
-                                <label for="current_password">Current password</label>
+                                <label for="currentPassword">Current password</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col m6 s12">
                                 <input id="newPassword" type="password" class="validate" name="new_password">
-                                <label for="new_password">New password</label>
+                                <label for="newPassword">New password</label>
                             </div>
                             <div class="input-field col m6 s12">
                                 <input id="inputPasswordConfirm" type="password" class="validate" name="input-password-confirm">
-                                <label for="input-password-confirm">Confirm new password</label>
+                                <label for="inputPasswordConfirm">Confirm new password</label>
                             </div>
                         </div>
                         <div class="row">
@@ -94,37 +94,37 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentId" type="number" class="validate" name="new_student_id" required>
-                            <label for="new_student_id">Student id<sup>*</sup></label>
+                            <label for="newStudentId">Student id<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentFirstName" type="text" class="validate" name="new_student_first_name">
-                            <label for="new_student_first_name" required>First name<sup>*</sup></label>
+                            <label for="newStudentFirstName" required>First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentSecondName" type="text" class="validate" name="new_student_second_name">
-                            <label for="new_student_second_name" required>Second name<sup>*</sup></label>
+                            <label for="newStudentSecondName" required>Second name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentUsername" type="text" class="validate" name="new_student_username">
-                            <label for="new_student_username" required>Username<sup>*</sup></label>
+                            <label for="newStudentUsername" required>Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentPassword" type="password" class="validate" name="new_student_password">
-                            <label for="new_student_password" required>Password<sup>*</sup></label>
+                            <label for="newStudentPassword" required>Password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentConfirmPassword" type="password" class="validate" name="new_student_confirm_password">
-                            <label for="new_student_confirm_password" required>Confirm password<sup>*</sup></label>
+                            <label for="newStudentConfirmPassword" required>Confirm password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -154,13 +154,13 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="importDatabaseName" type="text" class="validate" name="import-database-name">
-                            <label for="import-database-name" required>Database name<sup>*</sup></label>
+                            <label for="importDatabaseName" required>Database name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="importTableName" type="text" class="validate" name="import-table-name">
-                            <label for="import-table-name" required>Table name<sup>*</sup></label>
+                            <label for="importTableName" required>Table name<sup>*</sup></label>
                         </div>
                     </div>
                     
@@ -190,7 +190,7 @@
                             </div>
                             <div class="input-field col m5 s9">
                                 <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
-                                <label for="filter-list-search">Search</label>
+                                <label for="filterListSearch">Search</label>
                             </div>
                             <div class="input-field col m2 s3">
                                 <a class="btn btn-floating waves-effect waves-light" type="submit"><i class="material-icons">search</i></a>
@@ -283,19 +283,19 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherFirstName" type="text" class="validate" name="new_teacher_first_name" required>
-                            <label for="new_teacher_first_name">First name<sup>*</sup></label>
+                            <label for="newTeacherFirstName">First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherLastName" type="text" class="validate" name="new_teacher_last_name" required>
-                            <label for="new_teacher_last_name">Last name<sup>*</sup></label>
+                            <label for="newTeacherLastName">Last name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherEmail" type="email" class="validate" name="new_teacher_email" required>
-                            <label for="new_teacher_email">Email<sup>*</sup></label>
+                            <label for="newTeacherEmail">Email<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -313,19 +313,19 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStaffId" type="number" class="validate" name="new_staff_id">
-                            <label for="new_staff_id" required>Staff ID<sup>*</sup></label>
+                            <label for="newStaffId" required>Staff ID<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherPassword" type="password" class="validate" name="new_teacher_password" required>
-                            <label for="new_teacher_password">Password<sup>*</sup></label>
+                            <label for="newTeacherPassword">Password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherConfirmPassword" type="password" class="validate" name="new_teacher_confirm_password" required>
-                            <label for="new_teacher_confirm_password">Confirm password<sup>*</sup></label>
+                            <label for="newTeacherConfirmPassword">Confirm password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -355,7 +355,7 @@
                             </div>
                             <div class="input-field col m5 s9">
                                 <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
-                                <label for="filter-list-search">Search</label>
+                                <label for="filterListSearch">Search</label>
                             </div>
                             <div class="input-field col m2 s3">
                                 <a class="btn btn-floating waves-effect waves-light" type="submit"><i class="material-icons">search</i></a>
@@ -448,19 +448,19 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newPrincipalFirstName" type="text" class="validate" name="new_principal_first_name" required>
-                            <label for="new_principal_first_name">First name<sup>*</sup></label>
+                            <label for="newPrincipalFirstName">First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newPrincipalLastName" type="text" class="validate" name="new_principal_last_name" required>
-                            <label for="new_principal_last_name">Last name<sup>*</sup></label>
+                            <label for="newPrincipalLastName">Last name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newPrincipalEmail" type="email" class="validate" name="new_principal_email" required>
-                            <label for="new_principal_email">Email<sup>*</sup></label>
+                            <label for="newPrincipalEmail">Email<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
