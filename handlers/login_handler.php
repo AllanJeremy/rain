@@ -69,20 +69,24 @@ function StudentInfoValid()
 {
     $student_username = htmlspecialchars($_POST["student_username"]);
     $student_password = htmlspecialchars($_POST["student_password"]);
-
+    
     //If the account exists check if the credentials are valid
-    if (Student::AccountExists($student_username) == true)
+    if (Student::AccountExists($student_username))
     {
-        
+        echo "<br><span class='white-text'> login info valid returned : ".Student::LoginInfoValid($student_username,$student_password)."</span>";
+        echo "<br>Before checking login information";
         if(Student::LoginInfoValid($student_username,$student_password))
         {
+            
             //Cleanup - we don't need this anymore
             unset($student_username);
-            unset($student_password);           
+            unset($student_password);      
             return true;
         }
         else
         {
+        echo "<br>Incorrect login information <br> Student::LoginInfoValid() returned ".Student::LoginInfoValid($student_username,$student_password);
+            
             //Cleanup - we don't need this anymore
             unset($student_username);
             unset($student_password);           
@@ -92,6 +96,8 @@ function StudentInfoValid()
     }
     else //The account does not exist. Return false
     {
+            ErrorHandler::PrintSuccess("Account doesn't exist <br>Username input: ".$student_username."<br>Password input :".$student_password);
+
         //Cleanup - we don't need this anymore
         unset($student_username);
         unset($student_password);  
@@ -99,18 +105,26 @@ function StudentInfoValid()
     }
 }
 
-
+ErrorHandler::PrintSmallSuccess($_SESSION["student_acc_id"]);
+ErrorHandler::PrintSmallSuccess($_SESSION["student_adm_no"]);
+ErrorHandler::PrintSmallSuccess($_SESSION["student_first_name"]);
+ErrorHandler::PrintSmallSuccess($_SESSION["student_last_name"]);
+ErrorHandler::PrintSmallSuccess($_SESSION["student_username"]);
+ErrorHandler::PrintSmallSuccess($_SESSION["student_password"]);
+ErrorHandler::PrintSmallSuccess($_SESSION["student_email"]);
 #RUN THIS CODE WHEN THIS FILE IS REFERENCED - when the user attempts to login
-
+    ErrorHandler::PrintSuccess("LoginHandler");
 //Check if the student login variables have been set
 if(StudentLoginSet())
 {
+
     if(StudentInfoValid())
     {
         //If the info is valid, log them in
         $student_username = htmlspecialchars($_POST["student_username"]);
         
         MySessionHandler::StudentLogin($student_username);
+        ErrorHandler::PrintSuccess("Successfully logged you in");
         header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
     }
     else
@@ -119,8 +133,11 @@ if(StudentLoginSet())
         ErrorHandler::PrintSmallError("Invalid student credentials, failed to logged in");
     }
 }
-else if (AdminLoginSet())//if the student variables have not been set, then check if the admin variables have been set
+
+//if the student variables have not been set, then check if the admin variables have been set
+else if (AdminLoginSet())
 {
+       
     if(AdminInfoValid())
     {
         //If the info is valid, log them in
@@ -137,4 +154,7 @@ else if (AdminLoginSet())//if the student variables have not been set, then chec
         ErrorHandler::PrintSmallError("Invalid admin credentials, failed to logged in");
     }
 }
-
+else
+{
+     ErrorHandler::PrintSuccess("no information is set");
+}

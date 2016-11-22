@@ -125,10 +125,11 @@ class MySessionHandler
     //Logs the student in - initializes all session variables
     public static function StudentLogin($username)
     {
+        ErrorHandler::PrintSuccess("Ran the login function");
         #Attempt to initialize session variables, if this fails, print the error message
         if(!self::StudentInitSession($username))
         {
-            ErrorHandler::PrintError("Could not retrieve the student account requested for use in the session handler.");
+            ErrorHandler::PrintError("Failed to login. <br> Could not retrieve the student account requested for use in the session handler.");
         }
 
     }

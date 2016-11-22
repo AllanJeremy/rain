@@ -29,7 +29,7 @@ class Student
     }
 
     //returns true if the account exists false if it doesn't - faster than the db_info function for finding student, selects one column
-    public static function AccountExists($username)
+    public static function AccountExists($username)#doesn't run when information is valid but runs when it is not
     {
         #Database connection - mysqli object
         global $dbCon;
@@ -48,10 +48,12 @@ class Student
             
             if($search_result->num_rows>0)
             {
+                echo "Account exists";
                 return true;
             }
             else
             {
+                echo "Could not find account";
                 return false;
             }
 
@@ -122,7 +124,7 @@ class Student
     }
 
     //Check if password and username of an account match - faster than the db_info function for finding student, selects one column
-    public static function LoginInfoValid($username_input="",$password_input="")
+    public static function LoginInfoValid($username_input,$password_input)
     {
         global $dbCon;
 
@@ -133,7 +135,10 @@ class Student
         if($search_stmt = $dbCon->prepare($search_query))
         {
             $search_stmt->bind_param("s",$username_input);
-            $search_stmt->execute();
+            if($search_stmt->execute())
+            {
+                echo "<p>successfully ran the search</p>";
+            }
 
             $search_result = $search_stmt->get_result();
             
@@ -143,6 +148,7 @@ class Student
             {
                 foreach ($search_result as $result) {
                     //Returns true if valid, false if not
+                    echo "verifying the password :".PasswordEncrypt::Verify($password_input,$result["password"])."<br>";
                     return PasswordEncrypt::Verify($password_input,$result["password"]);
                 }
                 unset($result);
@@ -155,7 +161,7 @@ class Student
         else
         {
             ErrorHandler::PrintError($prepare_error . $dbCon->error);
-            return null;
+            return $dbCon->error;
         }
     }
 

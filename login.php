@@ -54,7 +54,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input id="username" type="text" class="validate" name="student_username" required>
-                                    <label for="student_username">Username</label>
+                                    <label for="username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -124,7 +124,7 @@
             </div>
             <?php 
                 //Handles all login operations for both students and staff
-                require_once("handlers/login_handler.php");
+                
 
               /*  
                 //Include the superuser class to use its functions and create a superuser object
@@ -141,7 +141,7 @@
                 $superuser->password = "password";#password you will use to login
 
                 //Create the account
-                $superuser->CreateSuperuser();
+                $superuser->CreateDefaultSuperuser();
 */             ?>
         </main>
         <footer>
@@ -151,6 +151,7 @@
             else:
                 header("Location:".$redirectPath);
             endif;
+            require_once("handlers/login_handler.php");
         ?>
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
