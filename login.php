@@ -50,17 +50,19 @@
                             Invalid username or password.
                         </div>
 
-                        <form class="col s12" method="post" action="">
+                        <form class="col s12" method="post" action="" id="studentForm">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" type="text" class="validate" name="student_username" required>
-                                    <label for="username">Username</label>
+
+                                    <input id="studentUsername" type="text" class="validate" name="student_username" required>
+                                    <label for="studentUsername">Username</label>
+
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate" name="student_password" required>
-                                    <label for="password">Password</label>
+                                    <input id="studentPassword" type="password" class="validate" name="student_password" required>
+                                    <label for="student_password">Password</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -68,7 +70,7 @@
                                     <a class="mini-link" href="forgot.php">Forgot my password</a>
                                 </div>
                                 <div class="input-field col s6">
-                                    <button class="right btn" type="submit" >LOGIN</button>
+                                    <button class="right btn" onclick="studentLogin()" type="submit" >LOGIN</button>
                                 </div>
                             </div>
                         </form>
@@ -84,7 +86,7 @@
                             Invalid username or password.
                         </div>
 
-                        <form class="col s12" method="post" action="">
+                        <form class="col s12" method="post" action="" id="adminForm">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <select name="staff_acc_type" required class='grey-text text-lighten-2'>
@@ -97,14 +99,14 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" type="text" class="validate" name="staff_username" required>
+                                    <input id="staffUsername" type="text" class="validate" name="staff_username" required>
                                     <label for="staff_username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate" name="staff_password" required>
-                                    <label for="password">Password</label>
+                                    <input id="staffPassword" type="password" class="validate" name="staff_password" required>
+                                    <label for="staff_password">Password</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -115,7 +117,7 @@
                                     
                                 </div>
                                 <div class="input-field col s6">
-                                    <button class="right btn" type="submit" >LOGIN</button>
+                                    <button class="right btn" onclick="adminLogin()" type="submit" >LOGIN</button>
                                 </div>
                             </div>
                         </form>
@@ -124,25 +126,44 @@
             </div>
             <?php 
                 //Handles all login operations for both students and staff
+<<<<<<< HEAD
+=======
+                require_once("handlers/login_handler.php");
+                
+>>>>>>> 75d1eb4dd1f02bc7e788efb791d9f029876d033a
                 
 
-              /*  
-                //Include the superuser class to use its functions and create a superuser object
-                require_once("classes/superuser.php"); 
-                $superuser = new Superuser();#create new superuser object
+            
+/*  
 
-                //Initialize relevant information
-                $superuser->staffId = 99;#staff id
-                $superuser->firstName = "Admin";#first name
-                $superuser->lastName = "Superuser";#last name
-                $superuser->username = "Superuser_username"; #username - used to login
-                $superuser->email = "superuser@brookhurst.com"; #email of the super user
-                $superuser->phone = "0712345678";#phone number (optional)
-                $superuser->password = "password";#password you will use to login
+                //DEBUG INFORMATION
+                include_once("handlers/error_handler.php");
 
+<<<<<<< HEAD
                 //Create the account
                 $superuser->CreateDefaultSuperuser();
 */             ?>
+=======
+                if(MySessionHandler::AdminIsLoggedIn())
+                {
+                    ErrorHandler::PrintSuccess("Admin (".$_SESSION["admin_username"].") logged in on a ".$_SESSION["admin_account_type"]." account");
+                }
+                else
+                {
+                     ErrorHandler::PrintError("Admin not logged in");
+                }
+
+                if(MySessionHandler::StudentIsLoggedIn())
+                {
+                    ErrorHandler::PrintSuccess("Student logged in");
+                }
+                else
+                {
+                     ErrorHandler::PrintError("Student not logged in");
+                }
+*/          
+             ?>
+>>>>>>> 75d1eb4dd1f02bc7e788efb791d9f029876d033a
         </main>
         <footer>
         </footer>
@@ -156,6 +177,7 @@
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/login.js"></script>
         
         <script>
         $(document).ready(function() {
@@ -163,6 +185,13 @@
 
             //Ensure labels don't overlap text fields
             Materialize.updateTextFields(); //doesn't work
+            
+            //prevent default action for submit buttons
+            $('button[type=submit]').click( function (e) {
+                e.preventDefault();
+            });
+            
+                
         });
         </script>
     </body>

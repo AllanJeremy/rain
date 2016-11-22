@@ -1,14 +1,16 @@
 <?php
 
-#HANDLES DATABASE FUNCTIONS THAT INVOLVE ALTERING RECORDS IN THE DATABASE
-class DbHandler
+#HANDLES ACCOUNTS
+class Account
 {
     //Variable initialization
-    
+
     //Constructor
     function __construct()
     {
         
     }
+
+    //Other Code here
 
 };

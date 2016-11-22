@@ -1,8 +1,8 @@
 <?php
-require_once ("handlers/error_handler.php"); #Allows printing of error and success messages
+require_once (realpath(dirname(__FILE__) . "/../handlers/error_handler.php")); #Allows printing of error and success messages
 
-require_once ("handlers/db_connect.php"); #Allows connection to database
-require_once ("handlers/pass_encrypt.php"); #Allows encryption of passwords
+require_once (realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Allows connection to database
+require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Allows encryption of passwords
 
 require_once ("handlers/validation_handler.php");#Handles validation of form data
 
