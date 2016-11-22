@@ -73,8 +73,7 @@ function StudentInfoValid()
     //If the account exists check if the credentials are valid
     if (Student::AccountExists($student_username))
     {
-        echo "<br><span class='white-text'> login info valid returned : ".Student::LoginInfoValid($student_username,$student_password)."</span>";
-        echo "<br>Before checking login information";
+
         if(Student::LoginInfoValid($student_username,$student_password))
         {
             
@@ -84,9 +83,7 @@ function StudentInfoValid()
             return true;
         }
         else
-        {
-        echo "<br>Incorrect login information <br> Student::LoginInfoValid() returned ".Student::LoginInfoValid($student_username,$student_password);
-            
+        {   
             //Cleanup - we don't need this anymore
             unset($student_username);
             unset($student_password);           
@@ -96,7 +93,7 @@ function StudentInfoValid()
     }
     else //The account does not exist. Return false
     {
-            ErrorHandler::PrintSuccess("Account doesn't exist <br>Username input: ".$student_username."<br>Password input :".$student_password);
+            // ErrorHandler::PrintSuccess("Account doesn't exist <br>Username input: ".$student_username."<br>Password input :".$student_password);
 
         //Cleanup - we don't need this anymore
         unset($student_username);

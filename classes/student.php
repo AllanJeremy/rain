@@ -48,12 +48,10 @@ class Student
             
             if($search_result->num_rows>0)
             {
-                echo "Account exists";
                 return true;
             }
             else
             {
-                echo "Could not find account";
                 return false;
             }
 
@@ -135,11 +133,7 @@ class Student
         if($search_stmt = $dbCon->prepare($search_query))
         {
             $search_stmt->bind_param("s",$username_input);
-            if($search_stmt->execute())
-            {
-                echo "<p>successfully ran the search</p>";
-            }
-
+            $search_stmt->execute();
             $search_result = $search_stmt->get_result();
             
 
@@ -148,7 +142,6 @@ class Student
             {
                 foreach ($search_result as $result) {
                     //Returns true if valid, false if not
-                    echo "verifying the password :".PasswordEncrypt::Verify($password_input,$result["password"])."<br>";
                     return PasswordEncrypt::Verify($password_input,$result["password"]);
                 }
                 unset($result);
