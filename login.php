@@ -126,29 +126,23 @@
                 //Handles all login operations for both students and staff
                 require_once("handlers/login_handler.php");
 
-/*
-                //DEBUG INFORMATION
-                include_once("handlers/error_handler.php");
+              /*  
+                //Include the superuser class to use its functions and create a superuser object
+                require_once("classes/superuser.php"); 
+                $superuser = new Superuser();#create new superuser object
 
-                if(MySessionHandler::AdminIsLoggedIn())
-                {
-                    ErrorHandler::PrintSuccess("Admin (".$_SESSION["admin_username"].") logged in on a ".$_SESSION["admin_account_type"]." account");
-                }
-                else
-                {
-                     ErrorHandler::PrintError("Admin not logged in");
-                }
+                //Initialize relevant information
+                $superuser->staffId = 99;#staff id
+                $superuser->firstName = "Admin";#first name
+                $superuser->lastName = "Superuser";#last name
+                $superuser->username = "Superuser_username"; #username - used to login
+                $superuser->email = "superuser@brookhurst.com"; #email of the super user
+                $superuser->phone = "0712345678";#phone number (optional)
+                $superuser->password = "password";#password you will use to login
 
-                if(MySessionHandler::StudentIsLoggedIn())
-                {
-                    ErrorHandler::PrintSuccess("Student logged in");
-                }
-                else
-                {
-                     ErrorHandler::PrintError("Student not logged in");
-                }                
-*/          
-             ?>
+                //Create the account
+                $superuser->CreateSuperuser();
+*/             ?>
         </main>
         <footer>
         </footer>
