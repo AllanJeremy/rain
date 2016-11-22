@@ -4,6 +4,8 @@ require_once ("handlers/error_handler.php"); #Allows printing of error and succe
 require_once ("handlers/db_connect.php"); #Allows connection to database
 require_once ("handlers/pass_encrypt.php"); #Allows encryption of passwords
 
+require_once ("handlers/validation_handler.php");#Handles validation of form data
+
 #HANDLES ACCOUNTS
 class AdminAccount
 {
@@ -87,16 +89,19 @@ class AdminAccount
                     $args["encrypted_password"]);  
 
             $insert_stmt->execute();
+            return true;#return true if successful
             }
             else #if the query cannot be prepared
             {
                 ErrorHandler::PrintError("Couldn't prepare query to create a " . 
                 $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
+                return false;
             }
         }
         else
         {
-            ErrorHandler::PrintSmallError("Failed to create a ".$this->accType." account with the username ".$this->username." as it already exists.");
+            // ErrorHandler::PrintSmallError("Failed to create a ".$this->accType." account with the username ".$this->username." as it already exists.");
+            return false;
         }
     }
 

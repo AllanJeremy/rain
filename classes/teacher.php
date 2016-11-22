@@ -30,27 +30,8 @@ class Teacher extends AdminAccount
     */
 
         #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (
-            isset(
-                $_POST["new_teacher_first_name"],
-                $_POST["new_teacher_last_name"],
-                $_POST["new_teacher_email"],
-                $_POST["new_teacher_username"],
-                $_POST["new_staff_id"],
-                $_POST["new_teacher_password"]
-            )
-            &&
-            (
-                $_POST["new_teacher_first_name"] !== "" &&
-                $_POST["new_teacher_last_name"] !== "" &&
-                $_POST["new_teacher_email"] !== "" &&
-                $_POST["new_teacher_username"] !== "" &&
-                $_POST["new_staff_id"] !== "" &&
-                $_POST["new_teacher_password"]                
-            )
-        )
-        {
-                
+        if (Validator::TeacherSignupValid())
+        {         
             #set the class variable values to the post variable values
             $this->staffId = htmlspecialchars($_POST["new_staff_id"]);
             $this->firstName = htmlspecialchars($_POST["new_teacher_first_name"]);
