@@ -7,6 +7,7 @@ function removeErrors() {
     $('#invalid_student_login').addClass('hide');
     $('#invalid_admin_login').addClass('hide');
     $('.errorMessage').remove();
+    $('.successMessage').remove();
 }
 
 function validateInputs(type) {
@@ -102,6 +103,8 @@ function studentLogin() {
                     //redirect
                     $('#studentForm').prepend('<div class="card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>');
                     
+                    $('#adminForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as admin
+                    
                     window.setTimeout(function () {
                         location.reload();//Better option since a user won't define what page should load
                     }, 2000);
@@ -173,6 +176,8 @@ function adminLogin() {
                 if (str.length === 1) {
                     //redirect
                     $('#adminForm').prepend('<div class="card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>');
+                    
+                    $('#studentForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as a student
                     
                     window.setTimeout(function () {
                         location.reload();//Better option since a user won't define what page should load
