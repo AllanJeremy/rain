@@ -50,17 +50,17 @@
                             Invalid username or password.
                         </div>
 
-                        <form class="col s12" method="post" action="">
+                        <form class="col s12" method="post" action="" id="studentForm">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" type="text" class="validate" name="student_username" required>
+                                    <input id="studentUsername" type="text" class="validate" name="student_username" required>
                                     <label for="student_username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate" name="student_password" required>
-                                    <label for="password">Password</label>
+                                    <input id="studentPassword" type="password" class="validate" name="student_password" required>
+                                    <label for="student_password">Password</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -68,7 +68,7 @@
                                     <a class="mini-link" href="forgot.php">Forgot my password</a>
                                 </div>
                                 <div class="input-field col s6">
-                                    <button class="right btn" type="submit" >LOGIN</button>
+                                    <button class="right btn" onclick="studentLogin()" type="submit" >LOGIN</button>
                                 </div>
                             </div>
                         </form>
@@ -84,7 +84,7 @@
                             Invalid username or password.
                         </div>
 
-                        <form class="col s12" method="post" action="">
+                        <form class="col s12" method="post" action="" id="adminForm">
                             <div class="row">
                                 <div class="input-field col s12">
                                     <select name="staff_acc_type" required class='grey-text text-lighten-2'>
@@ -97,14 +97,14 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="username" type="text" class="validate" name="staff_username" required>
+                                    <input id="staffUsername" type="text" class="validate" name="staff_username" required>
                                     <label for="staff_username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate" name="staff_password" required>
-                                    <label for="password">Password</label>
+                                    <input id="staffPassword" type="password" class="validate" name="staff_password" required>
+                                    <label for="staff_password">Password</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -115,7 +115,7 @@
                                     
                                 </div>
                                 <div class="input-field col s6">
-                                    <button class="right btn" type="submit" >LOGIN</button>
+                                    <button class="right btn" onclick="adminLogin()" type="submit" >LOGIN</button>
                                 </div>
                             </div>
                         </form>
@@ -125,8 +125,12 @@
             <?php 
                 //Handles all login operations for both students and staff
                 require_once("handlers/login_handler.php");
+                
+                
 
-/*
+            
+/*  
+
                 //DEBUG INFORMATION
                 include_once("handlers/error_handler.php");
 
@@ -161,6 +165,7 @@
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/login.js"></script>
         
         <script>
         $(document).ready(function() {
@@ -168,6 +173,13 @@
 
             //Ensure labels don't overlap text fields
             Materialize.updateTextFields(); //doesn't work
+            
+            //prevent default action for submit buttons
+            $('button[type=submit]').click( function (e) {
+                e.preventDefault();
+            });
+            
+                
         });
         </script>
     </body>

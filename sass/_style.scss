@@ -52,6 +52,7 @@ h5 > span {
 
 .name {
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
+    text-transform: capitalize;//Always capitalize this class
 }
 nav {
   // background-color: color("materialize-red", "lighten-2");
@@ -89,7 +90,7 @@ form {
 }
 
 body.side-nav-page {
-    header, main, footer {
+    header, main, footer, .search-bar {
       padding-left: 300px;
     }
 }
@@ -105,7 +106,7 @@ footer.example {
 
 @media #{$medium-and-down} {
     body.side-nav-page {
-        header, main, footer {
+        header, main, footer, .search-bar {
             padding-left: 0;
         }
     }
@@ -283,8 +284,9 @@ a.button-collapse.top-nav {
           
       }
     a.page-title {
-      font-size: 36px;
-      text-transform: capitalize;
+        font-size: 22px;
+        font-weight: 350;
+        text-transform: uppercase;
     }
   }
 }

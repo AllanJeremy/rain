@@ -4,11 +4,11 @@ ob_start();#enable output buffering, allows for sending of headers within the fi
 
 require_once("session_handler.php");#Handles sessions - included first so that session_start is at the beginning of this file
 
-require_once("db_connect.php");#Connection to the database
-require_once("pass_encrypt.php");#Password encryption and verification
+require_once(realpath(dirname(__FILE__) . "/../handlers/db_connect.php"));#Connection to the database
+require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php"));#Password encryption and verification
 
-require_once("classes/admin_account.php");#Checking if an admin account exists
-require_once("classes/student.php");#checking if the student account exists
+require_once(realpath(dirname(__FILE__) . "/../classes/admin_account.php"));#Checking if an admin account exists
+require_once(realpath(dirname(__FILE__) . "/../classes/student.php"));#checking if the student account exists
 
 include_once("error_handler.php");#Printing debug information
 
@@ -111,7 +111,8 @@ if(StudentLoginSet())
         $student_username = htmlspecialchars($_POST["student_username"]);
         
         MySessionHandler::StudentLogin($student_username);
-        header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
+        //header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
+        echo '1';
     }
     else
     {
@@ -128,8 +129,8 @@ else if (AdminLoginSet())//if the student variables have not been set, then chec
         $admin_acc_type = htmlspecialchars($_POST["staff_acc_type"]);
         
         MySessionHandler::AdminLogin($admin_username,$admin_acc_type);
-        header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
-
+        //header("Location:".MySessionHandler::LOGIN_REDIRECT_PAGE);#redirect logged out user to this page
+        echo '1';
     }
     else
     {

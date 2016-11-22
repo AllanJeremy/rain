@@ -7,6 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        
     </head>
 
     <body>
@@ -20,8 +22,11 @@
                                     <i class="material-icons">arrow_back</i>
                                 </a>
                             </div>
-                            <div class="col s10">
+                            <div class="col s8">
                                 <a class="page-title center-align">Test title</a>
+                            </div>
+                            <div class="col s2" id="fullScreenDiv">
+                                <a class="right" id="fullScreenToggle" href="#!FullScreenTestPage"><i class="material-icons">fullscreen</i></a>
                             </div>
                         </div>
                     </div>
@@ -90,13 +95,21 @@
         </footer>
         
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
+        <script type="text/javascript" src="js/tests-functions.js"></script>
+        
         <script type="text/javascript" src="js/materialize.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/tests.functions.js"></script>
         
         <script>
         $(document).ready(function() {
-           
+            
+            var fullscreenButton = $('a#fullScreenToggle');
+                
+            fullscreenButton.click(function (e) {
+                e.preventDefault();
+                toggleFullScreen();
+            });
+            
         });
         </script>
     </body>

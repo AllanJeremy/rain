@@ -72,11 +72,6 @@ $(function() {
     });
     
     /**************
-    AJAX FUNCTIONS
-    ************/
-
-
-    /**************
     TABS SWITCH FUNCTIONALITIES END
     ************/
     

@@ -9501,68 +9501,69 @@ h5 > span {
 /* line 53, ../sass/_style.scss */
 .name {
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
+  text-transform: capitalize;
 }
 
-/* line 59, ../sass/_style.scss */
+/* line 60, ../sass/_style.scss */
 nav a {
   -webkit-font-smoothing: antialiased;
 }
-/* line 62, ../sass/_style.scss */
+/* line 63, ../sass/_style.scss */
 nav ul li a:hover, nav ul li.active {
   background-color: #781822;
 }
 
-/* line 67, ../sass/_style.scss */
+/* line 68, ../sass/_style.scss */
 form a.mini-link {
   font-size: 12px;
   line-height: inherit;
   opacity: .78;
 }
 
-/* line 74, ../sass/_style.scss */
+/* line 75, ../sass/_style.scss */
 .header {
   color: #aa5061;
   font-weight: 300;
 }
 
-/* line 79, ../sass/_style.scss */
+/* line 80, ../sass/_style.scss */
 .caption {
   font-size: 1.25rem;
   font-weight: 300;
   margin-bottom: 30px;
 }
 
-/* line 85, ../sass/_style.scss */
+/* line 86, ../sass/_style.scss */
 .preview {
   background-color: #FFF;
   border: 1px solid #eee;
   padding: 20px 20px;
 }
 
-/* line 92, ../sass/_style.scss */
-body.side-nav-page header, body.side-nav-page main, body.side-nav-page footer {
+/* line 93, ../sass/_style.scss */
+body.side-nav-page header, body.side-nav-page main, body.side-nav-page footer, body.side-nav-page .search-bar {
   padding-left: 300px;
 }
 
-/* line 97, ../sass/_style.scss */
+/* line 98, ../sass/_style.scss */
 .parallax-demo header,
 .parallax-demo main,
 .parallax-demo footer {
   padding-left: 0;
 }
 
-/* line 102, ../sass/_style.scss */
+/* line 103, ../sass/_style.scss */
 footer.example {
   padding-left: 0;
 }
 
 @media only screen and (max-width: 992px) {
-  /* line 108, ../sass/_style.scss */
-  body.side-nav-page header, body.side-nav-page main, body.side-nav-page footer {
+  /* line 109, ../sass/_style.scss */
+  body.side-nav-page header, body.side-nav-page main, body.side-nav-page footer, body.side-nav-page .search-bar {
     padding-left: 0;
   }
 
-  /* line 112, ../sass/_style.scss */
+  /* line 113, ../sass/_style.scss */
   h5 > span {
     display: block;
     margin: 0 0 15px 0;
@@ -9571,20 +9572,20 @@ footer.example {
 /********************
   Index Page Styles
 ********************/
-/* line 121, ../sass/_style.scss */
+/* line 122, ../sass/_style.scss */
 .no-data-message {
   min-height: 160px;
   border-radius: 1px;
 }
-/* line 126, ../sass/_style.scss */
+/* line 127, ../sass/_style.scss */
 .no-data-message.error {
   border: 2px solid #E57373;
 }
-/* line 130, ../sass/_style.scss */
+/* line 131, ../sass/_style.scss */
 .no-data-message.success {
   border: 2px solid #81C784;
 }
-/* line 134, ../sass/_style.scss */
+/* line 135, ../sass/_style.scss */
 .no-data-message h1, .no-data-message h2, .no-data-message h3, .no-data-message h4, .no-data-message h5, .no-data-message h6 {
   width: 100%;
   padding-bottom: 1em;
@@ -9596,37 +9597,37 @@ footer.example {
 /********************
   Index Page Styles
 ********************/
-/* line 148, ../sass/_style.scss */
+/* line 149, ../sass/_style.scss */
 ul.side-nav.fixed li.logo {
   text-align: center;
   margin-top: 32px;
   margin-bottom: 80px;
 }
-/* line 153, ../sass/_style.scss */
+/* line 154, ../sass/_style.scss */
 ul.side-nav.fixed li.logo:hover,
 ul.side-nav.fixed li.logo #logo-container:hover {
   background-color: transparent;
 }
 
-/* line 158, ../sass/_style.scss */
+/* line 159, ../sass/_style.scss */
 ul.side-nav.fixed {
   overflow: hidden;
   background-color: #1a1a1a;
 }
-/* line 162, ../sass/_style.scss */
+/* line 163, ../sass/_style.scss */
 ul.side-nav.fixed .divider {
   background-color: #fff;
   opacity: 0.28;
 }
-/* line 167, ../sass/_style.scss */
+/* line 168, ../sass/_style.scss */
 ul.side-nav.fixed li {
   line-height: 44px;
 }
-/* line 170, ../sass/_style.scss */
+/* line 171, ../sass/_style.scss */
 ul.side-nav.fixed li.active {
   background-color: #781822;
 }
-/* line 174, ../sass/_style.scss */
+/* line 175, ../sass/_style.scss */
 ul.side-nav.fixed li a {
   font-size: 13px;
   line-height: 44px;
@@ -9634,79 +9635,79 @@ ul.side-nav.fixed li a {
   padding: 0 30px;
   color: #FFFFFF;
 }
-/* line 181, ../sass/_style.scss */
+/* line 182, ../sass/_style.scss */
 ul.side-nav.fixed li a span.badge {
   line-height: 38px;
   height: 38px;
   margin-bottom: 3px;
   margin-top: 3px;
 }
-/* line 190, ../sass/_style.scss */
+/* line 191, ../sass/_style.scss */
 ul.side-nav.fixed ul.collapsible-accordion {
   background-color: #1a1a1a;
 }
-/* line 193, ../sass/_style.scss */
+/* line 194, ../sass/_style.scss */
 ul.side-nav.fixed ul.collapsible-accordion a.collapsible-header {
   padding: 0 30px;
   color: #FFFFFF;
 }
-/* line 198, ../sass/_style.scss */
+/* line 199, ../sass/_style.scss */
 ul.side-nav.fixed ul.collapsible-accordion .collapsible-body li {
   font-weight: 400;
   padding: 0 37.5px 0 45px;
   background-color: #1a1a1a;
   color: white;
 }
-/* line 204, ../sass/_style.scss */
+/* line 205, ../sass/_style.scss */
 ul.side-nav.fixed ul.collapsible-accordion .collapsible-body li.active {
   background-color: #454545;
   color: #e0c57a;
 }
-/* line 212, ../sass/_style.scss */
+/* line 213, ../sass/_style.scss */
 ul.side-nav.fixed:hover {
   overflow-y: auto;
 }
 
-/* line 217, ../sass/_style.scss */
+/* line 218, ../sass/_style.scss */
 .bold > a {
   font-weight: bold;
 }
 
-/* line 221, ../sass/_style.scss */
+/* line 222, ../sass/_style.scss */
 #logo-container {
   height: 57px;
   margin-bottom: 32px;
 }
 
-/* line 226, ../sass/_style.scss */
+/* line 227, ../sass/_style.scss */
 nav.top-nav {
   height: 100px;
   line-height: 100px;
   background-color: #3b3b3b;
 }
-/* line 231, ../sass/_style.scss */
+/* line 232, ../sass/_style.scss */
 nav.top-nav i.material-icons {
   height: 100px;
   line-height: 100px;
 }
-/* line 235, ../sass/_style.scss */
+/* line 236, ../sass/_style.scss */
 nav.top-nav a {
   line-height: 100px;
 }
-/* line 238, ../sass/_style.scss */
+/* line 239, ../sass/_style.scss */
 nav.top-nav a.page-title {
   font-size: 24px;
   font-weight: 400;
   text-transform: uppercase;
 }
 @media only screen and (max-width: 992px) {
-  /* line 226, ../sass/_style.scss */
+  /* line 227, ../sass/_style.scss */
   nav.top-nav {
     height: auto;
   }
 }
 
-/* line 248, ../sass/_style.scss */
+/* line 249, ../sass/_style.scss */
 a.button-collapse.top-nav {
   position: absolute;
   text-align: center;
@@ -9720,45 +9721,46 @@ a.button-collapse.top-nav {
   font-size: 36px;
   z-index: 2;
 }
-/* line 261, ../sass/_style.scss */
+/* line 262, ../sass/_style.scss */
 a.button-collapse.top-nav.full {
   line-height: 122px;
 }
-/* line 265, ../sass/_style.scss */
+/* line 266, ../sass/_style.scss */
 a.button-collapse.top-nav i {
   font-size: 32px;
 }
 
 @media only screen and (max-width: 600px) {
-  /* line 271, ../sass/_style.scss */
+  /* line 272, ../sass/_style.scss */
   a.button-collapse.top-nav {
     left: 5%;
   }
 }
 @media only screen and (max-width: 992px) {
-  /* line 277, ../sass/_style.scss */
+  /* line 278, ../sass/_style.scss */
   nav .nav-wrapper {
     text-align: center;
   }
-  /* line 280, ../sass/_style.scss */
+  /* line 281, ../sass/_style.scss */
   nav .nav-wrapper i {
     height: 100px;
     line-height: 100px;
   }
-  /* line 285, ../sass/_style.scss */
+  /* line 286, ../sass/_style.scss */
   nav .nav-wrapper a.page-title {
-    font-size: 36px;
-    text-transform: capitalize;
+    font-size: 22px;
+    font-weight: 350;
+    text-transform: uppercase;
   }
 }
-/* line 292, ../sass/_style.scss */
+/* line 294, ../sass/_style.scss */
 .my-container {
   width: 54%;
   margin: 0 auto;
   max-width: 1280px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 292, ../sass/_style.scss */
+  /* line 294, ../sass/_style.scss */
   .my-container {
     width: 90%;
     margin: 0 auto;
@@ -9766,19 +9768,19 @@ a.button-collapse.top-nav i {
 }
 
 @media only screen and (min-width: 993px) {
-  /* line 304, ../sass/_style.scss */
+  /* line 306, ../sass/_style.scss */
   .container {
     width: 90%;
   }
 }
-/* line 310, ../sass/_style.scss */
+/* line 312, ../sass/_style.scss */
 #responsive-img {
   width: 80%;
   display: block;
   margin: 0 auto;
 }
 
-/* line 316, ../sass/_style.scss */
+/* line 318, ../sass/_style.scss */
 .promo-caption {
   font-size: 1.7rem;
   font-weight: 500;
@@ -9792,7 +9794,7 @@ a.button-collapse.top-nav i {
   Chrome Browser
 *****************/
 /* Change the white to any color ;) */
-/* line 332, ../sass/_style.scss */
+/* line 334, ../sass/_style.scss */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -9800,7 +9802,7 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-/* line 347, ../sass/_style.scss */
+/* line 349, ../sass/_style.scss */
 .browser-window {
   text-align: left;
   width: 100%;
@@ -9811,7 +9813,7 @@ input:-webkit-autofill:active {
   margin: 20px 0px;
   overflow: hidden;
 }
-/* line 357, ../sass/_style.scss */
+/* line 359, ../sass/_style.scss */
 .browser-window .top-bar {
   height: 30px;
   border-radius: 5px 5px 0 0;
@@ -9820,7 +9822,7 @@ input:-webkit-autofill:active {
   background: linear-gradient(#1f1f1f, #1a1a1a);
 }
 
-/* line 366, ../sass/_style.scss */
+/* line 368, ../sass/_style.scss */
 .browser-window .circle {
   height: 10px;
   width: 10px;
@@ -9830,27 +9832,27 @@ input:-webkit-autofill:active {
   margin-right: 1px;
 }
 
-/* line 374, ../sass/_style.scss */
+/* line 376, ../sass/_style.scss */
 #close-circle {
   background-color: #FF5C5A;
 }
 
-/* line 377, ../sass/_style.scss */
+/* line 379, ../sass/_style.scss */
 #minimize-circle {
   background-color: #FFBB50;
 }
 
-/* line 380, ../sass/_style.scss */
+/* line 382, ../sass/_style.scss */
 #maximize-circle {
   background-color: #1BC656;
 }
 
-/* line 383, ../sass/_style.scss */
+/* line 385, ../sass/_style.scss */
 .browser-window .circles {
   margin: 5px 12px;
 }
 
-/* line 384, ../sass/_style.scss */
+/* line 386, ../sass/_style.scss */
 .browser-window .content {
   margin: 0;
   width: 100%;
@@ -9859,52 +9861,52 @@ input:-webkit-autofill:active {
   background-color: #fafafa;
 }
 
-/* line 392, ../sass/_style.scss */
+/* line 394, ../sass/_style.scss */
 .browser-window .row {
   margin: 0;
 }
 
-/* line 396, ../sass/_style.scss */
+/* line 398, ../sass/_style.scss */
 .clear {
   clear: both;
 }
 
 /**********************
 **********************/
-/* line 402, ../sass/_style.scss */
+/* line 404, ../sass/_style.scss */
 .center {
   text-align: center;
   vertical-align: middle;
 }
 
 @media only screen and (max-width: 600px) {
-  /* line 409, ../sass/_style.scss */
+  /* line 411, ../sass/_style.scss */
   .mobile-image {
     max-width: 100%;
   }
 }
 
-/* line 414, ../sass/_style.scss */
+/* line 416, ../sass/_style.scss */
 .php-data, .card .card-content ul.collapsible li .collapsible-body p {
   opacity: 0.78;
 }
 
-/* line 418, ../sass/_style.scss */
+/* line 420, ../sass/_style.scss */
 .card-panel span, .card-content p {
   -webkit-font-smoothing: antialiased;
 }
-/* line 420, ../sass/_style.scss */
+/* line 422, ../sass/_style.scss */
 .card-panel span.students-taken, .card-content p.students-taken {
   font-size: 12px;
   line-height: 1.5;
 }
-/* line 424, ../sass/_style.scss */
+/* line 426, ../sass/_style.scss */
 .card-panel span i.material-icons, .card-content p i.material-icons {
   font-size: 12px;
   line-height: 1.5;
 }
 
-/* line 431, ../sass/_style.scss */
+/* line 433, ../sass/_style.scss */
 .assignment-warning p {
   padding-left: 20px;
   padding-right: 20px;
@@ -9914,40 +9916,40 @@ input:-webkit-autofill:active {
   margin: 0;
 }
 
-/* line 442, ../sass/_style.scss */
+/* line 444, ../sass/_style.scss */
 a.btn-skip-question {
   color: #EF5350;
 }
 
-/* line 445, ../sass/_style.scss */
+/* line 447, ../sass/_style.scss */
 #images .card-panel .row {
   margin-bottom: 0;
 }
 
-/* line 448, ../sass/_style.scss */
+/* line 450, ../sass/_style.scss */
 .card-col {
   width: 310px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 448, ../sass/_style.scss */
+  /* line 450, ../sass/_style.scss */
   .card-col {
     width: 100%;
     max-width: 100%;
   }
 }
 
-/* line 457, ../sass/_style.scss */
+/* line 459, ../sass/_style.scss */
 .card .card-content ul.collapsible {
   box-shadow: none;
   margin-left: -21px;
   margin-right: -21px;
 }
-/* line 463, ../sass/_style.scss */
+/* line 465, ../sass/_style.scss */
 .card .card-content ul.collapsible li .collapsible-header {
   padding-left: 20px;
   padding-right: 20px;
 }
-/* line 471, ../sass/_style.scss */
+/* line 473, ../sass/_style.scss */
 .card .card-content ul.collapsible li .collapsible-body p {
   font-size: 14px;
   line-height: 18px;
