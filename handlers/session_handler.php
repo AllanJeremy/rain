@@ -97,7 +97,7 @@ class MySessionHandler
 /*----------------------------------------------------------------------------------------------------------*/
 
     //Initialize student session variables soon as they login - return null if the student account is not found 
-    private function StudentInitSession($username) #only callable from within the class
+    private static function StudentInitSession($username) #only callable from within the class
     {
         $student_acc = DbInfo::GetStudentAccount($username);
         if (!isset($student_acc))
@@ -125,7 +125,7 @@ class MySessionHandler
     //Logs the student in - initializes all session variables
     public static function StudentLogin($username)
     {
-        ErrorHandler::PrintSuccess("Ran the login function");
+        //ErrorHandler::PrintSuccess("Logging you in...");
         #Attempt to initialize session variables, if this fails, print the error message
         if(!self::StudentInitSession($username))
         {
