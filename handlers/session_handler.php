@@ -101,7 +101,7 @@ class MySessionHandler
     {
         $student_acc = DbInfo::GetStudentAccount($username);
         if (!isset($student_acc))
-        {
+        {    
             return null;#end execution of this function here if the student account could not be found
         }
 

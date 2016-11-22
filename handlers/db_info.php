@@ -43,19 +43,19 @@ class DbInfo
     }
 
     //Retrieves and returns the first admin account found based on the criteria found
-    public static function GetStudentAccount($adm_no_input)
+    public static function GetStudentAccount($username_input)
     {
         global $dbCon;
 
         $prepare_error = "Couldn't prepare query to retrieve student account information. <br><br> Technical information : ";
 
-        $query = "SELECT * FROM student_accounts WHERE adm_no=?";
+        $query = "SELECT * FROM student_accounts WHERE username=?";
 
         if($stmt = $dbCon->prepare($query))
         {
-            $stmt->bind_param("i",$adm_no_input);
+            $stmt->bind_param("s",$username_input);
             $stmt->execute();#retrieve records from the database
-
+        
             $result = $stmt->get_result();
 
             //If we found any records
