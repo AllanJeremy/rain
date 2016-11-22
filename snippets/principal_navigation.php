@@ -21,7 +21,7 @@
         <a href="#" id="s_schedules_link" data-activates="principalSchedulesTab">Schedules</a>
     </li>
     <li class="">
-        <a href="#" id="s_Assignments_link" data-activates="principleAssignmentsTab">Assignments</a>
+        <a href="#" id="s_Assignments_link" data-activates="principalAssignmentsTab">Assignments</a>
     </li>
     <ul class="collapsible collapsible-accordion">
         <li class="">
@@ -29,10 +29,10 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a href=""  id="s_StudentGrades_link" data-activates="principleStudentGradesTab" class="">Student grades</a>
+                        <a href=""  id="s_StudentGrades_link" data-activates="principalStudentGradesTab" class="">Student grades</a>
                     </li>
                     <li>
-                        <a href=""  id="s_Gradebook_link" data-activates="principleGradebookTab" class="">Gradebook</a>
+                        <a href=""  id="s_Gradebook_link" data-activates="principalGradebookTab" class="">Gradebook</a>
                     </li>
                 </ul>
             </div>

@@ -93,38 +93,38 @@
                 <form class="col s12" method="post" action="">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentId" type="number" class="validate" name="new_student_id">
-                            <label for="new_student_id">Student id</label>
+                            <input id="newStudentId" type="number" class="validate" name="new_student_id" required>
+                            <label for="new_student_id">Student id<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentFirstName" type="text" class="validate" name="new_student_first_name">
-                            <label for="new_student_first_name">First name</label>
+                            <label for="new_student_first_name" required>First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentSecondName" type="text" class="validate" name="new_student_second_name">
-                            <label for="new_student_second_name">Second name</label>
+                            <label for="new_student_second_name" required>Second name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentUsername" type="text" class="validate" name="new_student_username">
-                            <label for="new_student_username">Username</label>
+                            <label for="new_student_username" required>Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentPassword" type="password" class="validate" name="new_student_password">
-                            <label for="new_student_password">Password</label>
+                            <label for="new_student_password" required>Password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStudentConfirmPassword" type="password" class="validate" name="new_student_confirm_password">
-                            <label for="new_student_confirm_password">Confirm password</label>
+                            <label for="new_student_confirm_password" required>Confirm password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -154,19 +154,19 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="importDatabaseName" type="text" class="validate" name="import-database-name">
-                            <label for="import-database-name">Database name</label>
+                            <label for="import-database-name" required>Database name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="importTableName" type="text" class="validate" name="import-table-name">
-                            <label for="import-table-name">Table name</label>
+                            <label for="import-table-name" required>Table name<sup>*</sup></label>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="input-field col s12">
-                            <a class="right btn" type="submit" >Import students</a>
+                            <button class="right btn" type="submit" >Import students</button>
                         </div>
                     </div>
                 </form>
@@ -206,7 +206,7 @@
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-1" />
-                                            <label for="filled-box-1">Admin no.</label>
+                                            <label for="filled-box-1">Adm no.</label>
                                         </p>
                                     </div>
                                     <div class="input-field col s6 m4">
@@ -282,19 +282,19 @@
                 <form class="col s12" method="post" action="">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherFirstName" type="text" class="validate" name="new_teacher_first_name">
+                            <input id="newTeacherFirstName" type="text" class="validate" name="new_teacher_first_name" required>
                             <label for="new_teacher_first_name">First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherLastName" type="text" class="validate" name="new_teacher_last_name">
+                            <input id="newTeacherLastName" type="text" class="validate" name="new_teacher_last_name" required>
                             <label for="new_teacher_last_name">Last name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherEmail" type="email" class="validate" name="new_teacher_email">
+                            <input id="newTeacherEmail" type="email" class="validate" name="new_teacher_email" required>
                             <label for="new_teacher_email">Email<sup>*</sup></label>
                         </div>
                     </div>
@@ -306,25 +306,25 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherUsername" type="text" class="validate" name="new_teacher_username">
+                            <input id="newTeacherUsername" type="text" class="validate" name="new_teacher_username" required>
                             <label for="new_teacher_username">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newStaffId" type="number" class="validate" name="new_staff_id">
-                            <label for="new_staff_id">Staff ID<sup>*</sup></label>
+                            <label for="new_staff_id" required>Staff ID<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherPassword" type="password" class="validate" name="new_teacher_password">
+                            <input id="newTeacherPassword" type="password" class="validate" name="new_teacher_password" required>
                             <label for="new_teacher_password">Password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherConfirmPassword" type="password" class="validate" name="new_teacher_confirm_password">
+                            <input id="newTeacherConfirmPassword" type="password" class="validate" name="new_teacher_confirm_password" required>
                             <label for="new_teacher_confirm_password">Confirm password<sup>*</sup></label>
                         </div>
                     </div>
@@ -432,14 +432,14 @@
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
             <li class="tab col s6">
-                <a class="active" href="#createPrinciple">Create</a>
+                <a class="active" href="#createPrincipal">Create</a>
             </li>
             <li class="tab col s6">
-                <a href="#managePrinciple" >Manage</a>
+                <a href="#managePrincipal" >Manage</a>
             </li>
         </ul>
         </div>
-        <div id="createPrinciple" class="col s12 offset-m1 m10 ">
+        <div id="createPrincipal" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
                 <br>
@@ -447,51 +447,57 @@
                 <form class="col s12" method="post" action="">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipleFirstName" type="text" class="validate" name="new_principle_first_name">
-                            <label for="new_principle_first_name">First name</label>
+                            <input id="newPrincipalFirstName" type="text" class="validate" name="new_principal_first_name" required>
+                            <label for="new_principal_first_name">First name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipleLastName" type="text" class="validate" name="new_principle_last_name">
-                            <label for="new_principle_last_name">Last name</label>
+                            <input id="newPrincipalLastName" type="text" class="validate" name="new_principal_last_name" required>
+                            <label for="new_principal_last_name">Last name<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipleEmail" type="email" class="validate" name="new_principle_email">
-                            <label for="new_principle_email">Email</label>
+                            <input id="newPrincipalEmail" type="email" class="validate" name="new_principal_email" required>
+                            <label for="new_principal_email">Email<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipleUsername" type="text" class="validate" name="new_principle_username">
-                            <label for="new_principle_username">Username</label>
+                            <input id="newPrincipalPhone" type="text" class="validate" name="new_principal_phone">
+                            <label for="newPrincipalPhone">Phone (Optional)</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_staff_id">
-                            <label for="new_staff_id">Staff ID</label>
+                            <input id="newPrincipalUsername" type="text" class="validate" name="new_principal_username" required>
+                            <label for="newPrincipalUsername">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrinciplePassword" type="password" class="validate" name="new_principle_password">
-                            <label for="new_principle_password">Password</label>
+                            <input id="newStaffId" type="number" class="validate" name="new_staff_id" required>
+                            <label for="newStaffId">Staff ID<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipleConfirmPassword" type="password" class="validate" name="new_principle_confirm_password">
-                            <label for="new_principle_confirm_password">Confirm password</label>
+                            <input id="newPrincipalPassword" type="password" class="validate" name="new_principal_password" required>
+                            <label for="newPrincipalPassword">Password<sup>*</sup></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newPrincipalConfirmPassword" type="password" class="validate" name="new_principal_confirm_password" required>
+                            <label for="newPrincipalConfirmPassword">Confirm password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <p>
-                                <input type="checkbox" id="createTeacherAccountFromPrinciple" />
-                                <label for="createTeacherAccountFromPrinciple">Create a corresponding teacher account</label>
+                                <input type="checkbox" id="createTeacherAccountFromPrincipal" />
+                                <label for="createTeacherAccountFromPrincipal">Create a corresponding teacher account</label>
                             </p>
                         </div>
                     </div>
@@ -503,11 +509,11 @@
                 </form>
             </div>
         </div>
-        <div id="managePrinciple" class="col s12 offset-m1 m10 ">
+        <div id="managePrincipal" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
                 <br>
-                <div class="row" id="principleFilterList">
+                <div class="row" id="principalFilterList">
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m4 s6">

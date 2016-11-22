@@ -19,7 +19,8 @@ class Validator
                 $_POST["new_teacher_email"],
                 $_POST["new_teacher_username"],
                 $_POST["new_staff_id"],
-                $_POST["new_teacher_password"]
+                $_POST["new_teacher_password"],
+                $_POST["new_teacher_confirm_password"]
             )
             &&
             (
@@ -28,12 +29,15 @@ class Validator
                 $_POST["new_teacher_email"] !== "" &&
                 $_POST["new_teacher_username"] !== "" &&
                 $_POST["new_staff_id"] !== "" &&
-                $_POST["new_teacher_password"]                
+                $_POST["new_teacher_password"]&&
+                $_POST["new_teacher_confirm_password"]                
             )
         )
         {
-            // Check if the password  is valid
-            if (self::PasswordValid(htmlspecialchars($_POST["new_teacher_password"])))
+            // Check if the password  is valid (appropriate length and passwords match)
+            if (self::PasswordValid(htmlspecialchars($_POST["new_teacher_password"])) && 
+                self::PasswordsMatch($_POST["new_teacher_password"],$_POST["new_teacher_confirm_password"])
+                )
             {
                 return true;
             }
@@ -44,7 +48,7 @@ class Validator
         }
         else
         {
-            echo "missing values ";
+            //echo "missing values ";
             return false;
         }
 
@@ -82,6 +86,12 @@ class Validator
             self::$password_error = "Password is valid";
             return true;
         }
+    }
+
+    //Checks if the passwords match, returns true if they do and false if they don't
+    public static function PasswordsMatch($password,$confirmPassword)
+    {
+        return ($password == $confirmPassword);
     }
 
 };

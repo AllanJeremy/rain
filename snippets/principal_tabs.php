@@ -28,31 +28,31 @@
                 </div>
                 
                 <div class="row main-tab" id="principalSchedulesTab">
-                    principal Schedules tab
+                    Principal Schedules tab
                 </div>
                 
-                <div class="row main-tab" id="principleAssignmentsTab">
-                    principle Assignments tab
+                <div class="row main-tab" id="principalAssignmentsTab">
+                    Principal Assignments tab
                 </div>
                 
-                <div class="row main-tab" id="principleStudentGradesTab">
-                    principle Student Grades tab
+                <div class="row main-tab" id="principalStudentGradesTab">
+                    Principal Student Grades tab
                 </div>
                 
-                <div class="row main-tab" id="principleGradebookTab">
-                    principle Gradebook tab
+                <div class="row main-tab" id="principalGradebookTab">
+                    Principal Gradebook tab
                 </div>
                 
                 <div class="row main-tab" id="principalStudentsTab">
-                    principal Students tab
+                    Principal Students tab
                 </div>
                 
                 <div class="row main-tab" id="principalTeachersTab">
-                    principal Teachers tab
+                    Principal Teachers tab
                 </div>
                 
                 <div class="row main-tab" id="principalGroupsTab">
-                    principal Groups tab
+                    Principal Groups tab
                 </div>
                 
                 <br>

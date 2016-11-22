@@ -29,7 +29,7 @@ class Superuser extends AdminAccount
     */
         $args = parent::GetArgsArray();
 
-        parent::CreateAccount($args);
+        return parent::CreateAccount($args);
     }
 
 };

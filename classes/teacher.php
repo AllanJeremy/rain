@@ -51,8 +51,7 @@ class Teacher extends AdminAccount
 
             #converts the this-> variables to an argument array
             $args = parent::GetArgsArray();
-            parent::CreateAccount($args);
-            ErrorHandler::PrintSuccess("Successfully created a teacher account. Username :".$_POST["new_teacher_username"]);#debug information
+            
 
             #unset the post variables once they have been used
             unset(
@@ -61,10 +60,11 @@ class Teacher extends AdminAccount
                 $_POST["new_teacher_email"],
                 $_POST["new_teacher_username"],
                 $_POST["new_staff_id"],
-                $_POST["new_teacher_password"]
+                $_POST["new_teacher_password"],
+                $_POST["new_teacher_confirm_password"]
             );
 
-
+            return parent::CreateAccount($args);
         }
     }
 };
