@@ -6,6 +6,10 @@ include_once("error_handler.php");
 #USED TO RETRIEVE INFORMATION FROM THE DATABASE
 class DbInfo
 {
+    //Constants for the different admin account types
+    const TEACHER_ACCOUNT = "teacher";
+    const PRINCIPAL_ACCOUNT = "principal";
+    const SUPERUSER_ACCOUNT = "superuser";
 
     //Retrieves and returns the first admin account found based on the criteria found
     public static function GetAdminAccount($username_input,$acc_type_input)
@@ -100,7 +104,7 @@ class DbInfo
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='teacher'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='self::TEACHER_ACCOUNT'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
         
@@ -116,7 +120,7 @@ class DbInfo
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='principal'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='self::PRINCIPAL_ACCOUNT'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
 
@@ -132,7 +136,7 @@ class DbInfo
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='superuser'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='self::SUPERUSER_ACCOUNT'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
         
@@ -190,7 +194,7 @@ class DbInfo
     }    
 
     //Get admin account by ID , default acc type is teacher but this can be passed in as different parameter
-    public static function GetAdminById($acc_id,$acc_type="teacher")
+    protected static function GetAdminById($acc_id,$acc_type="self::TEACHER_ACCOUNT")#protected to avoid random calls which may lead to typos
     {
         $select_query = "SELECT * FROM admin_accounts WHERE acc_id=? AND account_type=?";
 
@@ -206,7 +210,10 @@ class DbInfo
             #if records could be found
             if($select_result->num_rows == 0)
             {
-                return $select_result;#return the records
+                foreach($select_result as $result)
+                {
+                    return $select_result;#return the records
+                }
             }   
             else #if no records were found
             {
@@ -220,7 +227,25 @@ class DbInfo
         }
     }
 
-    //Get student account by ID
+        #Get teacher account by ID : convenience function
+        public static function GetTeacherById($acc_id)
+        {
+            return self::GetAdminById($acc_id,$acc_type="self::TEACHER_ACCOUNT");
+        }
+    
+        #Get principal account by ID : convenience function
+        public static function GetPrincipalById($acc_id)
+        {
+            return self::GetAdminById($acc_id,$acc_type="self::PRINCIPAL_ACCOUNT");
+        }
+
+        #Get superuser account by ID : convenience function
+        public static function GetSuperuserById($acc_id)
+        {
+            return self::GetAdminById($acc_id,$acc_type="self::SUPERUSER_ACCOUNT");
+        }
+    
+    //Get single student account by ID
     public static function GetStudentById($acc_id)
     {
         $select_query = "SELECT * FROM student_accounts WHERE acc_id=?";
@@ -237,7 +262,10 @@ class DbInfo
             #if records could be found
             if($select_result->num_rows == 0)
             {
-                return $select_result;#return the records
+                foreach($select_result as $result)
+                {
+                    return $select_result;#return the records
+                }
             }   
             else #if no records were found
             {
