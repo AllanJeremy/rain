@@ -296,7 +296,6 @@ class DbInfo
             if($select_stmt->execute())
             {
                 $result = $select_stmt->get_result();
-
                 if($result->num_rows>0)#found records
                 {
                     return $result;
@@ -325,7 +324,7 @@ class DbInfo
     }
 
     #Check if an student account with that username exists
-    public static function StudentIdExists($std_username)
+    public static function StudentUsernameExists($std_username)
     {
         return self::SinglePropertyExists("student_accounts","username",$std_username,"s");
     }
@@ -342,7 +341,7 @@ class DbInfo
     {
         global $dbCon;
 
-        $select_query = "SELECT * FROM $table_name WHERE $column_name=? AND $acc_type = ?";
+        $select_query = "SELECT * FROM $table_name WHERE $column_name=? AND account_type = ?";
         if ($select_stmt = $dbCon->prepare($select_query))
         {
             $select_stmt->bind_param($prop_type,$prop_name,$acc_type);
@@ -423,9 +422,9 @@ class DbInfo
         }
     
     //Check if an admin account with that email address exists
-    protected static function AdminEmailExists($admin_username,$acc_type)
+    protected static function AdminEmailExists($admin_email,$acc_type)
     {
-        return self::SingleAdminPropertyExists("admin_accounts","username",$admin_username,"ss",$acc_type);
+        return self::SingleAdminPropertyExists("admin_accounts","email",$admin_email,"ss",$acc_type);
     }
 
         #Check if the teacher staff id exists
