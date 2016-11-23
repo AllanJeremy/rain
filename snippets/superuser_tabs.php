@@ -240,6 +240,7 @@
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th data-field="id">Adm. No</th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
@@ -251,6 +252,11 @@
                         foreach($students as $student):#for each student - do this
                     ?>
                         <tr>
+                            <td>
+                                <input type="checkbox" value="<?php echo $student['acc_id']?>"
+                                 class="filled-in" id="filled-box-student-<?php echo $student['acc_id']?>" />
+                                <label for="filled-box-student-<?php echo $student['acc_id']?>"></label>
+                            </td>
                             <td><?php echo $student["adm_no"]?></td>
                             <td><?php echo $student["first_name"] . " " . $student["last_name"] ?></td>
                             <td><?php echo $student["username"]?></td>
@@ -417,6 +423,7 @@
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th data-field="id">Staff ID</th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
@@ -428,6 +435,11 @@
                         foreach ($teachers as $teacher):
                     ?>
                         <tr>
+                            <td>
+                                <input type="checkbox" value="<?php echo $teacher['acc_id']?>"
+                                 class="filled-in" id="filled-box-admin-<?php echo $teacher['acc_id']?>" />
+                                <label for="filled-box-admin-<?php echo $teacher['acc_id']?>"></label>
+                            </td>
                             <td><?php echo $teacher["staff_id"] ?></td>
                             <td><?php echo $teacher["first_name"] . " " . $teacher["last_name"]  ?></td>
                             <td><?php echo $teacher["username"] ?></td>
@@ -527,7 +539,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <p>
-                                <input type="checkbox" id="createTeacherAccountFromPrincipal" />
+                                <input type="checkbox" id="createTeacherAccountFromPrincipal" name="create_corresponding_teacher_account"/>
                                 <label for="createTeacherAccountFromPrincipal">Create a corresponding teacher account</label>
                             </p>
                         </div>
@@ -569,6 +581,7 @@
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th data-field="id">Staff ID</th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
@@ -580,6 +593,11 @@
                         foreach ($principals as $principal):
                     ?>
                         <tr>
+                            <td>
+                                <input type="checkbox" value="<?php echo $principal['acc_id']?>"
+                                 class="filled-in" id="filled-box-admin-<?php echo $principal['acc_id']?>" />
+                                <label for="filled-box-admin-<?php echo $principal['acc_id']?>"></label>
+                            </td>
                             <td><?php echo $principal["staff_id"] ?></td>
                             <td><?php echo $principal["first_name"] . " " . $principal["last_name"] ?></td>
                             <td><?php echo $principal["username"] ?></td>
