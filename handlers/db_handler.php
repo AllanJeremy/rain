@@ -51,7 +51,7 @@ class DbHandler extends DbInfo
     }
 
     //Reset the password of an admin account : takes admin acc_id and acc_type as parameters
-    protected static function ResetAdminAccount($acc_id,$acc_type="self::TEACHER_ACCOUNT")#protected to avoid calling it manually which may lead to typos
+    protected static function ResetAdminAccount($acc_id,$acc_type="teacher")#protected to avoid calling it manually which may lead to typos
     {
         global $dbCon;#db connection string (mysqli object)
         $prepare_error = "Couldn't prepare query to reset the admin (" . $acc_type . ") account. <br><br> Technical information : ";
@@ -91,19 +91,19 @@ class DbHandler extends DbInfo
         #Reset the password of an teacher account : takes teacher acc_id as a parameter : convenience function
         public static function ResetTeacherAccount($acc_id)
         {
-            return self::ResetAdminAccount($acc_id,"self::TEACHER_ACCOUNT");
+            return self::ResetAdminAccount($acc_id,"teacher");
         }
         
         #Reset the password of an principal account : takes principal acc_id as a parameter : convenience function
         public static function ResetPrincipalAccount($acc_id)
         {
-            return self::ResetAdminAccount($acc_id,"self::PRINCIPAL_ACCOUNT");
+            return self::ResetAdminAccount($acc_id,"principal");
         }
     
         #Reset the password of an superuser account : takes superuser acc_id as a parameter : convenience function
         public static function ResetSuperuserAccount($acc_id)
         {
-            return self::ResetAdminAccount($acc_id,"self::SUPERUSER_ACCOUNT");
+            return self::ResetAdminAccount($acc_id,"superuser");
         }
 
 /*
@@ -142,7 +142,7 @@ class DbHandler extends DbInfo
     }
 
     //Delete an admin account : takes admin acc_id and acc_type as parameters
-    public static function DeleteAdminAccount($acc_id,$acc_type="self::TEACHER_ACCOUNT")
+    public static function DeleteAdminAccount($acc_id,$acc_type="teacher")
     {
         global $dbCon;#db connection string (mysqli object)
         $prepare_error = "Couldn't prepare query to reset the admin (" . $acc_type . ") account. <br><br> Technical information : ";
@@ -175,18 +175,18 @@ class DbHandler extends DbInfo
         #Delete a teacher account : takes teacher acc_id as a parameter : convenience function
         public static function DeleteTeacherAccount($acc_id)
         {
-            return self::DeleteAdminAccount($acc_id,"self::TEACHER_ACCOUNT");
+            return self::DeleteAdminAccount($acc_id,"teacher");
         }
         
         #Delete a teacher account : takes teacher acc_id as a parameter : convenience function
         public static function DeletePrincipalAccount($acc_id)
         {
-            return self::DeleteAdminAccount($acc_id,"self::PRINCIPAL_ACCOUNT");
+            return self::DeleteAdminAccount($acc_id,"principal");
         }
         
         #Delete a teacher account : takes teacher acc_id as a parameter : convenience function
         public static function DeleteSuperuserAccount($acc_id)
         {
-            return self::DeleteAdminAccount($acc_id,"self::SUPERUSER_ACCOUNT");
+            return self::DeleteAdminAccount($acc_id,"superuser");
         }
 };

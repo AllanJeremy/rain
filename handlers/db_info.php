@@ -104,12 +104,13 @@ class DbInfo
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='self::TEACHER_ACCOUNT'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='teacher'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
         
         if ($result->num_rows == 0)#if the number of students found was 0, return false
         {
+            ErrorHandler::PrintError("Something went wrong with teacher retrieval");
             return false;
         }
         return $result;
@@ -120,7 +121,7 @@ class DbInfo
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='self::PRINCIPAL_ACCOUNT'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='principal'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
 
@@ -136,7 +137,7 @@ class DbInfo
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='self::SUPERUSER_ACCOUNT'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='superuser'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
         
@@ -194,7 +195,7 @@ class DbInfo
     }    
 
     //Get admin account by ID , default acc type is teacher but this can be passed in as different parameter
-    protected static function GetAdminById($acc_id,$acc_type="self::TEACHER_ACCOUNT")#protected to avoid random calls which may lead to typos
+    protected static function GetAdminById($acc_id,$acc_type="teacher")#protected to avoid random calls which may lead to typos
     {
         $select_query = "SELECT * FROM admin_accounts WHERE acc_id=? AND account_type=?";
 
@@ -230,19 +231,19 @@ class DbInfo
         #Get teacher account by ID : convenience function
         public static function GetTeacherById($acc_id)
         {
-            return self::GetAdminById($acc_id,$acc_type="self::TEACHER_ACCOUNT");
+            return self::GetAdminById($acc_id,$acc_type="teacher");
         }
     
         #Get principal account by ID : convenience function
         public static function GetPrincipalById($acc_id)
         {
-            return self::GetAdminById($acc_id,$acc_type="self::PRINCIPAL_ACCOUNT");
+            return self::GetAdminById($acc_id,$acc_type="principal");
         }
 
         #Get superuser account by ID : convenience function
         public static function GetSuperuserById($acc_id)
         {
-            return self::GetAdminById($acc_id,$acc_type="self::SUPERUSER_ACCOUNT");
+            return self::GetAdminById($acc_id,$acc_type="superuser");
         }
     
     //Get single student account by ID
