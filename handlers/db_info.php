@@ -33,12 +33,13 @@ class DbInfo
             }
             else //no records were found - return null
             {
-                return null;
+                return false;
             }
         }
         else
         {
             ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
         }
     }
 
@@ -68,12 +69,13 @@ class DbInfo
             }
             else //no records were found - return null
             {
-                return null;
+                return false;
             }
         }
         else
         {
             ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
         }
     }
 
@@ -186,4 +188,68 @@ class DbInfo
         }
         
     }    
+
+    //Get admin account by ID , default acc type is teacher but this can be passed in as different parameter
+    public static function GetAdminById($acc_id,$acc_type="teacher")
+    {
+        $select_query = "SELECT * FROM admin_accounts WHERE acc_id=? AND account_type=?";
+
+        $prepare_error = "Couldn't prepare query to retrieve admin account information by id. <br><br> Technical information : ";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("is",$acc_id,$acc_type);
+            $select_stmt->execute();
+
+            $select_result = $select_stmt->get_result();
+
+            #if records could be found
+            if($select_result->num_rows == 0)
+            {
+                return $select_result;#return the records
+            }   
+            else #if no records were found
+            {
+                return false;
+            }
+        }
+        else #failed to prepare the query for data retrieval
+        {
+            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
+        }
+    }
+
+    //Get student account by ID
+    public static function GetStudentById($acc_id)
+    {
+        $select_query = "SELECT * FROM student_accounts WHERE acc_id=?";
+
+        $prepare_error = "Couldn't prepare query to retrieve student account information by id. <br><br> Technical information : ";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("i",$acc_id);
+            $select_stmt->execute();
+
+            $select_result = $select_stmt->get_result();
+
+            #if records could be found
+            if($select_result->num_rows == 0)
+            {
+                return $select_result;#return the records
+            }   
+            else #if no records were found
+            {
+                return false;
+            }
+        }
+        else #failed to prepare the query for data retrieval
+        {
+            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
+        }
+    }
+
+
 }
