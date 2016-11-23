@@ -237,7 +237,7 @@
                 </div>
 
                 <!--Student list table-->
-                <table class="bordered responsive-table">
+                <table class="bordered responsive-table" id="super_student_list_table">
                     <thead>
                         <tr>
                             <th></th>
@@ -420,7 +420,7 @@
                 </div>
 
                 <!--Teacher list table-->
-                <table class="bordered responsive-table">
+                <table class="bordered responsive-table" id="super_teacher_list_table">
                     <thead>
                         <tr>
                             <th></th>
@@ -578,7 +578,7 @@
                 </div>
 
                 <!--Principal list table-->
-                <table class="bordered responsive-table">
+                <table class="bordered responsive-table" id="super_principal_list_table">
                     <thead>
                         <tr>
                             <th></th>
