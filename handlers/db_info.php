@@ -194,7 +194,7 @@ class DbInfo
         
     }    
 
-    //Get admin account by ID , default acc type is teacher but this can be passed in as different parameter
+    //Get single admin account by ID , default acc type is teacher but this can be passed in as different parameter
     protected static function GetAdminById($acc_id,$acc_type="teacher")#protected to avoid random calls which may lead to typos
     {
         $select_query = "SELECT * FROM admin_accounts WHERE acc_id=? AND account_type=?";
@@ -279,6 +279,172 @@ class DbInfo
             return null;
         }
     }
+/*----------------------------------------------------------------------------------------------------------
+                    STUDENT  AND OTHER SINGLE PROPERTY VALIDATION QUERIES
+----------------------------------------------------------------------------------------------------------*/
+
+    //Checks if a single property exists. Private function - only used as convenience by other functions
+    private static function SinglePropertyExists($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  info query. <br>Technical information :")#prop type is string used for bind_params
+    {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM $table_name WHERE $column_name=?";
+        if ($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param($prop_type,$prop_name);
+            
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+
+                if($result->num_rows>0)#found records
+                {
+                    return $result;
+                }   
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else #failed to prepare the query for data retrieval
+        {
+            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
+        }
+    }
+
+    #Check if an student account with that student_id exists
+    public static function StudentIdExists($std_id)
+    {
+        return self::SinglePropertyExists("student_accounts","adm_no",$std_id,"i");
+    }
+
+    #Check if an student account with that username exists
+    public static function StudentIdExists($std_username)
+    {
+        return self::SinglePropertyExists("student_accounts","username",$std_username,"s");
+    }
+
+/*----------------------------------------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------------------------------------
+                    ADMIN SINGLE PROPERTY VALIDATION QUERIES
+----------------------------------------------------------------------------------------------------------*/
+
+   //Checks if a single property exists. Private function - only used as convenience by other functions
+    private static function SingleAdminPropertyExists($table_name,$column_name,$prop_name,$prop_type,$acc_type,
+    $prepare_error="Error preparing admin info query. <br>Technical information : ")#prop type is string used for bind_params
+    {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM $table_name WHERE $column_name=? AND $acc_type = ?";
+        if ($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param($prop_type,$prop_name,$acc_type);
+            
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+
+                if($result->num_rows>0)#found records
+                {
+                    return $result;
+                }   
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else #failed to prepare the query for data retrieval
+        {
+            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            return null;
+        }
+    }
 
 
+    //Check if an admin account with that staff_id exists
+    protected static function AdminStaffIdExists($admin_staff_id,$acc_type)
+    {
+        return self::SingleAdminPropertyExists("admin_accounts","staff_id",$admin_staff_id,"is",$acc_type);
+    }
+    
+        #Check if the teacher staff_id exists
+        public static function TeacherStaffIdExists($admin_staff_id)
+        {
+            return self::AdminStaffIdExists($admin_staff_id,"teacher");
+        }
+        
+        #Check if the principal staff_id exists
+        public static function PrincipalStaffIdExists($admin_staff_id)
+        {
+            return self::AdminStaffIdExists($admin_staff_id,"principal");
+        }
+
+        #Check if the superuser staff_id exists
+        public static function SuperuserStaffIdExists($admin_staff_id)
+        {
+            return self::AdminStaffIdExists($admin_staff_id,"superuser");
+        }
+    
+
+    //Check if an admin account with that username exists
+    protected static function AdminUsernameExists($admin_username,$acc_type)
+    {
+        return self::SingleAdminPropertyExists("admin_accounts","username",$admin_username,"ss",$acc_type);
+    }
+
+        #Check if the teacher username exists
+        public static function TeacherUsernameExists($admin_username)
+        {
+            return self::AdminUsernameExists($admin_username,"teacher");
+        }
+        
+        #Check if the principal username exists
+        public static function PrincipalUsernameExists($admin_username)
+        {
+            return self::AdminUsernameExists($admin_username,"principal");
+        }
+        
+        #Check if the superuser username exists
+        public static function SuperuserUsernameExists($admin_username)
+        {
+            return self::AdminUsernameExists($admin_username,"superuser");
+        }
+    
+    //Check if an admin account with that email address exists
+    protected static function AdminEmailExists($admin_username,$acc_type)
+    {
+        return self::SingleAdminPropertyExists("admin_accounts","username",$admin_username,"ss",$acc_type);
+    }
+
+        #Check if the teacher staff id exists
+        public static function TeacherEmailExists($admin_email)
+        {
+            return self::AdminEmailExists($admin_email,"teacher");
+        }
+
+        #Check if the principal staff id exists
+        public static function PrincipalEmailExists($admin_email)
+        {
+            return self::AdminEmailExists($admin_email,"principal");
+        }
+
+        #Check if the superuser staff id exists
+        public static function SuperuserEmailExists($admin_email)
+        {
+            return self::AdminEmailExists($admin_email,"superuser");
+        }
+ 
+/*----------------------------------------------------------------------------------------------------------*/    
 }
