@@ -85,6 +85,11 @@ class DbInfo
         $select_query = "SELECT * FROM student_accounts";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
+
+        if ($result->num_rows == 0)#if the number of students found was 0, return false
+        {
+            return false;
+        }
         return $result;
     }
 
@@ -96,6 +101,11 @@ class DbInfo
         $select_query = "SELECT * FROM admin_accounts WHERE account_type='teacher'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
+        
+        if ($result->num_rows == 0)#if the number of students found was 0, return false
+        {
+            return false;
+        }
         return $result;
     }
 
@@ -107,6 +117,11 @@ class DbInfo
         $select_query = "SELECT * FROM admin_accounts WHERE account_type='principal'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
+
+        if ($result->num_rows == 0)#if the number of students found was 0, return false
+        {
+            return false;
+        }
         return $result;        
     }
 
@@ -118,6 +133,11 @@ class DbInfo
         $select_query = "SELECT * FROM admin_accounts WHERE account_type='superuser'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
+        
+        if ($result->num_rows == 0)#if the number of students found was 0, return false
+        {
+            return false;
+        }
         return $result;
     }
 

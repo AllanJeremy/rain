@@ -1,3 +1,7 @@
+<?php 
+    require_once (realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Allows retrieving information from database
+?>
+
 <div class="container">
     <div class="row main-tab active-bar" id="dashboardTab">
         <p class="grey-text">Account Information</p>
@@ -176,6 +180,11 @@
             <div class="row">
                 <br>
                 <br>
+
+            <?php
+                #Try to get students true if students found in database
+                if($students = DbInfo::GetAllStudents()):
+            ?>
                 <div class="row" id="studentFilterList">
                     <form class="col s12" action="">
                         <div class="row">
@@ -212,13 +221,13 @@
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-2" />
-                                            <label for="filled-box-2">F. name</label>
+                                            <label for="filled-box-2">Name(s)</label>
                                         </p>
                                     </div>
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-3" />
-                                            <label for="filled-box-3">L. name</label>
+                                            <label for="filled-box-3">Username</label>
                                         </p>
                                     </div>
                                 </div>
@@ -226,36 +235,43 @@
                         </div>
                     </form>
                 </div>
+
+                <!--Student list table-->
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th data-field="id">Admin no.</th>
-                            <th data-field="name">First Name</th>
-                            <th data-field="name">Last Name</th>
+                            <th data-field="id">Adm. No</th>
+                            <th data-field="name">Name(s)</th>
+                            <th data-field="name">Username</th>
                         </tr>
                     </thead>
                     <tbody>
+
+                    <?php
+                        foreach($students as $student):#for each student - do this
+                    ?>
                         <tr>
-                            <td>3012</td>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
+                            <td><?php echo $student["adm_no"]?></td>
+                            <td><?php echo $student["first_name"] . " " . $student["last_name"] ?></td>
+                            <td><?php echo $student["username"]?></td>
                         </tr>
-                        <tr>
-                            <td>3013</td>
-                            <td>Jonathan</td>
-                            <td>Lollipop</td>
-                        </tr>
-                        <tr>
-                            <td>3014</td>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
-                        </tr>
-                        <tr>
-                            <td>3015</td>
-                            <td>Alan</td>
-                            <td>Jellybean</td>
-                        </tr>
-                        
+                    <?php
+                        endforeach;
+                            
+                        else: # No students were found
+                    ?>
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1">
+                            <div class="card-panel blue-grey darken-3 blue-grey-text text-lighten-4">
+                                <h5 class="center">NO STUDENT ACCOUNTS FOUND</h5>
+                                <div class="divider blue-grey lighten-2"></div>
+                                <p class="blue-grey-text text-lighten-3">No student accounts were found. Student accounts will appear here once added.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                        endif;
+                    ?>
                     </tbody>
                 </table>
 
@@ -341,6 +357,11 @@
             <div class="row">
                 <br>
                 <br>
+                <?php
+                    #Try to get principals : true if principals found in database
+                    if($teachers = DbInfo::GetAllTeachers()):
+                ?>
+
                 <div class="row" id="teacherFilterList">
                     <form class="col s12" action="">
                         <div class="row">
@@ -371,19 +392,19 @@
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-1" />
-                                            <label for="filled-box-1">Admin no.</label>
+                                            <label for="filled-box-1">Staff ID</label>
                                         </p>
                                     </div>
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-2" />
-                                            <label for="filled-box-2">F. name</label>
+                                            <label for="filled-box-2">Name</label>
                                         </p>
                                     </div>
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-3" />
-                                            <label for="filled-box-3">L. name</label>
+                                            <label for="filled-box-3">Username</label>
                                         </p>
                                     </div>
                                 </div>
@@ -391,36 +412,46 @@
                         </div>
                     </form>
                 </div>
+
+                <!--Teacher list table-->
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th data-field="id">Admin no.</th>
-                            <th data-field="name">First Name</th>
-                            <th data-field="name">Last Name</th>
+                            <th data-field="id">Staff ID</th>
+                            <th data-field="name">Name(s)</th>
+                            <th data-field="name">Username</th>
                         </tr>
                     </thead>
                     <tbody>
+
+                    <?php 
+                        foreach ($teachers as $teacher):
+                    ?>
                         <tr>
-                            <td>5712</td>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
+                            <td><?php echo $teacher["staff_id"] ?></td>
+                            <td><?php echo $teacher["first_name"] . " " . $teacher["last_name"]  ?></td>
+                            <td><?php echo $teacher["username"] ?></td>
                         </tr>
-                        <tr>
-                            <td>5713</td>
-                            <td>Jonathan</td>
-                            <td>Lollipop</td>
-                        </tr>
-                        <tr>
-                            <td>5714</td>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
-                        </tr>
-                        <tr>
-                            <td>5715</td>
-                            <td>Alan</td>
-                            <td>Jellybean</td>
-                        </tr>
-                        
+                    <?php
+                        endforeach;
+
+                        else:#no principal accounts were found 
+                    ?>
+
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1">
+                            <div class="card-panel blue-grey darken-3 blue-grey-text text-lighten-4">
+                                <h5 class="center">NO TEACHER ACCOUNTS FOUND</h5>
+                                <div class="divider blue-grey lighten-2"></div>
+                                <p class="blue-grey-text text-lighten-3">No teacher accounts were found. Teacher accounts will appear here once added.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php
+                        endif;#end if statement to used check if there are teachers
+                    ?>
+
                     </tbody>
                 </table>
 
@@ -513,6 +544,11 @@
             <div class="row">
                 <br>
                 <br>
+
+            <?php
+                #Try to get principals : true if principals found in database
+                if($principals = DbInfo::GetAllPrincipals()):
+            ?>
                 <div class="row" id="principalFilterList">
                     <form class="col s12" action="">
                         <div class="row">
@@ -528,20 +564,46 @@
                         </div>
                     </form>
                 </div>
+
+                <!--Principal list table-->
                 <table class="bordered responsive-table">
                     <thead>
                         <tr>
-                            <th data-field="id">Admin no.</th>
-                            <th data-field="name">First Name</th>
-                            <th data-field="name">Last Name</th>
+                            <th data-field="id">Staff ID</th>
+                            <th data-field="name">Name(s)</th>
+                            <th data-field="name">Username</th>
                         </tr>
                     </thead>
                     <tbody>
+
+                    <?php 
+                        foreach ($principals as $principal):
+                    ?>
                         <tr>
-                            <td>5712</td>
-                            <td>Alvin</td>
-                            <td>Eclair</td>
+                            <td><?php echo $principal["staff_id"] ?></td>
+                            <td><?php echo $principal["first_name"] . " " . $principal["last_name"] ?></td>
+                            <td><?php echo $principal["username"] ?></td>
                         </tr>
+                    <?php
+                        endforeach;
+
+                        else:#no principal accounts were found 
+                    ?>
+
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1">
+                            <div class="card-panel blue-grey darken-3 blue-grey-text text-lighten-4">
+                                <h5 class="center">NO PRINCIPAL ACCOUNTS FOUND</h5>
+                                <div class="divider blue-grey lighten-2"></div>
+                                <p class="blue-grey-text text-lighten-3">No principal accounts were found. Principal accounts will appear here once added.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php
+                        endif;
+                    ?>
+
                     </tbody>
                 </table>
             </div>
