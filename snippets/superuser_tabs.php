@@ -119,20 +119,8 @@
                             <label for="newStudentUsername" >Username<sup>*</sup></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newStudentPassword" type="password" class="validate" name="new_student_password" required>
-                            <label for="newStudentPassword" >Password<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newStudentConfirmPassword" type="password" class="validate" name="new_student_confirm_password" required>
-                            <label for="newStudentConfirmPassword" >Confirm password<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        
+
+                    <div class="row">  
                         <div class="input-field col s12">
                             <button class="right btn" type="submit" >Create account</button>
                         </div>
@@ -338,18 +326,7 @@
                             <label for="newStaffId" required>Staff ID<sup>*</sup></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newTeacherPassword" type="password" class="validate" name="new_teacher_password" required>
-                            <label for="newTeacherPassword">Password<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newTeacherConfirmPassword" type="password" class="validate" name="new_teacher_confirm_password" required>
-                            <label for="newTeacherConfirmPassword">Confirm password<sup>*</sup></label>
-                        </div>
-                    </div>
+
                     <div class="row">
                         
                         <div class="input-field col s12">
@@ -522,18 +499,6 @@
                         <div class="input-field col s12">
                             <input id="newStaffId" type="number" class="validate" name="new_principal_staff_id" required>
                             <label for="newStaffId">Staff ID<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newPrincipalPassword" type="password" class="validate" name="new_principal_password" required>
-                            <label for="newPrincipalPassword">Password<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newPrincipalConfirmPassword" type="password" class="validate" name="new_principal_confirm_password" required>
-                            <label for="newPrincipalConfirmPassword">Confirm password<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">

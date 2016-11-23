@@ -18,9 +18,7 @@ class Validator
                 $_POST["new_teacher_last_name"],
                 $_POST["new_teacher_email"],
                 $_POST["new_teacher_username"],
-                $_POST["new_teacher_staff_id"],
-                $_POST["new_teacher_password"],
-                $_POST["new_teacher_confirm_password"]
+                $_POST["new_teacher_staff_id"]
             )
             &&
             (
@@ -28,23 +26,11 @@ class Validator
                 $_POST["new_teacher_last_name"] !== "" &&
                 $_POST["new_teacher_email"] !== "" &&
                 $_POST["new_teacher_username"] !== "" &&
-                $_POST["new_teacher_staff_id"] !== "" &&
-                $_POST["new_teacher_password"] !== "" &&
-                $_POST["new_teacher_confirm_password"] !== ""                 
+                $_POST["new_teacher_staff_id"] !== ""               
             )
         )
         {
-            // Check if the password  is valid (appropriate length and passwords match)
-            if (self::PasswordValid(htmlspecialchars($_POST["new_teacher_password"])) && 
-                self::PasswordsMatch($_POST["new_teacher_password"],$_POST["new_teacher_confirm_password"])
-                )
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
         else
         {
@@ -64,9 +50,7 @@ class Validator
                 $_POST["new_principal_last_name"],
                 $_POST["new_principal_email"],
                 $_POST["new_principal_username"],
-                $_POST["new_principal_staff_id"],
-                $_POST["new_principal_password"],
-                $_POST["new_principal_confirm_password"]
+                $_POST["new_principal_staff_id"]
             )
             &&
             (
@@ -74,23 +58,11 @@ class Validator
                 $_POST["new_principal_last_name"] !== "" &&
                 $_POST["new_principal_email"] !== "" &&
                 $_POST["new_principal_username"] !== "" &&
-                $_POST["new_principal_staff_id"] !== "" &&
-                $_POST["new_principal_password"] !== "" &&
-                $_POST["new_principal_confirm_password"] !== ""                 
+                $_POST["new_principal_staff_id"] !== ""                
             )
         )
         { 
-            // Check if the password  is valid (appropriate length and passwords match)
-            if (self::PasswordValid(htmlspecialchars($_POST["new_principal_password"])) && 
-                self::PasswordsMatch($_POST["new_principal_password"],$_POST["new_principal_confirm_password"])
-                )
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
         else
         {
@@ -108,9 +80,7 @@ class Validator
                 $_POST["new_superuser_last_name"],
                 $_POST["new_superuser_email"],
                 $_POST["new_superuser_username"],
-                $_POST["new_superuser_staff_id"],
-                $_POST["new_superuser_password"],
-                $_POST["new_superuser_confirm_password"]
+                $_POST["new_superuser_staff_id"]
             )
             &&
             (
@@ -118,24 +88,11 @@ class Validator
                 $_POST["new_superuser_last_name"] !== "" &&
                 $_POST["new_superuser_email"] !== "" &&
                 $_POST["new_superuser_username"] !== "" &&
-                $_POST["new_superuser_staff_id"] !== "" &&
-                $_POST["new_superuser_password"] !== "" &&
-                $_POST["new_superuser_confirm_password"] !== ""              
+                $_POST["new_superuser_staff_id"] !== ""            
             )
         )
         {
-            // Check if the password  is valid (appropriate length and passwords match)
-            if (self::PasswordValid(htmlspecialchars($_POST["new_superuser_password"])) && 
-                self::PasswordsMatch($_POST["new_superuser_password"],$_POST["new_superuser_confirm_password"])
-                )
-            {
-                return true;
-            }
-            else
-            {
-
-                return false;
-            }
+            return true;
         }
         else
         {
@@ -152,33 +109,18 @@ class Validator
                 $_POST["new_student_id"],
                 $_POST["new_student_first_name"],
                 $_POST["new_student_last_name"],
-                $_POST["new_student_username"],
-                $_POST["new_student_password"],
-                $_POST["new_student_confirm_password"]
+                $_POST["new_student_username"]
             )
             &&
             (
                 $_POST["new_student_id"] !== "" &&
                 $_POST["new_student_first_name"] !== "" &&
                 $_POST["new_student_last_name"] !== "" &&
-                $_POST["new_student_username"] !== "" &&
-                $_POST["new_student_password"] !== "" &&
-                $_POST["new_student_confirm_password"] !== ""               
+                $_POST["new_student_username"] !== ""             
             )
         )
         {
-            // Check if the password  is valid (appropriate length and passwords match)
-            if (self::PasswordValid(htmlspecialchars($_POST["new_student_password"])) && 
-                self::PasswordsMatch($_POST["new_student_password"],$_POST["new_student_confirm_password"])
-                )
-            {
-                echo "student validated<br>";
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
         else
         {

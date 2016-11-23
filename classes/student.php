@@ -172,7 +172,7 @@ class Student
             $this->full_name = $this->first_name . " " . $this->last_name;#full name is first name + last name
 
             $this->username = htmlspecialchars($_POST["new_student_username"]);
-            $this->password = htmlspecialchars($_POST["new_student_password"]);
+            $this->password = $this->username; #default password is the username
 
             $args = $this->GetArgsArray();
 

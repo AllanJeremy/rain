@@ -38,7 +38,7 @@ class Teacher extends AdminAccount
             $this->lastName = htmlspecialchars($_POST["new_teacher_last_name"]);
             $this->username = htmlspecialchars($_POST["new_teacher_username"]);
             $this->email = htmlspecialchars($_POST["new_teacher_email"]);
-            $this->password = htmlspecialchars($_POST["new_teacher_password"]);
+            $this->password = $this->username;#default password is the username
             
 
 

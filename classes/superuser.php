@@ -37,7 +37,7 @@ class Superuser extends AdminAccount
             $this->lastName = htmlspecialchars($_POST["new_superuser_last_name"]);
             $this->username = htmlspecialchars($_POST["new_superuser_username"]);
             $this->email = htmlspecialchars($_POST["new_superuser_email"]);
-            $this->password = htmlspecialchars($_POST["new_superuser_password"]);
+            $this->password = $this->username;#default password is the username
             
 
 
@@ -67,6 +67,12 @@ class Superuser extends AdminAccount
         }
 
         return false;
+    }
+
+    //Create default Superuser - variables for the account are manually set programatically
+    public function CreateDefaultSuperuser()
+    {
+        return parent::CreateAccount($args); 
     }
 
 };
