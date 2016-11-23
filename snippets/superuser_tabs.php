@@ -374,9 +374,9 @@
                             <div class="input-field col m5 s12">
                                 <select>
                                     <option value="" disabled selected>Bulk action</option>
-                                    <option value="super_teacher_delete">action 1</option>
-                                    <option value="super_teacher_reset">action 2</option>
-                                    <option value="super_teacher_none">action 3</option>
+                                    <option value="super_teacher_delete">Delete Account(s)</option>
+                                    <option value="super_teacher_reset">Reset Account(s)</option>
+                                    <option value="super_teacher_none">None</option>
                                 </select>
                                 <label>Bulk action</label>
                             </div>
