@@ -332,7 +332,7 @@
                 <div class="col s12">
                 <div class="card-panel  lime lighten-2">
                     <h4 class="center">NOTES</h4>
-                    <blockquote class="informative-block">All the functions working within normal parameters. Feel free to copy paste them from here. Tested every single one of the functions in stated using both correct and incorrect inputs</blockquote>
+                    <blockquote class="informative-block">All the functions working within normal parameters. Feel free to copy paste them from here. Tested every single one of the functions stated using both correct and incorrect inputs</blockquote>
                 </div>
                 </div>
             </div>
