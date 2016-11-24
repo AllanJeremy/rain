@@ -15,7 +15,7 @@
                     <div id="createClassroom" class="col s12 offset-m1 m10 ">
                         <div class="row">
                             <br>
-                            <form class="col s12 m8 offset-m2" method="post" action="">
+                            <form  id="createNewClassroom" class="col s12 m8 offset-m2" method="post" action="">
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <input id="newClassroomName" type="text" class="validate" name="new_classroom_name" required>
@@ -98,27 +98,27 @@
                             <p class="grey-text">Your classrooms</p>
                         </div>
                         <div class="col s7">
-                            <a class="btn right">Create a classroom</a>
+                            <a class="btn right" id="createClassroom">Create a classroom</a>
                         </div>
                     </div>
                         
                     <div class="divider"></div>
                     <br>
-                    <div class="row">
-                        <div class="col card-col" data-classroom-id="">
-                            <div class="card teal darken-2">
+                    <div class="row"id="classroomCardList" >
+                        <div class="col card-col new-class" data-classroom-id="2">
+                            <div class="card cyan darken-4">
                                 <div class="card-content white-text">
                                     <span class="card-title">Classroom Title</span>
                                     <p>Number of students:
                                         <span class="php-data">10  
-                                            <a onclick="numberOfStudentModalOpen()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >
+                                            <a onclick="openStudentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
                                         <span class="php-data">26  
-                                            <a onclick="numberOfStudentModalOpen()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >
+                                            <a onclick="openAssignmentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
@@ -127,13 +127,13 @@
                                     <p>Stream:  <span class="php-data">Alpha</span></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" onclick="editClassroomCard()">Edit</a>
+                                    <a href="#" data-target="" class="modal-trigger" id="editClassroom">Edit</a>
                                     <a href="#"  class="right">View</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col card-col" data-classroom-id="">
-                            <div class="card teal darken-2">
+                        <div class="col card-col" data-classroom-id="1">
+                            <div class="card blue-grey darken-2">
                                 <div class="card-content white-text">
                                     <span class="card-title">Classroom Title</span>
                                     <p>Number of students:
@@ -154,7 +154,7 @@
                                     <p>Stream:  <span class="php-data">Alpha</span></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" onclick="editClassroomCard()">Edit</a>
+                                    <a href="#" data-target="" id="editClassroom">Edit</a>
                                     <a href="#"  class="right">View</a>
                                 </div>
                             </div>
@@ -169,8 +169,8 @@
                 <div class="row main-tab" id="sentAssignmentsTab">
                     Sent Assignments tab
                 </div>
-                <div class="row main-tab" id="receivedAssignmentsTab">
-                    Received Assignments tab
+                <div class="row main-tab" id="submittedAssignmentsTab">
+                    Submitted Assignments tab
                 </div>
                 <!---->
                 <div class="row main-tab" id="createTestTab">
