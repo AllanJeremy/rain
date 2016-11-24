@@ -13,20 +13,38 @@ class Classroom
         
     }
 
-    //Other Code here
-    public static function CreateClassroom($class_name,$class_stream)
+    //Create a classroom - returns true on success and false on fail, null if there was an error with the prepare statement for the query
+    public static function CreateClassroom($class_name,$class_stream,$class_subject_id,$student_ids)
     {
-        $class_code = self::GenerateClassroomCode($class_name,$class_stream);#class_code : this is used to join classes
+        $class_code = self::GenerateClassroomCode($class_name,$class_stream,$class_subject_id);#class_code : this is used to join classes
         
         global $dbCon;#Connection string mysqli object
 
         if($class_code)#if class_code was successfully generated, we can create the classroom
         {
+            $insert_query = "INSERT INTO classroom (class_name,class_code,subject_id,student_ids,stream_id) VALUES(?,?,?,?,?)";
 
+            if($insert_stmt = $dbCon->prepare($insert_query))
+            {
+                $insert_stmt->bind_param("ssisi",$class_name,$class_code,$class_subject_id,$student_ids,$class_stream_id);
+                
+                if ($insert_stmt->execute())
+                {
+                    return true;
+                }
+                else #could not execute query to create classroom
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return null;#could not prepare the query
+            }
         }
         else
         {
-
+            return false;
         }
     }
 
@@ -46,7 +64,7 @@ class Classroom
     }
 
     //Delete Classroom
-    public static function UpdateClassroomInfo($class_id,$class_name,$stream)
+    public static function UpdateClassroomInfo($class_id,$class_name,$class_stream,$class_subject_id)
     {
         global $dbCon;#Connection string mysqli object
 
@@ -109,7 +127,7 @@ class Classroom
     }
 
     //Generate a unique classroom code for a classroom - used internally during creation process - returns code if successful and false if it fails
-    private function GenerateClassroomCode($class_name,$class_stream)
+    private function GenerateClassroomCode($class_name,$class_stream,$class_subject_id)
     {
 
     }
