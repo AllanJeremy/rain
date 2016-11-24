@@ -446,4 +446,37 @@ class DbInfo
         }
  
 /*----------------------------------------------------------------------------------------------------------*/    
+
+/*----------------------------------------------------------------------------------------------------------
+                    CLASSROOM FUNCTIONS
+----------------------------------------------------------------------------------------------------------*/
+
+    //Checks if the classroom with the given id exists, returns true if it does, and false if it doesn't
+    public static function ClassroomExists($class_id)
+    {
+        return SinglePropertyExists("classroom","class_id",$class_id,"i");
+    }
+
+    //Check if the Classroom code stated exists
+    public static function ClassroomCodeExists($class_code)
+    {
+        return SinglePropertyExists("classroom","class_code",$class_code,"s");
+    }
+
+    //Checks if a student is in a certain classroom, returns true if the student is in the classroom and false if not -Incomplete
+    public static function StudentExistsInClassroom($class_id,$student_id)
+    {
+        global $dbCon;#connection string mysqli object
+
+        if($classrooms = SinglePropertyExists("classroom","class_id",$class_id,"i"))
+        {
+            foreach ($classrooms as $classroom)
+            {
+                $students = $classroom["student_ids"];#the student ids of the students in this class
+                break;
+            }
+
+            #Check if the student exists in the student array
+        }
+    }
 }
