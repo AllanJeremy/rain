@@ -1,7 +1,7 @@
 <?php
 
-require_once("db_connect.php");#connection to the database
-include_once("error_handler.php");
+require_once(realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Connection to the database
+include_once(realpath(dirname(__FILE__) . "/../handlers/error_handler.php")); #Printing error messages
 
 #USED TO RETRIEVE INFORMATION FROM THE DATABASE
 class DbInfo
