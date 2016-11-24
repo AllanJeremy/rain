@@ -11,12 +11,15 @@
             <br>
         </div>
     </li>
+    <li class="active" >
+        <a href="#!" data-activates="classroomTab" id="classroom" class="">Classrooms</a>
+    </li>
     <ul class="collapsible collapsible-accordion">
         <li class="">
-            <a class="collapsible-header active">Assignments<span class="new badge">4</span></a>
+            <a class="collapsible-header">Assignments<span class="new badge">4</span></a>
             <div class="collapsible-body">
                 <ul>
-                    <li class="active">
+                    <li class="">
                         <a id="createAssignments" data-activates="createAssignmentsTab" class="" href="">Create an assignment</a>
                     </li>
                     <li>
@@ -28,6 +31,11 @@
                 </ul>
             </div>
         </li>
+    </ul>
+    <li>
+        <a href="#!" id="schedules" data-activates="schedulesTab" class="">Schedules</a>
+    </li>
+    <ul class="collapsible collapsible-accordion">
         <li class="">
             <a class="collapsible-header">Tests</a>
             <div class="collapsible-body">
@@ -59,10 +67,7 @@
         </li>
     </ul>
     <li>
-        <a href="#!" id="schedules" data-activates="schedulesTab" class="">Schedules</a>
-    </li>
-    <li>
-        <a href="#!" data-activates="classroomTab" id="classroom" class="">Classroom</a>
+        <a href="#!" id="myAccount" data-activates="myAccountTab" class="">My account</a>
     </li>
     <li>
         <a href="#!" class="hide">Chat</a>
