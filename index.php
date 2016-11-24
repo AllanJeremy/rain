@@ -129,7 +129,7 @@
                                             $teacher->CreateTeacher();
                                             
                                             $principal = new Principal();
-                                            $principal->CreatePrincipalAccount();#use this if the create corresponding account option is NOT checked - DEFAULT
+                                            $principal->CreatePrincipal();#use this if the create corresponding account option is NOT checked - DEFAULT
                                             
                                             //$principal->CreatePrincipalTeacherAccount();#use this if the create corresponding account option is checked
 
