@@ -189,4 +189,194 @@ class DbHandler extends DbInfo
         {
             return self::DeleteAdminAccount($acc_id,"superuser");
         }
+
+/*
+-----------------------------------------------------------------------------------------
+    CONVENIENCE FUNCTION FOR DELETING RECORD IN TABLE BASED ON SINGLE PROPERTY
+-----------------------------------------------------------------------------------------
+*/
+
+//Delete a row from a table based on a single property : returns true on success | false on fail | null if query couldn't execute
+private static function DeleteBasedOnSingleProperty($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  delete based on single property query. <br>Technical information :")
+{
+    $delete_query = "DELETE FROM $table_name WHERE $column_name=?";
+
+    if($delete_stmt = $dbCon->prepare($delete_query))
+    {
+        $delete_stmt->bind_param($prop_type,$prop_name);
+
+        if($delete_stmt->execute())#if it runs, means records were successfully deleted
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        ErrorHandler::PrintError($prepare_error . $dbCon->error);
+        return null;
+    }
+}
+
+/*
+-----------------------------------------------------------------------------------------
+                                    UPDATING AND DELETING CLASSROOMS
+-----------------------------------------------------------------------------------------
+*/
+    //Update Classroom information
+    //TODO Add implementation
+    public static function UpdateClassroomInfo($class_id,$class_name,$class_stream,$class_subject_id)
+    {
+        global $dbCon;#Connection string mysqli object
+
+        if(DbInfo::ClassroomExists($class_id))#if the classroom exists - safety check
+        {
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    #Delete Classroom : returns true on success | false on fail | null if query couldn't execute
+    public static function DeleteClassroom($class_id)
+    {
+        #if the classroom exists - safety check
+        if(DbInfo::ClassroomExists($class_id))
+        {
+            return self::DeleteBasedOnSingleProperty("classrooms","class_id",$class_id,"i");
+        }
+        else
+        {
+            return false;
+        }       
+    }
+
+/*
+-----------------------------------------------------------------------------------------
+                                    UPDATING AND DELETING ASSIGNMENTS
+-----------------------------------------------------------------------------------------
+*/
+    //Update Assignment information
+    //TODO Add parameters for UpdateAssignmentInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
+    public static function UpdateAssignmentInfo()
+    {
+        global $dbCon;#Connection string mysqli object
+
+        if(DbInfo::AssignmentExists($ass_id))#if the assignment exists - safety check
+        {
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    #Delete Assignment : returns true on success | false on fail | null if query couldn't execute
+    public static function DeleteAssignment($ass_id)
+    {
+        #if the assignment exists - safety check
+        if(DbInfo::AssignmentExists($ass_id))
+        {
+            return
+            (
+                self::DeleteBasedOnSingleProperty("assignments","ass_id",$ass_id,"i") && #delete the assignment
+                self::DeleteBasedOnSingleProperty("ass_comments","ass_id",$ass_id,"i") && #delete assignment comments
+                self::DeleteBasedOnSingleProperty("ass_submissions","ass_id",$ass_id,"i") #delete assignment submissions
+                //TODO Delete the assignment submission comments as well, make the submission_comments have an inner join with the ass_submission table they are a child of
+            );
+        }
+        else
+        {
+            return false;
+        }       
+    }
+
+/*
+-----------------------------------------------------------------------------------------
+                         UPDATING AND DELETING SCHEDULES
+-----------------------------------------------------------------------------------------
+*/
+
+    //Update Schedule information
+    //TODO Add parameters for UpdateScheduleInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
+    public static function UpdateScheduleInfo()
+    {
+        global $dbCon;#Connection string mysqli object
+
+        if(DbInfo::ScheduleExists($schedule_id))#if the schedule exists - safety check
+        {
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    #Delete Schedule : returns true on success | false on fail | null if query couldn't execute
+    public static function DeleteSchedule($schedule_id)
+    {
+        #if the schedule exists - safety check
+        if(DbInfo::ScheduleExists($schedule_id))
+        {
+            return
+            (
+                self::DeleteBasedOnSingleProperty("schedules","schedule_id",$schedule_id,"i") && #delete the schedule
+                self::DeleteBasedOnSingleProperty("schedule_comments","schedule_id",$schedule_id,"i") #delete the schedule comments               
+            );
+        }
+        else
+        {
+            return false;
+        }       
+    }
+
+/*
+-----------------------------------------------------------------------------------------
+                              UPDATING AND DELETING TESTS
+-----------------------------------------------------------------------------------------
+*/
+
+    //Update Test information
+    //TODO Add parameters for UpdateTestInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
+    public static function UpdateTestInfo()
+    {
+        global $dbCon;#Connection string mysqli object
+
+        if(DbInfo::TestExists($test_id))#if the test exists - safety check
+        {
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    #Delete Schedule : returns true on success | false on fail | null if query couldn't execute
+    public static function DeleteTest($test_id)
+    {
+        #if the schedule exists - safety check
+        if(DbInfo::TestExists($test_id))
+        {
+            return
+            (
+                self::DeleteBasedOnSingleProperty("tests","test_id",$test_id,"i") && #delete the test
+                self::DeleteBasedOnSingleProperty("test_questions","test_id",$test_id,"i") #delete the test questions
+                
+                //TODO Delete the test questions, answers and submissions as well, consider inner join for the test answers 
+            );
+        }
+        else
+        {
+            return false;
+        }       
+    }
+
 };

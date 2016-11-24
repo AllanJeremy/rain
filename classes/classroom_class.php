@@ -63,36 +63,6 @@ class Classroom
         }
     }
 
-    //Delete Classroom
-    public static function UpdateClassroomInfo($class_id,$class_name,$class_stream,$class_subject_id)
-    {
-        global $dbCon;#Connection string mysqli object
-
-        if(DbInfo::ClassroomExists($class_id))#if the classroom exists - safety check
-        {
-
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    //Delete Classroom
-    public static function DeleteClassroom($class_id)
-    {
-        global $dbCon;#Connection string mysqli object
-
-        #if the classroom exists - safety check
-        if(DbInfo::ClassroomExists($class_id))
-        {
-
-        }
-        else
-        {
-            return false;
-        }       
-    }
 
     //Add Student to clasroom
     public static function AddStudent($class_id,$std_id)
@@ -127,8 +97,8 @@ class Classroom
     }
 
     //Generate a unique classroom code for a classroom - used internally during creation process - returns code if successful and false if it fails
-    private function GenerateClassroomCode($class_name,$class_stream,$class_subject_id)
+    private function GenerateClassroomCode($class_name,$class_stream,$class_subject_id)#8 character code
     {
-
+        return "MyClassCode";
     }
 };

@@ -83,48 +83,39 @@ class DbInfo
         }
     }
 
-    //Get all students
+    //Gets all records from a given table and returns them if the query was successful, returns null if query failed and false if no records were found
+    private static function GetAllRecordsFromTable($table_name)#WORKING
+    {
+        global $dbCon;#database connection
+        $select_query = "SELECT * FROM $table_name";
+        if($result = $dbCon->query($select_query))#run the query, returns false if it fails
+        {
+            if ($result->num_rows == 0)#if the number of students found was 0, return false
+            {
+                return false;
+            }
+            return $result;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    #Get all students
     public static function GetAllStudents()
     {
-        global $dbCon;#database connection
-
-        $select_query = "SELECT * FROM student_accounts";
-
-        $result = $dbCon->query($select_query);#run the query, returns false if it fails
-
-        if ($result->num_rows == 0)#if the number of students found was 0, return false
-        {
-            return false;
-        }
-        return $result;
+        return self::GetAllRecordsFromTable("student_accounts");
     }
 
-    //Get all teachers
-    public static function GetAllTeachers()
+//Gets all records from the admin_accounts table and returns them if the query was successful, returns null if query failed and false if no records were found - 
+    private static function GetAllAdminRecordsFromTable($acc_type)
     {
         global $dbCon;#database connection
 
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='teacher'";
+        $select_query = "SELECT * FROM admin_accounts WHERE account_type='$acc_type'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
-        
-        if ($result->num_rows == 0)#if the number of students found was 0, return false
-        {
-            ErrorHandler::PrintError("Something went wrong with teacher retrieval");
-            return false;
-        }
-        return $result;
-    }
-
-    //Get all principals
-    public static function GetAllPrincipals()
-    {
-        global $dbCon;#database connection
-
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='principal'";
-
-        $result = $dbCon->query($select_query);#run the query, returns false if it fails
-
+    
         if ($result->num_rows == 0)#if the number of students found was 0, return false
         {
             return false;
@@ -132,21 +123,23 @@ class DbInfo
         return $result;        
     }
 
-    //Get all superusers
-    public static function GetAllSuperusers()
-    {
-        global $dbCon;#database connection
-
-        $select_query = "SELECT * FROM admin_accounts WHERE account_type='superuser'";
-
-        $result = $dbCon->query($select_query);#run the query, returns false if it fails
-        
-        if ($result->num_rows == 0)#if the number of students found was 0, return false
+        #Get all teachers
+        public static function GetAllTeachers()
         {
-            return false;
+            return self::GetAllAdminRecordsFromTable("teacher");
         }
-        return $result;
-    }
+
+        #Get all principals
+        public static function GetAllPrincipals()
+        {
+            return self::GetAllAdminRecordsFromTable("principal"); 
+        }
+
+        #Get all superusers
+        public static function GetAllSuperusers()
+        {
+            return self::GetAllAdminRecordsFromTable("superuser");
+        }
 
     //Get the student search result
     public static function GetStudentSearchResult($searchQuery,$filters = array("adm_no"=>false,"first_name"=>false,"last_name"=>false))
@@ -448,19 +441,20 @@ class DbInfo
 /*----------------------------------------------------------------------------------------------------------*/    
 
 /*----------------------------------------------------------------------------------------------------------
-                    CLASSROOM FUNCTIONS
+                    TEACHER ACCOUNT  - CLASSROOM | ASSIGNMENT | SCHEDULES | TESTS  FUNCTIONS
 ----------------------------------------------------------------------------------------------------------*/
 
     //Checks if the classroom with the given id exists, returns true if it does, and false if it doesn't
     public static function ClassroomExists($class_id)
     {
-        return SinglePropertyExists("classroom","class_id",$class_id,"i");
+        return self::SinglePropertyExists("classroom","class_id",$class_id,"i");
     }
+
 
     //Check if the Classroom code stated exists
     public static function ClassroomCodeExists($class_code)
     {
-        return SinglePropertyExists("classroom","class_code",$class_code,"s");
+        return self::SinglePropertyExists("classroom","class_code",$class_code,"s");
     }
 
     //Checks if a student is in a certain classroom, returns true if the student is in the classroom and false if not -Incomplete
@@ -468,7 +462,7 @@ class DbInfo
     {
         global $dbCon;#connection string mysqli object
 
-        if($classrooms = SinglePropertyExists("classroom","class_id",$class_id,"i"))
+        if($classrooms = self::SinglePropertyExists("classroom","class_id",$class_id,"i"))
         {
             foreach ($classrooms as $classroom)
             {
@@ -479,4 +473,78 @@ class DbInfo
             #Check if the student exists in the student array
         }
     }
+       
+    //Checks if the assignment with the given id exists, returns true on success | false if no records found | null if query couldn't execute
+    public static function AssignmentExists($ass_id)
+    {
+        return self::SinglePropertyExists("classroom","ass_id",$ass_id,"i");
+    }
+
+    
+    //Checks if the schedule with the given id exists, returns true on success | false if no records found | null if query couldn't execute
+    public static function ScheduleExists($schedule_id)
+    {
+        return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
+    }
+    
+    //Checks if the test with the given id exists, returns true on success | false if no records found | null if query couldn't execute
+    public static function TestExists($test_id)
+    {
+        return self::SinglePropertyExists("tests","test_id",$test_id,"i");
+    }
+
+    #Get specific teacher classrooms - returns classrooms on success | false if no records found | null if query couldn't execute
+    public static function GetSpecificTeacherClassrooms($teacher_acc_id)
+    {
+        return self::SinglePropertyExists("classrooms","teacher_id",$teacher_acc_id,"i");
+    }
+
+    #Get specific teacher assignments - returns assignments on success | false if no records found | null if query couldn't execute
+    public static function GetSpecificTeacherAssignments($teacher_acc_id)
+    {
+        return self::SinglePropertyExists("assignments","teacher_id",$teacher_acc_id,"i");
+    }
+
+    #Get specific teacher schedules - returns schedules on success | false if no records found | null if query couldn't execute
+    public static function GetSpecificTeacherSchedules($teacher_acc_id)
+    {
+        return self::SinglePropertyExists("schedules","teacher_id",$teacher_acc_id,"i");
+    }
+    
+    #Get specific teacher tests - returns tests on success | false if no records found | null if query couldn't execute
+    public static function GetSpecificTeacherTests($teacher_acc_id)
+    {
+        return self::SinglePropertyExists("tests","teacher_id",$teacher_acc_id,"i");
+    }
+
+/*----------------------------------------------------------------------------------------------------------*/    
+
+/*----------------------------------------------------------------------------------------------------------
+                    PRINCIPAL ACCOUNT  - CLASSROOM | ASSIGNMENT | SCHEDULES | TESTS  FUNCTIONS
+----------------------------------------------------------------------------------------------------------*/
+
+    #Get all classrooms - returns classrooms on success | false if no records found | null if query couldn't execute
+    public static function GetAllClassrooms()
+    {
+        return self::GetAllRecordsFromTable("classrooms");
+    }
+
+    #Get all assignments - returns assignments on success | false if no records found | null if query couldn't execute
+     public static function GetAllAssignments()
+    {
+        return self::GetAllRecordsFromTable("assignments");
+    }   
+    
+    #Get all schedules - returns schedules on success | false if no records found | null if query couldn't execute
+    public static function GetAllSchedules()
+    {
+        return self::GetAllRecordsFromTable("schedules");
+    }
+    
+    #Get all tests - returns tests on success | false if no records found | null if query couldn't execute
+    public static function GetAllTests()
+    {
+        return self::GetAllRecordsFromTable("tests");        
+    }
+
 }
