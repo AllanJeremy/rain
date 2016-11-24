@@ -102,7 +102,7 @@
 
                                             $teacher = new Teacher();#object to access teacher functions
 
-                                            $pageTitle = 'Create an assignment';
+                                            $pageTitle = 'Classrooms';
                                             $searchBar = '';
                                             
                                             echo $pageTitle;
@@ -202,7 +202,7 @@
             
         function hideSideNav() {
             $(".mobile-button-collapse").sideNav('hide');
-            
+            $('.tooltipped').tooltip({delay: 50});
             //console.log('already open');
         }
 

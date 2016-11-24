@@ -159,7 +159,10 @@
             Materialize.updateTextFields(); //doesn't work
             
             //prevent default action for submit buttons
-            $('button[type=submit]').click( function (e) {
+            $('form').submit( function(e) {
+                e.preventDefault();
+            });
+            $('button[type=submit]').click( function(e) {
                 e.preventDefault();
             });
             
