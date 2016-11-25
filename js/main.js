@@ -1,7 +1,23 @@
 $(function() {
-
+    
+    //init the dashboard application except on login page
+    if (location.pathname != '/esomo2/login.php') {
+        var dashboard = new Dashboard();
+        
+    }
+    
     $('.mobile-button-collapse').sideNav();
+    $('.lean-overlay, a#modalFooterAction').click(function () {
+        //e.preventDefault();
 
+        console.log('cleaning out modal');
+
+        $('a#createClassroom').attr('data-target', '');
+
+        $('.modal').html('');
+
+    });
+    
 /*
     var $container = $('#masonry-grid');
     // initialize

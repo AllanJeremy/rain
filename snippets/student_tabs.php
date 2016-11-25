@@ -6,9 +6,9 @@
                     <div class="col s12 no-data-message valign-wrapper grey lighten-3">
                         <h5 class="center-align valign grey-text " id="noAssignmentMessage">You have done all the assignments.<br>Keep it up!</h5>
                     </div>
-                    <div class="col card-col">
+                    <div class="col card-col" data-assignment-id="">
                         <div class="card white">
-                            <div class="assignment-warning red lighten-1 z-depth-2"><p class="white-text">Due tomorrow!</p></div>
+                            <div class="assignment-info grey darken-3 z-depth-2"><p class="grey-text text-lighten-3">Due tomorrow!</p></div>
                             <div class="card-content">
                                 <span class="card-title">Assignment title</span>
 
@@ -32,15 +32,16 @@ about how you came to achieve this.</p>
                                 <p>Resources: <span class="php-data"><a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a></span></p>
                             </div>
                             <div class="card-action right-align">
-                                <a href="#" class="">Submit</a>
+                                <a href="#" class="" onclick="submitAssignment()">Submit</a>
                             </div>
                         </div>
                     </div>
                     
                 </div>
                 <div class="row main-tab" id="sentAssignments">
-                    <div class="col card-col">
+                    <div class="col card-col" data-assignment-id="">
                         <div class="card white">
+                            <div class="assignment-info right-align"><a href="#" class="deep-orange-text text-accent-3" onclick="")><i class="material-icons">message</i> 12</a></div>
                             <div class="card-content">
                                 <span class="card-title">Assignment title</span>
 
@@ -72,12 +73,13 @@ about how you came to achieve this.</p>
                 </div>
                 <div class="row main-tab" id="takeATest">
                     <div class="row" id="tests">
+                        <!--- LOAD TEST CARDS HERE --->
                         <div class="col card-col">
                             <div class="card blue-grey darken-1">
                                 <div class="card-content white-text">
                                     <span class="card-title">Test Title</span>
                                     <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
+                                    <p>Questions: <span class="php-data">30</span></p>
                                     <p>Time: <span class="php-data">2 hrs 40 min</span></p>
                                     <p>Difficulty: <span class="php-data">Average</span></p>
                                     <p>Pass mark: <span class="php-data">78%</span></p>

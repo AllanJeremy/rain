@@ -26,7 +26,7 @@
                         <a id="sentAssignments" data-activates="sentAssignmentsTab" class="" href="">Sent assignments</a>
                     </li>
                     <li>
-                        <a id="receivedAssignments" class="" data-activates="receivedAssignmentsTab" href="">Received assignments</a>
+                        <a id="submittedAssignments" class="" data-activates="submittedAssignmentsTab" href="">Submitted assignments</a>
                     </li>
                 </ul>
             </div>

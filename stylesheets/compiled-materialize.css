@@ -9499,7 +9499,7 @@ h5 > span {
 }
 
 /* line 53, ../sass/_style.scss */
-.name {
+.name, .card-title {
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
   text-transform: capitalize;
 }
@@ -9892,64 +9892,90 @@ input:-webkit-autofill:active {
 }
 
 /* line 420, ../sass/_style.scss */
+.new-class {
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity .7s;
+  animation-delay: .4s;
+  -webkit-animation: new-classroom 750ms 240ms ease-out forwards;
+  animation: new-classroom 750ms 240ms ease-out forwards;
+}
+
+@-webkit-keyframes new-classroom {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes new-classroom {
+  to {
+    opacity: 1;
+  }
+}
+/* line 443, ../sass/_style.scss */
 .card-panel span, .card-content p {
   -webkit-font-smoothing: antialiased;
 }
-/* line 422, ../sass/_style.scss */
+/* line 445, ../sass/_style.scss */
 .card-panel span.students-taken, .card-content p.students-taken {
   font-size: 12px;
   line-height: 1.5;
 }
-/* line 426, ../sass/_style.scss */
+/* line 449, ../sass/_style.scss */
 .card-panel span i.material-icons, .card-content p i.material-icons {
   font-size: 12px;
   line-height: 1.5;
 }
 
-/* line 433, ../sass/_style.scss */
-.assignment-warning p {
+/* line 456, ../sass/_style.scss */
+.assignment-warning p, .assignment-warning a, .assignment-info p, .assignment-info a {
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 12px;
+  font-size: 16px;
+  line-height: 20px;
   margin: 0;
 }
+/* line 458, ../sass/_style.scss */
+.assignment-warning p i.material-icons, .assignment-warning a i.material-icons, .assignment-info p i.material-icons, .assignment-info a i.material-icons {
+  line-height: 20px;
+  font-size: 16px;
+}
 
-/* line 444, ../sass/_style.scss */
+/* line 475, ../sass/_style.scss */
 a.btn-skip-question {
   color: #EF5350;
 }
 
-/* line 447, ../sass/_style.scss */
+/* line 478, ../sass/_style.scss */
 #images .card-panel .row {
   margin-bottom: 0;
 }
 
-/* line 450, ../sass/_style.scss */
+/* line 481, ../sass/_style.scss */
 .card-col {
   width: 310px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 450, ../sass/_style.scss */
+  /* line 481, ../sass/_style.scss */
   .card-col {
     width: 100%;
     max-width: 100%;
   }
 }
 
-/* line 459, ../sass/_style.scss */
+/* line 490, ../sass/_style.scss */
 .card .card-content ul.collapsible {
   box-shadow: none;
   margin-left: -21px;
   margin-right: -21px;
 }
-/* line 465, ../sass/_style.scss */
+/* line 496, ../sass/_style.scss */
 .card .card-content ul.collapsible li .collapsible-header {
   padding-left: 20px;
   padding-right: 20px;
 }
-/* line 473, ../sass/_style.scss */
+/* line 504, ../sass/_style.scss */
 .card .card-content ul.collapsible li .collapsible-body p {
   font-size: 14px;
   line-height: 18px;

@@ -11,6 +11,18 @@
         
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
+        <script type="text/javascript" src="js/materialize.js"></script>
+        <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>
+        <script type="text/javascript" src="js/dashboard/result.js"></script>
+        <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
+        <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
+        <script type="text/javascript" src="js/dashboard/events.js"></script>
+        <script type="text/javascript" src="js/dashboard/tests.js"></script>
+        <script type="text/javascript" src="js/dashboard.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        
     </head>
 
     <body class="side-nav-page">
@@ -177,6 +189,17 @@
                 #show respective tabs for the respective account type
                 include_once($snippet_folder . $accType.'_tabs.php');
             ?>
+                <!-- Modal Structure -->
+                <!-- Will be transferred to esomo2-templates.js -->
+                <div id="modal1" class="modal">
+                    <div class="modal-content">
+                    <h4>Modal Header</h4>
+                    <p>A bunch of text</p>
+                    </div>
+                    <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                    </div>
+                </div>
         </main>
         <footer>
         </footer>
@@ -187,10 +210,6 @@
             endif;#end the main if statement
         ?>
         
-        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
-        <script type="text/javascript" src="js/materialize.js"></script>
-        <script src="js/masonry.pkgd.min.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
         
         <script>
         $(document).ready(function() {
@@ -203,6 +222,7 @@
         function hideSideNav() {
             $(".mobile-button-collapse").sideNav('hide');
             $('.tooltipped').tooltip({delay: 50});
+            $('.modal-trigger').leanModal();
             //console.log('already open');
         }
 
