@@ -222,7 +222,7 @@
         function hideSideNav() {
             $(".mobile-button-collapse").sideNav('hide');
             $('.tooltipped').tooltip({delay: 50});
-            $('.modal-trigger').leanModal();
+            $('.modal-trigger').leanModal({dismissible : false});//a workaround the lean-overlay click event
             //console.log('already open');
         }
 

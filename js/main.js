@@ -1,7 +1,8 @@
 $(function() {
     
     //init the dashboard application except on login page
-    if (location.pathname != '/esomo2/login.php') {
+    if (location.pathname.split('/').pop() != 'login.php') {
+        
         var dashboard = new Dashboard();
         
     }
