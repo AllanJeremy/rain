@@ -3927,12 +3927,23 @@ nav ul a span.badge {
   height: 4px;
   display: block;
   width: 100%;
-  background-color: #fffffe;
+  background-color: #f5edd5;
   border-radius: 2px;
   margin: 0.5rem 0 1rem 0;
   overflow: hidden;
 }
-/* line 659, ../sass/components/_global.scss */
+/* line 660, ../sass/components/_global.scss */
+.progress.modal-progress {
+  overflow: visible !Important;
+  margin: 1rem 0 1rem 0 !important;
+}
+@media only screen and (max-width: 600px) {
+  /* line 660, ../sass/components/_global.scss */
+  .progress.modal-progress {
+    margin: 1rem 0 2rem 0 !Important;
+  }
+}
+/* line 674, ../sass/components/_global.scss */
 .progress .determinate {
   position: absolute;
   top: 0;
@@ -3940,12 +3951,21 @@ nav ul a span.badge {
   bottom: 0;
   background-color: #d8b759;
   transition: width .3s linear;
+  border-radius: 2px;
 }
-/* line 667, ../sass/components/_global.scss */
+/* line 683, ../sass/components/_global.scss */
+.progress .determinate span {
+  position: absolute;
+  color: #d1aa3c;
+  left: 16px;
+  font-size: 16px;
+  top: 16px;
+}
+/* line 691, ../sass/components/_global.scss */
 .progress .indeterminate {
   background-color: #d8b759;
 }
-/* line 669, ../sass/components/_global.scss */
+/* line 693, ../sass/components/_global.scss */
 .progress .indeterminate:before {
   content: '';
   position: absolute;
@@ -3956,7 +3976,7 @@ nav ul a span.badge {
   will-change: left, right;
   animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 }
-/* line 681, ../sass/components/_global.scss */
+/* line 705, ../sass/components/_global.scss */
 .progress .indeterminate:after {
   content: '';
   position: absolute;
@@ -4000,37 +4020,37 @@ nav ul a span.badge {
 /*******************
   Utility Classes
 *******************/
-/* line 730, ../sass/components/_global.scss */
+/* line 754, ../sass/components/_global.scss */
 .hide {
   display: none !important;
 }
 
-/* line 735, ../sass/components/_global.scss */
+/* line 759, ../sass/components/_global.scss */
 .left-align {
   text-align: left;
 }
 
-/* line 738, ../sass/components/_global.scss */
+/* line 762, ../sass/components/_global.scss */
 .right-align {
   text-align: right;
 }
 
-/* line 741, ../sass/components/_global.scss */
+/* line 765, ../sass/components/_global.scss */
 .center, .center-align {
   text-align: center;
 }
 
-/* line 745, ../sass/components/_global.scss */
+/* line 769, ../sass/components/_global.scss */
 .left {
   float: left !important;
 }
 
-/* line 748, ../sass/components/_global.scss */
+/* line 772, ../sass/components/_global.scss */
 .right {
   float: right !important;
 }
 
-/* line 753, ../sass/components/_global.scss */
+/* line 777, ../sass/components/_global.scss */
 .no-select, input[type=range],
 input[type=range] + .thumb {
   -webkit-touch-callout: none;
@@ -4041,19 +4061,19 @@ input[type=range] + .thumb {
   user-select: none;
 }
 
-/* line 762, ../sass/components/_global.scss */
+/* line 786, ../sass/components/_global.scss */
 .circle {
   border-radius: 50%;
 }
 
-/* line 766, ../sass/components/_global.scss */
+/* line 790, ../sass/components/_global.scss */
 .center-block {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 772, ../sass/components/_global.scss */
+/* line 796, ../sass/components/_global.scss */
 .truncate {
   display: block;
   white-space: nowrap;
@@ -4061,7 +4081,7 @@ input[type=range] + .thumb {
   text-overflow: ellipsis;
 }
 
-/* line 779, ../sass/components/_global.scss */
+/* line 803, ../sass/components/_global.scss */
 .no-padding {
   padding: 0 !important;
 }
@@ -6147,7 +6167,11 @@ button.btn-floating {
 .modal .modal-close {
   cursor: pointer;
 }
-/* line 33, ../sass/components/_modal.scss */
+/* line 32, ../sass/components/_modal.scss */
+.modal.esomo-modal {
+  width: 75% !Important;
+}
+/* line 35, ../sass/components/_modal.scss */
 .modal .modal-footer {
   border-radius: 0 0 2px 2px;
   background-color: #fafafa;
@@ -6155,13 +6179,13 @@ button.btn-floating {
   height: 56px;
   width: 100%;
 }
-/* line 40, ../sass/components/_modal.scss */
+/* line 42, ../sass/components/_modal.scss */
 .modal .modal-footer .btn, .modal .modal-footer .btn-large, .modal .modal-footer .btn-flat {
   float: right;
   margin: 6px 0;
 }
 
-/* line 46, ../sass/components/_modal.scss */
+/* line 48, ../sass/components/_modal.scss */
 .lean-overlay {
   position: fixed;
   z-index: 999;
@@ -6176,12 +6200,26 @@ button.btn-floating {
   will-change: opacity;
 }
 
-/* line 62, ../sass/components/_modal.scss */
+/* line 64, ../sass/components/_modal.scss */
 .modal.modal-fixed-footer {
   padding: 0;
   height: 70%;
 }
-/* line 66, ../sass/components/_modal.scss */
+/* line 68, ../sass/components/_modal.scss */
+.modal.modal-fixed-footer.esomo-modal {
+  height: 90%;
+}
+@media only screen and (max-width: 600px) {
+  /* line 73, ../sass/components/_modal.scss */
+  .modal.modal-fixed-footer.esomo-modal .modal-footer {
+    height: 92px;
+  }
+  /* line 77, ../sass/components/_modal.scss */
+  .modal.modal-fixed-footer.esomo-modal .modal-content {
+    height: calc(100% - 91px);
+  }
+}
+/* line 84, ../sass/components/_modal.scss */
 .modal.modal-fixed-footer .modal-content {
   position: absolute;
   height: calc(100% - 56px);
@@ -6189,14 +6227,20 @@ button.btn-floating {
   width: 100%;
   overflow-y: auto;
 }
-/* line 74, ../sass/components/_modal.scss */
+@media only screen and (max-width: 600px) {
+  /* line 84, ../sass/components/_modal.scss */
+  .modal.modal-fixed-footer .modal-content {
+    height: calc(100% - 91px);
+  }
+}
+/* line 96, ../sass/components/_modal.scss */
 .modal.modal-fixed-footer .modal-footer {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   position: absolute;
   bottom: 0;
 }
 
-/* line 82, ../sass/components/_modal.scss */
+/* line 104, ../sass/components/_modal.scss */
 .modal.bottom-sheet {
   top: auto;
   bottom: -100%;

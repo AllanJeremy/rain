@@ -515,3 +515,37 @@ a.btn-skip-question {
         } 
     }
 }
+
+//MORPHING STYLES
+
+
+.morph-in {
+    
+    height: inherit;
+    opacity: 0;
+    z-index: 8888;
+    @include transform(scaleX(0.55) scaleY(0.45));
+    will-change: transform opacity z-index;
+    
+    animation-delay: .3s;
+    -webkit-animation: morph-in 330ms 210ms ease-out forwards;
+    animation: morph-in 330ms 210ms ease-out forwards;
+    
+}
+
+@-webkit-keyframes morph-in {
+  to { 
+      @include transform(scaleX(1));
+      z-index: inherit;
+      opacity: 1;
+    }
+}
+
+@keyframes morph-in {
+  to { 
+      width: inherit;
+      @include transform(scaleX(1) scaleY(1));
+      z-index: inherit;
+      opacity: 1;
+    }
+}

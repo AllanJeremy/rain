@@ -27,6 +27,7 @@ $(function() {
     });
 */
     
+    
     /**************
     TABS SWITCH FUNCTIONALITIES
     ************/

@@ -13,6 +13,7 @@ class Classroom
         
     }
 
+    
     //Create a classroom - returns true on success and false on fail, null if there was an error with the prepare statement for the query
     public static function CreateClassroom($class_name,$class_stream,$class_subject_id,$student_ids)
     {
@@ -26,25 +27,25 @@ class Classroom
 
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
-                $insert_stmt->bind_param("ssisi",$class_name,$class_code,$class_subject_id,$student_ids,$class_stream_id);
+                $insert_stmt->bind_param("ssisi",$class_name,$class_code,$class_subject_id,$student_ids,$class_stream);
                 
                 if ($insert_stmt->execute())
                 {
-                    return true;
+                    echo 'true';
                 }
                 else #could not execute query to create classroom
                 {
-                    return false;
+                    echo $dbCon->error;
                 }
             }
             else
             {
-                return null;#could not prepare the query
+                echo $dbCon->error;#could not prepare the query
             }
         }
         else
         {
-            return false;
+            echo 'false';
         }
     }
 
@@ -62,7 +63,6 @@ class Classroom
             return false;
         }
     }
-
 
     //Add Student to clasroom
     public static function AddStudent($class_id,$std_id)
@@ -97,8 +97,71 @@ class Classroom
     }
 
     //Generate a unique classroom code for a classroom - used internally during creation process - returns code if successful and false if it fails
-    private function GenerateClassroomCode($class_name,$class_stream,$class_subject_id)#8 character code
+    private static function GenerateClassroomCode($class_name,$class_stream,$class_subject_id)
     {
         return "MyClassCode";
     }
 };
+
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_POST['action'])) {
+    
+    $classroom = new Classroom();
+    
+    switch($_POST['action']) {
+        case 'CreateClassroom':
+            
+            
+            $args = array(
+                'class_name' => $_POST['classroomtitle'],
+                'class_stream' => $_POST['classroomstream'],
+                'class_subject_id' => $_POST['classroomid']
+            );
+            
+            if(isset($_POST['studentids'])) {
+                
+                $args['student_ids'] = $_POST['studentids'];
+                
+            } else {
+                
+                $args['student_ids'] = 0;
+                
+            }
+            
+            $result = $classroom::CreateClassroom($args['class_name'], $args['class_stream'], $args['class_subject_id'], $args['student_ids']);
+            
+            return $result;
+            
+            break;
+        case 'RemoveStudent':
+            
+            
+            //dddd
+            break;
+        case 'getAllStudents':
+            
+            $result = $classroom::getAllStudents();
+            
+            return $result;
+            
+            break;
+        default:
+            return null;
+            break;
+    }
+
+} else {
+    return null;
+}
+
+
+
+
+
+
+

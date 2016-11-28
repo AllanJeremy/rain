@@ -45,6 +45,7 @@ var Forms_Templates = function () {
         templateOutput += '<input type="checkbox" id="addStudentsToClassroom" name="add_students_to_classroom" />';
         templateOutput += '<label for="addStudentsToClassroom">Add students before creating</label>';
         templateOutput += '</p></div></div>';
+        templateOutput += '<div class="row student-list input-field"></div>';
         templateOutput += '<div class="row"><div class="input-field col s12"><p>';
         templateOutput += '<a class="right btn" id="createNewClassroomCard" type="submit">Create classroom</a>';
         templateOutput += '</div></div>';
@@ -109,12 +110,55 @@ var Forms_Templates = function () {
     
     this.createTestForm = function () {
         
-        
         var templateOutput = '';
         
         
         return templateOutput;
     };
+    
+    //--------------------------
+    
+    this.makeStudentFormList = function (str) {
+        
+        var templateOutput = '';
+        
+        //searchBar
+        templateOutput += '<div class="row"><div class="input-field col s12">';
+        templateOutput += '<p class="col s6 m4">';
+        templateOutput += '<input type="checkbox" id="selectAll" />';
+        templateOutput += '<label for="selectAll">Select all</label>';
+        templateOutput += '</p>';
+        templateOutput += '<div class="col s6 m8 search-wrapper">';
+        templateOutput += '<i class="material-icons prefix">search</i>';
+        templateOutput += '<input type="search" class="transparent" id="searchStudentFormList">';
+        templateOutput += '<i id="cancelSearch" class="mdi-navigation-close material-icons prefix">close</i>';
+        templateOutput += '<div class="search-results"></div>';
+        templateOutput += '</div>';
+        templateOutput += '</div></div>';
+        templateOutput += '<div class="divider"></div>';
+        templateOutput += '<div class="row"><div class="input-field col s12 list">';
+        //loop
+        templateOutput += str;
+        //loop end
+        templateOutput += '</div></div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------
+    
+    this.formOptionsTemplate = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<p class="col s6 m4">';
+        templateOutput += '<input type="checkbox" class="filled-in" id="' + obj.value + '" />';
+        templateOutput += '<label for="' + obj.value + '">' + obj.name + '</label>';
+        templateOutput += '</p>';
+        
+        return templateOutput;
+        
+    }
     
     //--------------------------
     

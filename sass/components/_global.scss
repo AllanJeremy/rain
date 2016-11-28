@@ -652,10 +652,25 @@ nav ul a span.badge {
     height: 4px;
     display: block;
     width: 100%;
-    background-color: lighten($progress-bar-color, 40%);
+    background-color: lighten($progress-bar-color, 30%);
     border-radius: 2px;
     margin: $element-top-margin 0 $element-bottom-margin 0;
     overflow: hidden;
+    
+    &.modal-progress {
+        overflow: visible !Important;
+        margin: 1rem 0 $element-bottom-margin 0 !Important;
+        
+        @media #{$small-and-down} {
+            margin: 1rem 0 2rem 0 !Important;
+        }
+        
+        .determinate {
+            span {
+                
+            }
+        }
+    }
   .determinate {
     position: absolute;
     top: 0;
@@ -663,6 +678,15 @@ nav ul a span.badge {
     bottom: 0;
     background-color: $progress-bar-color;
     transition: width .3s linear;
+    border-radius: 2px;
+      
+      span {
+          position: absolute;
+          color: darken($progress-bar-color, 7%);
+          left: 16px;
+          font-size: 16px;
+          top: 16px;
+      }
   }
   .indeterminate {
     background-color: $progress-bar-color;
