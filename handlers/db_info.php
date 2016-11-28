@@ -548,3 +548,56 @@ class DbInfo
     }
 
 }
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_GET['action'])) {
+    
+    $DBInfo = new DBInfo();
+    
+    switch($_GET['action']) {
+        case 'CreateClassroom':
+            
+            break;
+        case 'getAllTeachers':
+            
+            $result = $DBInfo::getAllTeachers();
+            
+            return $result;
+            
+            break;
+        case 'GetAllStudents':
+            
+            $result = $DBInfo::GetAllStudents();
+            
+            $num = 0;
+            
+            foreach ($result as $row) {
+                
+                $newResult = array(
+                    "value" => $row['adm_no'],
+                    "name" => $row['full_name']
+                );
+                
+                $arrayResult[$num] = $newResult;
+                
+                $num += 1;
+                
+                //echo $num;
+                
+            }
+            
+            echo json_encode($arrayResult);
+            
+            break;
+        default:
+            return null;
+            break;
+    }
+
+} else {
+    return null;
+}
