@@ -206,7 +206,7 @@ var Events = function () {
 
             //if (validationResult) {
                 //this.createClassroomCard();
-        
+
                 $('#' + str1).closeModal();
                 cleanOutModals();
 
@@ -214,7 +214,7 @@ var Events = function () {
 
               //  console.log('empty somewhere')
             //}
-    
+
         });
 
     };
@@ -433,16 +433,17 @@ var Events = function () {
                         autocompletedata += '}';
                         
                         console.log(autocompletedata);
-                        
-                        
+
+                        /*
                         autocompletedata = jQuery.parseJSON(autocompletedata);
 
-                        console.log(autocompletedata);
-                        
-                        $('input#searchStudentFormList').autocomplete({
+                        $('input.autocomplete').autocomplete({
                             data: autocompletedata
                         });
 
+                        console.log(autocompletedata);
+                        */
+                        
                         var optionslist = output;
                         
                         var formList = Forms_Templates.makeStudentFormList(optionslist);

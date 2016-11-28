@@ -616,6 +616,7 @@ class DbInfo
     }
 
 };#END OF CLASS
+
 /*
 -----------------------------
 ---------------    AJAX CALLS

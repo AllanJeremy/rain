@@ -29,6 +29,7 @@ class Classroom
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
                 $insert_stmt->bind_param("ssisii",$class_name,$class_code,$class_subject_id,$student_ids,$class_stream,$teacher_id);
+
                 
                 if ($insert_stmt->execute())
                 {
@@ -103,7 +104,9 @@ class Classroom
         return "MyClassCode";
     }
 
+
 };#END OF CLASS
+
 
 /*
 -----------------------------
@@ -124,6 +127,7 @@ if(isset($_POST['action'])) {
                 'class_stream' => $_POST['classroomstream'],
                 'class_subject_id' => $_POST['classroomid'],
                 'teacher_id' => $_SESSION['admin_acc_id']
+
             );
             
             if(isset($_POST['studentids'])) {
@@ -137,6 +141,7 @@ if(isset($_POST['action'])) {
             }
             
             $result = $classroom::CreateClassroom($args['class_name'], $args['class_stream'], $args['class_subject_id'], $args['student_ids'], $args['teacher_id']);
+
             
             return $result;
             
