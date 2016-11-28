@@ -19,7 +19,7 @@ var Lists_Templates = function () {
         templateOutput += '<div class="card-content white-text">';
         templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
         templateOutput += '<p>Number of students: ';
-        templateOutput += '<span class="php-data">' + obj.studentids;
+        templateOutput += '<span class="php-data">' + obj.totalstudents;
         templateOutput += ' <a onclick="openStudentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';

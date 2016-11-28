@@ -130,7 +130,7 @@ var Forms_Templates = function () {
         templateOutput += '</p>';
         templateOutput += '<div class="col s6 m8 search-wrapper">';
         templateOutput += '<i class="material-icons prefix">search</i>';
-        templateOutput += '<input type="search" class="transparent" id="searchStudentFormList">';
+        templateOutput += '<input type="search" class="transparent autocomplete" id="searchStudentFormList">';
         templateOutput += '<i id="cancelSearch" class="mdi-navigation-close material-icons prefix">close</i>';
         templateOutput += '<div class="search-results"></div>';
         templateOutput += '</div>';
