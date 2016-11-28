@@ -141,38 +141,27 @@ var Events = function () {
             var newClassTitle = $('.modal#createNewClassRoom input#newClassroomName').val();
             var newClass_stream = $('.modal#createNewClassRoom select#newClassroomStream').val();
             var newClass_subject = $('.modal#createNewClassRoom select#newClassroomSubject').val();
-            var studentsToAdd = '34';
+            var studentsToAdd = $('.modal#createNewClassRoom .students').attr('data-selected-students');
+            var totalStudents = $('.modal#createNewClassRoom .students').attr('data-total-students');
             
             console.log('class title: ' + newClassTitle);
+            console.log('adding students : ' + studentsToAdd);
             
             //validate first
             if (newClassTitle !== '' && newClass_stream !== '' && newClass_subject !== '')
                 {
                     
-                    var formResults = {
-                        action : 'CreateClassroom',
-                        classroomid : str2,
-                        studentids: studentsToAdd.length,
-                        assignmentnumbers: '17 ',
-                        classroomtitle : newClassTitle,
-                        classroomstream : newClass_stream,
-                        classroomsubject : newClass_subject
+                var formResults = {
+                    action : 'CreateClassroom',
+                    classroomid : str2,
+                    totalstudents: totalStudents,
+                    studentids: studentsToAdd,
+                    assignmentnumbers: '17 ',
+                    classroomtitle : newClassTitle,
+                    classroomstream : newClass_stream,
+                    classroomsubject : newClass_subject
 
-                    };
-                    /*
-                if (typeof msg === 'undefined') {
-                
-                }
-                if (typeof msg === 'object') {
-                    //loop
-                    var output = '';
-                    for (var key in msg) {
-                        console.log(msg[key]);
-                        output += Lists_Template.list(msg[key]);
-                    }
-                }
-                
-                */
+                };
                 
                 //ajax post
                 var request = $.post( "classes/classroom_class.php", formResults, function (result) {
@@ -320,12 +309,16 @@ var Events = function () {
                             
                             if (count < 21 && result[key].name != 'undefined') {
                             
+                                if (key > 0) {
+                                    
+                                    autocompletedata += ',';
+                                
+                                }
                                 
                                 autocompletedata += '"';
                                 autocompletedata += result[key].name;
                                 autocompletedata += '" : ';
-                                autocompletedata += 'null,';
-                                //autocompletedata += '}';
+                                autocompletedata += 'null';
 
                                 count++;
                                 
@@ -333,19 +326,21 @@ var Events = function () {
                             
                         }
 
-                        //$('input.autocomplete').autocomplete({
-                        //    data: autocompletedata
-                        //});
-
                         output += '';
                         
                         autocompletedata += '}';
                         
                         console.log(autocompletedata);
                         
-                        //autocompletedata = JSON.stringify(autocompletedata);
-                        
+                        /*
+                        autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                        $('input.autocomplete').autocomplete({
+                            data: autocompletedata
+                        });
+
                         console.log(autocompletedata);
+                        */
                         
                         var optionslist = output;
                         
@@ -422,17 +417,19 @@ var Events = function () {
 
         }
 
-        var dataToHook = $('#esomoModal' + modal_id + ' .list').html();
-
         var totalSelected = $('#esomoModal' + modal_id + ' .list').find('input[type="checkbox"]:checked').length;
 
-        hook.append(dataToHook);
+        var selectedArrayResult = $('#esomoModal' + modal_id + ' .list').find('input[type="checkbox"]:checked').map(function(){
+            return $(this).attr('id');
+        }).get(); // <----
 
+        var selectedStringFormat = selectedArrayResult.toString();
+        
+        selectedStringFormat += ',';//for database' sake, let the string end with a commar*
+        
         if (typeof totalSelected === 'number' && totalSelected > 0) {
 
-            hook.children('p').hide();
-
-            hook.append('<div class="col s12 brookhurst-theme-primary lighten-2 card-panel "><p class="white-text php-data">A total of ' + totalSelected + ' students to be added in the classroom.<p></div>');
+            hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + totalSelected + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">A total of ' + totalSelected + ' students to be added in the classroom.<p></div>');
 
             console.log(totalSelected);
 
