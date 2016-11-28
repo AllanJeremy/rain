@@ -313,7 +313,19 @@ class DbInfo
     #Check if an student account with that student_id exists
     public static function StudentIdExists($std_id)
     {
-        return self::SinglePropertyExists("student_accounts","adm_no",$std_id,"i");
+        $students =  self::SinglePropertyExists("student_accounts","adm_no",$std_id,"i");
+
+       if(!empty($students) && isset($students))
+       {
+            foreach($students as $student)
+            {
+                return $student;
+            }
+       } 
+       else
+       {
+           return self::SinglePropertyExists("student_accounts","adm_no",$std_id,"i");;
+       }
     }
 
     #Check if an student account with that username exists
@@ -447,14 +459,14 @@ class DbInfo
     //Checks if the classroom with the given id exists, returns true if it does, and false if it doesn't
     public static function ClassroomExists($class_id)
     {
-        return self::SinglePropertyExists("classroom","class_id",$class_id,"i");
+        return self::SinglePropertyExists("classrooms","class_id",$class_id,"i");
     }
 
 
     //Check if the Classroom code stated exists
     public static function ClassroomCodeExists($class_code)
     {
-        return self::SinglePropertyExists("classroom","class_code",$class_code,"s");
+        return self::SinglePropertyExists("classrooms","class_code",$class_code,"s");
     }
 
     //Checks if a student is in a certain classroom, returns true if the student is in the classroom and false if not -Incomplete
@@ -462,7 +474,7 @@ class DbInfo
     {
         global $dbCon;#connection string mysqli object
 
-        if($classrooms = self::SinglePropertyExists("classroom","class_id",$class_id,"i"))
+        if($classrooms = self::SinglePropertyExists("classrooms","class_id",$class_id,"i"))
         {
             foreach ($classrooms as $classroom)
             {
@@ -477,7 +489,7 @@ class DbInfo
     //Checks if the assignment with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function AssignmentExists($ass_id)
     {
-        return self::SinglePropertyExists("classroom","ass_id",$ass_id,"i");
+        return self::SinglePropertyExists("classrooms","ass_id",$ass_id,"i");
     }
 
     
@@ -547,4 +559,113 @@ class DbInfo
         return self::GetAllRecordsFromTable("tests");        
     }
 
+    //Get all the students in a given classroom
+    public static function GetAllStudentsInClass($class_id)
+    {
+        global $dbCon;
+        $student_ids = null;
+
+        $select_query = "SELECT student_ids FROM classrooms WHERE class_id=?";
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("i",$class_id);
+
+            //If we could successfully  run the query
+            if($select_stmt->execute())
+            {
+                $select_result = $select_stmt->get_result();
+                if($select_result->num_rows > 0 ) #found some student ids
+                {
+                    foreach($select_result as $std_id_list)
+                    {
+                        $student_ids = $std_id_list["student_ids"];
+                        break;
+                    }
+
+                    //Extract individual student_ids
+                    echo "Students list : ".$student_ids;
+
+                    //self::StudentIdExists();
+                }
+            }
+        }
+        else
+        {
+            ErrorHandler::PrintError("Error preparing query. <br>Technical Error :".$dbCon->error);
+        }
+    }
+
+    public static function ReverseResult($mysqli_result)
+    {
+        $result_array = array();
+        #foreach result item found
+        foreach($mysqli_result as $result)
+        {
+            array_push($result_array,$result);            
+        }
+
+        $array_length = count($result_array);
+
+        $reversed_array = array();
+        for($i=($array_length-1); $i>=0; $i--)
+        {
+            array_push($reversed_array,$result_array[$i]); 
+        }
+
+        return $reversed_array;
+    }
+
+};#END OF CLASS
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_GET['action'])) {
+    
+    $DBInfo = new DBInfo();
+    
+    switch($_GET['action']) {
+        case 'CreateClassroom':
+            
+            break;
+        case 'getAllTeachers':
+            
+            $result = $DBInfo::getAllTeachers();
+            
+            return $result;
+            
+            break;
+        case 'GetAllStudents':
+            
+            $result = $DBInfo::GetAllStudents();
+            
+            $num = 0;
+            
+            foreach ($result as $row) {
+                
+                $newResult = array(
+                    "value" => $row['adm_no'],
+                    "name" => $row['full_name']
+                );
+                
+                $arrayResult[$num] = $newResult;
+                
+                $num += 1;
+                
+                //echo $num;
+                
+            }
+            
+            echo json_encode($arrayResult);
+            
+            break;
+        default:
+            return null;
+            break;
+    }
+
+} else {
+    return null;
 }

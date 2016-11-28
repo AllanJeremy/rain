@@ -1,3 +1,7 @@
+<?php 
+require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
+?>
+            
             <div class="container">
                 <!---->
                 <div class="row main-tab active-bar" id="classroomTab">
@@ -101,24 +105,36 @@
                             <a class="btn right" id="createClassroom">Create a classroom</a>
                         </div>
                     </div>
-                        
+                    
+
+                    
                     <div class="divider"></div>
                     <br>
+                    
+                    <?php
+                        if ($classrooms = DbInfo::GetSpecificTeacherClassrooms($_SESSION["admin_acc_id"])):   
+                     ?>
                     <div class="row"id="classroomCardList" >
-                        <div class="col card-col new-class" data-classroom-id="2">
+                    <?php
+
+                       $reversed_classrooms = DbInfo::ReverseResult($classrooms);#an array that has the reversed values of the array, newest is the first
+
+                        foreach($reversed_classrooms as $classroom):
+                     ?> 
+                        <div class="col card-col new-class" data-classroom-id="<?php echo $classroom['class_id'] ?>">
                             <div class="card cyan darken-4">
                                 <div class="card-content white-text">
-                                    <span class="card-title">Classroom Title</span>
+                                    <span class="card-title"><?php echo $classroom['class_name'] ?></span>
                                     <p>Number of students:
                                         <span class="php-data">10  
-                                            <a onclick="openStudentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >
+                                            <a class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
                                         <span class="php-data">26  
-                                            <a onclick="openAssignmentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >
+                                            <a onclick="openAssignmentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
@@ -132,35 +148,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col card-col" data-classroom-id="1">
-                            <div class="card blue-grey darken-2">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Classroom Title</span>
-                                    <p>Number of students:
-                                        <span class="php-data">10  
-                                            <a onclick="numberOfStudentModalOpen()" class="orange-text text-lighten-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip"  href="#" >
-                                                <i class="material-icons">info</i>
-                                            </a>
-                                        </span> 
-                                    </p>
-                                    <p>Assignments sent:
-                                        <span class="php-data">26  
-                                            <a onclick="numberOfStudentModalOpen()" class="orange-text text-lighten-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip"  href="#" >
-                                                <i class="material-icons">info</i>
-                                            </a>
-                                        </span> 
-                                    </p>
-                                    <p>Subject: <span class="php-data">Biology</span></p>
-                                    <p>Stream:  <span class="php-data">Alpha</span></p>
-                                </div>
-                                <div class="card-action">
-                                    <a href="#" data-target="" id="editClassroom">Edit</a>
-                                    <a href="#"  class="right">View</a>
-                                </div>
-                            </div>
-                        </div>
-                        
+
+                    <?php endforeach;?> 
                     </div>
+                    <?php 
+                    else: ?>
+                        <p> No classrooms available for this teacher</p>
+                    
+                   <?php endif ?>
                 </div>
                 <!---->
                 <div class="row main-tab " id="createAssignmentsTab">

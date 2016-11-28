@@ -12,21 +12,22 @@ var Lists_Templates = function () {
     //--------------------------------------
     
     this.classRoomCard = function (obj) {
-        
+    
         var templateOutput = '';
+        
         templateOutput += '<div class="col card-col new-class" data-classroom-id="' + obj.classroomid + '"><div class="card cyan darken-4">';
         templateOutput += '<div class="card-content white-text">';
         templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
         templateOutput += '<p>Number of students: ';
-        templateOutput += '<span class="php-data">' + obj.studentnumbers;
-        templateOutput += '<a onclick="openStudentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
+        templateOutput += '<span class="php-data">' + obj.totalstudents;
+        templateOutput += ' <a onclick="openStudentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
         templateOutput += '</p>';
         templateOutput += '<p>Assignments sent: ';
         templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
-        templateOutput += '<a onclick="openAssignmentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
+        templateOutput += ' <a onclick="openAssignmentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
@@ -190,7 +191,7 @@ var Lists_Templates = function () {
         templateOutput += obj.templateBody;
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
-        templateOutput += '<a href="#!" id="modalFooterAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
+        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         
@@ -201,23 +202,92 @@ var Lists_Templates = function () {
     
     this.esomoModalTemplate = function (obj) {
         
+        obj.progressWidth = '78%';
+        
+        var formattedProgressWidth = $.trim(obj.progressWidth).split("%").join("");
+        
+        var warningClass = 'red';
+        var okayClass = 'green';
+        var infoClass = 'amber';
+        var noneClass = 'grey';
+        
+        if(formattedProgressWidth == 0) {
+        
+            var colorClass = noneClass;
+            var textColorClass = noneClass + '-text text-lighten-1';
+        
+        } else if(formattedProgressWidth >= 1 && formattedProgressWidth <= 31) {
+            
+            var colorClass = okayClass + ' lighten-2';
+            var textColorClass = okayClass + '-text text-darken-2';
+        
+        } else if(formattedProgressWidth >= 31 && formattedProgressWidth <= 80) {
+            
+            var colorClass = okayClass + ' lighten-2';
+            var textColorClass = okayClass + '-text text-darken-2';
+        
+        } else if(formattedProgressWidth >= 81 && formattedProgressWidth <= 92) {
+            
+            var colorClass = infoClass;
+            var textColorClass = infoClass + '-text';
+        
+        } else if(formattedProgressWidth >= 93 && formattedProgressWidth <= 100) {
+            
+            var colorClass = warningClass;
+            var textColorClass = warningClass + '-text';
+        
+        } else {
+            
+            console.log('formattedProgressWidth: ');
+            console.log(formattedProgressWidth);
+            
+        }
+        
         var templateOutput = '';
         
-        templateOutput += '<div id="' + obj.modalId + '" class="esomo-modal modal modal-fixed-footer">';
+        templateOutput += '<div id="esomoModal' + obj.modalId + '" class="esomo-modal modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content">';
         templateOutput += '<h4>' + obj.templateHeader + '</h4>';
         templateOutput += obj.templateBody;
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer row">';
-        templateOutput += '<div class="col s12 m8"><div class="progress"><div class="determinate" style="width:' +  + ';"><span>' +  + '</span></div></div>';
-        templateOutput += '<div class="col m2 s6"><a href="#!" id="modalFooterAction" class="left modal-action modal-close waves-effect waves-red red-text btn-flat">close</a></div>';
-        templateOutput += '<div class="col m2 s6"><a href="#!" id="modalFooterAction" class="right modal-action modal-close waves-effect waves-green ">Add students</a></div>';
+        templateOutput += '<div class="col s12 m6"><div class="progress modal-progress"><div class="determinate ' + colorClass + '" style="width:' + obj.progressWidth + ';"><span class=" ' + textColorClass + ' ">' + obj.progressWidth + '</span></div></div></div>';
+        templateOutput += '<div class="col m3 s6"><a href="#!" id="modalFooterCloseAction" class="right modal-action modal-close waves-effect waves-red red-text btn-flat">close</a></div>';
+        templateOutput += '<div class="col m3 s6"><a href="#!" id="modalFooterActionAdd" class="right modal-action modal-close waves-effect waves-green btn">Add students</a></div>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         
         return templateOutput;
+        
     };
+    
+    //--------------------------
+    
+    this.updateModalProgressTemplate = function (str) {
+        
+        var obj = {"updateWidth": str};
+        
+        var esomoModalTemplate = this.esomoModalTemplate(obj);
+        
+        //console.log(esomoModalTemplate);
+            
+        return esomoModalTemplate;
+            
+        
+    }
+    
+    //--------------------------
+    
+    this.makeStudentList = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<li>' + obj.name + '</li>';
+        
+    };
+    
+    //-------------------------
     
     this.__construct();
     

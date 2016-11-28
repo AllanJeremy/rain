@@ -10,14 +10,18 @@ var Dashboard = function () {
         Lists_Templates = new Lists_Templates();
         Forms_Templates = new Forms_Templates();
         
+        
+        cleanOutModals();
+        
         Events = new Events();
         Tests = new Tests();
         Result = new Result();
         
         //loadTestCard();
         
-        cleanOutModals();
-        openEsomoModal();
+        
+        //openEsomoModal("23", "Test head", {"modalBody":"test"});
+        
     };
     
     //-----------
@@ -137,13 +141,13 @@ var Dashboard = function () {
     var submitComment = function () {
         //call loadComment()
         
-    }
+    };
     
     //-----------
     
     var loadComment = function () {
         //load comment list template
-    }
+    };
     
     //-----------
     
@@ -153,73 +157,76 @@ var Dashboard = function () {
     
     //------------  STUDENTS
     
-    var loadStudentList = function(type, stream_id, subject_id) {
+    var loadStudentList = function (type, stream_id, subject_id) {
+
+        var action = 'getAllStudents';
+        var i = "233";
+        
+        //action = json_Parse(action);
         
         //ajax $.get
-        var data = {
-            studentusername: "Test 1 username",
-            studentid: "001",
-            studentrank: "25"
-        }
-        
-        var list = {
-            1: {
-                username: data.studentusername,
-                studentid: data.studentid,
-                studentrank: data.studentrank
-            },
-            2: {
-                username: data.studentusername,
-                studentid: data.studentid,
-                studentrank: data.studentrank
-            },
-            3: {
-                username: data.studentusername,
-                studentid: data.studentid,
-                studentrank: data.studentrank
-            },
-            4: {
-                username: data.studentusername,
-                studentid: data.studentid,
-                studentrank: data.studentrank
-            },
-            5: {
-                username: data.studentusername,
-                studentid: data.studentid,
-                studentrank: data.studentrank
+        $.get('handlers/db_info.php', {"action": "getAllStudents"}, function (result) {
+            console.log('get results:- ');
+            console.log(result);
+            var u = 0
+            if (type === 'form') {
+
+                console.log('Making Form Type of student list total->');
+                
+                if (typeof result === 'object') {
+                    console.log('object. looping through');
+                    
+                    var output = '';
+                    
+                    for (var key in result) {
+                        
+                        output += Forms_Templates.makeStudentFormList(result);
+                        
+                        output += '';
+                        
+                        console.log(result[key]);
+                    }
+                    
+                    return output;
+                    
+                }
+
+                //Forms_Templates.makeStudentFormList(optionslist);
+
+            } else if (type === 'list') {
+
+                console.log('Making List Type of student list');
+
+                
+                var output = '';
+                
+                for (var key in result) {
+
+                    output += Lists_Templates.makeStudentList(result);
+
+                    output += '';
+
+                    console.log(result[key]);
+                }
+                
+                return output;
+                
+            } else {
+
+                console.log('Type of student list Not set');
+
             }
-        }
-        if(type === 'form') {
-            
-            console.log('Type of student list');
-            
-        } else if(type === 'list') {
-            
-            console.log('Type of student list');
-            
-        } else {
-            
-            console.log('Type of student list');
-            
-        }
-    }
+
+        }, 'json');
+
+    };
     
     //------------  MODALS
     
-    var openEsomoModal = function (obj) {
+    var openEsomoModal = function (modal_id, modal_header, modal_body) {
+        
         console.log('esomo modal created');
         
-        var type = 'form';//----either form or list
-        
-        var modal_id = obj.modal_id;
-        
-        var stream_id = obj.stream_id;
-        
-        var subject_id = obj.subject_id;
-        
-        var modal_header = obj.modal_header;
-        
-        var createClassStudentList = loadStudentList(type, stream_id, subject_id);
         
         var defaults = {
             modalId: modal_id,
@@ -228,7 +235,7 @@ var Dashboard = function () {
                 actionAdd: 'add-hivi'
             },
             templateHeader: modal_header,
-            templateBody: CreateClassStudentList;
+            templateBody: modal_body
             
         };
         
@@ -236,7 +243,8 @@ var Dashboard = function () {
         
         $('main').append(esomoModal);
         
-        $('#' + defaults)
+        $('#esomoModal' + defaults.modalId).openModal();
+        
     };
     
     //-------------
