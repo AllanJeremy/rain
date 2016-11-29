@@ -530,11 +530,18 @@ class DbInfo
     }
 
 /*----------------------------------------------------------------------------------------------------------*/    
-    #Get all subjects - returns classrooms on success | false if no records found | null if query couldn't execute
+    #Get all subjects - returns subjects on success | false if no records found | null if query couldn't execute
     public static function GetAllSubjects()
     {
         return self::GetAllRecordsFromTable("subjects");        
     }
+
+    #Get all streams - returns streams on success | false if no records found | null if query couldn't execute
+    public static function GetAllStreams()
+    {
+        return self::GetAllRecordsFromTable("streams");        
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                     PRINCIPAL ACCOUNT  - CLASSROOM | ASSIGNMENT | SCHEDULES | TESTS  FUNCTIONS
 ----------------------------------------------------------------------------------------------------------*/
