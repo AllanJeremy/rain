@@ -605,7 +605,10 @@ class DbInfo
             ErrorHandler::PrintError("Error preparing query. <br>Technical Error :".$dbCon->error);
         }
     }
-
+/*----------------------------------------------------------------------------------------------------------
+                    EXTRA FUNCTIONALITY 
+----------------------------------------------------------------------------------------------------------*/
+    //Reverses a mysqli_result and returns an array with the values reversed
     public static function ReverseResult($mysqli_result)
     {
         $result_array = array();
@@ -626,6 +629,51 @@ class DbInfo
         return $reversed_array;
     }
 
+    //Get array from a list of comma separated values
+    public static function GetArrayFromList($list_var)
+    {
+        $the_array  = explode(",",$list_var);
+        
+        array_pop($the_array);#removes the last value in the array since it will always be blank
+
+        return $the_array;
+    }
+
+    //Get a subject by its id, returns the first instance of the subject found on success, false on fail and null on query prepare error
+    public static function GetSubjectById($subject_id)
+    {
+        $subjects =  self::SinglePropertyExists("subjects","subject_id",$subject_id,"i");
+
+       if(!empty($subjects) && isset($subjects))
+       {
+            foreach($subjects as $subject)
+            {
+                return $subject;
+            }
+       } 
+       else
+       {
+           return self::SinglePropertyExists("subjects","subject_id",$subject_id,"i");
+       }
+    }
+    
+    //Get a stream by its id, returns the first instance of the subject found on success, false on fail and null on query prepare error
+    public static function GetStreamById($stream_id)
+    {
+        $streams =  self::SinglePropertyExists("streams","stream_id",$stream_id,"i");
+
+       if(!empty($streams) && isset($streams))
+       {
+            foreach($streams as $stream)
+            {
+                return $stream;
+            }
+       } 
+       else
+       {
+           return self::SinglePropertyExists("streams","stream_id",$stream_id,"i");
+       }
+    }
 };#END OF CLASS
 
 /*

@@ -120,27 +120,44 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                        $reversed_classrooms = DbInfo::ReverseResult($classrooms);#an array that has the reversed values of the array, newest is the first
 
                         foreach($reversed_classrooms as $classroom):
+                            $student_ids = DbInfo::GetArrayFromList($classroom["student_ids"]);#array of the student ids
+                            $student_count = count($student_ids); 
+                            
+                            $subject_name = "Undefined subject";#default values incase we don't find the subject
+                            $stream_name = "Undefined stream";#default values incase we don't find the stream
+
+                            //If the subject is found in the database - set the appropriate subject name
+                            if($subject = DbInfo::GetSubjectById($classroom["subject_id"]))
+                            {
+                                $subject_name = $subject["subject_name"];
+                            }
+                            
+                            //If the stream is found in the database - set the appropriate stream name
+                            if($stream = DbInfo::GetStreamById($classroom["stream_id"]))
+                            {
+                                $stream_name = $stream["stream_name"];
+                            }
                      ?> 
                         <div class="col card-col new-class" data-classroom-id="<?php echo $classroom['class_id'] ?>">
                             <div class="card cyan darken-4">
                                 <div class="card-content white-text">
                                     <span class="card-title"><?php echo $classroom['class_name'] ?></span>
                                     <p>Number of students:
-                                        <span class="php-data">10  
+                                        <span class="php-data"><?php echo $student_count; ?>  
                                             <a class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
-                                        <span class="php-data">26  
+                                        <span class="php-data">26 <!--//TODO Make this value dynamic --> 
                                             <a onclick="openAssignmentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
-                                    <p>Subject: <span class="php-data">Biology</span></p>
-                                    <p>Stream:  <span class="php-data">Alpha</span></p>
+                                    <p>Subject: <span class="php-data"><?php echo $subject_name ?></span></p>
+                                    <p>Stream:  <span class="php-data"><?php echo $stream_name ?></span></p>
                                 </div>
                                 <div class="card-action">
                                     <a href="#" data-target="" class="modal-trigger" id="editClassroom">Edit</a>
@@ -149,7 +166,10 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             </div>
                         </div>
 
-                    <?php endforeach;?> 
+                    <?php 
+                        endforeach;
+                        unset($student_ids,$stream,$stream_name,$subject,$subject_name);#unset variables used in foreach
+                    ?> 
                     </div>
                     <?php 
                     else: ?>
