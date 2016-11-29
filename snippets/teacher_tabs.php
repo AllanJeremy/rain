@@ -130,6 +130,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             $subject_name = "Undefined subject";#default values incase we don't find the subject
                             $stream_name = "Undefined stream";#default values incase we don't find the stream
 
+                            $assignments = array();
+                            $ass_count = 0;
                             //If the subject is found in the database - set the appropriate subject name
                             if($subject = DbInfo::GetSubjectById($classroom["subject_id"]))
                             {
@@ -140,6 +142,12 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             if($stream = DbInfo::GetStreamById($classroom["stream_id"]))
                             {
                                 $stream_name = $stream["stream_name"];
+                            }
+
+                            //Only return the assignments that belong to this teacher
+                            if($assignments = DbInfo::GetTeacherAssInClass($classroom['class_id'],$_SESSION["admin_acc_id"]))
+                            {
+                                $ass_count = count($assignments);
                             }
                      ?> 
                         <div class="col card-col new-class" data-classroom-id="<?php echo $classroom['class_id'] ?>">
@@ -154,7 +162,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
-                                        <span class="php-data">26 <!--//TODO Make this value dynamic --> 
+                                        <span class="php-data"><?php echo $ass_count;?>
                                             <a onclick="openAssignmentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>

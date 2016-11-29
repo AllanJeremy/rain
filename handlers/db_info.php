@@ -674,6 +674,54 @@ class DbInfo
            return self::SinglePropertyExists("streams","stream_id",$stream_id,"i");
        }
     }
+
+    //Get the number of assignments in a certain class - specific to a teacher
+    public static function GetTeacherAssInClass($class_id,$teacher_acc_id)
+    {   
+        if($assignments = self::GetSpecificTeacherAssignments($teacher_acc_id))
+        {
+            $assignments_found=array();
+            foreach($assignments as $assignment)#get individual assignments
+            {
+                $class_ids = self::GetArrayFromList($assignment["class_ids"]);#convert the list of class_ids to an array
+                $found_assignment = array_search ($class_id,$class_ids); #true if found, false if not , null if invalid
+                if($found_assignment!==false && isset($assignments_found))
+                {
+                    array_push($assignments_found,$assignment);
+                }
+            }
+            
+            return $assignments_found;#return the array containing the assignments found - keys same as mysqli_result
+        }
+        else
+        {
+            return self::GetSpecificTeacherAssignments($teacher_acc_id);
+        }
+    }
+
+    //Get the number of assignments in a certain class - all assignments in the given classroom
+    public static function GetAssignmentsInClass($class_id)
+    {   
+        if($assignments = self::GetAllAssignments())
+        {
+            $assignments_found=array();
+            foreach($assignments as $assignment)#get individual assignments
+            {
+                $class_ids = self::GetArrayFromList($assignment["class_ids"]);#convert the list of class_ids to an array
+                $found_assignment = array_search ($class_id,$class_ids); #true if found, false if not , null if invalid
+                if($found_assignment!==false && isset($assignments_found))
+                {
+                    array_push($assignments_found,$assignment);
+                }
+            }
+            
+            return $assignments_found;#return the array containing the assignments found - keys same as mysqli_result
+        }
+        else
+        {
+            return self::GetSpecificTeacherAssignments($teacher_acc_id);
+        }
+    }
 };#END OF CLASS
 
 /*

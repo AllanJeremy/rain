@@ -16,6 +16,7 @@
 <body>
 <main>
 <div class="container">
+<h1 class="center">CLASSROOM TESTS</h1>
 <?php
     require_once("handlers/session_handler.php");
     require_once("handlers/db_info.php");
@@ -55,8 +56,30 @@
 
 <?php
     endforeach;
-    
 ?>
+    <h1 class="center">ASSIGNMENT TESTS</h1>
+
+<?php
+    $assignments =DbInfo::GetTeacherAssInClass(7,26);
+    echo "<h4>DbInfo::GetTeacherAssInClass(class_id,teacher_id)</h4><br>
+    <ol>";
+    foreach($assignments as $assignment)
+    {
+        echo "<li>".$assignment["ass_title"]."</li>";
+    }
+    echo "</ol> <hr>";
+    unset($assignment);
+
+    $assignments2 =DbInfo::GetAssignmentsInClass(7);
+    echo "<h4>DbInfo::GetAssignmentsInClass(class_id)</h4><br>
+    <ol>";
+    foreach($assignments2 as $assignment)
+    {
+        echo "<li>".$assignment["ass_title"]."</li>";
+    }
+   echo "</ol>";
+?>
+
 </div>
 </main>
 <body>
