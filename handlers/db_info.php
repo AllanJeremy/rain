@@ -456,7 +456,7 @@ class DbInfo
                     TEACHER ACCOUNT  - CLASSROOM | ASSIGNMENT | SCHEDULES | TESTS  FUNCTIONS
 ----------------------------------------------------------------------------------------------------------*/
 
-    //Checks if the classroom with the given id exists, returns true if it does, and false if it doesn't
+    //Checks if the classroom with the given id exists, returns result if it does, and false if it doesn't
     public static function ClassroomExists($class_id)
     {
         return self::SinglePropertyExists("classrooms","class_id",$class_id,"i");
@@ -469,7 +469,7 @@ class DbInfo
         return self::SinglePropertyExists("classrooms","class_code",$class_code,"s");
     }
 
-    //Checks if a student is in a certain classroom, returns true if the student is in the classroom and false if not -Incomplete
+    //Checks if a student is in a certain classroom, returns result if the student is in the classroom and false if not -Incomplete
     public static function StudentExistsInClassroom($class_id,$student_id)
     {
         global $dbCon;#connection string mysqli object
@@ -530,7 +530,11 @@ class DbInfo
     }
 
 /*----------------------------------------------------------------------------------------------------------*/    
-
+    #Get all subjects - returns classrooms on success | false if no records found | null if query couldn't execute
+    public static function GetAllSubjects()
+    {
+        return self::GetAllRecordsFromTable("subjects");        
+    }
 /*----------------------------------------------------------------------------------------------------------
                     PRINCIPAL ACCOUNT  - CLASSROOM | ASSIGNMENT | SCHEDULES | TESTS  FUNCTIONS
 ----------------------------------------------------------------------------------------------------------*/
