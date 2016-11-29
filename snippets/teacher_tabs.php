@@ -102,7 +102,11 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             <p class="grey-text">Your classrooms</p>
                         </div>
                         <div class="col s7">
-                            <a class="btn right" id="createClassroom">Create a classroom</a>
+                            <a class="btn right" id="createClassroom"><span class="hide-on-small-only">Create a classroom</span>
+                            <span class="hide-on-med-and-up">
+                            <i class="material-icons">add</i>
+                            </span>
+                            </a>
                         </div>
                     </div>
                     
