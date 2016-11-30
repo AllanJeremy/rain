@@ -41,9 +41,9 @@ class Assignment
     }
     
     //Submit assignment - students
+    public static function SubmitAssignment($student_id,$ass_id)
+    {
+        
+    }
 
-
-    //Comment on assignment
-    
-    //Comment on submission
 };

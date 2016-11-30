@@ -508,7 +508,7 @@ class DbInfo
     #Get specific teacher classrooms - returns classrooms on success | false if no records found | null if query couldn't execute
     public static function GetSpecificTeacherClassrooms($teacher_acc_id)
     {
-        return self::SinglePropertyExists("classrooms","teacher_id",$teacher_acc_id,"i");
+        return self::SinglePropertyExists("classrooms","teacher_id",$teacher_acc_id,"i","Error preparing teacher classroom info query. <br>Technical information :");
     }
 
     #Get specific teacher assignments - returns assignments on success | false if no records found | null if query couldn't execute
