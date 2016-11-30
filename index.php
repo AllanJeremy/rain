@@ -210,7 +210,8 @@
             endif;#end the main if statement
         ?>
         
-        
+        <!--<script type="text/javascript" src="js/character_counter.js"></script>
+        -->
         <script>
         $(document).ready(function() {
             $('select').material_select();

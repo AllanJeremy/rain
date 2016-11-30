@@ -15,25 +15,25 @@ var Lists_Templates = function () {
     
         var templateOutput = '';
         
-        templateOutput += '<div class="col card-col new-class" data-classroom-id="' + obj.classroomid + '"><div class="card cyan darken-4">';
+        templateOutput += '<div class="col s12 m4 l3 new-class" data-classroom-id="' + obj.classroomid + '"><div class="card ' + obj.classes + '">';
         templateOutput += '<div class="card-content white-text">';
         templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
         templateOutput += '<p>Number of students: ';
         templateOutput += '<span class="php-data">' + obj.totalstudents;
-        templateOutput += ' <a onclick="openStudentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
+        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
         templateOutput += '</p>';
         templateOutput += '<p>Assignments sent: ';
         templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
-        templateOutput += ' <a onclick="openAssignmentClassList(' + obj.classroomid + ')" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="I am tooltip" href="#" >';
+        templateOutput += ' <a id="openAssignmentClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
         templateOutput += '</p>';
-        templateOutput += '<p>Subject: <span class="php-data">' + obj.classroomsubject + '</span></p>';
-        templateOutput += '<p>Stream:  <span class="php-data">' + obj.classroomstream + '</span></p>';
+        templateOutput += '<p>Subject: <span class="php-data">' + obj.classroomsubjectname + '</span></p>';
+        templateOutput += '<p>Stream:  <span class="php-data">' + obj.classroomstreamname + '</span></p>';
         templateOutput += '</div>';
         templateOutput += '<div class="card-action">';
         templateOutput += '<a href="#" data-target="modal1" class="modal-trigger" id="editClassroom">Edit</a>';
@@ -193,6 +193,18 @@ var Lists_Templates = function () {
         templateOutput += '<div class="modal-footer">';
         templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
         templateOutput += '</div>';
+        templateOutput += '</div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------------------
+    
+    this.cardListContainer = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<div class="row"id="classroomCardList">';
         templateOutput += '</div>';
         
         return templateOutput;

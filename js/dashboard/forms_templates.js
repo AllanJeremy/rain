@@ -16,28 +16,31 @@ var Forms_Templates = function () {
         var templateOutput = '';
         
         templateOutput += '<br><div class="row"><form id="createNewClassroomForm" class="col s12 m10 offset-m1" method="post" action="">';
+        templateOutput += '<div class="row input-field card-color-list">';
+        templateOutput += '<p class="col m4 s12" >Choose a color for the classroom</p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="cyan"/><label for="cyan" class="cyan darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="blue"/><label for="blue" class="blue darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="pink"/><label for="pink" class="pink darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="orange"/><label for="orange" class="orange darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="blueGrey"/><label for="blueGrey" class="blue-grey darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="green"/><label for="green" class="green darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="purple"/><label for="purple" class="purple darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="lime"/><label for="lime" class="lime darken-4"></label></p>';
+        templateOutput += '</div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';
-        templateOutput += '<input id="newClassroomName" type="text" class="validate" name="new_classroom_name" required>';
+        templateOutput += '<input id="newClassroomName" type="text" class="validate" name="new_classroom_name" required length="21">';
         templateOutput += '<label for="newClassroomName">Class name</label>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<select id="newClassroomStream" name="class_stream" required class="grey-text text-lighten-2">';
         //loop through classes the teacher teaches via ajax
-        templateOutput += '<option value="9A" selected>9A</option>';
-        templateOutput += '<option value="9B">9B</option>';
+        templateOutput += obj.streamoptions;
         templateOutput += '</select>';
         templateOutput += '<label>Stream</label>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<select id="newClassroomSubject" name="class_subject" required class="grey-text text-lighten-2">';
-        templateOutput += '<optgroup label="' + obj.optgroupname + '">';
-        templateOutput += '<option value="' + obj.subjectoption1 + '" selected>' + obj.subjectoption1 + '</option>';
-        templateOutput += '<option value="' + obj.subjectoption2 + '">' + obj.subjectoption2 + '</option>';
-        templateOutput += '</optgroup>';
-        templateOutput += '<optgroup label="' + obj.optgroupname2 + '">';
-        templateOutput += '<option value="' + obj.subjectoption3 + '">' + obj.subjectoption3 + '</option>';
-        templateOutput += '<option value="' + obj.subjectoption4 + '">' + obj.subjectoption4 + '</option>';
-        templateOutput += '</optgroup>';
+        templateOutput += obj.subjectoptions;
         templateOutput += '</select>';
         templateOutput += '<label>Subject</label>';
         templateOutput += '</div></div>';
@@ -46,7 +49,7 @@ var Forms_Templates = function () {
         templateOutput += '<label for="addStudentsToClassroom">Add students before creating</label>';
         templateOutput += '</p></div></div>';
         templateOutput += '<div class="row student-list input-field"></div>';
-        templateOutput += '<div class="row"><div class="input-field col s12"><p>';
+        templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<a class="right btn" id="createNewClassroomCard" type="submit">Create classroom</a>';
         templateOutput += '</div></div>';
         templateOutput += '</form></div>';
@@ -90,21 +93,13 @@ var Forms_Templates = function () {
         templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<select id="editClassroomStream" name="class_stream" required class="grey-text text-lighten-2">';
         //loop through classes the teacher teaches via ajax
-        templateOutput += '<option value="9A" selected>9A</option>';
-        templateOutput += '<option value="9B">9B</option>';
+        templateOutput += obj.streamoptions;
         templateOutput += '</select>';
         templateOutput += '<label>Stream</label>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<select id="editClassroomSubject" name="class_subject" required class="grey-text text-lighten-2">';
-        templateOutput += '<optgroup label="' + obj.optgroupname + '">';
-        templateOutput += '<option value="' + obj.subjectoption1 + '" selected>' + obj.subjectoption1 + '</option>';
-        templateOutput += '<option value="' + obj.subjectoption2 + '">' + obj.subjectoption2 + '</option>';
-        templateOutput += '</optgroup>';
-        templateOutput += '<optgroup label="' + obj.optgroupname2 + '">';
-        templateOutput += '<option value="' + obj.subjectoption3 + '">' + obj.subjectoption3 + '</option>';
-        templateOutput += '<option value="' + obj.subjectoption4 + '">' + obj.subjectoption4 + '</option>';
-        templateOutput += '</optgroup>';
+        templateOutput += obj.subjectoptions;
         templateOutput += '</select>';
         templateOutput += '<label>Subject</label>';
         templateOutput += '</div></div>';
@@ -113,7 +108,7 @@ var Forms_Templates = function () {
         templateOutput += '<label for="addStudentsToClassroom">Add students</label>';
         templateOutput += '</p></div></div>';
         templateOutput += '<div class="row student-list input-field"></div>';
-        templateOutput += '<div class="row"><div class="input-field col s12"><p>';
+        templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<a class="right btn" id="editClassroomCard" type="submit">Update classroom</a>';
         templateOutput += '</div></div>';
         templateOutput += '</form></div>';
@@ -190,6 +185,30 @@ var Forms_Templates = function () {
         templateOutput += '<input type="checkbox" class="filled-in" id="' + obj.value + '" />';
         templateOutput += '<label for="' + obj.value + '">' + obj.name + '</label>';
         templateOutput += '</p>';
+        
+        return templateOutput;
+        
+    };
+     
+    //--------------------------
+    
+    this.formSelectTemplate = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<option value="' + obj.value + '">' + obj.name + '</option>';
+        
+        return templateOutput;
+        
+    }
+    
+    //--------------------------
+    
+    this.formOptgroupTemplate = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<optgroup label="' + obj.category + '">' + obj.categorylist + '</optgroup>';
         
         return templateOutput;
         

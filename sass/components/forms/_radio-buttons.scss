@@ -37,6 +37,60 @@
   transition: .28s ease;
 }
 
+.card-color-list p{
+    
+    [type="radio"] + label:before,
+    [type="radio"] + label:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: -8px;
+        margin: 0px;
+        margin-left: 8px;
+        margin-right: 8px;
+        width: 24px;
+        height: 24px;
+        z-index: 0;
+        transition: .28s ease;
+    }
+
+    [type="radio"]:not(:checked) + label,
+    [type="radio"]:checked + label {
+        position: relative;
+        height: 0;
+        display: inline-block;
+        transition: .28s ease;
+        top: 0;
+        
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        user-select: none;
+    }
+    
+    [type="radio"]:not(:checked) + label:before,
+    [type="radio"]:not(:checked) + label:after,
+    [type="radio"]:checked + label:before,
+    [type="radio"]:checked + label:after {
+        border: 2px solid transparent;
+    }
+    
+    [type="radio"]:checked + label:before {
+        box-shadow: 0 0 0 10px rgba(0,0,0,.1);
+        transform: scale(1.12);
+    }
+
+    [type="radio"]:not(:checked) + label:before {
+        background-color: inherit;
+        transform: scale(1);
+    }
+
+    [type="radio"]:checked + label:after {
+        z-index: 0;
+        background-color: inherit;
+        transform: scale(1.12);
+    }
+
+}
+
 /* Unchecked styles */
 [type="radio"]:not(:checked) + label:before,
 [type="radio"]:not(:checked) + label:after,

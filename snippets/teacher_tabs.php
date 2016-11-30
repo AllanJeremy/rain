@@ -5,98 +5,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
             <div class="container">
                 <!---->
                 <div class="row main-tab active-bar" id="classroomTab">
-                    <!--
-                    <div class="col s12 m10 offset-m1">
-                        <ul class="tabs">
-                            <li class="tab col s6">
-                                <a href="#createClassroom" class="active">Create</a>
-                            </li>
-                            <li class="tab col s6">
-                                <a class="" href="#manageClassroom" >Manage</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div id="createClassroom" class="col s12 offset-m1 m10 ">
-                        <div class="row">
-                            <br>
-                            <form  id="createNewClassroom" class="col s12 m8 offset-m2" method="post" action="">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input id="newClassroomName" type="text" class="validate" name="new_classroom_name" required>
-                                        <label for="newClassroomName">Class name</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select name="class_stream" required class='grey-text text-lighten-2'>
-                                            <option value="9A" selected>9A</option>
-                                            <option value="9B">9B</option>
-                                            <option value="9C">9C</option>
-                                            <option value="9D">9D</option>
-                                            <option value="10A">10A</option>
-                                            <option value="10B">10B</option>
-                                        </select>
-                                        <label>Stream</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select name="class_subject" required class='grey-text text-lighten-2'>
-                                            <optgroup label="Sciences">
-                                                <option value="Mathematics" selected>Mathematics</option>
-                                                <option value="Biology">Biology</option>
-                                                <option value="Physics">Physics</option>
-                                                <option value="Chemistry">Chemistry</option>
-                                            </optgroup>
-                                            <optgroup label="Languages">
-                                                <option value="English">English</option>
-                                                <option value="Kiswahili">Kiswahili</option>
-                                                <option value="French">French</option>
-                                                <option value="Literature">Literature</option>
-                                            </optgroup>
-                                            <optgroup label="Humanities">
-                                                <option value="Religion">Religion</option>
-                                                <option value="Geography">Geography</option>
-                                                <option value="History">History</option>
-                                                <option value="Sociology">Sociology</option>
-                                            </optgroup>
-                                            <optgroup label="Extra subjects">
-                                                <option value="Tourism">Travel and Tourism</option>
-                                                <option value="Art">Art and Design</option>
-                                                <option value="ICT">ICT</option>
-                                                <option value="PhysicalEducation">Physical Education</option>
-                                                <option value="Music">Music</option>
-                                                <option value="Business">Business Studies</option>
-                                            </optgroup>
-                                        </select>
-                                        <label>Subject</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <p>
-                                            <input type="checkbox" id="addStudentsToClassroom" name="add_students_to_classroom" />
-                                            <label for="addStudentsToClassroom">Add students before creating</label>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <button class="right btn" type="submit" >Create classroom</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div id="manageClassroom" class="col s12">
-                        <div class="row">
-                            <br>
-                            <br>
-
-
-                        </div>
-                    </div>
-                    -->
+                    
                     <div class="row no-margin">
                         <div class="col s5">
                             <p class="grey-text">Your classrooms</p>
@@ -122,11 +31,10 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                     <?php
 
                        $reversed_classrooms = DbInfo::ReverseResult($classrooms);#an array that has the reversed values of the array, newest is the first
-
+                        $count = 0;
                         foreach($reversed_classrooms as $classroom):
                             $student_ids = DbInfo::GetArrayFromList($classroom["student_ids"]);#array of the student ids
                             $student_count = count($student_ids); 
-                            
                             $subject_name = "Undefined subject";#default values incase we don't find the subject
                             $stream_name = "Undefined stream";#default values incase we don't find the stream
 
@@ -150,8 +58,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                 $ass_count = count($assignments);
                             }
                      ?> 
-                        <div class="col card-col new-class" data-classroom-id="<?php echo $classroom['class_id'] ?>">
-                            <div class="card cyan darken-4">
+                        <div class="col s12 m4 l3 <?php if($count < 1) { echo 'new-class'; } ?>" data-classroom-id="<?php echo $classroom['class_id'] ?>">
+                            <div class="card <?php echo $classroom['classes'] ?>">
                                 <div class="card-content white-text">
                                     <span class="card-title"><?php echo $classroom['class_name'] ?></span>
                                     <p>Number of students:
@@ -163,7 +71,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                     </p>
                                     <p>Assignments sent:
                                         <span class="php-data"><?php echo $ass_count;?>
-                                            <a onclick="openAssignmentClassList()" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
+                                            <a class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
@@ -177,7 +85,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                 </div>
                             </div>
                         </div>
-
+                        <?php $count += 1; ?>
                     <?php 
                         endforeach;
                         unset($student_ids,$stream,$stream_name,$subject,$subject_name);#unset variables used in foreach
@@ -185,8 +93,11 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                     </div>
                     <?php 
                     else: ?>
-                        <p> No classrooms available for this teacher</p>
-                    
+                          
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h5 class="center-align valign grey-text " id="noClassroomMessage">You don't have any classroom.<br><br><br><a class="btn btn-flat" id="createClassroom">Create one</a></h5>
+                    </div>
+
                    <?php endif ?>
                 </div>
                 <!---->

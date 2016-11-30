@@ -396,4 +396,61 @@ private static function DeleteBasedOnSingleProperty($table_name,$column_name,$pr
         }       
     }
 
-};
+};#END OF CLASS
+
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_POST['action'])) {
+    
+    $dbhandler = new DbHandler();
+    
+    switch($_POST['action']) {
+        case 'UpdateClassroomInfo':
+            
+            $args = array(
+                'class_name' => $_POST['classroomtitle'],
+                'class_stream' => $_POST['classroomstream'],
+                'class_subject_id' => $_POST['subjectid'],
+                'teacher_id' => $_SESSION['admin_acc_id']
+            );
+            
+            if(isset($_POST['studentids'])) {
+                
+                $args['student_ids'] = $_POST['studentids'];
+                
+            } else {
+                
+                $args['student_ids'] = 0;
+                
+            }
+            
+            $result = $dbhandler::UpdateClassroomInfo($class_id,$class_name,$class_stream,$class_subject_id);
+            
+            return $result;
+            
+            break;
+        case 'RemoveStudent':
+            
+            
+            //dddd
+            break;
+        
+        default:
+            return null;
+            break;
+    }
+
+} else {
+    return null;
+}
+
+
+
+
+
+
+

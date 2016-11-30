@@ -16,19 +16,19 @@ class Classroom
 
     
     //Create a classroom - returns true on success and false on fail, null if there was an error with the prepare statement for the query
-    public static function CreateClassroom($class_name,$class_stream,$class_subject_id,$student_ids,$teacher_id)
+    public static function CreateClassroom($class_name,$class_stream,$class_subject_id,$student_ids,$teacher_id,$classes)
     {
-        $class_code = self::GenerateClassroomCode($class_name,$class_stream,$class_subject_id,$teacher_id);#class_code : this is used to join classes
+        $class_code = self::GenerateClassroomCode($class_name,$class_stream,$class_subject_id,$teacher_id,$classes);#class_code : this is used to join classes
         
         global $dbCon;#Connection string mysqli object
 
         if($class_code)#if class_code was successfully generated, we can create the classroom
         {
-            $insert_query = "INSERT INTO classrooms (class_name,class_code,subject_id,student_ids,stream_id,teacher_id) VALUES(?,?,?,?,?,?)";
+            $insert_query = "INSERT INTO classrooms (class_name,class_code,subject_id,student_ids,stream_id,teacher_id,classes) VALUES(?,?,?,?,?,?,?)";
 
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
-                $insert_stmt->bind_param("ssisii",$class_name,$class_code,$class_subject_id,$student_ids,$class_stream,$teacher_id);
+                $insert_stmt->bind_param("ssisiis",$class_name,$class_code,$class_subject_id,$student_ids,$class_stream,$teacher_id,$classes);
 
                 
                 if ($insert_stmt->execute())
@@ -99,7 +99,7 @@ class Classroom
     }
 
     //Generate a unique classroom code for a classroom - used internally during creation process - returns code if successful and false if it fails
-    private static function GenerateClassroomCode($class_name,$class_stream,$class_subject_id)
+    private static function GenerateClassroomCode($class_name,$class_stream,$class_subject_id,$classes)
     {
         return "MyClassCode";
     }
@@ -125,8 +125,9 @@ if(isset($_POST['action'])) {
             $args = array(
                 'class_name' => $_POST['classroomtitle'],
                 'class_stream' => $_POST['classroomstream'],
-                'class_subject_id' => $_POST['classroomid'],
-                'teacher_id' => $_SESSION['admin_acc_id']
+                'class_subject_id' => $_POST['classroomsubject'],
+                'teacher_id' => $_SESSION['admin_acc_id'],
+                'classes' => $_POST['classes']
 
             );
             
@@ -140,7 +141,7 @@ if(isset($_POST['action'])) {
                 
             }
             
-            $result = $classroom::CreateClassroom($args['class_name'], $args['class_stream'], $args['class_subject_id'], $args['student_ids'], $args['teacher_id']);
+            $result = $classroom::CreateClassroom($args['class_name'], $args['class_stream'], $args['class_subject_id'], $args['student_ids'], $args['teacher_id'], $args['classes']);
 
             
             return $result;
@@ -150,13 +151,6 @@ if(isset($_POST['action'])) {
             
             
             //dddd
-            break;
-        case 'getAllStudents':
-            
-            $result = $classroom::getAllStudents();
-            
-            return $result;
-            
             break;
         default:
             return null;

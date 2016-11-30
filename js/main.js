@@ -8,16 +8,6 @@ $(function() {
     }
     
     $('.mobile-button-collapse').sideNav();
-    $('.lean-overlay, a#modalFooterAction').click(function () {
-        //e.preventDefault();
-
-        console.log('cleaning out modal');
-
-        $('a#createClassroom').attr('data-target', '');
-
-        $('.modal').html('');
-
-    });
     
 /*
     var $container = $('#masonry-grid');

@@ -508,13 +508,13 @@ class DbInfo
     #Get specific teacher classrooms - returns classrooms on success | false if no records found | null if query couldn't execute
     public static function GetSpecificTeacherClassrooms($teacher_acc_id)
     {
-        return self::SinglePropertyExists("classrooms","teacher_id",$teacher_acc_id,"i","Error preparing teacher classroom info query. <br>Technical information :");
+        return self::SinglePropertyExists("classrooms","teacher_id",$teacher_acc_id,"i","Error preparing teacher classroom info query. <br>Technical information :++++++");
     }
 
     #Get specific teacher assignments - returns assignments on success | false if no records found | null if query couldn't execute
     public static function GetSpecificTeacherAssignments($teacher_acc_id)
     {
-        return self::SinglePropertyExists("assignments","teacher_id",$teacher_acc_id,"i");
+        return self::SinglePropertyExists("assignments","teacher_id",$teacher_acc_id,"i","Error preparing teacher classroom info query. <br>Technical information :---");
     }
 
     #Get specific teacher schedules - returns schedules on success | false if no records found | null if query couldn't execute
@@ -766,6 +766,55 @@ if(isset($_GET['action'])) {
                 
             }
             
+            echo json_encode($arrayResult);
+            
+            break;
+        case 'GetAllStreams':
+            
+            $result = $DBInfo::GetAllStreams();
+            
+            $num = 0;
+            
+            foreach ($result as $row) {
+                
+                $newResult = array(
+                    "value" => $row['stream_id'],
+                    "name" => $row['stream_name']
+                );
+                
+                $arrayResult[$num] = $newResult;
+                
+                $num += 1;
+                
+                //echo $num;
+                
+            }
+            
+            echo json_encode($arrayResult);
+            
+            break;
+        case 'GetAllSubjects':
+            
+            $result = $DBInfo::GetAllSubjects();
+            
+            $num = 0;
+            
+            foreach ($result as $row) {
+                
+                $newResult = array(
+                    "value" => $row['subject_id'],
+                    "category" => $row['subject_category'],
+                    "name" => $row['subject_name']
+                );
+                
+                $arrayResult[$num] = $newResult;
+                
+                $num += 1;
+                
+                //echo $num;
+                
+            }
+
             echo json_encode($arrayResult);
             
             break;

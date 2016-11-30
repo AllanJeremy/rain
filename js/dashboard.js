@@ -19,9 +19,6 @@ var Dashboard = function () {
         
         //loadTestCard();
         
-        
-        //openEsomoModal("23", "Test head", {"modalBody":"test"});
-        
     };
     
     //-----------
