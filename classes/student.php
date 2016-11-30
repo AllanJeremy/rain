@@ -5,9 +5,10 @@ require_once (realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #All
 require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Allows encryption of passwords
 
 require_once (dirname(__FILE__) ."/../handlers/validation_handler.php");#Handles validation of form data
+require_once (dirname(__FILE__) ."/../handlers/comment_handler.php");#Handles comments
 
 #HANDLES STUDENT RELATED FUNCTIONS
-class Student
+class Student extends CommentHandler
 {
     //Variable initialization
     public $student_id;

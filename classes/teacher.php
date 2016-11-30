@@ -69,4 +69,12 @@ class Teacher extends AdminAccount
 
         return false;
     }
+
+    //Comment on assignment
+
+    //Comment on assignment submission
+
+    //Grade assignment
+
+    //Return assignment - teacher cannot edit/comment anymore, assignment has been returned to student
 };
