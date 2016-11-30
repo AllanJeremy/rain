@@ -58,7 +58,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                 $ass_count = count($assignments);
                             }
                      ?> 
-                        <div class="col s12 m4 l3 <?php if($count < 1) { echo 'new-class'; } ?>" data-classroom-id="<?php echo $classroom['class_id'] ?>">
+                        <div class="col card-col <?php if($count < 1) { echo 'new-class'; } ?>" data-classroom-id="<?php echo $classroom['class_id'] ?>">
                             <div class="card <?php echo $classroom['classes'] ?>">
                                 <div class="card-content white-text">
                                     <span class="card-title"><?php echo $classroom['class_name'] ?></span>

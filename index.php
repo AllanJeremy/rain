@@ -221,7 +221,7 @@
         });
             
         function hideSideNav() {
-            $(".mobile-button-collapse").sideNav('hide');
+            $(".mobile-button-collapse").sideNav({menuWidth:240});
             $('.tooltipped').tooltip({delay: 50});
             $('.modal-trigger').leanModal({dismissible : false});//a workaround the lean-overlay click event
             //console.log('already open');

@@ -15,7 +15,7 @@ var Lists_Templates = function () {
     
         var templateOutput = '';
         
-        templateOutput += '<div class="col s12 m4 l3 new-class" data-classroom-id="' + obj.classroomid + '"><div class="card ' + obj.classes + '">';
+        templateOutput += '<div class="col card-col new-class" data-classroom-id="' + obj.classroomid + '"><div class="card ' + obj.classes + '">';
         templateOutput += '<div class="card-content white-text">';
         templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
         templateOutput += '<p>Number of students: ';

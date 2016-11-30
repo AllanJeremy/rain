@@ -421,22 +421,27 @@ $height: auto;
 
 .new-class {
     opacity: 0;
+    @include transform(translateY(-8px) scale(0.95));
+    
     will-change: opacity;
     transition: opacity .7s;
     animation-delay: .4s;
-    -webkit-animation: new-classroom 750ms 240ms ease-out forwards;
-    animation: new-classroom 750ms 240ms ease-out forwards;
+    -webkit-animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
+    animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
     
 }
 
 @-webkit-keyframes new-classroom {
   to { 
+      @include transform(translateY(0px) scale(1));
+      
       opacity: 1;
     }
 }
 
 @keyframes new-classroom {
   to { 
+      @include transform(translateY(0px)  scale(1));
       opacity: 1;
     }
 }
