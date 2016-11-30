@@ -18,8 +18,8 @@ class CommentHandler
         $commentor_link = realpath(dirname(__FILE__) . "/../profile.php?");
         $commentor_name = "Anonymous";#default is anonymous if we can't find the commentor name
 
-        //Update the commentor link and commentor name  based on what kind of commentor it is
-        switch($commentor_type)
+        //Update the commentor link and commentor name  based on what kind of commentor it is 
+        switch($commentor_type)#add case for every new type off accessible profile
         {
             case "student":
                 if($student = DbInfo::GetStudentByAccId($acc_id))
