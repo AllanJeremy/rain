@@ -12,7 +12,7 @@ interface TeacherCommentFunctions
 interface TeacherAssignmentFunctions extends TeacherCommentFunctions
 {
     //Create an assignment
-    public static function CreateAssignment($args=array(
+    public function CreateAssignment($args=array(
             "teacher_id"=>0,
             "ass_title"=>"",
             "ass_description"=>"",

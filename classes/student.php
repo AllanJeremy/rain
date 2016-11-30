@@ -16,7 +16,7 @@ interface StudentCommentFunctions
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE STUDENT MUST IMPLEMENT
 interface StudentAssignmentFunctions extends StudentCommentFunctions
 {
-    public static function SubmitAssignment($ass_id,$student_id,$attachments="");
+    public function SubmitAssignment($ass_id,$student_id,$attachments="");
 };
 
 #CLASS THAT HANDLES STUDENT RELATED FUNCTIONS
@@ -220,7 +220,7 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
 
 
     //Submit assignment - students by default if no attachment is passed, then assume blank attachment(no attachment)
-    public static function SubmitAssignment($ass_id,$student_id,$attachments="")
+    public function SubmitAssignment($ass_id,$student_id,$attachments="")
     {
         global $dbCon;
         $insert_query = "INSERT INTO ass_submissions(ass_id,student_id,attachments) VALUES(?,?,?)";
@@ -244,7 +244,7 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
     }
 
     //Comment on assignment
-    public static function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
+    public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
     {
         return CommentHandler::CommentOnAss($ass_id,$student_acc_id,$comment_text,"student");        
     }
