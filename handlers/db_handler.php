@@ -227,14 +227,31 @@ private static function DeleteBasedOnSingleProperty($table_name,$column_name,$pr
 -----------------------------------------------------------------------------------------
 */
     //Update Classroom information
-    //TODO Add implementation
-    public static function UpdateClassroomInfo($class_id,$class_name,$class_stream,$class_subject_id)
+    //TODO Test implementation
+    public static function UpdateClassroomInfo($class_id,$class_name,$stream_id,$subject_id,$student_ids)
     {
         global $dbCon;#Connection string mysqli object
-
+        
         if(DbInfo::ClassroomExists($class_id))#if the classroom exists - safety check
         {
-
+            $update_query = "UPDATE classrooms SET class_name=? stream_id=? subject_id=? student_ids=? WHERE class_id=?";
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("siisi",$class_name,$class_name,$stream_id,$subject_id,$student_ids,$class_id);
+                
+                if($update_stmt->execute())
+                {
+                    return true;#successfully updated the classroom details
+                }
+                else
+                {
+                    return false;#failed to update the classroom details
+                }
+            }
+            else#failed to prepare query
+            {
+                return null;
+            }
         }
         else
         {
