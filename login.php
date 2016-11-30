@@ -54,14 +54,14 @@
                             <div class="row">
                                 <div class="input-field col s12">
 
-                                    <input id="studentUsername" type="text" class="validate" name="student_username" required>
+                                    <input id="studentUsername" type="text" class="validate grey-text text-lighten-2" name="student_username" required>
                                     <label for="studentUsername">Username</label>
 
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="studentPassword" type="password" class="validate" name="student_password" required>
+                                    <input id="studentPassword" type="password" class="validate grey-text text-lighten-2" name="student_password" required>
                                     <label for="student_password">Password</label>
                                 </div>
                             </div>
@@ -99,13 +99,13 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="staffUsername" type="text" class="validate" name="staff_username" required>
+                                    <input id="staffUsername" type="text" class="validate grey-text text-lighten-2" name="staff_username" required>
                                     <label for="staff_username">Username</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="staffPassword" type="password" class="validate" name="staff_password" required>
+                                    <input id="staffPassword" type="password" class="validate grey-text text-lighten-2" name="staff_password" required>
                                     <label for="staff_password">Password</label>
                                 </div>
                             </div>
