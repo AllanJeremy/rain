@@ -7,8 +7,15 @@ require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #A
 require_once (dirname(__FILE__) ."/../handlers/validation_handler.php");#Handles validation of form data
 require_once (dirname(__FILE__) ."/../handlers/comment_handler.php");#Handles comments
 
-#HANDLES STUDENT RELATED FUNCTIONS
-class Student extends CommentHandler
+
+#DECLARES WHAT ASSIGNMENT FUNCTIONS THE STUDENT MUST IMPLEMENT
+interface StudentAssignmentFunctions
+{
+    public static function SubmitAssignment($ass_id,$student_id,$attachments="");
+};
+
+#CLASS THAT HANDLES STUDENT RELATED FUNCTIONS
+class Student extends CommentHandler implements StudentAssignmentFunctions
 {
     //Variable initialization
     public $student_id;
@@ -204,5 +211,30 @@ class Student extends CommentHandler
                 );
 
          return $args;
+    }
+
+
+    //Submit assignment - students by default if no attachment is passed, then assume blank attachment(no attachment)
+    public static function SubmitAssignment($ass_id,$student_id,$attachments="")
+    {
+        global $dbCon;
+        $insert_query = "INSERT INTO ass_submissions(ass_id,student_id,attachments) VALUES(?,?,?)";
+
+        if($insert_stmt = $dbCon->prepare($insert_query))
+        {
+            $insert_stmt->bind_param("iis",$ass_id,$student_id,$attachments);
+            if($insert_stmt->execute())
+            {
+                return true;#successfully submitted the assignment
+            }
+            else
+            {
+                return false;#failed to submit the assignment
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 };

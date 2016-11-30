@@ -2,8 +2,25 @@
 
 require_once("admin_account.php");
 
-#HANDLES TEACHER RELATED FUNCTIONS
-class Teacher extends AdminAccount
+#DECLARES WHAT ASSIGNMENT FUNCTIONS THE TEACHER MUST IMPLEMENT
+interface TeacherAssignmentFunctions
+{
+    //Create an assignment
+    public static function CreateAssignment($args=array(
+            "teacher_id"=>0,
+            "ass_title"=>"",
+            "ass_description"=>"",
+            "class_ids"=>"",
+            "due_date"=>"",
+            "attachments"=>"",
+            "file_option"=>"view",
+            "max_grade"=>100,
+            "comments_enabled"=>true)
+    );
+};
+
+#CLASS THAT HANDLES TEACHER RELATED FUNCTIONS
+class Teacher extends AdminAccount implements TeacherAssignmentFunctions
 {
     //Variable initialization
 
@@ -68,6 +85,51 @@ class Teacher extends AdminAccount
         }
 
         return false;
+    }
+
+    //Create/send an Assignment
+    public static function CreateAssignment($args=array(
+        "teacher_id"=>0,
+        "ass_title"=>"",
+        "ass_description"=>"",
+        "class_ids"=>"",
+        "due_date"=>"",
+        "attachments"=>"",
+        "file_option"=>"view",
+        "max_grade"=>100,
+        "comments_enabled"=>true)
+    )
+    {
+        global $dbCon;
+
+        $insert_query = "INSERT INTO assignments(teacher_id,ass_title,ass_description,class_ids,due_date,attachments,file_option,max_grade,comments_enabled) VALUES(?,?,?,?,?,?,?,?,?)";
+
+        if($insert_stmt = $dbCon->prepare($insert_query))
+        {
+            $insert_stmt->bind_param("issssssss",
+                $args["teacher_id"],
+                $args["ass_title"],
+                $args["ass_description"],
+                $args["class_ids"],
+                $args["due_date"],
+                $args["attachments"],
+                $args["file_option"],
+                $args["max_grade"],
+                $args["comments_enabled"]
+            );
+            if($insert_stmt->execute())
+            {
+                return true;#successfully created assignment
+            }
+            else
+            {
+                return false;#failed to send the assignment
+            }
+        }
+        else
+        {
+            return null;#failed to prepare the query
+        }
     }
 
     //Comment on assignment
