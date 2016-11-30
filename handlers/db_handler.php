@@ -6,7 +6,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Us
 #HANDLES DATABASE FUNCTIONS THAT INVOLVE ALTERING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
 {
-
+//TODO Refactor this whole class into interfaces to restrict who can call functions once we determine if it's necessary
 /*
 -----------------------------------------------------------------------------------------
                                     RESETTING ACCOUNTS
