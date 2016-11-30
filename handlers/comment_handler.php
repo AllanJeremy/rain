@@ -62,16 +62,4 @@ class CommentHandler
             return null;#failed to execute the query
         }
     } 
-
-    #Teacher Comment on assignment
-    protected static function TeacherCommentOnAss($ass_id,$teacher_id,$comment_text)
-    {
-        return self::CommentOnAss($ass_id,$teacher_id,$comment_text,"teacher");
-    }
-
-    #Student Comment on assignment
-    protected static function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
-    {
-        return self::CommentOnAss($ass_id,$student_acc_id,$comment_text,"student");        
-    }
 };

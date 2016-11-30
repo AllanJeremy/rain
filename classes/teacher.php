@@ -2,8 +2,14 @@
 
 require_once("admin_account.php");
 
+#DECLARES WHAT FUNCTIONS ARE USED FOR COMMENTS by TEACHERS
+interface TeacherCommentFunctions
+{
+    public function TeacherCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on assignment
+}
+
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE TEACHER MUST IMPLEMENT
-interface TeacherAssignmentFunctions
+interface TeacherAssignmentFunctions extends TeacherCommentFunctions
 {
     //Create an assignment
     public static function CreateAssignment($args=array(
@@ -88,7 +94,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     }
 
     //Create/send an Assignment
-    public static function CreateAssignment($args=array(
+    public function CreateAssignment($args=array(
         "teacher_id"=>0,
         "ass_title"=>"",
         "ass_description"=>"",
@@ -133,6 +139,10 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     }
 
     //Comment on assignment
+    public function TeacherCommentOnAss($ass_id,$teacher_id,$comment_text)
+    {
+        return CommentHandler::CommentOnAss($ass_id,$teacher_id,$comment_text,"teacher");
+    }
 
     //Comment on assignment submission
 

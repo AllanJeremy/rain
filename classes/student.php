@@ -7,9 +7,14 @@ require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #A
 require_once (dirname(__FILE__) ."/../handlers/validation_handler.php");#Handles validation of form data
 require_once (dirname(__FILE__) ."/../handlers/comment_handler.php");#Handles comments
 
+#DECLARES WHAT FUNCTIONS ARE USED FOR COMMENTS by STUDENTS
+interface StudentCommentFunctions
+{
+    public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text);#Student comment on assignment
+}
 
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE STUDENT MUST IMPLEMENT
-interface StudentAssignmentFunctions
+interface StudentAssignmentFunctions extends StudentCommentFunctions
 {
     public static function SubmitAssignment($ass_id,$student_id,$attachments="");
 };
@@ -236,5 +241,11 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
         {
             return null;
         }
+    }
+
+    //Comment on assignment
+    public static function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
+    {
+        return CommentHandler::CommentOnAss($ass_id,$student_acc_id,$comment_text,"student");        
     }
 };
