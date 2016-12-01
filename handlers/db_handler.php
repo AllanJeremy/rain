@@ -313,21 +313,57 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             return false;
         }       
     }
+
+
+/*
+-----------------------------------------------------------------------------------------
+                        UPDATING  COMMENTS - CONVENIENCE FUNCTIONS 
+-----------------------------------------------------------------------------------------
+*/  
+protected static function UpdateComment($table_name,$comment_id,$comment_text)
+{
+    global $dbCon;
+
+    $prepare_error="Error preparing  update comment query. <br>Technical information :";#error shown when preparing the query fails
+
+    $update_query = "UPDATE $table_name SET comment_text=? WHERE comment_id=?";
+
+    if($update_stmt = $dbCon->prepare($update_query))
+    {
+        $update_stmt->bind_param("si",$comment_id,$comment_text);
+
+        #if we successfully update the comment
+        if($update_stmt->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        ErrorHandler::PrintError($prepare_error . $dbCon->error);
+        return null;
+    }
+}
+
 /*
 -----------------------------------------------------------------------------------------
                               UPDATING AND DELETING ASSIGNMENT COMMENTS
 -----------------------------------------------------------------------------------------
 */  
     #Teacher update ass. comment
-    public function TrUpdateAssComment($comment_id,$comment_text)
+    public static function UpdateAssComment($comment_id,$comment_text)
     {
-        
+        return self::UpdateComment("ass_comments",$comment_id,$comment_text);
     }
     
     #Teacher delete ass. comment
-    public function TrDeleteAssComment($comment_id)
+    public static function DeleteAssComment($comment_id)
     {
-
+       return self::DeleteBasedOnSingleProperty("ass_comments","comment_id",$comment_id,"i");
     }
 
 /*
@@ -336,15 +372,15 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 -----------------------------------------------------------------------------------------
 */  
     #Teacher update ass. submission comment
-    public function TrUpdateAssSubmissionComment($comment_id,$comment_text)
+    public static function UpdateAssSubmissionComment($comment_id,$comment_text)
     {
-
+        return self::UpdateComment("ass_submission_comments",$comment_id,$comment_text);
     }
 
     #Teacher delete ass. submission comment
-    public function TrDeleteAssSubmissionComment($comment_id)
+    public static function DeleteAssSubmissionComment($comment_id)
     {
-
+        return self::DeleteBasedOnSingleProperty("ass_submission_comments","comment_id",$comment_id,"i");
     }
 
 /*

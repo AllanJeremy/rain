@@ -162,7 +162,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     //Comment on assignment submission
     public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text)
     {
-           
+        return CommentHandler::CommentOnAssSubmission($submission_id,$teacher_id,$comment_text,"teacher");
     }
 
 
@@ -274,6 +274,6 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
         {
             return false;
         }
-        
+ 
     }
-};
+};#END OF CLASS
