@@ -3,7 +3,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php"));#Used to 
 require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Used for password encryption
 
 
-#HANDLES DATABASE FUNCTIONS THAT INVOLVE ALTERING RECORDS IN THE DATABASE
+#HANDLES DATABASE FUNCTIONS THAT INVOLVE UPDATING/DELETING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
 {
 //TODO Refactor this whole class into interfaces to restrict who can call functions once we determine if it's necessary
@@ -197,7 +197,7 @@ class DbHandler extends DbInfo
 */
 
 //Delete a row from a table based on a single property : returns true on success | false on fail | null if query couldn't execute
-private static function DeleteBasedOnSingleProperty($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  delete based on single property query. <br>Technical information :")
+public static function DeleteBasedOnSingleProperty($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  delete based on single property query. <br>Technical information :")
 {
     $delete_query = "DELETE FROM $table_name WHERE $column_name=?";
 
@@ -313,6 +313,39 @@ private static function DeleteBasedOnSingleProperty($table_name,$column_name,$pr
             return false;
         }       
     }
+/*
+-----------------------------------------------------------------------------------------
+                              UPDATING AND DELETING ASSIGNMENT COMMENTS
+-----------------------------------------------------------------------------------------
+*/  
+    #Teacher update ass. comment
+    public function TrUpdateAssComment($comment_id,$comment_text)
+    {
+        
+    }
+    
+    #Teacher delete ass. comment
+    public function TrDeleteAssComment($comment_id)
+    {
+
+    }
+
+/*
+-----------------------------------------------------------------------------------------
+                    UPDATING AND DELETING ASSIGNMENT SUBMISSION COMMENTS
+-----------------------------------------------------------------------------------------
+*/  
+    #Teacher update ass. submission comment
+    public function TrUpdateAssSubmissionComment($comment_id,$comment_text)
+    {
+
+    }
+
+    #Teacher delete ass. submission comment
+    public function TrDeleteAssSubmissionComment($comment_id)
+    {
+
+    }
 
 /*
 -----------------------------------------------------------------------------------------
@@ -353,6 +386,7 @@ private static function DeleteBasedOnSingleProperty($table_name,$column_name,$pr
             return false;
         }       
     }
+
 
 /*
 -----------------------------------------------------------------------------------------

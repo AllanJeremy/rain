@@ -1,12 +1,17 @@
 <?php
 
-require_once("admin_account.php");
+require_once (dirname(__FILE__) ."/../classes/admin_account.php");#admin account -  contains parent class
+require_once (dirname(__FILE__) ."/../handlers/db_handler.php");#db_handler - convenience delete functions
 
 #DECLARES WHAT FUNCTIONS ARE USED FOR COMMENTS by TEACHERS
 interface TeacherCommentFunctions
 {
-    public function TrCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on assignment
-    public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text);#Comment on assignment submission
+    //Assignments
+    public function TrCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on ass.
+    
+    //Assignment submissions
+    public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text);#Comment on ass. submission
+
 }
 
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE TEACHER MUST IMPLEMENT
@@ -25,14 +30,12 @@ interface TeacherAssignmentFunctions extends TeacherCommentFunctions
             "comments_enabled"=>true,
             "sent"=>true)
     );
-    //Send assignment to classroom
-    public function SendAssignment($ass_id);
-
-    //Return assignment - teacher cannot edit/comment anymore, assignment has been returned to student
-    public function ReturnAssignment($submission_id);
     
-    //Grade assignment
-    public function GradeAssignment($submission_id,$grade);
+    public function SendAssignment($ass_id);#Send assignment to classroom
+    
+    public function ReturnAssignment($submission_id);#Return assignment - teacher cannot edit/comment anymore, assignment has been returned to student
+    
+    public function GradeAssignment($submission_id,$grade);#Grade assignment
 
 };
 

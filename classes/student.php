@@ -17,7 +17,6 @@ interface StudentCommentFunctions
 interface StudentAssignmentFunctions extends StudentCommentFunctions
 {
     public function SubmitAssignment($ass_id,$student_id,$attachments="");#submit an assignment
-    //public function UpdateAssignmentSubmission($submission_id,$student_id);#Update the assignment submission //TODO add more parameters
     public function CancelAssignmentSubmission($submission_id,$student_id);#Cancel an assignment submission
 };
 
