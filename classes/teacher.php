@@ -5,7 +5,7 @@ require_once("admin_account.php");
 #DECLARES WHAT FUNCTIONS ARE USED FOR COMMENTS by TEACHERS
 interface TeacherCommentFunctions
 {
-    public function TeacherCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on assignment
+    public function TrCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on assignment
     public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text);#Comment on assignment submission
 }
 
