@@ -117,7 +117,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
         "comments_enabled"=>true)
     )
     {
-        global $dbCon;
+        global $dbCon;#database connection
 
         $insert_query = "INSERT INTO assignments(teacher_id,ass_title,ass_description,class_ids,due_date,attachments,file_option,max_grade,comments_enabled,sent) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
@@ -166,6 +166,8 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     //Grade assignment
     public function GradeAssignment($submission_id,$grade)
     {
+        global $dbCon;#database connection
+
         //if the submission exists
         if($submission = DbInfo::AssSubmissionExists($submission_id))
         {
@@ -181,7 +183,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
                 $grade = 0;
             }
 
-            global $dbCon;
+            
             $update_query = "UPDATE ass_submissions SET grade=? WHERE submission_id=?";
             if($update_stmt = $dbCon->prepare($update_query))
             {
@@ -205,21 +207,43 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     //Return assignment to a student - teacher cannot edit/comment anymore, assignment has been returned to student
     public function ReturnAssignment($submission_id)
     {
-        // global $dbCon;
-        // $teacher_id = $_SESSION["admin_acc_id"];
+        global $dbCon;
+
+        if($submission = DbInfo::AssSubmissionExists($submission_id))
+        { 
+            $update_query = "UPDATE ass_submissions SET returned=true WHERE submission_id=?";
+            
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("i",$submission_id);
+                if($update_stmt->execute())
+                {
+                    return true;#successfully executed query
+                }
+                else
+                {
+                    return false;#failed to execute query
+                }
+            }
+            else
+            {
+                return null;#failed to prepare query
+            }
+        }
     }
 
 
     //Send an assignment
     public function SendAssignment($ass_id)
     {
+        global $dbCon;#database connection
+        
         //If the assignment exists
         if($assignment = DbInfo::AssignmentExists($ass_id))
         {
             //Only send the assignment if the assignment hasn't already been sent
             if(!$assignment["sent"])
             {
-                global $dbCon;
                 $update_query = "UPDATE assignments SET sent=true WHERE ass_id=?";
                 
                 if($update_stmt = $dbCon->prepare($update_query))
