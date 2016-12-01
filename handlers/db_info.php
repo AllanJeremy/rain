@@ -636,7 +636,6 @@ class DbInfo
                     //Extract individual student_ids
                     echo "Students list : ".$student_ids;
 
-                    //self::StudentIdExists();
                 }
             }
         }
@@ -645,6 +644,28 @@ class DbInfo
             ErrorHandler::PrintError("Error preparing query. <br>Technical Error :".$dbCon->error);
         }
     }
+
+/*----------------------------------------------------------------------------------------------------------
+                         NON-ACCOUNT STUDENT RELATED FUNCTIONS
+----------------------------------------------------------------------------------------------------------*/
+    #Get all classrooms the student with the student id of student_id is in
+    public static function GetAllStudentClassrooms($student_id)
+    {
+        //TODO Add implementation - look for a way of using convenience functions
+    }
+
+    #Get all assignments sent to the student with the student id of student_id
+    public static function GetAllStudentAssignments($student_id)
+    {
+        //TODO Add implementation - look for a way of using convenience functions
+    }
+
+    #Get all student assignment submissions
+    public static function GetAllStudentAssSubmissions($student_id)
+    {
+        //TODO Add implementation - look for a way of using convenience functions
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
