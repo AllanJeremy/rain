@@ -313,8 +313,40 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             return false;
         }       
     }
+/*
+-----------------------------------------------------------------------------------------
+                        UPDATING AND DELETING ASSIGNMENT SUBMISSIONS
+-----------------------------------------------------------------------------------------
+*/
+    //Update Assignment submission information
+    //TODO Add parameters for UpdateAssignmentSubmissionInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
+    public static function UpdateAssignmentSubmissionInfo()
+    {
+        #if the assignment exists - safety check
+        if(DbInfo::AssSubmissionExists($submission_id))
+        {
+            
+        }
+        else
+        {
+            return false;
+        }   
+    }    
 
-
+    #Delete Assignment : returns true on success | false on fail | null if query couldn't execute
+    public static function DeleteAssignmentSubmission($submission_id)
+    {
+        #if the assignment exists - safety check
+        if(DbInfo::AssSubmissionExists($submission_id))
+        {
+            return self::DeleteBasedOnSingleProperty("ass_submissions","submission_id",$submission_id,"i");
+        }
+        else
+        {
+            return false;
+        }    
+    }
+    
 /*
 -----------------------------------------------------------------------------------------
                         UPDATING  COMMENTS - CONVENIENCE FUNCTIONS 
