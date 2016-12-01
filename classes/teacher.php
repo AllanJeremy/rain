@@ -6,6 +6,7 @@ require_once("admin_account.php");
 interface TeacherCommentFunctions
 {
     public function TeacherCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on assignment
+    public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text);#Comment on assignment submission
 }
 
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE TEACHER MUST IMPLEMENT
@@ -21,8 +22,18 @@ interface TeacherAssignmentFunctions extends TeacherCommentFunctions
             "attachments"=>"",
             "file_option"=>"view",
             "max_grade"=>100,
-            "comments_enabled"=>true)
+            "comments_enabled"=>true,
+            "sent"=>true)
     );
+    //Send assignment to classroom
+    public function SendAssignment($ass_id);
+
+    //Return assignment - teacher cannot edit/comment anymore, assignment has been returned to student
+    public function ReturnAssignment($submission_id);
+    
+    //Grade assignment
+    public function GradeAssignment($submission_id,$grade);
+
 };
 
 #CLASS THAT HANDLES TEACHER RELATED FUNCTIONS
@@ -108,11 +119,11 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     {
         global $dbCon;
 
-        $insert_query = "INSERT INTO assignments(teacher_id,ass_title,ass_description,class_ids,due_date,attachments,file_option,max_grade,comments_enabled) VALUES(?,?,?,?,?,?,?,?,?)";
+        $insert_query = "INSERT INTO assignments(teacher_id,ass_title,ass_description,class_ids,due_date,attachments,file_option,max_grade,comments_enabled,sent) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            $insert_stmt->bind_param("issssssss",
+            $insert_stmt->bind_param("issssssssi",
                 $args["teacher_id"],
                 $args["ass_title"],
                 $args["ass_description"],
@@ -121,7 +132,8 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
                 $args["attachments"],
                 $args["file_option"],
                 $args["max_grade"],
-                $args["comments_enabled"]
+                $args["comments_enabled"],
+                $args["sent"]
             );
             if($insert_stmt->execute())
             {
@@ -139,14 +151,102 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     }
 
     //Comment on assignment
-    public function TeacherCommentOnAss($ass_id,$teacher_id,$comment_text)
+    public function TrCommentOnAss($ass_id,$teacher_id,$comment_text)
     {
         return CommentHandler::CommentOnAss($ass_id,$teacher_id,$comment_text,"teacher");
     }
 
     //Comment on assignment submission
+    public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text)
+    {
+           
+    }
+
 
     //Grade assignment
+    public function GradeAssignment($submission_id,$grade)
+    {
+        //if the submission exists
+        if($submission = DbInfo::AssSubmissionExists($submission_id))
+        {
+            $assignment = DbInfo::AssignmentExists($submission["ass_id"]);
 
-    //Return assignment - teacher cannot edit/comment anymore, assignment has been returned to student
+            //If the grade given is greater than the maximum grade - by default we cannot enter a grade less than 0
+            if($grade>$assignment["max_grade"])
+            {
+                $grade = $assignment["max_grade"];
+            }
+            elseif($grade<0)//If the grade is less than 0 make it 0
+            {
+                $grade = 0;
+            }
+
+            global $dbCon;
+            $update_query = "UPDATE ass_submissions SET grade=? WHERE submission_id=?";
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("ii",$submission_id,$grade);
+                if($update_stmt->execute())
+                {
+                    return true;#successfully executed query
+                }
+                else
+                {
+                    return false;#failed to execute query
+                }
+            }
+            else
+            {
+                return null;#failed to prepare query
+            }
+        }
+    }
+
+    //Return assignment to a student - teacher cannot edit/comment anymore, assignment has been returned to student
+    public function ReturnAssignment($submission_id)
+    {
+        // global $dbCon;
+        // $teacher_id = $_SESSION["admin_acc_id"];
+    }
+
+
+    //Send an assignment
+    public function SendAssignment($ass_id)
+    {
+        //If the assignment exists
+        if($assignment = DbInfo::AssignmentExists($ass_id))
+        {
+            //Only send the assignment if the assignment hasn't already been sent
+            if(!$assignment["sent"])
+            {
+                global $dbCon;
+                $update_query = "UPDATE assignments SET sent=true WHERE ass_id=?";
+                
+                if($update_stmt = $dbCon->prepare($update_query))
+                {
+                    $update_stmt->bind_param("i",$ass_id);
+                    if($update_stmt->execute())
+                    {
+                        return true;#successfully executed query
+                    }
+                    else
+                    {
+                        return false;#failed to execute query
+                    }
+                }
+                else
+                {
+                    return null;#failed to prepare query
+                }
+            }
+           return false;#if the assignment has already been sent for some reason, return false. We failed to resend it
+            
+
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
 };

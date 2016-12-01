@@ -16,7 +16,9 @@ interface StudentCommentFunctions
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE STUDENT MUST IMPLEMENT
 interface StudentAssignmentFunctions extends StudentCommentFunctions
 {
-    public function SubmitAssignment($ass_id,$student_id,$attachments="");
+    public function SubmitAssignment($ass_id,$student_id,$attachments="");#submit an assignment
+    //public function UpdateAssignmentSubmission($submission_id,$student_id);#Update the assignment submission //TODO add more parameters
+    public function CancelAssignmentSubmission($submission_id,$student_id);#Cancel an assignment submission
 };
 
 #CLASS THAT HANDLES STUDENT RELATED FUNCTIONS
@@ -242,10 +244,17 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
             return null;
         }
     }
+    
+    //Cancel a submission
+    public function CancelAssignmentSubmission($submission_id,$student_id)
+    {
+        
+    }
 
     //Comment on assignment
     public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
     {
         return CommentHandler::CommentOnAss($ass_id,$student_acc_id,$comment_text,"student");        
     }
+
 };

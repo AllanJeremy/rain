@@ -489,10 +489,50 @@ class DbInfo
     //Checks if the assignment with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function AssignmentExists($ass_id)
     {
-        return self::SinglePropertyExists("classrooms","ass_id",$ass_id,"i");
+        
+        if($assignments = self::SinglePropertyExists("assignments","ass_id",$ass_id,"i"))
+        {
+            if($assignments->num_rows > 0 )
+            {
+                foreach($assignments as $assignment)
+                {
+                    return $assignment;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return self::SinglePropertyExists("assignments","ass_id",$ass_id,"i");
+        }
     }
 
-    
+    //Checks if the assignment submission with the given submission_id exists, returns true on success | false if no records found | null if query couldn't execute
+    public static function AssSubmissionExists($submission_id)
+    {
+        if($ass_submissions = self::SinglePropertyExists("ass_submissions","submission_id",$submission_id,"i"))
+        {
+            if($ass_submissions->num_rows > 0 )
+            {
+                foreach($ass_submissions as $submission)
+                {
+                    return $submission;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return self::SinglePropertyExists("ass_submissions","submission_id",$submission_id,"i");
+        }
+    }
+
     //Checks if the schedule with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function ScheduleExists($schedule_id)
     {
