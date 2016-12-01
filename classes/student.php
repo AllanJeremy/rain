@@ -11,6 +11,7 @@ require_once (dirname(__FILE__) ."/../handlers/comment_handler.php");#Handles co
 interface StudentCommentFunctions
 {
     public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text);#Student comment on assignment
+    public function StudentCommentOnAssSubmission($submission_id,$student_acc_id,$comment_text);#Comment on ass. submission
 }
 
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE STUDENT MUST IMPLEMENT
@@ -254,6 +255,12 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
     public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
     {
         return CommentHandler::CommentOnAss($ass_id,$student_acc_id,$comment_text,"student");        
+    }
+
+    //Comment on assignment submission
+    public function StudentCommentOnAssSubmission($submission_id,$student_acc_id,$comment_text)
+    {
+        return CommentHandler::CommentOnAssSubmission($submission_id,$student_acc_id,$comment_text,"teacher");
     }
 
 };
