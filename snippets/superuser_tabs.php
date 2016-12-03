@@ -473,6 +473,15 @@
                 <br>
                 <br>
                 <br>
+                
+                <!--Account limitation message-->
+                <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                    <h6 class="center-align valign grey-text " id="principalCreateLimitMessage">
+                        Account creation limit
+                        <br>
+                        Note : You can only create a maximum of <?php echo Principal::MAX_PRINCIPAL_ACCOUNTS?> principal accounts
+                    </h6>
+                </div>
                 <form class="col s12" method="post" action="">
                     <div class="row">
                         <div class="input-field col s12">
@@ -618,6 +627,16 @@
                 <br>
                 <br>
                 <br>
+                
+                <!--Account limitation message-->
+                <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                    <h6 class="center-align valign grey-text " id="superuserCreateLimitMessage">
+                        Account creation limit
+                        <br>
+                        Note : You can only create a maximum of <?php echo Superuser::MAX_SUPERUSER_ACCOUNTS?> superuser accounts
+                    </h6>
+                </div>
+
                 <form class="col s12" method="post" action="">
                     <div class="row">
                         <div class="input-field col s12">
