@@ -18,7 +18,7 @@ interface StudentCommentFunctions
 interface StudentAssignmentFunctions extends StudentCommentFunctions
 {
     public function SubmitAssignment($ass_id,$student_id,$attachments="");#submit an assignment
-    public function CancelAssignmentSubmission($submission_id,$student_id);#Cancel an assignment submission
+    public function CancelAssignmentSubmission($submission_id);#Cancel an assignment submission
 };
 
 #CLASS THAT HANDLES STUDENT RELATED FUNCTIONS
@@ -246,10 +246,27 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
     }
     
     //Cancel a submission
-    public function CancelAssignmentSubmission($submission_id,$student_id)
+    public function CancelAssignmentSubmission($submission_id)
     {
-        
-    }
+        $update_query = "UPDATE ass_submissions SET submitted=false WHERE submission_id=?";
+
+        if($update_stmt = $dbCon->prepare($update_query))
+        {
+            $update_stmt->bind_param("i",$submission_id);
+            if($update_stmt->execute())
+            {
+                return true;#successfully ran the query
+            }
+            else
+            {
+                return false;#failed to run the query
+            }
+        }
+        else
+        {
+            return null;#failed to prepare the query
+        }
+    }       
 
     //Comment on assignment
     public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
