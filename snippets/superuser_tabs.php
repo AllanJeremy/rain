@@ -12,7 +12,16 @@
             <p><b>First Name: </b><span> <?php echo $_SESSION["admin_first_name"]; ?> </span></p>
             <p><b>Last Name: </b><span> <?php echo $_SESSION["admin_last_name"]; ?> </span></p>
             <p><b>Email Address: </b><span> <?php echo $_SESSION["admin_email"]; ?> </span></p>
-            <p><b>Phone Number: </b><span> <?php echo  $_SESSION["admin_phone"]; ?> </span></p>
+            <p><b>Phone Number: </b><span> <?php
+             if(!empty($_SESSION["admin_phone"]))
+             {
+                 echo $_SESSION["admin_phone"];#if a phone number has been provided, echo it
+             } 
+             else
+             {
+                 echo "N/A";#if no phone number has been provided
+             }
+             ?> </span></p>
             <p><b>Username: </b><span> <?php echo $_SESSION["admin_username"]; ?> </span></p>
             <p><b>Account type: </b><span> <?php echo $_SESSION["admin_account_type"]; ?> </span></p>
         </div>
@@ -667,7 +676,7 @@
                 <div class="row" id="superuserFilterList">
                     <form class="col s12" action="">
                         <div class="row">
-                            <div class="input-field col m5 s9">
+                            <div class="input-field col m10 s9">
                                 <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
                                 <label for="filterListSearch">Search</label>
                             </div>
