@@ -143,7 +143,6 @@ if(isset($_POST['action'])) {
             
             $result = $classroom::CreateClassroom($args['class_name'], $args['class_stream'], $args['class_subject_id'], $args['student_ids'], $args['teacher_id'], $args['classes']);
 
-            
             return $result;
             
             break;

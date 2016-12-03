@@ -85,7 +85,20 @@ var Forms_Templates = function () {
     this.editClassroomForm = function (obj) {
         var templateOutput = '';
         
+        templateOutput += '<h6 class="grey-text text-darken-2">Choosing different values will update the classroom.</h6>';
+        templateOutput += '<br><div class="divider"></div>';
         templateOutput += '<br><div class="row"><form id="editClassroomForm" class="col s12 m10 offset-m1" method="post" action="">';
+        templateOutput += '<div class="row input-field card-color-list">';
+        templateOutput += '<p class="col m4 s12" >Choose a color for the classroom</p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="cyan"/><label for="cyan" class="cyan darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="blue"/><label for="blue" class="blue darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="pink"/><label for="pink" class="pink darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="orange"/><label for="orange" class="orange darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="blueGrey"/><label for="blueGrey" class="blue-grey darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="green"/><label for="green" class="green darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="purple"/><label for="purple" class="purple darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="lime"/><label for="lime" class="lime darken-4"></label></p>';
+        templateOutput += '</div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';
         templateOutput += '<input id="editClassroomName" type="text" class="validate" name="edit_classroom_name" required>';
         templateOutput += '<label for="editClassroomName">Class name</label>';

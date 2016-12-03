@@ -27,7 +27,7 @@ var Lists_Templates = function () {
         templateOutput += '</p>';
         templateOutput += '<p>Assignments sent: ';
         templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
-        templateOutput += ' <a id="openAssignmentClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >';
+        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
@@ -40,6 +40,40 @@ var Lists_Templates = function () {
         templateOutput += '<a href="#"  class="right">View</a>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------------------
+    
+    this.classRoomCardDataUpdate = function (obj) {
+    
+        var templateOutput = '';
+        
+        templateOutput += '<div class="card ' + obj.classes + '">';
+        templateOutput += '<div class="card-content white-text">';
+        templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
+        templateOutput += '<p>Number of students: ';
+        templateOutput += '<span class="php-data">' + obj.totalstudents;
+        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >';
+        templateOutput += '<i class="material-icons">info</i>';
+        templateOutput += '</a>';
+        templateOutput += '</span>';
+        templateOutput += '</p>';
+        templateOutput += '<p>Assignments sent: ';
+        templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
+        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >';
+        templateOutput += '<i class="material-icons">info</i>';
+        templateOutput += '</a>';
+        templateOutput += '</span>';
+        templateOutput += '</p>';
+        templateOutput += '<p>Subject: <span class="php-data">' + obj.classroomsubjectname + '</span></p>';
+        templateOutput += '<p>Stream:  <span class="php-data">' + obj.classroomstreamname + '</span></p>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="card-action">';
+        templateOutput += '<a href="#" data-target="modal1" class="modal-trigger" id="editClassroom">Edit</a>';
+        templateOutput += '<a href="#"  class="right">View</a>';
+        templateOutput += '</div>';
         
         return templateOutput;
     };
@@ -86,7 +120,7 @@ var Lists_Templates = function () {
         templateOutput +=  obj.duedate + '</span></p>';
         templateOutput += '</div>';
         templateOutput += '<div class="card-action right-align">';
-        templateOutput += '<a href="#" class="" onclick="submitAssignment(' + obj.classroomid + ')">Submit</a>';
+        templateOutput += '<a href="#" class="">Submit</a>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';
         
@@ -200,6 +234,25 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.listModalTemplate = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<div id="' + obj.modalId + '" class="modal">';
+        templateOutput += '<div class="modal-content">';
+        templateOutput += '<h4>' + obj.templateHeader + '</h4>';
+        templateOutput += obj.templateBody;
+        templateOutput += '</div>';
+        templateOutput += '<div class="modal-footer">';
+        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
+        templateOutput += '</div>';
+        templateOutput += '</div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------------------
+    
     this.cardListContainer = function (obj) {
         
         var templateOutput = '';
@@ -291,11 +344,91 @@ var Lists_Templates = function () {
     
     //--------------------------
     
-    this.makeStudentList = function (obj) {
+    this.studentList = function (obj) {
         
         var templateOutput = '';
         
         templateOutput += '<li>' + obj.name + '</li>';
+            
+        return templateOutput;
+        
+    };
+    
+    //--------------------------
+    
+    this.studentTable = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<table>';
+        templateOutput += '<thead><tr>';
+        //templateOutput += '<th data-field="action"></th>';
+        templateOutput += '<th data-field="name">Full name</th>';
+        templateOutput += '<th data-field="price">Admission no.</th>';
+        templateOutput += '</tr></thead>';
+        templateOutput += '<tbody>';
+        templateOutput += obj.listData;
+        templateOutput += '</tbody>';
+        templateOutput += '</table>';
+            
+        return templateOutput;
+        
+    };
+    
+    //--------------------------
+    
+    this.studentTableList = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<tr>';
+        templateOutput += '<td>' + obj.id + '</td>';
+        templateOutput += '<td>' + obj.name + '</td>';
+        templateOutput += '</tr>';
+            
+        return templateOutput;
+        
+    };
+    
+    //--------------------------
+    
+    this.assignmentTable = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<table>';
+        templateOutput += '<thead><tr>';
+        //templateOutput += '<th data-field="action"></th>';
+        templateOutput += '<th data-field="name">Assignment name</th>';
+        templateOutput += '<th data-field="price">Subject</th>';
+        templateOutput += '<th data-field="price">Date sent</th>';
+        templateOutput += '<th data-field="price">Attachments</th>';
+        templateOutput += '<th data-field="price">Pass grade</th>';
+        templateOutput += '</tr></thead>';
+        templateOutput += '<tbody>';
+        templateOutput += obj.listData;
+        templateOutput += '</tbody>';
+        templateOutput += '</table>';
+            
+        return templateOutput;
+        
+    };
+    
+    //--------------------------
+    
+    this.assignmentTableList = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<tr>';
+        templateOutput += '<td>' + obj.name + '</td>';
+        templateOutput += '<td>' + obj.subject + '</td>';
+        templateOutput += '<td>' + obj.datesent + '</td>';
+        templateOutput += '<td>' + obj.totalattachments + '</td>';
+        templateOutput += '<td>' + obj.passgrade + '</td>';
+        templateOutput += '</tr>';
+            
+        return templateOutput;
         
     };
     

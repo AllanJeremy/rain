@@ -201,7 +201,31 @@
                     </div>
                 </div>
         </main>
-        <footer>
+        <br>
+        <br>
+        <br>
+        <div class="divider"></div>
+        
+        <footer class="page-footer transparent">
+            <div class="container">
+
+                <div class="row">
+                
+                    <div class="col s6 l4">
+                        <p class="grey-text text-darken-1">© 2016 Copyright Text</p>
+                    </div>
+                    
+                    <div class="col s6 l4">
+                        <p class="grey-text text-darken-1">footer list</p>
+                    </div>
+                    
+                    <div class="col s6 l4">
+                        <a class="right btn btn-flat" href="report.php" id="reportLink">Report a problem</a>
+                    </div>
+
+                </div>
+                
+            </div>
         </footer>
         
         <?php
@@ -215,15 +239,22 @@
         <script>
         $(document).ready(function() {
             $('select').material_select();
-
+            $('.tooltipped').tooltip({delay: 50});
+            $('.modal-trigger').leanModal({dismissible : false});//a workaround the lean-overlay click event
+            $('.dropdown-button').dropdown({
+                constrain_width: false, // Does not change width of dropdown to that of the activator
+                hover: false, // Activate on hover
+                gutter: 0, // Spacing from edge
+                belowOrigin: false, // Displays dropdown below the button
+                alignment: 'right' // Displays dropdown with edge aligned to the left of button
+            });
+            $('.mobile-button-collapse').sideNav();
             //Ensure labels don't overlap text fields
             Materialize.updateTextFields();//doesn't work
         });
             
         function hideSideNav() {
-            $(".mobile-button-collapse").sideNav({menuWidth:240});
-            $('.tooltipped').tooltip({delay: 50});
-            $('.modal-trigger').leanModal({dismissible : false});//a workaround the lean-overlay click event
+            $(".mobile-button-collapse").sideNav('hide');
             //console.log('already open');
         }
 

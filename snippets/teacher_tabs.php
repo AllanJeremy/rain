@@ -17,10 +17,19 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             </span>
                             </a>
                         </div>
+<!--
+                        <div class="col s1">
+                            <a class="btn-flat transparent btn center dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>
+                        </div>
+                        
+                        <ul id="moreHoriz1" class="dropdown-content">
+                            <li class="waves-effect waves-green"><a class="more-card-options black-text" id="moreCardDelete"><i class="material-icons red-text">delete</i> delete</a></li>
+                        </ul> 
+-->
+                        
                     </div>
                     
 
-                    
                     <div class="divider"></div>
                     <br>
                     
@@ -64,14 +73,14 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                     <span class="card-title"><?php echo $classroom['class_name'] ?></span>
                                     <p>Number of students:
                                         <span class="php-data"><?php echo $student_count; ?>  
-                                            <a class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >
+                                            <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
                                         <span class="php-data"><?php echo $ass_count;?>
-                                            <a class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
+                                            <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
@@ -80,7 +89,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                     <p>Stream:  <span class="php-data"><?php echo $stream_name ?></span></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" data-target="" class="modal-trigger" id="editClassroom">Edit</a>
+                                    <a href="#" id="editClassroom">Edit</a>
                                     <a href="#"  class="right">View</a>
                                 </div>
                             </div>

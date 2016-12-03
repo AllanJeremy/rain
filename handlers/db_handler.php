@@ -228,29 +228,29 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 */
     //Update Classroom information
     //TODO Test implementation
-    public static function UpdateClassroomInfo($class_id,$class_name,$stream_id,$subject_id,$student_ids)
+    public static function UpdateClassroomInfo($class_id,$class_name,$stream_id,$subject_id,$student_ids,$classes)
     {
         global $dbCon;#Connection string mysqli object
         
         if(DbInfo::ClassroomExists($class_id))#if the classroom exists - safety check
         {
-            $update_query = "UPDATE classrooms SET class_name=? stream_id=? subject_id=? student_ids=? WHERE class_id=?";
+            $update_query = "UPDATE classrooms SET class_name=?, student_ids=?, stream_id=?, subject_id=?, classes=? WHERE class_id=?";
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                $update_stmt->bind_param("siisi",$class_name,$class_name,$stream_id,$subject_id,$student_ids,$class_id);
+                $update_stmt->bind_param("ssiisi",$class_name,$student_ids,$stream_id,$subject_id,$classes,$class_id);
                 
                 if($update_stmt->execute())
                 {
-                    return true;#successfully updated the classroom details
+                    return 'true';#successfully updated the classroom details
                 }
                 else
                 {
-                    return false;#failed to update the classroom details
+                    return 'null';#failed to update the classroom details
                 }
             }
             else#failed to prepare query
             {
-                return null;
+                return $dbCon->error;
             }
         }
         else
@@ -514,10 +514,11 @@ if(isset($_POST['action'])) {
         case 'UpdateClassroomInfo':
             
             $args = array(
+                'class_id' => $_POST['classroomid'],
                 'class_name' => $_POST['classroomtitle'],
-                'class_stream' => $_POST['classroomstream'],
-                'class_subject_id' => $_POST['subjectid'],
-                'teacher_id' => $_SESSION['admin_acc_id']
+                'stream_id' => $_POST['classroomstream'],
+                'subject_id' => $_POST['classroomsubject'],
+                'classes' => $_POST['classes']
             );
             
             if(isset($_POST['studentids'])) {
@@ -530,13 +531,27 @@ if(isset($_POST['action'])) {
                 
             }
             
-            $result = $dbhandler::UpdateClassroomInfo($class_id,$class_name,$class_stream,$class_subject_id);
+            $result = $dbhandler::UpdateClassroomInfo($args['class_id'],$args['class_name'],$args['stream_id'],$args['subject_id'],$args['student_ids'],$args['classes']);
             
-            return $result;
+            echo $result;
             
             break;
         case 'RemoveStudent':
             
+            
+            //dddd
+            break;
+        case 'DeleteClassRoom':
+          
+            $class_id = $_POST['classroomid'];
+            
+            if(!isset($class_id)) {
+                
+                $result = $dbhandler::DeleteClassRoom($class_id);
+            
+                echo $result;
+                
+            }
             
             //dddd
             break;

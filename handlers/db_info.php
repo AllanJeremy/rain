@@ -2,6 +2,7 @@
 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Connection to the database
 include_once(realpath(dirname(__FILE__) . "/../handlers/error_handler.php")); #Printing error messages
+require_once (realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Allows connection to database
 
 #USED TO RETRIEVE INFORMATION FROM THE DATABASE
 class DbInfo
@@ -634,7 +635,7 @@ class DbInfo
                     }
 
                     //Extract individual student_ids
-                    echo "Students list : ".$student_ids;
+                    echo $student_ids;
 
                 }
             }
@@ -796,7 +797,41 @@ if(isset($_GET['action'])) {
     $DBInfo = new DBInfo();
     
     switch($_GET['action']) {
-        case 'CreateClassroom':
+        case 'StudentIdExists':
+            
+            $std_id = $_GET['adm_no'];
+        
+            $result = $DBInfo::StudentIdExists($std_id);
+            
+            echo json_encode($result);
+            
+            break;
+        case 'GetAllStudentsInClass':
+            
+            $class_id = $_GET['class_id'];
+        
+            $result = $DBInfo::GetAllStudentsInClass($class_id);
+            
+            echo $result;
+            
+            break;
+        case 'GetTeacherAssInClass':
+            
+            $class_id = $_GET['class_id'];
+            $teacher_acc_id = $_SESSION['admin_acc_id'];
+            
+            $result = $DBInfo::GetTeacherAssInClass($class_id,$teacher_acc_id);
+            
+            echo $result;
+            
+            break;
+        case 'GetAssignmentsInClass':
+            
+            $class_id = $_GET['class_id'];
+            
+            $result = $DBInfo::GetAssignmentsInClass($class_id);
+            
+            echo $result;
             
             break;
         case 'getAllTeachers':
@@ -804,6 +839,33 @@ if(isset($_GET['action'])) {
             $result = $DBInfo::getAllTeachers();
             
             return $result;
+            
+            break;
+        case 'ClassroomExists':
+            
+            $result = $DBInfo::ClassroomExists($_GET['class_id']);
+            
+            $num = 0;
+            
+            foreach ($result as $row) {
+                
+                $newResult = array(
+                    "classes" => $row['classes'],
+                    "selectedSubject" => $row['subject_id'],
+                    "selectedStream" => $row['stream_id'],
+                    "selectedStudents" => $row['student_ids'],
+                    "classname" => $row['class_name']
+                );
+                
+                $arrayResult[$num] = $newResult;
+                
+                $num += 1;
+                
+                //echo $num;
+                
+            }
+            
+            echo json_encode($arrayResult);
             
             break;
         case 'GetAllStudents':
