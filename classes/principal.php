@@ -6,6 +6,7 @@ require_once("admin_account.php");
 class Principal extends AdminAccount
 {
     //Variable initialization
+    const MAX_PRINCIPAL_ACCOUNTS = 3;#default is 3 - one for the principal, one for the deputy, one for the director
 
     //Constructor
     function __construct()
@@ -28,7 +29,16 @@ class Principal extends AdminAccount
         $this->phone
         $this->password
     */
-
+    global $dbCon;
+    $select_query = "SELECT acc_id FROM admin_accounts WHERE account_type='principal'";
+    $principal_accounts = 0;#initial value - number of principal accoutns
+    if($result = $dbCon->query($select_query))
+    {
+        $principal_accounts = $result->num_rows;
+    }
+    
+     if($principal_accounts <= self::MAX_PRINCIPAL_ACCOUNTS )
+     {
         #if the teacher details are set (form data filled,phone can be left blank), create account
         if (Validator::PrincipalSignupValid())
         {         
@@ -66,6 +76,12 @@ class Principal extends AdminAccount
 
             return parent::CreateAccount($args);
         }
+        return false;
+     }
+     else
+     {
+         return null;#Cannot create anymore principal accounts
+     }
     }
 
     //Create principal teacher account : when select corresponding teacher account is selected
