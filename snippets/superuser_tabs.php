@@ -707,7 +707,7 @@
                 </div>
 
                 <!--Principal list table-->
-                <table class="bordered responsive-table" id="super_principal_list_table">
+                <table class="bordered responsive-table" id="super_superuser_list_table">
                     <thead>
                         <tr>
                             <th data-field="id">Staff ID</th>
