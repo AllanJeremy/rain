@@ -666,7 +666,51 @@ class DbInfo
     {
         //TODO Add implementation - look for a way of using convenience functions
     }
+/*----------------------------------------------------------------------------------------------------------
+                   COMMENTS - ASSIGNMENTS, ASSIGNMENT SUBMISSIONS & SCHEDULES
+----------------------------------------------------------------------------------------------------------*/
+    #Check if comment exists in a $table | return the comment if it does, false if it doesn't and null if prepare failed
+    public static function CommentExists($table_name,$comment_id)
+    {
+        if($comments = self::SinglePropertyExists($table_name,"comment_id",$comment_id,"i"))
+        {
+            if($comments->num_rows > 0)
+            {
+                foreach($comments as $comment)
+                {
+                    return $comment;#return the first comment found
+                }
+            }
+            else
+            {
+                return false;#if there's <=0 rows then we did not find any comments 
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 
+    #Get assignment comments
+    public static function GetAssComments($ass_id)
+    {
+        return self::SinglePropertyExists("ass_comments","ass_id",$ass_id,"i");
+    }
+
+    #Get assignment submissions comments
+    public static function GetAssSubmissionComments($submission_id)
+    {
+        return self::SinglePropertyExists("ass_submission_comments","submission_id",$submission_id,"i");
+    }
+
+    #Get schedule comments
+    public static function GetScheduleComments($schedule_id)
+    {
+        return self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
+    }
+
+    
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
