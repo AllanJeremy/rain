@@ -22,6 +22,9 @@
     <li class="">
         <a href="#!" id="d_Principal_link" data-activates="principalTab" class="">Principal</a>
     </li>
+    <li class="">
+        <a href="#!" id="d_Superuser_link" data-activates="superuserTab" class="">Superuser</a>
+    </li>
     <li>
         <div class="divider"></div>
     </li>

@@ -592,4 +592,163 @@
             </div>
         </div>
     </div>
+
+    <div class="row main-tab" id="superuserTab">
+        <div class="col s12 m10 offset-m1">
+        <ul class="tabs">
+            <li class="tab col s6">
+                <a href="#createSuperuser">Create</a>
+            </li>
+            <li class="tab col s6">
+                <a class="active" href="#viewSuperuser" >View</a>
+            </li>
+        </ul>
+        </div>
+        <div id="createSuperuser" class="col s12 offset-m1 m10 ">
+            <div class="row">
+                <br>
+                <br>
+                <br>
+                <form class="col s12" method="post" action="">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newSuperuserFirstName" type="text" class="validate" name="new_superuser_first_name" required>
+                            <label for="newSuperuserFirstName">First name<sup>*</sup></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newSuperuserLastName" type="text" class="validate" name="new_superuser_last_name" required>
+                            <label for="newSuperuserLastName">Last name<sup>*</sup></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newSuperuserEmail" type="email" class="validate" name="new_superuser_email" required>
+                            <label for="newSuperuserEmail">Email<sup>*</sup></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newSuperuserPhone" type="text" class="validate" name="new_superuser_phone">
+                            <label for="newSuperuserPhone">Phone (Optional)</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newSuperuserUsername" type="text" class="validate" name="new_superuser_username" required>
+                            <label for="newSuperuserUsername">Username<sup>*</sup></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newStaffId" type="number" class="validate" name="new_superuser_staff_id" required>
+                            <label for="newStaffId">Staff ID<sup>*</sup></label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="right btn" type="submit" >Create account</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="viewSuperuser" class="col s12 offset-m1 m10 ">
+            <div class="row">
+                <br>
+                <br>
+
+            <?php
+                #Try to get principals : true if principals found in database
+                if($superusers = DbInfo::GetAllSuperusers()):
+            ?>
+                <div class="row" id="superuserFilterList">
+                    <form class="col s12" action="">
+                        <div class="row">
+                            <div class="input-field col m5 s9">
+                                <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
+                                <label for="filterListSearch">Search</label>
+                            </div>
+                            <div class="input-field col m2 s3">
+                                <a class="btn btn-floating waves-effect waves-light" type="submit"><i class="material-icons">search</i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s2">
+                                <p>Filter: </p>
+                            </div>
+
+                            <div class="input-field col s10">
+                                <div class="row">
+                                    <div class="input-field col s6 m4">
+                                        <p>
+                                            <input type="checkbox" class="filled-in" id="filled-box-1" />
+                                            <label for="filled-box-1">Staff ID</label>
+                                        </p>
+                                    </div>
+                                    <div class="input-field col s6 m4">
+                                        <p>
+                                            <input type="checkbox" class="filled-in" id="filled-box-2" />
+                                            <label for="filled-box-2">Name</label>
+                                        </p>
+                                    </div>
+                                    <div class="input-field col s6 m4">
+                                        <p>
+                                            <input type="checkbox" class="filled-in" id="filled-box-3" />
+                                            <label for="filled-box-3">Username</label>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!--Principal list table-->
+                <table class="bordered responsive-table" id="super_principal_list_table">
+                    <thead>
+                        <tr>
+                            <th data-field="id">Staff ID</th>
+                            <th data-field="name">Name(s)</th>
+                            <th data-field="name">Username</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php 
+                        foreach ($superusers as $superuser):
+                    ?>
+                        <tr>
+                            <td><?php echo $superuser["staff_id"] ?></td>
+                            <td><?php echo $superuser["first_name"] . " " . $superuser["last_name"] ?></td>
+                            <td><?php echo $superuser["username"] ?></td>
+                        </tr>
+                    <?php
+                        endforeach;
+
+                        else:#no superuser accounts were found 
+                    ?>
+
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1">
+                            <div class="card-panel blue-grey darken-3 blue-grey-text text-lighten-4">
+                                <h5 class="center">NO SUPERUSER ACCOUNTS FOUND</h5>
+                                <div class="divider blue-grey lighten-2"></div>
+                                <p class="blue-grey-text text-lighten-3">No superuser accounts were found. Superuser accounts will appear here once added.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php
+                        endif;
+                    ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
 </div>
