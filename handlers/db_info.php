@@ -652,13 +652,91 @@ class DbInfo
     #Get all classrooms the student with the student id of student_id is in
     public static function GetAllStudentClassrooms($student_id)
     {
-        //TODO Add implementation - look for a way of using convenience functions
+        //WORKING
+        if($classrooms = self::GetAllClassrooms())
+        {
+            $classrooms_found = array();
+              foreach($classrooms as $classroom)
+              {
+                  $student_ids = $classroom["student_ids"];
+
+                  //Try converting the student ids to array.
+                  if($student_id_array = self::GetArrayFromList($student_ids))
+                  {
+                      #check for every student id found
+                      foreach ($student_id_array as $student_id_found)
+                      {
+                          if($student_id == $student_id_found)
+                          {
+                              array_push($classrooms_found,$classroom);#add the classroom to the found classrooms
+                          }
+                      }
+                  } 
+              }
+
+            #Return the classroom found if the array is not empty, otherwise return false
+            if(count($classrooms_found)>0)
+            {
+                return $classrooms_found;
+            }
+            else
+            {
+                return false;
+            }     
+        }
+        else
+        {
+            return self::GetAllClassrooms;
+        }
+        
     }
 
     #Get all assignments sent to the student with the student id of student_id
     public static function GetAllStudentAssignments($student_id)
     {
         //TODO Add implementation - look for a way of using convenience functions
+
+        //Get the student classrooms and check for assignments that 
+        if($classrooms = self::GetAllStudentClassrooms($student_id))
+        {
+            $assignments_found = array();#the assignments found
+            foreach($classrooms as $classroom)
+            {
+                $cur_class_id = $classroom["class_id"];
+
+                if($assignments = self::GetAllAssignments())
+                {
+                    foreach($assignments as $assignment)#for every assignment 
+                    {
+                        $class_id_found = $assignment["class_id"];
+
+                        #if the assignment classroom_id matched a classroom the student belongs to
+                        if($class_id_found == $cur_class_id)
+                        {
+                            // $assignments_found["ass_class_id"] = $class_id_found;
+                            array_push($assignments_found,$assignment);#add the assignment to assignments_found
+                            #add the class_id
+                            echo "<p><b>Type of variable for assignment </b>: ".gettype($assignment)."</p>";
+                        }
+                    }
+                }#assignment check
+            }
+
+            #Return the assignments found if the array is not empty, otherwise return false
+            if(count($assignments_found)>0)
+            {
+                return $assignments_found;
+            }
+            else
+            {
+                return false;
+            }    
+            
+        }#end of classroom check
+        else#no classrooms found
+        {
+            return self::GetAllStudentClassrooms($student_id);
+        }
     }
 
     #Get all student assignment submissions
@@ -666,6 +744,7 @@ class DbInfo
     {
         //TODO Add implementation - look for a way of using convenience functions
     }
+    
 /*----------------------------------------------------------------------------------------------------------
                    COMMENTS - ASSIGNMENTS, ASSIGNMENT SUBMISSIONS & SCHEDULES
 ----------------------------------------------------------------------------------------------------------*/
