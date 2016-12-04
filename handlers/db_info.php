@@ -715,8 +715,6 @@ class DbInfo
                         {
                             // $assignments_found["ass_class_id"] = $class_id_found;
                             array_push($assignments_found,$assignment);#add the assignment to assignments_found
-                            #add the class_id
-                            echo "<p><b>Type of variable for assignment </b>: ".gettype($assignment)."</p>";
                         }
                     }
                 }#assignment check
@@ -742,7 +740,7 @@ class DbInfo
     #Get all student assignment submissions
     public static function GetAllStudentAssSubmissions($student_id)
     {
-        //TODO Add implementation - look for a way of using convenience functions
+        return self::SinglePropertyExists("ass_submissions","student_id",$student_id,"i");#if the student id exists in the ass_submissions table
     }
     
 /*----------------------------------------------------------------------------------------------------------
