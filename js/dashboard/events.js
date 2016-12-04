@@ -23,26 +23,6 @@ var Events = function () {
     //--------------------------------  CLASSROOM EVENTS
     //--------------------------------
     
-    var studentExists = function (admNo, action) {
-
-        console.log(admNo);
-        console.log(action);
-        
-        return $.ajax({
-                url: "handlers/db_info.php",
-                data: {
-                    "action": action,
-                    "adm_no": admNo
-                },
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-
-                    return data;
-                }
-                });
-    };
-    
     var viewStudentsinClassroom = function () {
         
         //ajax get
@@ -58,7 +38,7 @@ var Events = function () {
                 
                 console.log(result);
                 
-                if (!result.trim()) {
+                if (!result.trim() || result === '0') {
                     // is empty or whitespace
                     console.log('empty. No students found');
 
@@ -83,46 +63,130 @@ var Events = function () {
                     
                     var list = '';
                     var admNo = '';
-                    var h = Array();
+                    var XHRs = [];
+                    var ajaxObjectResult = '';
                     
                     $.each(result, function(i, v) {
                         
                         admNo = v;
                         
+                        console.log(v);
                         
-                        h[i] = studentExists(admNo, "StudentIdExists").responseJSON;
-                            /*.done(function (r) {
-                                console.log(r);
-                                console.log('success');
+                        /*XHRs.push($.get("handlers/db_info.php", {"action": "StudentIdExists", "adm_no": admNo}, function (r) {
+                                
+                                //console.log(l);
+                                //console.log(l.username);
+                            }
                             
-                                return r;
-                                listVars.id = r.adm_no;
-                                listVars.name = r.full_name;
+                        ));*/
+                        
+                        
+                        XHRs.push(
+                            $.ajax({
+                                url: "handlers/db_info.php",
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {"action": "StudentIdExists", "adm_no": admNo}
+                            })
+                        );
+                          
+                    });
+                    
+                    var responseLength = (XHRs.length - 1);
+                    
+                    $.each(XHRs, function(b, n) {
 
-                                console.log(listVars);
+                        XHRs[b].done(function(x) {
+                        
+                            console.log(b);
+                            console.log(responseLength);
+                            
+                            if ( b < (responseLength) ) {
+                                
+                                console.log('still less');
+                                
+                                listVars.id = x.adm_no;
+                                listVars.name = x.full_name;
 
                                 list += Lists_Templates.studentTableList(listVars);
 
-                                //console.log(list);
+                            } else {
                             
-                                return list;
-                            
-                            })
-                            .fail(function (r) {
+                                console.log('last one')
+                                
+                                listVars.id = x.adm_no;
+                                listVars.name = x.full_name;
 
-                                console.log('error');
-                            });
-*/
-                        
+                                list += Lists_Templates.studentTableList(listVars);
+
+                                //Continue with the rest of the functions
+                                var listTemplate = {
+                                    "listData" : list
+                                };
+
+                                var listData = Lists_Templates.studentTable(listTemplate);
+
+                                //variables for the modal
+                                var template = {
+                                    modalId: 'ClassRoomStudents',
+                                    templateHeader: 'Students in the classroom',
+                                    templateBody: listData,
+                                };
+
+                                $('main').append(Lists_Templates.modalTemplate(template));
+
+                                $('#' + template.modalId).openModal({dismissible:false});
+
+                                console.log('modal students classroom list created.');
+
+                            }
+                            
+                        });
+                    
                     });
                     
+                    
+                    //console.log(list);
+                    
+                    
+                    /*ajaxObjectResult = $.when(XHRs).then(function(x) {
+
+                        for (x in XHRs) {
+
+                            console.log('done');
+                            console.log(x);
+
+                            listVars.id = x.adm_no;
+                            listVars.name = x.full_name;
+
+                            list += Lists_Templates.studentTableList(listVars);
+
+                            console.log(list);
+                            //console.log(XHRs[s]);
+                            console.log(x.responseText);
+
+
+
+                            listVars.id = x.adm_no;
+                            listVars.name = x.full_name;
+
+                            list += Lists_Templates.studentTableList(listVars);
+
+                            //return list;
+                            
+                            console.log(listVars);  
+
+                        }
+                        
+                    });*/
+                    
+                    //console.log(list);
+                    //console.log(ajaxObjectResult);
+                    
                     list += '';
-                    //h = JSON.parse(h);
-                    console.log(h);
-                    console.log(typeof h);
-                    console.log(h[0].adm_no);
-                    console.log(list);
-                    var listTemplate = {
+                    
+                    
+                    /*var listTemplate = {
                         "listData" : list
                     };
                     
@@ -140,7 +204,7 @@ var Events = function () {
                     $('#' + template.modalId).openModal({dismissible:false});
 
                     console.log('modal students classroom list created.');
-
+*/
                 }
                 
             });
@@ -165,7 +229,7 @@ var Events = function () {
                 
                 console.log('fetching Assignments in classroom id:' + classroomId);
                 
-                if (!result.trim()) {
+                if (!result.trim() || result === '0') {
                     // is empty or whitespace
                     console.log('empty. No assignments found');
 
@@ -177,27 +241,100 @@ var Events = function () {
                     });
 
                 } else {
-
+                    
                     result = cleanArray(result.split(','));
                     
-                    console.log('Students found');
+                    console.log('Assignments found');
+                    console.log(result);
 
-                    var listTemplateVars = {
-                        "assignment_id":""
-                    }
-                    
-                    var listTemplate = Lists_Templates.createClassroomForm(listTemplateVars);
-
-                    //variables for the modal
-                    var template = {
-                        modalId: 'ClassRoomAssignments',
-                        templateHeader: 'Assignments in the classroom',
-                        templateBody: formTemplate,
-                        modalActionType: '',
-                        modalActionTypeText: 'Okay'
+                    var listVars = {
+                        "id":"",
+                        "name":"",
                     };
                     
+                    var list = '';
+                    var classId = '';
+                    var XHRs = [];
+                    var ajaxObjectResult = '';
                     
+                    $.each(result, function(i, v) {
+                        
+                        classId = v;
+                        
+                        console.log(v);
+                        
+                        /*XHRs.push($.get("handlers/db_info.php", {"action": "StudentIdExists", "adm_no": admNo}, function (r) {
+                                
+                                //console.log(l);
+                                //console.log(l.username);
+                            }
+                            
+                        ));*/
+                        
+                        
+                        XHRs.push(
+                            $.ajax({
+                                url: "handlers/db_info.php",
+                                type: 'GET',
+                                dataType: 'json',
+                                data: {"action": "GetTeacherAssInClass", "class_id": classId}
+                            })
+                        );
+                          
+                    });
+                    
+                    var responseLength = (XHRs.length - 1);
+                    
+                    $.each(XHRs, function(b, n) {
+
+                        XHRs[b].done(function(x) {
+                        
+                            console.log(b);
+                            console.log(responseLength);
+                            
+                            if ( b < (responseLength) ) {
+                                
+                                console.log('still less');
+                                
+                                listVars.id = x.adm_no;
+                                listVars.name = x.full_name;
+
+                                list += Lists_Templates.studentTableList(listVars);
+
+                            } else {
+                            
+                                console.log('last one')
+                                
+                                listVars.id = x.adm_no;
+                                listVars.name = x.full_name;
+
+                                list += Lists_Templates.studentTableList(listVars);
+
+                                //Continue with the rest of the functions
+                                var listTemplate = {
+                                    "listData" : list
+                                };
+
+                                var listData = Lists_Templates.studentTable(listTemplate);
+
+                                //variables for the modal
+                                var template = {
+                                    modalId: 'ClassRoomAssignments',
+                                    templateHeader: 'All assignments given to the classroom',
+                                    templateBody: listData,
+                                };
+
+                                $('main').append(Lists_Templates.modalTemplate(template));
+
+                                $('#' + template.modalId).openModal({dismissible:false});
+
+                                console.log('modal assignments classroom list created.');
+
+                            }
+                            
+                        });
+                    
+                    });
                     
                 }
                 

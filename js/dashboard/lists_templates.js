@@ -363,8 +363,8 @@ var Lists_Templates = function () {
         templateOutput += '<table>';
         templateOutput += '<thead><tr>';
         //templateOutput += '<th data-field="action"></th>';
-        templateOutput += '<th data-field="name">Full name</th>';
         templateOutput += '<th data-field="price">Admission no.</th>';
+        templateOutput += '<th data-field="name">Full name</th>';
         templateOutput += '</tr></thead>';
         templateOutput += '<tbody>';
         templateOutput += obj.listData;
