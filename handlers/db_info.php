@@ -743,6 +743,12 @@ class DbInfo
         return self::SinglePropertyExists("ass_submissions","student_id",$student_id,"i");#if the student id exists in the ass_submissions table
     }
     
+    #Get assignment submission by ass_id
+    public static function GetAssSubmissionsByAssId($ass_id)
+    {
+        return self::SinglePropertyExists("ass_submissions","ass_id",$ass_id,"i");#if the assignment id exists in the ass_submissions table
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                    COMMENTS - ASSIGNMENTS, ASSIGNMENT SUBMISSIONS & SCHEDULES
 ----------------------------------------------------------------------------------------------------------*/
