@@ -872,9 +872,9 @@ class DbInfo
             $assignments_found=array();
             foreach($assignments as $assignment)#get individual assignments
             {
-                $class_ids = self::GetArrayFromList($assignment["class_ids"]);#convert the list of class_ids to an array
-                $found_assignment = array_search ($class_id,$class_ids); #true if found, false if not , null if invalid
-                if($found_assignment!==false && isset($assignments_found))
+                $cur_class_id = $assignment["class_id"];
+
+                if($class_id == $cur_class_id)#if the current class id is the class id we are looking for
                 {
                     array_push($assignments_found,$assignment);
                 }
@@ -896,9 +896,9 @@ class DbInfo
             $assignments_found=array();
             foreach($assignments as $assignment)#get individual assignments
             {
-                $class_ids = self::GetArrayFromList($assignment["class_ids"]);#convert the list of class_ids to an array
-                $found_assignment = array_search ($class_id,$class_ids); #true if found, false if not , null if invalid
-                if($found_assignment!==false && isset($assignments_found))
+                $cur_class_id = $assignment["class_id"];
+
+                if($class_id == $cur_class_id)#if the current class id is the class id we are looking for
                 {
                     array_push($assignments_found,$assignment);
                 }
