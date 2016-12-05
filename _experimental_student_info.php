@@ -65,6 +65,16 @@
     {
         ErrorHandler::PrintError("Could not find assignments for the student with student_id ".$student_acc_id);
     }
+    
+    
+    if($studs_not_in_class = DbInfo::GetAllStudentsNotInClass(9))
+    {
+        echo "<h3>Students not in class :<small>Some class</small></h3>";
+        foreach($studs_not_in_class as $std)
+        {
+            echo "<p>".$std["full_name"]."</p>";
+        }
+    }
 
 ?>
 </div>

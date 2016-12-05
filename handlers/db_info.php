@@ -636,7 +636,6 @@ class DbInfo
 
                     //Extract individual student_ids
                     echo $student_ids;
-
                 }
             }
         }
@@ -911,6 +910,51 @@ class DbInfo
             return self::GetSpecificTeacherAssignments($teacher_acc_id);
         }
     }
+
+    #
+    public static function GetAllStudentsNotInClass($class_id)
+    {
+        if($classrooms = self::SinglePropertyExists("classrooms","class_id",$class_id,"i"))
+        {
+            $students_not_in_class = array();
+            foreach($classrooms as $classroom)
+            {
+                $student_ids_array = self::GetArrayFromList($classroom["student_ids"]);#list of the students that are in the list
+                if($students = self::GetAllStudents())
+                {
+                    foreach($students as $student)#for every student
+                    {   
+                        foreach($student_ids_array as $std_id)#check if the student id matches any of the student ids in the classroom
+                        {
+                            if(!($student["adm_no"]==$std_id))
+                            {
+                                array_push($students_not_in_class,$student);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+
+            #if there are students in the array
+            if(count($students_not_in_class)>0)
+            {
+                return $students_not_in_class;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 };#END OF CLASS
 
 /*
@@ -921,14 +965,13 @@ class DbInfo
 
 if(isset($_GET['action'])) {
     
-    $DBInfo = new DBInfo();
     
     switch($_GET['action']) {
         case 'StudentIdExists':
             
             $std_id = $_GET['adm_no'];
         
-            $result = $DBInfo::StudentIdExists($std_id);
+            $result = DbInfo::StudentIdExists($std_id);
             
             echo json_encode($result);
             
@@ -937,7 +980,7 @@ if(isset($_GET['action'])) {
             
             $class_id = $_GET['class_id'];
         
-            $result = $DBInfo::GetAllStudentsInClass($class_id);
+            $result = DbInfo::GetAllStudentsInClass($class_id);
             
             echo $result;
             
@@ -947,7 +990,7 @@ if(isset($_GET['action'])) {
             $class_id = $_GET['class_id'];
             $teacher_acc_id = $_SESSION['admin_acc_id'];
             
-            $result = $DBInfo::GetTeacherAssInClass($class_id,$teacher_acc_id);
+            $result = DbInfo::GetTeacherAssInClass($class_id,$teacher_acc_id);
             
             echo $result;
             
@@ -963,14 +1006,14 @@ if(isset($_GET['action'])) {
             break;
         case 'getAllTeachers':
             
-            $result = $DBInfo::getAllTeachers();
+            $result = DbInfo::getAllTeachers();
             
             return $result;
             
             break;
         case 'ClassroomExists':
             
-            $result = $DBInfo::ClassroomExists($_GET['class_id']);
+            $result = DbInfo::ClassroomExists($_GET['class_id']);
             
             $num = 0;
             
@@ -996,8 +1039,8 @@ if(isset($_GET['action'])) {
             
             break;
         case 'GetAllStudents':
+            $result = DbInfo::GetAllStudents();
             
-            $result = $DBInfo::GetAllStudents();
             
             $num = 0;
             
@@ -1019,9 +1062,38 @@ if(isset($_GET['action'])) {
             echo json_encode($arrayResult);
             
             break;
+        case 'GetAllStudentsNotInClass':
+            $class_id = $_GET['class_id'];
+            
+            $result="";
+            if($students_found = DbInfo::GetAllStudentsNotInClass($class_id))
+            {
+                $num = 0;
+
+                foreach ($students_found as $student) {
+                    $newResult = array(
+                        "value" => $student['adm_no'],
+                        "name" => $student['full_name']
+                    );
+                    
+                    $arrayResult[$num] = $newResult;
+                    
+                    $num += 1;
+                }
+                echo json_encode($arrayResult);
+
+                //Cleanup
+            }
+            else
+            {
+                $result="0";
+            }
+
+            
+        break;
         case 'GetAllStreams':
             
-            $result = $DBInfo::GetAllStreams();
+            $result = DbInfo::GetAllStreams();
             
             $num = 0;
             
@@ -1045,7 +1117,7 @@ if(isset($_GET['action'])) {
             break;
         case 'GetAllSubjects':
             
-            $result = $DBInfo::GetAllSubjects();
+            $result = DbInfo::GetAllSubjects();
             
             $num = 0;
             
