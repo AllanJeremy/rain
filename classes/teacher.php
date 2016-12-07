@@ -22,7 +22,8 @@ interface TeacherAssignmentFunctions extends TeacherCommentFunctions
             "teacher_id"=>0,
             "ass_title"=>"",
             "ass_description"=>"",
-            "class_ids"=>"",
+            "class_id"=>0,
+            "submission_text"=>"",
             "due_date"=>"",
             "attachments"=>"",
             "file_option"=>"view",
@@ -109,28 +110,31 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
 
     //Create/send an Assignment
     public function CreateAssignment($args=array(
-        "teacher_id"=>0,
-        "ass_title"=>"",
-        "ass_description"=>"",
-        "class_ids"=>"",
-        "due_date"=>"",
-        "attachments"=>"",
-        "file_option"=>"view",
-        "max_grade"=>100,
-        "comments_enabled"=>true)
+            "teacher_id"=>0,
+            "ass_title"=>"",
+            "ass_description"=>"",
+            "class_id"=>0,
+            "submission_text"=>"",
+            "due_date"=>"",
+            "attachments"=>"",
+            "file_option"=>"view",
+            "max_grade"=>100,
+            "comments_enabled"=>true,
+            "sent"=>true)
     )
     {
         global $dbCon;#database connection
 
-        $insert_query = "INSERT INTO assignments(teacher_id,ass_title,ass_description,class_ids,due_date,attachments,file_option,max_grade,comments_enabled,sent) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        $insert_query = "INSERT INTO assignments(teacher_id,ass_title,ass_description,class_id,submission_text,due_date,attachments,file_option,max_grade,comments_enabled,sent) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            $insert_stmt->bind_param("issssssssi",
+            $insert_stmt->bind_param("ississssssi",
                 $args["teacher_id"],
                 $args["ass_title"],
                 $args["ass_description"],
-                $args["class_ids"],
+                $args["class_id"],
+                $args["submission_text"],
                 $args["due_date"],
                 $args["attachments"],
                 $args["file_option"],

@@ -279,14 +279,43 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 -----------------------------------------------------------------------------------------
 */
     //Update Assignment information
-    //TODO Add parameters for UpdateAssignmentInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
-    public static function UpdateAssignmentInfo()
+    public static function UpdateAssignmentInfo($args=array(    
+            "ass_id"=>0,
+            "teacher_id"=>0,
+            "ass_title"=>"",
+            "ass_description"=>"",
+            "class_id"=>0,
+            "due_date"=>"",
+            "attachments"=>"",
+            "file_option"=>"view",
+            "max_grade"=>100,
+            "comments_enabled"=>true
+            )
+    )//TO TEST
     {
         global $dbCon;#Connection string mysqli object
 
-        if(DbInfo::AssignmentExists($ass_id))#if the assignment exists - safety check
+        if(DbInfo::AssignmentExists($args["ass_id"])#if the assignment exists - safety check
         {
+            $update_query = "UPDATE assignments SET ass_title=? ass_description=?,class_id=?,due_date=?,attachments=?,file_option=?,max_grade=?,comments_enabled=? WHERE teacher_id=? AND ass_id=?";
 
+            if($update_stmt = $dbCon->prepare())
+            {
+                $update_stmt->bind_param("ssisssiiii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"],$args["ass_id"]);
+
+                if($update_stmt->execute())
+                {
+                    return true;#successfully updated the assignment
+                }
+                else
+                {
+                    return false;#failed to execute query
+                }
+            }
+            else
+            {
+                return null;#failed to prepare query
+            }
         }
         else
         {
@@ -319,13 +348,32 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 -----------------------------------------------------------------------------------------
 */
     //Update Assignment submission information
-    //TODO Add parameters for UpdateAssignmentSubmissionInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
-    public static function UpdateAssignmentSubmissionInfo()
+    public static function UpdateAssignmentSubmissionInfo($submission_id,$student_id,$attachments,$submission_text,$submitted=true)//TO TEST
     {
+        global $dbCon;
+
         #if the assignment exists - safety check
         if(DbInfo::AssSubmissionExists($submission_id))
         {
-            
+            $update_query="UPDATE ass_submissions SET attachments=? submitted=? submission_text=? WHERE submission_id=? AND student_id=?";
+
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("sisii",$attachments,$submitted,$submission_text,$submission_id,$student_id);
+                
+                if($update_stmt->execute())
+                {
+                    return true;#successfully updated the assignment submission
+                }
+                else
+                {
+                    return false;#failed to execute the query
+                }
+            }
+            else
+            {
+                return null;#failed to prepare query
+            }
         }
         else
         {
@@ -422,7 +470,6 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 */
 
     //Update Schedule information
-    //TODO Add parameters for UpdateScheduleInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
     public static function UpdateScheduleInfo($schedule_id,$schedule_title,$schedule_description,$teacher_id,$class_id,$schedule_date,$schedule_time)
     {
         global $dbCon;#Connection string mysqli object
@@ -473,9 +520,14 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     }
 /*
 -----------------------------------------------------------------------------------------
-                             DELETING SCHEDULE COMMENTS
+                             UPDATING AND DELETING SCHEDULE COMMENTS
 -----------------------------------------------------------------------------------------
 */
+    #Teacher update ass. comment
+    public static function UpdateScheduleComment($comment_id,$comment_text)
+    {
+        return self::UpdateComment("schedule_comments",$comment_id,$comment_text);
+    }
     #Teacher delete ass. comment
     public static function DeleteScheduleComment($comment_id)
     {
