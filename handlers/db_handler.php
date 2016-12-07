@@ -423,13 +423,30 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
     //Update Schedule information
     //TODO Add parameters for UpdateScheduleInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
-    public static function UpdateScheduleInfo()
+    public static function UpdateScheduleInfo($schedule_id,$schedule_title,$schedule_description,$teacher_id,$class_id,$schedule_date,$schedule_time)
     {
         global $dbCon;#Connection string mysqli object
 
         if(DbInfo::ScheduleExists($schedule_id))#if the schedule exists - safety check
         {
+                $update_query = "UPDATE schedules SET schedule_title=? schedule_description=? class_id=? schedule_date=? schedule_time=? WHERE teacher_id=? AND schedule_id=?";
+                if($update_stmt = $dbCon->prepare($update_query))
+                {
+                    $update_stmt->bind_param("ssissii",$schedule_title,$schedule_description,$class_id,$schedule_date,$schedule_time,$teacher_id,$schedule_id);
 
+                    if($update_stmt->execute())
+                    {
+                        return true;#successfully updated the schedule
+                    }
+                    else
+                    {
+                        return false;;
+                    }
+                }
+                else
+                {
+                    return null;
+                } 
         }
         else
         {
@@ -454,8 +471,16 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return false;
         }       
     }
-
-
+/*
+-----------------------------------------------------------------------------------------
+                             DELETING SCHEDULE COMMENTS
+-----------------------------------------------------------------------------------------
+*/
+    #Teacher delete ass. comment
+    public static function DeleteScheduleComment($comment_id)
+    {
+       return self::DeleteBasedOnSingleProperty("schedule_comments","comment_id",$comment_id,"i");
+    }
 /*
 -----------------------------------------------------------------------------------------
                               UPDATING AND DELETING TESTS
