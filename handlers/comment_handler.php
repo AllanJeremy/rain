@@ -73,15 +73,21 @@ class CommentHandler
         }
     }
 
-    //Comment on assignment
+    #Comment on assignment
     public static function CommentOnAss($ass_id,$acc_id,$comment_text,$commentor_type="student")
     {
         return self::CommentOnItem("ass_comments","ass_id",$ass_id,$acc_id,$comment_text,$commentor_type);
     } 
 
-    //Comment on assignment submission
+    #Comment on assignment submission
     public static function CommentOnAssSubmission($submission_id,$acc_id,$comment_text,$commentor_type="student")
     {
         return self::CommentOnItem("ass_submission_comments","submission_id",$submission_id,$acc_id,$comment_text,$commentor_type);
-    } 
+    }
+
+    #Comment on schedule 
+    public static function CommentOnSchedule($schedule_id,$acc_id,$comment_text,$commentor_type="teacher")
+    {
+        return self::CommentOnItem("schedule_comments","schedule_id",$submission_id,$acc_id,$comment_text,$commentor_type);
+    }
 };
