@@ -295,7 +295,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
     {
         global $dbCon;#Connection string mysqli object
 
-        if(DbInfo::AssignmentExists($args["ass_id"])#if the assignment exists - safety check
+        if(DbInfo::AssignmentExists($args["ass_id"]))#if the assignment exists - safety check
         {
             $update_query = "UPDATE assignments SET ass_title=? ass_description=?,class_id=?,due_date=?,attachments=?,file_option=?,max_grade=?,comments_enabled=? WHERE teacher_id=? AND ass_id=?";
 
