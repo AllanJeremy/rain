@@ -7,16 +7,20 @@ var Events = function () {
     this.__construct = function () {
         console.log('events created');
         
+        //global inits
         cleanOutModals();
+        closeModalsEvent();
+        //classroom inits
         createClassroom();
         editClassroomCard();
         submitNewClassroom();
         addStudentsInClassroom();
-        closeModalsEvent();
         submitEdittedClassroom();
         viewStudentsinClassroom();
         viewAssignmentsinClassroom();
-        
+        //assignment inits
+        addClassroomToAssignment();
+        submitNewAssignment();
     };
     
     //----------------------------
@@ -36,6 +40,8 @@ var Events = function () {
                 
                 console.log('fetching students in classroom id:' + classroomId);
                 
+            }).success(function (result) {
+                
                 console.log(result);
                 
                 if (!result.trim() || result === '0') {
@@ -51,6 +57,8 @@ var Events = function () {
 
                 } else {
                     
+                    result = result.replace(/0,/, '');
+                    console.log(result);
                     result = cleanArray(result.split(','));
                     
                     console.log('Students found');
@@ -93,15 +101,18 @@ var Events = function () {
                     });
                     
                     var responseLength = (XHRs.length - 1);
+                    var k = 0;
                     
                     $.each(XHRs, function(b, n) {
 
+                        
+                        
                         XHRs[b].done(function(x) {
                         
                             console.log(b);
                             console.log(responseLength);
                             
-                            if ( b < (responseLength) ) {
+                            if ( k < (responseLength) ) {
                                 
                                 console.log('still less');
                                 
@@ -110,6 +121,8 @@ var Events = function () {
 
                                 list += Lists_Templates.studentTableList(listVars);
 
+                                k++;
+                                
                             } else {
                             
                                 console.log('last one')
@@ -207,7 +220,8 @@ var Events = function () {
 */
                 }
                 
-            });
+                
+            }, 'text');
             
         });
       
@@ -411,7 +425,6 @@ var Events = function () {
                     
                 }
 
-
                 totalOutput +='';
 
                 $.get("handlers/db_info.php", {"action" : "GetAllStreams"}, function (result2) {
@@ -575,7 +588,7 @@ var Events = function () {
                             
                             $('.no-data-message').remove();
                             
-                            $('#classroomTab').append(Lists_Templates.cardListContainer);
+                            $('#classroomTab').append(Lists_Templates.classroomCardListContainer);
                             
                             //recall classroomTab after appending
                             classroomTab = $('#classroomTab #classroomCardList');
@@ -792,7 +805,12 @@ var Events = function () {
                             templateHeader: 'Edit Classroom',
                             templateBody: formTemplate,
                             modalActionType: 'type="submit"',
-                            modalActionTypeText: 'Update classroom'
+                            modalActionTypeText: 'Update classroom',
+                            extraActions: Lists_Templates.editExtraFooterActions({
+                                "Delete" : true,
+                                "Archive" : true,
+                                "Reload" : false
+                            })
                         };
 
                         //load the modal in the DOM
@@ -817,12 +835,18 @@ var Events = function () {
                         
                         Materialize.updateTextFields();
                         
+                        $('.dropdown-button').dropdown({
+                            hover: false,
+                            alignment: 'bottom',
+                            constrain_width: false, // Does not change width of dropdown to that of the activator
+                            gutter: 300,
+                            belowOrigin: false
+                        });
+                        
                         console.log('modal edit classroom form created.');
-
-        
+                        
                         if(resultData.selectedStudents) {
                         
-                            
                             var previouslySelectedStudents = resultData.selectedStudents;
                             
                             var totalSelected = previouslySelectedStudents.split(',').length - 1;
@@ -951,7 +975,7 @@ var Events = function () {
 
                     var classroomTab = $('#classroomTab #classroomCardList');
         /*4*/
-                    var Result = Lists_Templates.classRoomCardDataUpdate(formResults);
+                    var Result = Lists_Templates.classRoomCardData(formResults);
         /*5*/
                     var hook = $('.card.to-edit').parent('.card-col');
                     
@@ -997,8 +1021,8 @@ var Events = function () {
     var addStudentsInClassroom = function () {
         console.log('students will be added');
         
-        var checkboxEl = 'input#addStudentsToClassroom';
-        var checkedCheckboxEl = 'input#addStudentsToClassroom:checked';
+        var checkboxEl = 'input#addStudentsToClassroom, input#addMoreStudentsToClassroom';
+        var checkedCheckboxEl = 'input#addStudentsToClassroom:checked, input#addMoreStudentsToClassroom:checked';
         var modal_id = 'NewClassStudentList';
                         
         var main = $('main');
@@ -1010,6 +1034,10 @@ var Events = function () {
             var hook = $('.student-list');
             
             console.log('V- ' + $(checkboxEl).val());
+            console.log('V- ' + $(checkboxEl).attr('name'));
+            console.log('V- ' + $(checkboxEl).attr('id'));
+            
+            var action = $(checkboxEl).val();
             
             console.log('length- ' + $(checkedCheckboxEl).length);
             
@@ -1018,106 +1046,211 @@ var Events = function () {
                 //remove existing esomo modal
                 cleanOutModal('#esomoModal' + modal_id);
                 
+                var classiD = localStorage.getItem("cardId");
+                
                 console.log('adding list');
                 
                 var subject = $('select#newClassroomSubject').val();
-                
                 //console.log('args-' + subject + stream);
                 
-                $.get('handlers/db_info.php', {"action" : "GetAllStudents"}, function (result) {
-                    console.log('get results:- ');
+                if( $(checkboxEl).val() === "GetAllStudentsNotInClass" ) {
                     
-                    result = JSON.parse(result);
-                    console.log(result);
-                    console.log(typeof result);
-                    
-                    if (typeof result === 'undefined') {
-                        
-                    }
-                    
-                    if (typeof result === 'object') {
-                        //loop
-                        
-                        var output = '';
-                        var count = 0;
-                        var autocompletedata = '{';//limit autocomplete dropdown to 20;
-                            
-                        for (var key in result) {
-                            
-                            output += Forms_Templates.formOptionsTemplate(result[key]);
-                            
-                            if (count < 21 && result[key].name != 'undefined') {
-                            
-                                if (key > 0) {
-                                    
-                                    autocompletedata += ',';
-                                
-                                }
-                                
-                                autocompletedata += '"';
-                                autocompletedata += result[key].name;
-                                autocompletedata += '" : ';
-                                autocompletedata += 'null';
 
-                                count++;
-                                
-                            }
-                            
+
+                    $.get('handlers/db_info.php', {"action" : action, "class_id" : localStorage.getItem("cardId")}, function (result) {
+                        console.log('get results:- ');
+
+                        result = JSON.parse(result);
+                        console.log(result);
+                        console.log(typeof result);
+
+                        if (typeof result === 'undefined') {
+
                         }
 
-                        output += '';
-                        
-                        autocompletedata += '}';
-                        
-                        console.log(autocompletedata);
-                        
-                        
-                        autocompletedata = jQuery.parseJSON(autocompletedata);
+                        if (typeof result === 'object') {
+                            //loop
 
-                        console.log(autocompletedata);
-                        
-                        $('input#searchStudentFormList').autocomplete({
-                            data: autocompletedata
-                        });
+                            var output = '';
+                            var count = 0;
+                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
 
-                        var optionslist = output;
-                        
-                        var formList = Forms_Templates.makeStudentFormList(optionslist);
-                        
-                        //open the esomo modal Template
-                        //append the list to esomo modal
-                        
-                        var modal_header = 'Add students to the classroom';
-                        
-                        var modal_body = formList;
-            
-                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
-                        
-                        $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
-                        
-                        console.log(formList);
-                        
-                        //Init functions needed for the esomo actions
-                        updateEsomoModalProgress(modal_id);
-                        
-                        var action = 'morph-in';
-                        
-                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-                         
-                            addToForm(action, hook, modal_id); //when add students is clicked//
-                        
-                        }); //when add students is clicked//
-                        
-                        
-                    }
+                            for (var key in result) {
 
-                })
-                  .success( function (result) {
-                    
-                    console.log('success');
-                    
-                }, 'json');
+                                output += Forms_Templates.formOptionsTemplate(result[key]);
+
+                                if (count < 21 && result[key].name != 'undefined') {
+
+                                    if (key > 0) {
+
+                                        autocompletedata += ',';
+
+                                    }
+
+                                    autocompletedata += '"';
+                                    autocompletedata += result[key].name;
+                                    autocompletedata += '" : ';
+                                    autocompletedata += 'null';
+
+                                    count++;
+
+                                }
+
+                            }
+
+                            output += '';
+
+                            autocompletedata += '}';
+
+                            console.log(autocompletedata);
+
+
+                            autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                            console.log(autocompletedata);
+
+                            $('input#searchStudentFormList').autocomplete({
+                                data: autocompletedata
+                            });
+
+                            var optionslist = output;
+
+                            var formList = Forms_Templates.makeStudentFormList(optionslist);
+
+                            //open the esomo modal Template
+                            //append the list to esomo modal
+
+                            var modal_header = 'Add students to the classroom';
+
+                            var modal_body = formList;
+
+                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+
+                            $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
+
+                            console.log(formList);
+
+                            //Init functions needed for the esomo actions
+                            updateEsomoModalProgress(modal_id);
+
+                            var action2 = 'morph-in';
+
+                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                                addToForm(action2, hook, modal_id); //when add students is clicked//
+
+                            }); //when add students is clicked//
+
+
+                        }
+
+                    })
+                      .success( function (result) {
+
+                        console.log('success');
+
+                    }, 'json');
                 
+                } else if ( $(checkboxEl).val() === "GetAllStudents" ) {
+                    
+                    
+
+
+                    $.get('handlers/db_info.php', { "action" : action/*, "class_id" : localStorage.getItem("cardId")*/ }, function (result) {
+                        console.log('get results:- ');
+
+                        result = JSON.parse(result);
+                        console.log(result);
+                        console.log(typeof result);
+
+                        if (typeof result === 'undefined') {
+
+                        }
+
+                        if (typeof result === 'object') {
+                            //loop
+
+                            var output = '';
+                            var count = 0;
+                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
+
+                            for (var key in result) {
+
+                                output += Forms_Templates.formOptionsTemplate(result[key]);
+
+                                if (count < 21 && result[key].name != 'undefined') {
+
+                                    if (key > 0) {
+
+                                        autocompletedata += ',';
+
+                                    }
+
+                                    autocompletedata += '"';
+                                    autocompletedata += result[key].name;
+                                    autocompletedata += '" : ';
+                                    autocompletedata += 'null';
+
+                                    count++;
+
+                                }
+
+                            }
+
+                            output += '';
+
+                            autocompletedata += '}';
+
+                            console.log(autocompletedata);
+
+
+                            autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                            console.log(autocompletedata);
+
+                            $('input#searchStudentFormList').autocomplete({
+                                data: autocompletedata
+                            });
+
+                            var optionslist = output;
+
+                            var formList = Forms_Templates.makeStudentFormList(optionslist);
+
+                            //open the esomo modal Template
+                            //append the list to esomo modal
+
+                            var modal_header = 'Add students to the classroom';
+
+                            var modal_body = formList;
+
+                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+
+                            $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
+
+                            console.log(formList);
+
+                            //Init functions needed for the esomo actions
+                            updateEsomoModalProgress(modal_id);
+
+                            var action2 = 'morph-in';
+
+                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                                addToForm(action2, hook, modal_id); //when add students is clicked//
+
+                            }); //when add students is clicked//
+
+
+                        }
+
+                    })
+                      .success( function (result) {
+
+                        console.log('success');
+
+                    }, 'json');
+                }
+  
             } else if ($(checkedCheckboxEl).length < 1) {
             
                 cleanOutModal('#esomoModal' + modal_id);
@@ -1140,7 +1273,456 @@ var Events = function () {
     
     //--------------------------------
     
-    var addToForm = function (action, hook, modal_id) {
+    var addClassroomToAssignment = function () {
+        console.log('classrooms will be added');
+        
+        var checkboxEl = 'input#addClassroomToAssignment, input#addMoreClassroomToAssignment';
+        var checkedCheckboxEl = 'input#addClassroomToAssignment:checked, input#addMoreClassroomToAssignment:checked';
+        var modal_id = 'NewAssClassroomList';
+                        
+        var main = $('main');
+        
+        main.on('change', checkboxEl, function (e) {
+        
+            e.preventDefault();
+            
+            var hook = $('.classroom-list');
+            
+            console.log('V- ' + $(checkboxEl).val());
+            console.log('V- ' + $(checkboxEl).attr('name'));
+            console.log('V- ' + $(checkboxEl).attr('id'));
+            
+            var action = $(checkboxEl).val();
+            
+            console.log('length- ' + $(checkedCheckboxEl).length);
+            
+            if($(checkedCheckboxEl).length > 0) {//checked
+                
+                //remove existing esomo modal
+                cleanOutModal('#esomoModal' + modal_id);
+                
+                console.log('adding list');
+                
+                if( $(checkboxEl).val() === "GetSpecificTeacherClassrooms" ) {
+                    
+
+
+                    $.get('handlers/db_info.php', {"action" : action}, function (result) {
+                        console.log('get results:- ');
+
+                        result = JSON.parse(result);
+                        console.log(result);
+                        console.log(typeof result);
+
+                        if (typeof result === 'undefined') {
+
+                        }
+
+                        if (typeof result === 'object') {
+                            //loop
+
+                            var output = '';
+                            var count = 0;
+                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
+
+                            for (var key in result) {
+
+                                result[key].totalstudents = result[key].selectedStudents.split(',').length - 1;
+                                
+                                output += Lists_Templates.classroomTableList(result[key]);
+
+                                
+                                if (count < 21 && result[key].name != 'undefined') {
+
+                                    if (key > 0) {
+
+                                        autocompletedata += ',';
+
+                                    }
+
+                                    autocompletedata += '"';
+                                    autocompletedata += result[key].name;
+                                    autocompletedata += '" : ';
+                                    autocompletedata += 'null';
+
+                                    count++;
+
+                                }
+
+                            }
+
+                            output += '';
+
+                            autocompletedata += '}';
+
+                            console.log(autocompletedata);
+
+
+                            autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                            console.log(autocompletedata);
+
+
+                            var list = {
+                                
+                                "listData" : output
+                            
+                            };
+
+                            var List = Lists_Templates.classroomTable(list);
+
+                            //open the esomo modal Template
+                            //append the list to esomo modal
+
+                            var modal_header = 'Send assignment to classrooms';
+
+                            var modal_body = List;
+
+                            var classroomListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+                            
+                            $('input#searchStudentFormList').autocomplete({
+                                data: autocompletedata
+                            });
+
+                            $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
+
+                            console.log(List);
+
+                            //Init functions needed for the esomo actions
+                            updateEsomoModalProgress(modal_id);
+
+                            var action2 = 'morph-in';
+
+                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                                addToForm(action2, hook, modal_id); //when add students is clicked//
+
+                            }); //when add students is clicked//
+
+
+                        }
+
+                    })
+                      .success( function (result) {
+
+                        console.log('success');
+
+                    }, 'json');
+                
+                } else if ( $(checkboxEl).val() === "GetAllStudents" ) {
+                    
+                    
+
+
+                    $.get('handlers/db_info.php', { "action" : action/*, "class_id" : localStorage.getItem("cardId")*/ }, function (result) {
+                        console.log('get results:- ');
+
+                        result = JSON.parse(result);
+                        console.log(result);
+                        console.log(typeof result);
+
+                        if (typeof result === 'undefined') {
+
+                        }
+
+                        if (typeof result === 'object') {
+                            //loop
+
+                            var output = '';
+                            var count = 0;
+                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
+
+                            for (var key in result) {
+
+                                output += Forms_Templates.formOptionsTemplate(result[key]);
+
+                                if (count < 21 && result[key].name != 'undefined') {
+
+                                    if (key > 0) {
+
+                                        autocompletedata += ',';
+
+                                    }
+
+                                    autocompletedata += '"';
+                                    autocompletedata += result[key].name;
+                                    autocompletedata += '" : ';
+                                    autocompletedata += 'null';
+
+                                    count++;
+
+                                }
+
+                            }
+
+                            output += '';
+
+                            autocompletedata += '}';
+
+                            console.log(autocompletedata);
+
+
+                            autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                            console.log(autocompletedata);
+
+
+                            var optionslist = output;
+
+                            var formList = Forms_Templates.makeStudentFormList(optionslist);
+
+                            //open the esomo modal Template
+                            //append the list to esomo modal
+
+                            var modal_header = 'Add students to the classroom';
+
+                            var modal_body = formList;
+
+                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+                            
+                            $('input#searchStudentFormList').autocomplete({
+                                data: autocompletedata
+                            });
+
+                            $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
+
+                            console.log(formList);
+
+                            //Init functions needed for the esomo actions
+                            updateEsomoModalProgress(modal_id);
+
+                            var action2 = 'morph-in';
+
+                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                                addToForm(action2, hook, modal_id); //when add students is clicked//
+
+                            }); //when add students is clicked//
+
+
+                        }
+
+                    })
+                      .success( function (result) {
+
+                        console.log('success');
+
+                    }, 'json');
+                }
+  
+            } else if ($(checkedCheckboxEl).length < 1) {
+            
+                cleanOutModal('#esomoModal' + modal_id);
+                
+                console.log('removing list');
+            
+                hook.fadeOut(300, function () {
+                    
+                    $(this).html(' ');
+                    
+                    $(this).show();
+                    
+                });
+                
+            }
+            
+        });
+        
+    };
+        
+    //------------------------------
+    //--------------------------------  END OF CLASSROOM EVENTS AND FUNCTIONS
+    //--------------------------------
+        
+    //------------------------------
+    //--------------------------------  ASSIGNMENT EVENTS AND FUNCTIONS
+    //--------------------------------
+    
+    var submitNewAssignment = function (str1, str2) {
+        
+        //get form variables
+        //validate the variables
+        //submit the variables
+        //prepend the new classroom card to the list
+        //initialize tooltip
+        //initialize classroom events
+        //close modal
+        
+        $('main').on('click', '.main-tab#createAssignmentsTab a#createNewAssignment', function (e) {
+            e.preventDefault();
+            
+            console.log('submit event handler ready');
+            
+            if ($('#assignmentCardList .card-col').first().attr('data-classroom-id')) {
+                var str2 = $('#assignmentCardList .card-col').first().attr('data-classroom-id');
+            } else {
+                var str2 = (0-1);
+            }
+            
+            var newAssignmentTitle = $('#createAssignmentsTab form#createAssignmentForm input#newAssignmentName').val();
+            var newAssignmentDescription = $('#createAssignmentsTab form#createAssignmentForm textarea#assignmentInstructions').val();
+            var newAssignmentCanComment = $('#createAssignmentsTab form#createAssignmentForm  .classroom-list .classrooms input[type="checkbox"]:checked#canComment').val();
+            var newAssignmentDueDate = $('#createAssignmentsTab form#createAssignmentForm input#assDueDate').val();
+            var newAssignmentResources = $('#createAssignmentsTab form#createAssignmentForm .file-field input[type="file"]').val();
+
+            if (newAssignmentCanComment === 'on') {
+                
+                newAssignmentCanComment = 1;
+                
+            } else {
+                
+                newAssignmentCanComment = 0;
+                
+            }
+            
+            console.log($('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms'));
+         
+            if (typeof $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms') === 'undefined') {
+            
+                var newAssignmentClassIds = 0;
+
+            } else {
+
+                var newAssignmentClassIds = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms');
+
+            }
+
+            if (typeof $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms') === 'undefined') {
+
+                var totalClassrooms = 0;
+
+            } else {
+
+                var totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms');
+
+            }
+            
+            console.log('ass title: ' + newAssignmentTitle);
+            console.log('adding classrooms : ' + newAssignmentClassIds);
+            console.log('total classrooms to add : ' + totalClassrooms);
+            console.log('cancomment : ' + newAssignmentCanComment);
+            console.log('ass description : ' + newAssignmentDescription);
+            console.log('resources : ' + newAssignmentResources);
+            
+            //validate first
+            if (newAssignmentTitle !== '' && newAssignmentDescription !== '' && newAssignmentDueDate !== '') {
+                    
+                var formResults = {
+                    action : 'CreateAssignment',
+                    totalClassrooms: totalClassrooms,
+                    assignmenttitle : newAssignmentTitle,
+                    assignmentdescription : newAssignmentDescription,
+                    classids : newAssignmentClassIds,
+                    duedate : newAssignmentDueDate,
+                    attachments : newAssignmentResources,
+                    maxgrade : '',
+                    cancomment : newAssignmentCanComment,
+
+                };
+                    
+                //ajax post
+                var request = $.post("classes/teacher.php", formResults, function (result) {
+
+                    console.log(result);
+
+                    if (result === 'true') {
+
+                        var assignmentTab = $('#assignmentTab #assignmentCardList');
+                        
+                        var Result = Lists_Templates.teacherAssignmentCard(formResults);
+
+                        if ( $('.no-data-message').length > 0 ) {
+                            
+                            $('.no-data-message').remove();
+                            
+                            $('#assignmentTab').append(Lists_Templates.assignmentCardListContainer);
+                            
+                            //recall classroomTab after appending
+                            assignmentTab = $('#assignmentTab #assignmentCardList');
+
+                            /*
+
+                            var $main = $("main"),  
+                            
+                            ajaxLoad = function(html) {
+                                
+                                document.title = html
+                                    .match(/<div>(.*?)<\/div>/)[0]
+                                    .trim()
+                                    .decodeHTML();
+
+                                init();
+                            },
+
+                            loadPage = function(href) {
+                                $main.load(href + " main>*", ajaxLoad);
+                            };
+                            
+                            var href = '#classroomCardList';
+                            
+                            loadPage(href);
+                            
+                            */
+
+                            classroomTab.prepend(Result);
+                            
+                        } else {
+                            
+                            classroomTab.prepend(Result);
+                            
+                        }
+                        
+
+                        $('.tooltipped').tooltip({delay: 50});
+                        
+                        //masonryGridInit();
+                    
+                    } else {
+                        
+                        console.log('waiting');
+                    
+                    }
+                    
+                }, 'text');
+
+            } else {
+            
+                console.log('empty form. Unable to create the class');
+
+                $('#' + str1).closeModal();
+                
+                var errorMessage = '<span class="red-text name text-lighten-5">Error in creating the classroom. Kindly see if you have filled all inputs.</span>';
+                
+                // Materialize.toast(message, displayLength, className, completeCallback);
+                Materialize.toast(errorMessage, 5000, '', function () {
+                    cleanOutModals();
+                });
+                
+            }
+            
+            //var validationResult = validateInputs('createNewClassroomForm');
+
+            //if (validationResult) {
+             
+            //this.createClassroomCard();
+        
+            $('#' + str1).closeModal();
+           
+            cleanOutModals();
+
+            //} else {
+
+              //  console.log('empty somewhere')
+           
+            //}
+    
+        });
+
+    };
+
+    //--------------------------------
+    
+    var addToForm = function (action2, hook, modal_id) {
 
         console.log('Function Inited');
         
@@ -1148,7 +1730,7 @@ var Events = function () {
 
         console.log('adding to form now');
 
-        if (action != 'undefined') {
+        if (action2 != 'undefined') {
 
             //getting the list
 
@@ -1164,36 +1746,81 @@ var Events = function () {
         
         selectedStringFormat += ',';//for database' sake, let the string end with a commar*
         
+        
         if (typeof totalSelected === 'number' && totalSelected > 0) {
 
-            if ($('.modal#editClassRoom .students').length > 0) {
-                
-                var previousTotal = $('.modal#editClassRoom .students').attr('data-total-students');
-                
-                console.log(selectedStringFormat);
-                selectedStringFormat += $('.modal#editClassRoom .students').attr('data-selected-students');
-                console.log(selectedStringFormat);
-                selectedStringFormat = cleanArray(selectedStringFormat.split(','));
-                console.log(selectedStringFormat);
-                selectedStringFormat = jQuery.unique( selectedStringFormat );
-                console.log(selectedStringFormat);
-                selectedStringFormat = selectedStringFormat.toString();
-                console.log(selectedStringFormat);
-                selectedStringFormat += ',';
-                console.log(selectedStringFormat);
-                console.log(selectedStringFormat.split(',').length);
-                
-                
-                $('.modal#editClassRoom .students').remove();
-                
-                hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">' + previousTotal + ' students are already in the classroom<br>' + ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + ' more students will be added to the classroom on submit.<p></div>');
-                
-            } else {
-                
-                hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + totalSelected + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">A total of ' + totalSelected + ' students to be added in the classroom.<p></div>');
-                
-            }
+            console.log(hook.attr('class'));
+            
+            var hookType = hook.attr('class');
+            
+            hookType = hookType.split('col').join('')
+                .split('s12').join('')
+                .split('input-field').join('')
+                .split(' ').join('');
+            
+            console.log(hookType);
+            
+            if(hookType === 'student-list') {//classroom form
+                if ($('.modal#editClassRoom .students').length > 0) {
 
+                    var previousTotal = $('.modal#editClassRoom .students').attr('data-total-students');
+
+                    console.log(selectedStringFormat);
+                    selectedStringFormat += $('.modal#editClassRoom .students').attr('data-selected-students');
+                    console.log(selectedStringFormat);
+                    selectedStringFormat = cleanArray(selectedStringFormat.split(','));
+                    console.log(selectedStringFormat);
+                    selectedStringFormat = jQuery.unique( selectedStringFormat );
+                    console.log(selectedStringFormat);
+                    selectedStringFormat = selectedStringFormat.toString();
+                    console.log(selectedStringFormat);
+                    selectedStringFormat += ',';
+                    console.log(selectedStringFormat);
+                    console.log(selectedStringFormat.split(',').length);
+
+
+                    $('.modal#editClassRoom .students').remove();
+
+                    hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">' + previousTotal + ' students are already in the classroom<br>' + ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + ' more students will be added to the classroom on submit.<p></div>');
+
+                } else {
+                    
+                    hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + totalSelected + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">A total of ' + totalSelected + ' students to be added in the classroom.<p></div>');
+                    
+                }
+                
+            } else if(hookType === 'classroom-list') {//student form
+
+                if ($('.modal#editAssignment .classrooms').length > 0) {
+
+                    var previousTotal = $('.modal#editAssignment .classrooms').attr('data-total-classrooms');
+
+                    console.log(selectedStringFormat);
+                    selectedStringFormat += $('.modal#editAssignment .classrooms').attr('data-selected-classrooms');
+                    console.log(selectedStringFormat);
+                    selectedStringFormat = cleanArray(selectedStringFormat.split(','));
+                    console.log(selectedStringFormat);
+                    selectedStringFormat = jQuery.unique( selectedStringFormat );
+                    console.log(selectedStringFormat);
+                    selectedStringFormat = selectedStringFormat.toString();
+                    console.log(selectedStringFormat);
+                    selectedStringFormat += ',';
+                    console.log(selectedStringFormat);
+                    console.log(selectedStringFormat.split(',').length);
+
+
+                    $('.modal#editAssignment .classrooms').remove();
+
+                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' + (selectedStringFormat.split(',').length - 1) + '" data-selected-classrooms="' + selectedStringFormat + '"><p class="white-text php-data">' + previousTotal + ' classrooms have the assignment<br>' + ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + ' more classrooms will receive this assignment on submit.<p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');
+
+                } else {
+
+                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' + totalSelected + '" data-selected-classrooms="' + selectedStringFormat + '"><p class="white-text php-data">A total of ' + totalSelected + ' classrooms to receive the assignment.</p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');
+
+                }
+
+            }
+            
             console.log(totalSelected);
 
             cleanOutModal('#esomoModal' + modal_id);
@@ -1212,8 +1839,6 @@ var Events = function () {
         
     };
     
-    //--------------------------------
-    //--------------------------------  END OF CLASSROOM EVENTS AND FUNCTIONS
     //--------------------------------
     
     var cleanArray = function (actual) {

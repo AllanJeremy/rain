@@ -45,7 +45,7 @@ var Forms_Templates = function () {
         templateOutput += '<label>Subject</label>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row"><div class="input-field col s12"><p>';
-        templateOutput += '<input type="checkbox" id="addStudentsToClassroom" name="add_students_to_classroom" />';
+        templateOutput += '<input type="checkbox" id="addStudentsToClassroom" name="add_students_to_classroom" value="GetAllStudents" />';
         templateOutput += '<label for="addStudentsToClassroom">Add students before creating</label>';
         templateOutput += '</p></div></div>';
         templateOutput += '<div class="row student-list input-field"></div>';
@@ -117,8 +117,8 @@ var Forms_Templates = function () {
         templateOutput += '<label>Subject</label>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row"><div class="input-field col s12"><p>';
-        templateOutput += '<input type="checkbox" id="addStudentsToClassroom" name="add_students_to_classroom" />';
-        templateOutput += '<label for="addStudentsToClassroom">Add students</label>';
+        templateOutput += '<input type="checkbox" id="addMoreStudentsToClassroom" name="add_more_students_to_classroom" value="GetAllStudentsNotInClass"/>';
+        templateOutput += '<label for="addMoreStudentsToClassroom">Add more students</label>';
         templateOutput += '</p></div></div>';
         templateOutput += '<div class="row student-list input-field"></div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';

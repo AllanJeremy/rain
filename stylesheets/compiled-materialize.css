@@ -10141,3 +10141,9 @@ a.btn-skip-question {
     opacity: 1;
   }
 }
+/* line 570, ../sass/_style.scss */
+.assignment-doc {
+  border-radius: 8px;
+  border: 1px rgba(80, 80, 80, 0.08) solid;
+  padding: 8px;
+}

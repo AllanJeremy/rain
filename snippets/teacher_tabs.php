@@ -4,7 +4,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
             
             <div class="container">
                 <!---->
-                <div class="row main-tab active-bar" id="classroomTab">
+                <div class="row main-tab " id="classroomTab">
                     
                     <div class="row no-margin">
                         <div class="col s5">
@@ -73,14 +73,15 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                     <span class="card-title"><?php echo $classroom['class_name'] ?></span>
                                     <p>Number of students:
                                         <span class="php-data"><?php echo $student_count; ?>  
-                                            <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >
+                                            <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#!
+                                            " >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
                                         <span class="php-data"><?php echo $ass_count;?>
-                                            <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >
+                                            <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#!" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
@@ -89,8 +90,9 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                     <p>Stream:  <span class="php-data"><?php echo $stream_name ?></span></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" id="editClassroom">Edit</a>
-                                    <a href="#"  class="right">View</a>
+                                    <a href="#!" id="editClassroom">Edit</a>
+                                    <a href="#!" >View</a>
+<!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
                                 </div>
                             </div>
                         </div>
@@ -110,11 +112,65 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                    <?php endif ?>
                 </div>
                 <!---->
-                <div class="row main-tab " id="createAssignmentsTab">
-                    Create Assignments tab
+                <div class="row main-tab active-bar" id="createAssignmentsTab">
+                    <br>
+                    <br>
+                    <div class="container assignment-doc">
+                        <br>
+                        <form action="" id="createAssignmentForm" class="row">
+                            <div class=" input-field col s12 ">
+                                <input required class="validate" type="text" name="new_assignment_name" id="newAssignmentName">
+                                <label for="new_assignment_name">Assignment name</label>
+                            </div>
+                            <div class=" input-field col s12 ">
+                                <textarea id="assignmentInstructions" class="materialize-textarea"></textarea>
+                                <label for="textarea1">Assignment instructions</label>
+                            </div>
+<!--
+                            <div class=" input-field col s6 ">
+                                <p>
+                                    <input type="checkbox" id="addStudentsToAssignment" name="add_students_to_assignment" value="GetAllStudents" />
+                                    <label for="addStudentsToAssignment">Add students to send assignment to</label>
+                                </p>
+                            </div>
+-->
+                            <div class=" input-field col s12 ">
+                                <p>
+                                    <input type="checkbox" id="addClassroomToAssignment" name="add_classroom_to_assignment" value="GetSpecificTeacherClassrooms" />
+                                    <label for="addClassroomToAssignment">Add classroom to send assignment to</label>
+                                </p>
+                            </div>
+                            <div class="col s12 classroom-list input-field"></div>
+                            <div class=" input-field col s12 ">
+                                
+                                <input type="date" class="datepicker" id="assDueDate">
+                                <label for="assDueDate">Due date</label>
+                            </div>
+                            
+                            <div class=" input-field col s12 file-field ">
+                                
+                                <div class="btn">
+                                    <span>resources</span>
+                                    <input type="file" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                                </div>
+                            </div>
+                            <div class="input-field col s12">
+                            <br>
+                                <a type="submit" class="btn right" id="createNewAssignment">Create assignment</a>
+                            </div>
+                        </form>
+                        <br>
+                    </div>
                 </div>
+                    
                 <div class="row main-tab" id="sentAssignmentsTab">
-                    Sent Assignments tab
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h5 class="center-align valign grey-text " id="noSentAssignmentMessage">You haven't sent any assignments yet.<br><br><br><a class="btn btn-flat" id="createClassroom">Create one</a></h5>
+                    </div>
+                    
                 </div>
                 <div class="row main-tab" id="submittedAssignmentsTab">
                     Submitted Assignments tab

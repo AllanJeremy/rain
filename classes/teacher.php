@@ -129,7 +129,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
 
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            $insert_stmt->bind_param("ississssssi",
+            $insert_stmt->bind_param("isssssssisi",
                 $args["teacher_id"],
                 $args["ass_title"],
                 $args["ass_description"],
@@ -144,16 +144,17 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
             );
             if($insert_stmt->execute())
             {
-                return true;#successfully created assignment
+                return 'true';#successfully created assignment
             }
             else
             {
-                return false;#failed to send the assignment
+                return 'false';#failed to send the assignment
             }
         }
         else
         {
-            return null;#failed to prepare the query
+            echo $dbCon->error;
+            return 'null';#failed to prepare the query
         }
     }
 
@@ -281,3 +282,81 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
  
     }
 };#END OF CLASS
+
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_POST['action'])) {
+    
+    $Teacher = new Teacher();
+    
+    switch($_POST['action']) {
+        case 'CreateAssignment':
+            
+            $args = array(
+                'teacher_id' => $_SESSION['admin_acc_id'],
+                'ass_title' => $_POST['assignmenttitle'],
+                'ass_description' => $_POST['assignmentdescription'],
+                'due_date' => $_POST['duedate'],
+                'attachments' => $_POST['attachments'],
+                'max_grade' => $_POST['maxgrade'],
+                'comments_enabled' => $_POST['cancomment']
+            );
+            
+            if(isset($_POST['class_ids'])) {
+                
+                $args['class_id'] = $_POST['classids'];
+                
+            } else {
+                
+                $args['class_id'] = 0;
+                
+            }
+            
+            $args['submission_text'] = '';
+            
+            $result = $Teacher->CreateAssignment($args['submission_text'],$args['teacher_id'],$args['ass_title'],$args['ass_description'],$args['class_id'],$args['due_date'],$args['attachments'],$args['max_grade'],$args['comments_enabled']);
+            
+            echo $result;
+            
+            break;
+        case 'RemoveStudent':
+            
+            
+            //dddd
+            break;
+        case 'DeleteClassRoom':
+          
+            $class_id = $_POST['classroomid'];
+            
+            if(!isset($class_id)) {
+                
+                $result = Assignment::DeleteClassRoom($class_id);
+            
+                echo $result;
+                
+            }
+            
+            //dddd
+            break;
+        
+        default:
+            return null;
+            break;
+    }
+
+} else {
+    return null;
+}
+
+
+
+
+
+
+
+
+

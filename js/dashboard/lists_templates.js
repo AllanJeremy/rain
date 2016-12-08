@@ -15,38 +15,16 @@ var Lists_Templates = function () {
     
         var templateOutput = '';
         
-        templateOutput += '<div class="col card-col new-class" data-classroom-id="' + obj.classroomid + '"><div class="card ' + obj.classes + '">';
-        templateOutput += '<div class="card-content white-text">';
-        templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
-        templateOutput += '<p>Number of students: ';
-        templateOutput += '<span class="php-data">' + obj.totalstudents;
-        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >';
-        templateOutput += '<i class="material-icons">info</i>';
-        templateOutput += '</a>';
-        templateOutput += '</span>';
-        templateOutput += '</p>';
-        templateOutput += '<p>Assignments sent: ';
-        templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
-        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >';
-        templateOutput += '<i class="material-icons">info</i>';
-        templateOutput += '</a>';
-        templateOutput += '</span>';
-        templateOutput += '</p>';
-        templateOutput += '<p>Subject: <span class="php-data">' + obj.classroomsubjectname + '</span></p>';
-        templateOutput += '<p>Stream:  <span class="php-data">' + obj.classroomstreamname + '</span></p>';
+        templateOutput += '<div class="col card-col new-class" data-classroom-id="' + obj.classroomid + '">';
+        templateOutput += this.classRoomCardData(obj);
         templateOutput += '</div>';
-        templateOutput += '<div class="card-action">';
-        templateOutput += '<a href="#" data-target="modal1" class="modal-trigger" id="editClassroom">Edit</a>';
-        templateOutput += '<a href="#"  class="right">View</a>';
-        templateOutput += '</div>';
-        templateOutput += '</div></div>';
         
         return templateOutput;
     };
     
     //--------------------------------------
     
-    this.classRoomCardDataUpdate = function (obj) {
+    this.classRoomCardData = function (obj) {
     
         var templateOutput = '';
         
@@ -121,6 +99,55 @@ var Lists_Templates = function () {
         templateOutput += '</div>';
         templateOutput += '<div class="card-action right-align">';
         templateOutput += '<a href="#" class="">Submit</a>';
+        templateOutput += '</div>';
+        templateOutput += '</div></div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------------------
+    
+    this.teacherAssignmentCard = function (obj) {
+        
+        var templateOutput = '';
+        templateOutput += '<div class="col card-col" data-assignment-id="' + obj.assignmentid + '"><div class="card white">';
+        //if there is a warning or a notification sent, print it out
+        switch (obj.assignmentwarning) {
+
+        case '0':
+            //do nothing
+            break;
+        case '1':
+            //warning
+            templateOutput += '<div class="assignment-warning red lighten-1 z-depth-2"><p class="white-text">' + obj.assignmentwarningtext + '</p></div>';
+            break;
+        case '2':
+            //info
+            //e.g like the assignment was closed/cancelled
+            templateOutput += '<div class="assignment-info grey darken-3 z-depth-2"><p class="grey-text text-lighten-3">' + obj.assignmentwarningtext + '</p></div>';
+            break;
+        default:
+            //do nothing
+            templateOutput += '';
+            break;
+        }
+        
+        templateOutput += '<div class="card-content">';
+        templateOutput += '<span class="card-title">' + obj.assignmenttitle + '</span>';
+        templateOutput += '<ul class="collapsible " data-collapsible="accordion"><li><div class="collapsible-header">Instructions<i class="material-icons right">arrow_drop_down</i></div><div class="collapsible-body">';
+        templateOutput += '<p>' + obj.assignmentinstructions + '</p>';
+        templateOutput += '</div></li></ul>';
+        templateOutput += '<p>From: <span class="php-data">' + obj.assignmentauthor + '</span></p>';
+        templateOutput += '<p>Subject: <span class="php-data">' + obj.assignmentsubject + '</span></p>';
+        templateOutput += '<p>Date sent:  <span class="php-data">' + obj.datesent + '</span></p>';
+        templateOutput += '<p>Due date:  <span class="php-data">' + obj.duedate + '</span></p>';
+        templateOutput += '<p>Resources:  <span class="php-data">';
+        //loop through the resources links
+        
+        templateOutput +=  obj.duedate + '</span></p>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="card-action">';
+        templateOutput += '<p class="">Submitted assignments: <a href="#!" >' + obj.totalsubmitted + '</a></p>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';
         
@@ -219,12 +246,21 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<div id="' + obj.modalId + '" class="modal">';
+        templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content">';
         templateOutput += '<h4>' + obj.templateHeader + '</h4>';
         templateOutput += obj.templateBody;
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
+        
+        if (typeof obj.extraActions === 'undefined') {
+            
+        } else {
+        
+            templateOutput += obj.extraActions;
+            
+        }
+        
         templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
         templateOutput += '</div>';
         templateOutput += '</div>';
@@ -238,7 +274,7 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<div id="' + obj.modalId + '" class="modal">';
+        templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content">';
         templateOutput += '<h4>' + obj.templateHeader + '</h4>';
         templateOutput += obj.templateBody;
@@ -253,11 +289,23 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
-    this.cardListContainer = function (obj) {
+    this.classroomCardListContainer = function (obj) {
         
         var templateOutput = '';
         
         templateOutput += '<div class="row"id="classroomCardList">';
+        templateOutput += '</div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------------------
+    
+    this.assignmentCardListContainer = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<div class="row"id="assignmentCardList">';
         templateOutput += '</div>';
         
         return templateOutput;
@@ -430,6 +478,88 @@ var Lists_Templates = function () {
             
         return templateOutput;
         
+    };
+    
+    //--------------------------
+    
+    this.classroomTable = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<table>';
+        templateOutput += '<thead><tr>';
+        templateOutput += '<th ></th>';
+        templateOutput += '<th data-field="name">Classroom name</th>';
+        templateOutput += '<th data-field="subject">Subject</th>';
+        templateOutput += '<th data-field="stream">Stream</th>';
+        templateOutput += '<th data-field="students">No. of Students</th>';
+        templateOutput += '</tr></thead>';
+        templateOutput += '<tbody class="list">';
+        templateOutput += obj.listData;
+        templateOutput += '</tbody>';
+        templateOutput += '</table>';
+            
+        return templateOutput;
+        
+    };
+    
+    //--------------------------
+    
+    this.classroomTableList = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<tr>';
+        templateOutput += '<td><p><input type="checkbox" value="' + obj.id + '" class="filled-in" id="' + obj.id + '"><label for="' + obj.id + '"></label></p></td>';
+        templateOutput += '<td>' + obj.name + '</td>';
+        templateOutput += '<td>' + obj.subject + '</td>';
+        templateOutput += '<td>' + obj.stream + '</td>';
+        templateOutput += '<td>' + obj.totalstudents + '</td>';
+        templateOutput += '</tr>';
+            
+        return templateOutput;
+        
+    };
+    
+    //--------------------------------------
+    
+    this.editExtraFooterActions = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<a class="modal-action left dropdown-button" data-beloworigin="false" href="#!" data-activates="moreModalEdit1"><i class="material-icons">more_vert</i></a>';
+        
+        templateOutput += '<ul id="moreModalEdit1" class="dropdown-content">';
+        
+        $.each(obj, function(i, el) {
+            
+            switch(el) {
+                    
+                case true:
+        
+                    templateOutput += '<li class="waves-effect waves-green "><a class="" id="moreCard' + i + '">' + i + '</a></li>';
+                    
+                    break;
+                    
+                case false:
+        
+                    templateOutput += '<li class="waves-effect waves-green hide"><a class="" id="moreCard' + i + '">' + i + '</a></li>';
+                    
+                    break;
+                    
+                default:
+                    
+                    return false;
+            
+                    break;
+            
+            }
+            
+        });
+        
+        templateOutput += '</ul> ';
+
+        return templateOutput;
     };
     
     //-------------------------
