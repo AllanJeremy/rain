@@ -1054,25 +1054,36 @@ if(isset($_GET['action'])) {
             
             $num = 0;
             
-            foreach ($result as $row) {
+            if($result != null) {
+              
+                foreach ($result as $row) {
+
+                    $newResult = array(
+                        "classes" => $row['classes'],
+                        "selectedSubject" => $row['subject_id'],
+                        "selectedStream" => $row['stream_id'],
+                        "selectedStudents" => $row['student_ids'],
+                        "classname" => $row['class_name']
+                    );
+
+                    $arrayResult[$num] = $newResult;
+
+                    $num += 1;
+
+                    //echo $num;
+
+                }
+
+                echo json_encode($arrayResult);
                 
-                $newResult = array(
-                    "classes" => $row['classes'],
-                    "selectedSubject" => $row['subject_id'],
-                    "selectedStream" => $row['stream_id'],
-                    "selectedStudents" => $row['student_ids'],
-                    "classname" => $row['class_name']
-                );
+            } else {
                 
-                $arrayResult[$num] = $newResult;
-                
-                $num += 1;
-                
-                //echo $num;
+                $result = 'null';
+            
+                echo json_encode($result);
+                //echo 'null';
                 
             }
-            
-            echo json_encode($arrayResult);
             
             break;
         case 'GetAllStudents':
