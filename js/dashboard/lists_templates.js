@@ -527,23 +527,30 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<a class="modal-action left dropdown-button" data-beloworigin="false" href="#!" data-activates="moreModalEdit1"><i class="material-icons">more_vert</i></a>';
-        
-        templateOutput += '<ul id="moreModalEdit1" class="dropdown-content">';
-        
         $.each(obj, function(i, el) {
+            
             
             switch(el) {
                     
                 case true:
         
-                    templateOutput += '<li class="waves-effect waves-green "><a class="" id="moreCard' + i + '">' + i + '</a></li>';
+                    if (i === 'Delete' || i === 'delete') {
+                        
+                        var classes = 'red-text';
                     
+                    } else {
+                        
+                        var classes = 'grey-text';
+                        
+                    }
+                    
+                    templateOutput += '<a class="' + classes + ' text-lighten-1 modal-action left btn btn-flat transparent" href="#!" id="moreCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+
                     break;
                     
                 case false:
         
-                    templateOutput += '<li class="waves-effect waves-green hide"><a class="" id="moreCard' + i + '">' + i + '</a></li>';
+                    templateOutput += '';
                     
                     break;
                     
@@ -557,8 +564,6 @@ var Lists_Templates = function () {
             
         });
         
-        templateOutput += '</ul> ';
-
         return templateOutput;
     };
     

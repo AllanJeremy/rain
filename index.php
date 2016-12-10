@@ -10,6 +10,7 @@
         <?php MyHeaderHandler::GetMetaData(); ?>
         
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
+        <link  rel="stylesheet" type="text/css" href="stylesheets/pace-theme-flash.css"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
@@ -18,10 +19,13 @@
         <script type="text/javascript" src="js/dashboard/result.js"></script>
         <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
         <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
+        <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
         <script type="text/javascript" src="js/dashboard/tests.js"></script>
         <script type="text/javascript" src="js/dashboard.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/pace.js"></script>
         
     </head>
 
@@ -78,7 +82,7 @@
         ?>
 
         <header>
-            <nav class="top-nav">
+            <nav class="top-nav z-depth-0">
                 <div class="container ">
                     <div class="nav-wrapper ">
                         <div class="row no-margin">
@@ -219,7 +223,7 @@
                         <p class="grey-text text-darken-1">footer list</p>
                     </div>
                     
-                    <div class="col s6 l4">
+                    <div class="col s12 l4">
                         <a class="right btn btn-flat" href="report.php" id="reportLink">Report a problem</a>
                     </div>
 
@@ -251,6 +255,10 @@
             $('.mobile-button-collapse').sideNav();
             //Ensure labels don't overlap text fields
             Materialize.updateTextFields();//doesn't work
+            $('.datepicker').pickadate({
+                selectMonths: false, // Creates a dropdown to control month
+                selectYears: 2 // Creates a dropdown of 15 years to control year
+            });
         });
             
         function hideSideNav() {
