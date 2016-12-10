@@ -1,4 +1,4 @@
-$(function() {
+$(function(z) {
     
     //init the dashboard application except on login page
     if (location.pathname.split('/').pop() != 'login.php') {

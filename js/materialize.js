@@ -2004,7 +2004,28 @@ $(document).ready(function(){
       }
     }, 20);
 
+    $('a#toastUndoAction').bind('click', function (u) {
+        //should kill the callback
+        window.clearInterval(counterInterval);
+        // Animate toast out
+        Vel(newToast, {"opacity": 0, marginTop: '-40px'}, { duration: 375,
+            easing: 'easeOutExpo',
+            queue: false,
+            complete: function(){
+              
+              // Remove toast after it times out
+              this[0].parentNode.removeChild(this[0]);
+            }
+          });
+        
+        var cardId = $(this).parent('p').attr('data-ref-class-id');
+        var cardColor = localStorage.getItem("cardColor");
+        $('.card-col[data-classroom-id=' + cardId + ']').removeClass('to-remove');
+        $('.card-col[data-classroom-id=' + cardId + '] .to-edit').removeClass('grey z-depth-4');
+        $('.card-col[data-classroom-id=' + cardId + '] .to-edit').addClass(cardColor)
+        $('.card-col[data-classroom-id=' + cardId + '] .card').removeClass('to-edit');
 
+    });
 
     function createToast(html) {
 

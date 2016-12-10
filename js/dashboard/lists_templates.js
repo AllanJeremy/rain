@@ -33,14 +33,14 @@ var Lists_Templates = function () {
         templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
         templateOutput += '<p>Number of students: ';
         templateOutput += '<span class="php-data">' + obj.totalstudents;
-        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#" >';
+        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#!" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
         templateOutput += '</p>';
         templateOutput += '<p>Assignments sent: ';
         templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
-        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#" >';
+        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#!" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
@@ -544,7 +544,7 @@ var Lists_Templates = function () {
                         
                     }
                     
-                    templateOutput += '<a class="' + classes + ' text-lighten-1 modal-action left btn btn-flat transparent" href="#!" id="moreCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="' + classes + ' text-lighten-1 modal-action left btn btn-flat transparent" href="#!" id="moreCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
 
                     break;
                     

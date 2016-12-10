@@ -199,6 +199,8 @@ class DbHandler extends DbInfo
 //Delete a row from a table based on a single property : returns true on success | false on fail | null if query couldn't execute
 public static function DeleteBasedOnSingleProperty($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  delete based on single property query. <br>Technical information :")
 {
+    global $dbCon;#Connection string mysqli object
+        
     $delete_query = "DELETE FROM $table_name WHERE $column_name=?";
 
     if($delete_stmt = $dbCon->prepare($delete_query))
@@ -262,14 +264,15 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
     #Delete Classroom : returns true on success | false on fail | null if query couldn't execute
     public static function DeleteClassroom($class_id)
     {
+        
         #if the classroom exists - safety check
         if(DbInfo::ClassroomExists($class_id))
         {
-            return self::DeleteBasedOnSingleProperty("classrooms","class_id",$class_id,"i");
+            echo self::DeleteBasedOnSingleProperty("classrooms","class_id",$class_id,"i");
         }
         else
         {
-            return false;
+            echo 'false';
         }       
     }
 
@@ -618,13 +621,13 @@ if(isset($_POST['action'])) {
             
             //dddd
             break;
-        case 'DeleteClassRoom':
+        case 'DeleteClassroom':
           
             $class_id = $_POST['classroomid'];
             
-            if(!isset($class_id)) {
+            if(isset($class_id)) {
                 
-                $result = $dbhandler::DeleteClassRoom($class_id);
+                $result = $dbhandler::DeleteClassroom($class_id);
             
                 echo $result;
                 

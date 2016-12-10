@@ -534,7 +534,22 @@ a.btn-skip-question {
 }
 
 //MORPHING STYLES
+.to-edit {
+    transition-delay: 400ms;
+    transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1);
+    transition-duration: 240ms;
 
+}
+
+.to-remove {
+    opacity: 0.27;
+    @include transform(scaleX(0) scaleY(0) !Important);
+    will-change: transform !Important;
+    transition-delay: 400ms !Important;
+    transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1) !Important;
+    transition-duration: 240ms !Important;
+    
+}
 
 .morph-in {
     

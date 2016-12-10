@@ -10105,7 +10105,27 @@ a.btn-skip-question {
   padding-bottom: 24px;
 }
 
-/* line 539, ../sass/_style.scss */
+/* line 537, ../sass/_style.scss */
+.to-edit {
+  transition-delay: 400ms;
+  transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1);
+  transition-duration: 240ms;
+}
+
+/* line 544, ../sass/_style.scss */
+.to-remove {
+  opacity: 0.27;
+  -moz-transform: scaleX(0) scaleY(0) !important;
+  -ms-transform: scaleX(0) scaleY(0) !important;
+  -webkit-transform: scaleX(0) scaleY(0) !important;
+  transform: scaleX(0) scaleY(0) !important;
+  will-change: transform !Important;
+  transition-delay: 400ms !Important;
+  transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1) !important;
+  transition-duration: 240ms !Important;
+}
+
+/* line 554, ../sass/_style.scss */
 .morph-in {
   height: inherit;
   opacity: 0;
@@ -10141,7 +10161,7 @@ a.btn-skip-question {
     opacity: 1;
   }
 }
-/* line 570, ../sass/_style.scss */
+/* line 585, ../sass/_style.scss */
 .assignment-doc {
   border-radius: 8px;
   border: 1px rgba(80, 80, 80, 0.08) solid;

@@ -18,10 +18,60 @@ var ClassroomEvents = function () {
         submitEdittedClassroom();
         viewStudentsinClassroom();
         viewAssignmentsinClassroom();
+        deleteClassroom();
     };
     
     //----------------------------
     //--------------------------------  CLASSROOM EVENTS
+    //--------------------------------
+    
+    var deleteClassroom = function () {
+        
+        /*
+        1. Close modal
+        2. Visually remove the classroom card
+        3. Call toast
+        --  toast callback
+        4. Delete classroom from database
+        5. Remove classroom card from DOM
+        6. Remove modal from DOM
+        */
+        
+        $('main').on('click', '.modal#editClassRoom a#moreCardDelete', function (e) {
+            e.preventDefault();
+            
+            var self = $(this);
+            var classid = localStorage.getItem("cardId");
+            var toastMessage = '<p class="white-text" data-ref-class-id="' + classid + '">Preparing to delete classroom  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>'
+            
+            var re = new RegExp("regex","i");
+            
+            console.log('card id ' + classid + ' to be deleted.');
+            
+            //1 & 2
+            $('.modal#editClassRoom').closeModal();
+            $('#classroomCardList .card-col[data-classroom-id=' + classid + ']').addClass('to-remove');
+            
+            //3
+            var toastCall = Materialize.toast(toastMessage, 7200, '', function (s) {
+                //4
+                $.post("handlers/db_handler.php", {"action" : "DeleteClassroom", "classroomid" : classid}, function (result) {
+                   
+                    //5
+                    $('#classroomCardList .card-col[data-classroom-id=' + classid + ']').remove();
+                    
+                    console.log(result);
+                    
+                    //6
+                    cleanOutModals();
+                    
+                }, 'text');
+                
+            });
+             
+        });
+    };
+    
     //--------------------------------
     
     var viewStudentsinClassroom = function () {
@@ -581,9 +631,9 @@ var ClassroomEvents = function () {
                         
                         var Result = Lists_Templates.classRoomCard(formResults);
 
-                        if ( $('.no-data-message').length > 0 ) {
+                        if ( $('#classroomTab .no-data-message').length > 0 ) {
                             
-                            $('.no-data-message').remove();
+                            $('#classroomTab .no-data-message').remove();
                             
                             $('#classroomTab').append(Lists_Templates.classroomCardListContainer);
                             
@@ -1126,9 +1176,6 @@ var ClassroomEvents = function () {
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
                             console.log(formList);
-
-                            //Init functions needed for the esomo actions
-                            updateEsomoModalProgress(modal_id);
 
                             var action2 = 'morph-in';
 
