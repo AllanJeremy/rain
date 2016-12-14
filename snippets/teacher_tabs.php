@@ -6,7 +6,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
  ?>           
             <div class="container">
                 <!--CLASSROOMS SECTION-->
-                <div class="row main-tab " id="classroomTab">
+                <div class="row main-tab active-bar" id="classroomTab">
                     
                     <div class="row no-margin">
                         <div class="col s5">
