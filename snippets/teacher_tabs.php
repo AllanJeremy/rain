@@ -116,6 +116,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                 
                 <!--ASSIGNMENTS SECTION-->
                 <?php
+                    //Get all assignments that belong to the logged in teacher
                     $assignments = DbInfo::GetSpecificTeacherAssignments($loggedInTeacherId);
                 ?>  
                 <div class="row main-tab" id="createAssignmentsTab">
@@ -174,16 +175,54 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
 
                 <!--Sent assignments-->
                 <div class="row main-tab" id="sentAssignmentsTab">
+                <?php
+                    if($assignments):
+                        foreach($assignments as $assignment):
+                            if($assignment["sent"]):#if the assignment is sent
+                                $ass_class = DbInfo
+
+                ?>
+                    <div class="card teal">
+                        <div class="card-content white-text">
+                            <span class="card-title"><?php echo $assignment["ass_title"]; ?></span>
+                            <p>Class:
+                                <span class="php-data">
+                                    <?php echo $ass_class; ?>  
+                                    <a id="openSentAssignmentList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Classroom the assignment was sent to" href="#!" >
+                                        <i class="material-icons">info</i>
+                                    </a>
+                                </span> 
+                            </p>
+                            <p>Instructions:
+                                <span class="php-data"><?php echo $assignment["due_date"];?>
+                                </span> 
+                            </p>
+                            <p>Due date: <span class="php-data"><?php echo $assignment["due_date"]; ?></span></p>
+                            <p>Attachments:  <span class="php-data"><?php echo $assignment["attachments"]; ?></span> </p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#!" id="editClassroom">Edit</a>
+                            <a href="#!" >Call Back</a>
+<!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
+                        </div>
+                    </div>
+                <?php
+                            endif;
+                        endforeach;
+                    else:#no assignments were found
+                ?>
                     <div class="col s12 no-data-message valign-wrapper grey lighten-3">
                         <h5 class="center-align valign grey-text " id="noSentAssignmentMessage">You haven't sent any assignments yet.<br><br><br><a class="btn btn-flat" id="createClassroom">Create one</a></h5>
                     </div>
-                    
+                <?php
+                    endif;
+                ?>   
                 </div>
 
                 <!--Submitted assignments-->
                 <div class="row main-tab" id="submittedAssignmentsTab">  
                     <?php
-                        if($assignments):
+                        if($assignments): 
                             foreach($assignments as $assignment):
                                 if($ass_submissions=DbInfo::GetAssSubmissionsByAssId($assignment["ass_id"])):
                                     foreach ($ass_submissions as $ass_submission):
@@ -219,7 +258,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                         }
 
                     ?>
-                    <div class="card pink ?>">
+                    <div class="card teal">
                         <div class="card-content white-text">
                             <span class="card-title"><?php echo $submission_title; ?></span>
                             <p>Assignment:
@@ -256,6 +295,13 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                         endif;#ass_submissions
                         
                         endforeach;#assignments
+                        
+                        else:#if no assignments were found
+                    ?>
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h5 class="center-align valign grey-text " id="noReceivedAssSubmissionsMessage">No assignment submissions found.<br><br> When students submit assignments they will appear here</h5>
+                    </div>     
+                    <?php 
                         endif;#assignments
                     ?>
                 </div>
