@@ -179,33 +179,40 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                     if($assignments):
                         foreach($assignments as $assignment):
                             if($assignment["sent"]):#if the assignment is sent
-                                $ass_class = DbInfo::ClassroomExists($assignment["class"])
+                                $ass_class_name = "[Unknown Classroom]";
+                                if($ass_class = DbInfo::ClassroomExists($assignment["class_id"]))
+                                {
+                                     $ass_class_name = $ass_class["class_name"];
+                                }
 
                 ?>
+                <div class="col s12 m6 l4">
                     <div class="card teal">
                         <div class="card-content white-text">
                             <span class="card-title"><?php echo $assignment["ass_title"]; ?></span>
                             <p>Class:
                                 <span class="php-data">
-                                    <?php echo $ass_class; ?>  
+                                    <?php echo $ass_class_name; ?>  
                                     <a id="openSentAssignmentList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Classroom the assignment was sent to" href="#!" >
                                         <i class="material-icons">info</i>
                                     </a>
                                 </span> 
                             </p>
                             <p>Instructions:
-                                <span class="php-data"><?php echo $assignment["due_date"];?>
+                                <span class="php-data"><?php echo $assignment["ass_description"];?>
                                 </span> 
                             </p>
+                            <p>Date sent: <span class="php-data"><?php echo $assignment["date_sent"]; ?></span></p>
                             <p>Due date: <span class="php-data"><?php echo $assignment["due_date"]; ?></span></p>
                             <p>Attachments:  <span class="php-data"><?php echo $assignment["attachments"]; ?></span> </p>
                         </div>
                         <div class="card-action">
                             <a href="#!" id="editClassroom">Edit</a>
-                            <a href="#!" >Call Back</a>
+                            <a href="#!" class="right">Call Back</a>
 <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
                         </div>
                     </div>
+                </div>
                 <?php
                             endif;
                         endforeach;
@@ -226,64 +233,77 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             foreach($assignments as $assignment):
                                 if($ass_submissions=DbInfo::GetAssSubmissionsByAssId($assignment["ass_id"])):
                                     foreach ($ass_submissions as $ass_submission):
-                                        $ass_title = $assignment["ass_title"];
 
-                                        $std_name = "Unknown Student";#Name of student the submission belongs to
+                                        //If the assignment has been submitted and not been returned to the student
+                                        if($ass_submission["submitted"] && !$ass_submission["returned"]):
+                                            $ass_title = $assignment["ass_title"];
 
-                                        if($student = DbInfo::StudentIdExists($ass_submission["student_id"]))
-                                        {
-                                            $std_name = $student["full_name"];
-                                        }
-                                        
-                                        $submission_title = $std_name . "'s ". $ass_title . " Submission";
-                                        $submission_attachments = "None";
-                                        $submission_description = "No description";
+                                            $std_name = "Unknown Student";#Name of student the submission belongs to
 
-                                        //If the submission has a title, use it, otherwise use the generated assignment one
-                                        if(!empty($ass_submission["submission_title"]) && isset($ass_submission["submission_title"]))
-                                        {
-                                            $submission_title = $ass_submission["submission_title"];
-                                        }
+                                            if($student = DbInfo::StudentIdExists($ass_submission["student_id"]))
+                                            {
+                                                $std_name = $student["full_name"];
+                                            }
+                                            
+                                            $submission_title = $std_name . "'s ". $ass_title . " Submission";
+                                            $submission_attachments = "None";
+                                            $submission_description = "No description";
 
-                                        //If there are attachments, then set submission_attachments to the attachments
-                                        if (!empty($ass_submissions["attachments"]) && !isset($ass_submissions["attachments"]))
-                                        {
-                                            $submission_attachments = $ass_submissions["attachments"];
-                                        }
+                                            //If the submission has a title, use it, otherwise use the generated assignment one
+                                            if(!empty($ass_submission["submission_title"]) && isset($ass_submission["submission_title"]))
+                                            {
+                                                $submission_title = $ass_submission["submission_title"];
+                                            }
 
-                                        //If there is a description set the description variable
-                                        if (!$empty($ass_submission["submission_text"]) && isset($ass_submission["submission_text"]))
-                                        {
-                                            $submission_description = $ass_submission["submission_text"];
-                                        }
+                                            //If there are attachments, then set submission_attachments to the attachments
+                                            if (!empty($ass_submission["attachments"]) && isset($ass_submission["attachments"]))
+                                            {
+                                                $submission_attachments = $ass_submission["attachments"];
+                                            }
+
+                                            //If there is a description set the description variable
+                                            if (!empty($ass_submission["submission_text"]) && isset($ass_submission["submission_text"]))
+                                            {
+                                                $submission_description = $ass_submission["submission_text"];
+                                            }
 
                     ?>
-                    <div class="card teal">
-                        <div class="card-content white-text">
-                            <span class="card-title"><?php echo $submission_title; ?></span>
-                            <p>Assignment:
-                                <span class="php-data">
-                                    <?php echo $ass_title; ?>  
-                                </span> 
-                            </p>
-                            <p>Student:
-                                <span class="php-data"><?php echo $std_name;?>
-                                    <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Student that submitted the assignment" href="#!" >
-                                        <i class="material-icons">info</i>
-                                    </a>
-                                </span> 
-                            </p>
-                            <p>Description: <span class="php-data"><?php echo $submission_description; ?></span></p>
-                            <p>Attachments:  <span class="php-data"><?php echo $submission_attachments; ?></span> </p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#!" id="editClassroom">Comment</a>
-                            <a href="#!" >Return</a>
-<!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
+                    <div class="col s12">
+                        <div class="card teal">
+                            <div class="card-content white-text">
+                                <span class="card-title"><?php echo $submission_title; ?></span>
+                                <p>Assignment:
+                                    <span class="php-data">
+                                        <?php echo $ass_title; ?>  
+                                    </span> 
+                                </p>
+                                <p>Student:
+                                    <span class="php-data"><?php echo $std_name;?>
+                                        <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Student that submitted the assignment" href="#!" >
+                                            <i class="material-icons">info</i>
+                                        </a>
+                                    </span> 
+                                </p>
+                                <p>Description: <span class="php-data"><?php echo $submission_description; ?></span></p>
+                                <p>Attachments:  <span class="php-data"><?php echo $submission_attachments; ?></span> </p>
+                            </div>
+                            <div class="card-action">
+                                <a href="#!" id="editClassroom">Comment</a>
+                                <a href="#!" class="right">Return</a>
+    <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
+                            </div>
                         </div>
                     </div>
-
                     <?php 
+                        else:
+                    ?>
+                    
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h5 class="center-align valign grey-text " id="noReceivedAssSubmissionsMessage">No assignment submissions found.<br><br> When students submit assignments they will appear here</h5>
+                    </div>  
+                    
+                    <?php
+                        endif;
                         endforeach;#ass_submissions
                         else:#if there are no assignment submissions
                     ?>
