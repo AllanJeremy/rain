@@ -460,7 +460,21 @@ class DbInfo
     //Checks if the classroom with the given id exists, returns result if it does, and false if it doesn't
     public static function ClassroomExists($class_id)
     {
-        return self::SinglePropertyExists("classrooms","class_id",$class_id,"i");
+        $classroom_found = self::SinglePropertyExists("classrooms","class_id",$class_id,"i");
+        if($classroom_found)
+        {
+            //If we can find the classroom, then return the first instance of the found classroom.
+            if($classroom_found->num_rows>0)
+            {
+                foreach($classroom_found as $classroom)
+                {
+                    return $classroom;
+                }
+            }
+        }
+
+        //otherwise return the value of classroom found | in this case either false or null
+        return $classroom_found;
     }
 
 

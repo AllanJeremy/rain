@@ -179,7 +179,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                     if($assignments):
                         foreach($assignments as $assignment):
                             if($assignment["sent"]):#if the assignment is sent
-                                $ass_class = DbInfo
+                                $ass_class = DbInfo::ClassroomExists($assignment["class"])
 
                 ?>
                     <div class="card teal">
