@@ -180,16 +180,60 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                         foreach($assignments as $assignment):
                             if($assignment["sent"]):#if the assignment is sent
                                 $ass_class_name = "[Unknown Classroom]";
+                                $ass_attachments = "None";
                                 if($ass_class = DbInfo::ClassroomExists($assignment["class_id"]))
                                 {
                                      $ass_class_name = $ass_class["class_name"];
                                 }
 
+                                if (!empty($assignment["attachments"]))
+                                {
+                                    $ass_attachments = $assignment["attachments"];
+                        
+                                }
+                                
+
                 ?>
+                <div class="col card-col" data-assignment-id="">
+                        <div class="card white">
+                            <div class="assignment-info grey darken-3 z-depth-2"><p class="grey-text text-lighten-3">Due tomorrow!</p></div>
+                            <div class="card-content">
+                                <span class="card-title"><?php echo $assignment["ass_title"]; ?></span>
+
+                                <ul class="collapsible " data-collapsible="accordion">
+                                    <li>
+                                        <div class="collapsible-header">Instructions<i class="material-icons right">arrow_drop_down</i></div>
+                                        <div class="collapsible-body">
+                                            <p><?php echo $assignment["ass_description"];?></p>
+                                        </div>
+                                    </li>
+                                </ul>
+        
+                                <p>From: <span class="php-data"><?php echo "Tr. " . $_SESSION["admin_first_name"] . " ". $_SESSION["admin_last_name"] ?></span></p>
+                                <p>Subject: <span class="php-data">Physical education</span></p>
+                                <p>Date sent: <span class="php-data"><?php echo $assignment["date_sent"]; ?></span></p>
+                                <p>Due date: <span class="php-data"><?php echo $assignment["due_date"]; ?></span></p>
+                                <p>Resources: 
+                                <span class="php-data">
+                                    <?php if ($ass_attachments=="None"): ?>
+                                    No Attachments
+                                    <?php else:?>
+                                    <a href="#!resourceFile1" id="resourceFile"><?php echo $ass_attachments;?></a>
+                                    <?php endif;?>
+                                </span></p>
+                            </div>
+                            <div class="card-action">
+                                <a href="#!" id="editClassroom">Edit</a>
+                                <a href="#!" class="right">Call Back</a>
+    <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
+                            </div>
+                        </div>
+                    </div>
+ <!--
                 <div class="col s12 m6 l4">
                     <div class="card teal">
                         <div class="card-content white-text">
-                            <span class="card-title"><?php echo $assignment["ass_title"]; ?></span>
+                            <span class="card-title"></span>
                             <p>Class:
                                 <span class="php-data">
                                     <?php echo $ass_class_name; ?>  
@@ -202,17 +246,14 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                 <span class="php-data"><?php echo $assignment["ass_description"];?>
                                 </span> 
                             </p>
-                            <p>Date sent: <span class="php-data"><?php echo $assignment["date_sent"]; ?></span></p>
-                            <p>Due date: <span class="php-data"><?php echo $assignment["due_date"]; ?></span></p>
+                            <p>Date sent: <span class="php-data"></span></p>
+                            <p>Due date: <span class="php-data"></span></p>
                             <p>Attachments:  <span class="php-data"><?php echo $assignment["attachments"]; ?></span> </p>
                         </div>
-                        <div class="card-action">
-                            <a href="#!" id="editClassroom">Edit</a>
-                            <a href="#!" class="right">Call Back</a>
-<!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
-                        </div>
+
                     </div>
                 </div>
+-->
                 <?php
                             endif;
                         endforeach;
@@ -294,6 +335,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                             </div>
                         </div>
                     </div>
+
                     <?php 
                         else:
                     ?>
