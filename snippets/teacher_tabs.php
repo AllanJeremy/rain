@@ -365,6 +365,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     
                     <?php
                         endif;
+                        break;
                         endforeach;#ass_submissions
                         else:#if there are no assignment submissions
                     ?>
@@ -372,8 +373,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                         <h5 class="center-align valign grey-text " id="noReceivedAssSubmissionsMessage">No assignment submissions found.<br><br> When students submit assignments they will appear here</h5>
                     </div>               
                     <?php
-                        break;
                         endif;#ass_submissions
+                        break;
                         
                         endforeach;#assignments
                         
