@@ -24,9 +24,11 @@ class EsomoDate implements EsomoDateFunctions
         if($date_difference["days"] < 0)
         {
             $due_text = "Late!";
+            $due_class = "red darken-1";
         }
         elseif($date_difference["days"] == 0)
         {
+            $due_class = "red darken-1";
             if($date_difference["hours"]>0)
             {
                 $due_text = "Due in ".$date_difference["hours"]."h";
@@ -66,6 +68,7 @@ class EsomoDate implements EsomoDateFunctions
         }
         else
         {
+            $due_class = "light-blue darken-4";
             $due_text = "Due in ".$date_difference["days"]." days";
         }
 
