@@ -1,5 +1,6 @@
 <?php 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
+require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 ?>
  <?php 
     $loggedInTeacherId = $_SESSION["admin_acc_id"];
@@ -189,14 +190,30 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                 if (!empty($assignment["attachments"]))
                                 {
                                     $ass_attachments = $assignment["attachments"];
-                        
                                 }
                                 
+                                //Assignment date related functionality
+                                $ass_date_due = $assignment["due_date"];
+                                $ass_date_sent = $assignment["date_sent"];
 
+                                $ass_date_diff = EsomoDate::GetDateDiff($ass_date_sent,$ass_date_due);
+                                $ass_date_info = EsomoDate::GetDateInfo($ass_date_diff);
+
+                                $date_sent_fmt = EsomoDate::GetOptimalDateTime($ass_date_sent);#formatted sent date
+                                $date_due_fmt = EsomoDate::GetOptimalDateTime($ass_date_due);#formatted due date
+
+                                $ass_due_info = EsomoDate::GetDueText(array("days"=>$ass_date_info["days"],"hours"=>$ass_date_info["hours"],"minutes"=>$ass_date_info["minutes"]));
+
+                                //Classroom 
+                                $classroom_name="Unknown Class";
+                                if($classroom = DbInfo::ClassroomExists($assignment["class_id"]))
+                                {
+                                    $classroom_name = $classroom["class_name"];
+                                }
                 ?>
                 <div class="col card-col" data-assignment-id="">
                         <div class="card white">
-                            <div class="assignment-info grey darken-3 z-depth-2"><p class="grey-text text-lighten-3">Due tomorrow!</p></div>
+                            <div class="assignment-info <?php echo $ass_due_info['due_class']?> z-depth-2"><p class="center grey-text text-lighten-3"><?php echo $ass_due_info["due_text"];?></p></div>
                             <div class="card-content">
                                 <span class="card-title"><?php echo $assignment["ass_title"]; ?></span>
 
@@ -210,9 +227,11 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
                                 </ul>
         
                                 <p>From: <span class="php-data"><?php echo "Tr. " . $_SESSION["admin_first_name"] . " ". $_SESSION["admin_last_name"] ?></span></p>
+                                <p>Class: <span class="php-data"><?php echo $classroom_name;?></span></p>
+                                
                                 <p>Subject: <span class="php-data">Physical education</span></p>
-                                <p>Date sent: <span class="php-data"><?php echo $assignment["date_sent"]; ?></span></p>
-                                <p>Due date: <span class="php-data"><?php echo $assignment["due_date"]; ?></span></p>
+                                <p>Date sent: <span class="php-data"><?php echo $date_sent_fmt["date"]." at ".$date_sent_fmt["time"]; ?></span></p>
+                                <p>Due date: <span class="php-data"><?php echo $date_due_fmt["date"]." at ".$date_sent_fmt["time"]; ?></span></p>
                                 <p>Resources: 
                                 <span class="php-data">
                                     <?php if ($ass_attachments=="None"): ?>
