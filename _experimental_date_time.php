@@ -36,7 +36,15 @@
     echo $test["date"]." ";
     echo $test["time"];
 
+    echo "<br><h3>Date difference</h3>";
 
+    $date_diff=EsomoDate::GetDateDiff("2016-12-14 15:47:23","2016-12-25 15:10:07");
+    $date_info = EsomoDate::GetDateInfo($date_diff);
+    echo "Year difference | ".$date_info["years"]."<br>";
+    echo "Month difference | ".$date_info["months"]."<br>";
+    echo "Day difference | ".$date_info["days"]."<br>";
+    echo "Hours difference | ".$date_info["hours"]."<br>";
+    echo "Minutes difference | ".$date_info["minutes"]."<br>";
 ?>
 
 </div>

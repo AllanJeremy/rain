@@ -1,10 +1,17 @@
 <?php
 interface EsomoDateFunctions
 {
-    public static function GetDueText($date_difference = array("days"=>0,"hours"=>0,"minutes"=>0));#returns the text that will be used for due dates
-    public static function GetOptimalDateTime($date_input);#returns the optimal date and time used to display the text in browser
-    public static function GetDateDiff($date_sent,$due_date); #returns the difference between the sent date and the due date
-
+    #returns the text that will be used for due dates
+    public static function GetDueText($date_difference = array("days"=>0,"hours"=>0,"minutes"=>0));
+    
+    #returns the optimal date and time used to display the text in browser
+    public static function GetOptimalDateTime($date_input);
+    
+    #returns the difference between the sent date and the due date
+    public static function GetDateDiff($date_sent,$due_date); 
+    
+    #Gets the date info and returns it in an array - takes a date_diff as a parameter    
+    public static function GetDateInfo($date_diff);
 }
 class EsomoDate implements EsomoDateFunctions
 {
@@ -64,11 +71,16 @@ class EsomoDate implements EsomoDateFunctions
 
         return array("due_text"=>$due_text,"due_class"=>$due_class); 
     }
+    //Returns a date item based on a phpmyadmin date
+    private static function GetDbDate($date_input)
+    {
+        return DateTime::createFromFormat("Y-m-d H:i:s",$date_input);
+    }
 
     //returns the optimal date and time used to display the text in browser
     public static function GetOptimalDateTime($date_input)
     {
-        $date = DateTime::createFromFormat("Y-m-d H:i:s",$date_input);
+        $date = self::GetDbDate($date_input);
         
         $day_found = $date->format("D");
         $date_found = $date->format("d M Y");
@@ -80,9 +92,23 @@ class EsomoDate implements EsomoDateFunctions
     }
 
     //returns the difference between the sent date and the due date
-    public static function GetDateDiff($date_sent,$due_date)
+    public static function GetDateDiff($date_sent,$date_due)
     {
-        return date_diff($date_sent,$due_date);
+        $sent = new DateTime($date_sent);
+        $due = new DateTime($date_due);
+
+        return date_diff($sent,$due);
     } 
-    
+
+    //Gets the date info and returns it in an array - takes a date_diff as a parameter    
+    public static function GetDateInfo($date_diff)
+    {
+        $years = $date_diff->format("%Y");
+        $months = $date_diff->format("%M");
+        $days = $date_diff->format("%D");
+        $hours = $date_diff->format("%H");
+        $minutes = $date_diff->format("%I");
+
+        return array("years"=>$years,"months"=>$months,"days"=>$days,"hours"=>$hours,"minutes"=>$minutes);
+    }
 }
