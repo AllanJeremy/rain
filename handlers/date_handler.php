@@ -68,13 +68,21 @@ class EsomoDate implements EsomoDateFunctions
     //returns the optimal date and time used to display the text in browser
     public static function GetOptimalDateTime($date_input)
     {
+        $date = DateTime::createFromFormat("Y-m-d H:i:s",$date_input);
+        
+        $day_found = $date->format("D");
+        $date_found = $date->format("d M Y");
+        $time_found = $date->format("h:ia");
 
+        $date_time_output = array("day"=>$day_found,"date"=>$date_found,"time"=>$time_found);
+        
+        return $date_time_output;
     }
 
     //returns the difference between the sent date and the due date
     public static function GetDateDiff($date_sent,$due_date)
     {
-        date_diff();
+        return date_diff($date_sent,$due_date);
     } 
     
 }

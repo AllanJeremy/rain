@@ -30,6 +30,13 @@
     echo "<h6> Due days = $due_days</h6>";
     echo "<h6> Due hours = $due_hours</h6>";
     echo "<h6> Due minutes = $due_minutes</h6>";
+    
+    echo "<br><h3>Date formatting</h3>";
+    $test = EsomoDate::GetOptimalDateTime("2016-12-14 15:47:23");
+    echo $test["date"]." ";
+    echo $test["time"];
+
+
 ?>
 
 </div>
