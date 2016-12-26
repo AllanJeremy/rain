@@ -191,10 +191,11 @@ class DbInfo
     //Get single admin account by ID , default acc type is teacher but this can be passed in as different parameter
     protected static function GetAdminById($acc_id,$acc_type="teacher")#protected to avoid random calls which may lead to typos
     {
+        global $dbCon;
         $select_query = "SELECT * FROM admin_accounts WHERE acc_id=? AND account_type=?";
 
         $prepare_error = "Couldn't prepare query to retrieve admin account information by id. <br><br> Technical information : ";
-
+        
         if($select_stmt = $dbCon->prepare($select_query))
         {
             $select_stmt->bind_param("is",$acc_id,$acc_type);
@@ -203,8 +204,9 @@ class DbInfo
             $select_result = $select_stmt->get_result();
 
             #if records could be found
-            if($select_result->num_rows == 0)
+            if($select_result->num_rows > 0)
             {
+                
                 foreach($select_result as $result)
                 {
                     return $select_result;#return the records
@@ -225,7 +227,25 @@ class DbInfo
         #Get teacher account by ID : convenience function
         public static function GetTeacherById($acc_id)
         {
-            return self::GetAdminById($acc_id,$acc_type="teacher");
+            if($teachers = self::GetAdminById($acc_id,$acc_type="teacher"))
+            {
+                if($teachers->num_rows>0)
+                {
+                    foreach($teachers as $teacher)
+                    {
+                        return $teacher;
+                    }
+                }
+                else
+                {
+                    return self::GetAdminById($acc_id,$acc_type="teacher");
+                }
+
+            }
+            else
+            {
+                return self::GetAdminById($acc_id,$acc_type="teacher");
+            }
         }
     
         #Get principal account by ID : convenience function
@@ -699,7 +719,7 @@ class DbInfo
         }
         else
         {
-            return self::GetAllClassrooms;
+            return self::GetAllClassrooms();
         }
         
     }
@@ -712,25 +732,31 @@ class DbInfo
         //Get the student classrooms and check for assignments that 
         if($classrooms = self::GetAllStudentClassrooms($student_id))
         {
+            
             $assignments_found = array();#the assignments found
             foreach($classrooms as $classroom)
             {
+                
                 $cur_class_id = $classroom["class_id"];
-
+            
                 if($assignments = self::GetAllAssignments())
-                {
+                {    
                     foreach($assignments as $assignment)#for every assignment 
                     {
-                        $class_id_found = $assignment["class_id"];
-
-                        #if the assignment classroom_id matched a classroom the student belongs to
-                        if($class_id_found == $cur_class_id)
+                        //Only retrieve sent assignments
+                        if ($assignment["sent"])
                         {
-                            // $assignments_found["ass_class_id"] = $class_id_found;
-                            array_push($assignments_found,$assignment);#add the assignment to assignments_found
+                            $class_id_found = $assignment["class_id"];
+
+                            #if the assignment classroom_id matched a classroom the student belongs to
+                            if($class_id_found == $cur_class_id)
+                            {
+                                // $assignments_found["ass_class_id"] = $class_id_found;
+                                array_push($assignments_found,$assignment);#add the assignment to assignments_found
+                            }
                         }
                     }
-                }#assignment check
+                }
             }
 
             #Return the assignments found if the array is not empty, otherwise return false
