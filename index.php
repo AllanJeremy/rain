@@ -34,6 +34,10 @@
         <?php 
             require_once("handlers/session_handler.php");
             
+            #set the default timezone
+            const DEFAULT_TIMEZONE = "Africa/Nairobi";
+            date_default_timezone_set (DEFAULT_TIMEZONE);
+
             #If user is not logged in, they will be redirected to this file
             $redirectPath = "login.php";
 
