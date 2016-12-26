@@ -43,7 +43,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 $date_sent_fmt = EsomoDate::GetOptimalDateTime($ass_date_sent);#formatted sent date
                                 $date_due_fmt = EsomoDate::GetOptimalDateTime($ass_date_due);#formatted due date
 
-                                $ass_due_info = EsomoDate::GetDueText(array("days"=>$ass_date_info["days"],"hours"=>$ass_date_info["hours"],"minutes"=>$ass_date_info["minutes"]));
+                                $ass_due_info = EsomoDate::GetDueText($ass_date_due);
 
                                 //Classroom 
                                 $classroom_name="Unknown Class";
