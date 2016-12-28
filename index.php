@@ -70,18 +70,17 @@
                     {
                         case "student_logout":
                             MySessionHandler::StudentLogout();#logout
-                            unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
                         break;
 
                         case "admin_logout":#admin logs out
                             MySessionHandler::AdminLogout();
-                            unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
                         break;
 
                         default:#invalid entry, anything we hadn't planned for
-                            unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
+                            echo "<p>If you're seeing this, there has been a problem with the logout, please try again</p>";
 
                     }
+                    unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
                 }
         ?>
 
