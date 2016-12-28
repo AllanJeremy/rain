@@ -755,17 +755,10 @@ var ClassroomEvents = function () {
                     
                     var resultData = '';
 
-                    for (var s in classroomData) {
-                        console.log(s);
-
-                        console.log(classroomData[s].classes);
-
-                        resultData = classroomData[s];
-
-                    }
+                    resultData = classroomData;
 
                     localStorage.setItem("cardColor", resultData.classes);
-                    localStorage.setItem("selectedStudents", resultData.selectedStudents);
+                    localStorage.setItem("selectedStudents", resultData.student_ids);
                     localStorage.setItem("cardId", classroomId);
 
                     /*3*/self.parents('.card').removeClass(resultData.classes);
@@ -840,6 +833,7 @@ var ClassroomEvents = function () {
                                 totalOutput2 += Forms_Templates.formSelectTemplate(result2[u]);
 
                             }
+                            
                             //get list of subjects
                             var formTemplateVars = {
                                 subjectoptions: totalOutput,
@@ -878,11 +872,11 @@ var ClassroomEvents = function () {
 
                             $('main .modal#' + template.modalId + ' .card-color-list label.' + resultData.classes).parent().children('input[type="radio"]').prop('checked', true);
 
-                            $('main .modal#' + template.modalId + ' input#editClassroomName').val(resultData.classname);
+                            $('main .modal#' + template.modalId + ' input#editClassroomName').val(resultData.class_name);
 
-                            $('main .modal#' + template.modalId + ' select#editClassroomStream').val(resultData.selectedStream);
+                            $('main .modal#' + template.modalId + ' select#editClassroomStream').val(resultData.stream_id);
 
-                            $('main .modal#' + template.modalId + ' select#editClassroomSubject').val(resultData.selectedSubject);
+                            $('main .modal#' + template.modalId + ' select#editClassroomSubject').val(resultData.subject_id);
 
                             Materialize.updateTextFields();
 
@@ -896,9 +890,11 @@ var ClassroomEvents = function () {
 
                             console.log('modal edit classroom form created.');
 
-                            if(resultData.selectedStudents) {
+                            if(resultData.student_ids) {
 
-                                var previouslySelectedStudents = resultData.selectedStudents;
+                                console.log('dd');
+                                
+                                var previouslySelectedStudents = resultData.student_ids;
 
                                 var totalSelected = previouslySelectedStudents.split(',').length - 1;
 

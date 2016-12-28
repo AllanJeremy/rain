@@ -1094,28 +1094,12 @@ if(isset($_GET['action'])) {
             
             $num = 0;
             
+            //var_dump($result);
+            
             if($result != null) {
               
-                foreach ($result as $row) {
+                echo json_encode($result);
 
-                    $newResult = array(
-                        "classes" => $row['classes'],
-                        "selectedSubject" => $row['subject_id'],
-                        "selectedStream" => $row['stream_id'],
-                        "selectedStudents" => $row['student_ids'],
-                        "classname" => $row['class_name']
-                    );
-
-                    $arrayResult[$num] = $newResult;
-
-                    $num += 1;
-
-                    //echo $num;
-
-                }
-
-                echo json_encode($arrayResult);
-                
             } else {
                 
                 $result = 'null';
