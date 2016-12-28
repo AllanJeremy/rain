@@ -951,34 +951,32 @@ class DbInfo
         }
     }
 
-    #
+    #Get all the students that are not in a classroom 
     public static function GetAllStudentsNotInClass($class_id)
     {
-        if($classrooms = self::SinglePropertyExists("classrooms","class_id",$class_id,"i"))
+        //Get classroom
+        if($classroom = self::ClassroomExists($class_id))
         {
             $students_not_in_class = array();
-            foreach($classrooms as $classroom)
+            
+            $student_ids_array = self::GetArrayFromList($classroom["student_ids"]);#list of the students that are in the list
+            if($students = self::GetAllStudents())
             {
-                $student_ids_array = self::GetArrayFromList($classroom["student_ids"]);#list of the students that are in the list
-                if($students = self::GetAllStudents())
-                {
-                    foreach($students as $student)#for every student
-                    {   
-                        foreach($student_ids_array as $std_id)#check if the student id matches any of the student ids in the classroom
-                        {
-                            if(!($student["adm_no"]==$std_id))
-                            {
-                                array_push($students_not_in_class,$student);
-                            }
-                        }
+                // var_dump($student_ids_array);
+                foreach($students as $student)#for every student
+                {   
+                    #If we don't find the admission number in the array for the classroom, then add the student'
+                    if(array_search($student["adm_no"],$student_ids_array) === false)
+                    {
+                        array_push($students_not_in_class,$student);
                     }
                 }
-                else
-                {
-                    return false;
-                }
-
             }
+            else
+            {
+                return false;
+            }
+
 
             #if there are students in the array
             if(count($students_not_in_class)>0)
@@ -1141,6 +1139,7 @@ if(isset($_GET['action'])) {
             $result="";
             if($students_found = DbInfo::GetAllStudentsNotInClass($class_id))
             {
+                
                 $num = 0;
 
                 foreach ($students_found as $student) {
