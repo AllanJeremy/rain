@@ -1042,7 +1042,7 @@ var ClassroomEvents = function () {
                     
                     hook.append(Result);
                     
-                    //classroomTab.prepend(Result);
+                    $('.tooltipped').tooltip({delay: 50});
         /*6*/
                     $('#' + str1).closeModal();
         /*7*/
