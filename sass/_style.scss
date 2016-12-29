@@ -237,20 +237,20 @@ ul.side-nav.fixed {
 }
 
 nav.top-nav {
-  height: 100px;
-  line-height: 100px;
+  height: 64px;
+  line-height: 64px;
   background-color: lighten(color("shades", "black"), 13%);
   
     i.material-icons {
-        height: 100px;
-        line-height: 100px;
+        height: 64px;
+        line-height: 64px;
     }
     a {
-        line-height: 100px;
+        line-height: 64px;
         
         &.page-title {
-          font-size: 24px;
-          font-weight: 400;
+          font-size: 22px;
+          font-weight: 300;
           text-transform: uppercase;
         }
     }
@@ -291,12 +291,12 @@ a.button-collapse.top-nav {
     text-align: center;
 
       i {
-          height: 100px;
-          line-height: 100px;
+          height: 64px;
+          line-height: 64px;
           
       }
     a.page-title {
-        font-size: 22px;
+        font-size: 21px;
         font-weight: 350;
         text-transform: uppercase;
     }

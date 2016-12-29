@@ -9789,23 +9789,23 @@ ul.side-nav.fixed:hover {
 
 /* line 239, ../sass/_style.scss */
 nav.top-nav {
-  height: 100px;
-  line-height: 100px;
+  height: 64px;
+  line-height: 64px;
   background-color: #3b3b3b;
 }
 /* line 244, ../sass/_style.scss */
 nav.top-nav i.material-icons {
-  height: 100px;
-  line-height: 100px;
+  height: 64px;
+  line-height: 64px;
 }
 /* line 248, ../sass/_style.scss */
 nav.top-nav a {
-  line-height: 100px;
+  line-height: 64px;
 }
 /* line 251, ../sass/_style.scss */
 nav.top-nav a.page-title {
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 300;
   text-transform: uppercase;
 }
 @media only screen and (max-width: 992px) {
@@ -9851,12 +9851,12 @@ a.button-collapse.top-nav i {
   }
   /* line 293, ../sass/_style.scss */
   nav .nav-wrapper i {
-    height: 100px;
-    line-height: 100px;
+    height: 64px;
+    line-height: 64px;
   }
   /* line 298, ../sass/_style.scss */
   nav .nav-wrapper a.page-title {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 350;
     text-transform: uppercase;
   }
