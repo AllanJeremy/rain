@@ -108,9 +108,12 @@ var ClassroomEvents = function () {
 
                 } else {
                     
-                    result = result.replace(/0,/, '');
+                    //result = result.replace(/0,/, '');
                     console.log(result);
-                    result = cleanArray(result.split(','));
+                    
+                    result = jQuery.parseJSON(result);
+                    
+                    result = cleanArray(result, 'true');
                     
                     console.log('Students found');
                     console.log(result);
@@ -307,7 +310,7 @@ var ClassroomEvents = function () {
 
                 } else {
                     
-                    result = cleanArray(result.split(','));
+                    result = cleanArray(result.split(','), 'false');
                     
                     console.log('Assignments found');
                     console.log(result);
@@ -1593,7 +1596,7 @@ var ClassroomEvents = function () {
             var currentChosenStudents = hook.children('.students').attr('data-selected-students');
             console.log(currentChosenStudents);
             
-            currentChosenStudents = cleanArray(currentChosenStudents.split(','));
+            currentChosenStudents = cleanArray(currentChosenStudents.split(','), 'false');
             console.log(currentChosenStudents);
             
             
@@ -1759,7 +1762,7 @@ var ClassroomEvents = function () {
 
                             }
 
-                            selectedStringFormat = cleanArray(selectedStringFormat.split(','));
+                            selectedStringFormat = cleanArray(selectedStringFormat.split(','), 'false');
                             console.log(selectedStringFormat);
                             selectedStringFormat = jQuery.unique( selectedStringFormat );
                             console.log(selectedStringFormat);
@@ -1788,7 +1791,7 @@ var ClassroomEvents = function () {
                                 
                                 var previousSelected = $('.modal#editClassRoom .students').attr('data-selected-students');
                                 
-                                previousSelected = cleanArray(previousSelected.split(','));
+                                previousSelected = cleanArray(previousSelected.split(','), 'false');
                                 
                                 //remove all elements contained in the other array.
                                 selectedStringFormat = previousSelected.filter( function( el ) {
@@ -1853,7 +1856,7 @@ var ClassroomEvents = function () {
                     console.log(selectedStringFormat);
                     selectedStringFormat += $('.modal#editAssignment .classrooms').attr('data-selected-classrooms');
                     console.log(selectedStringFormat);
-                    selectedStringFormat = cleanArray(selectedStringFormat.split(','));
+                    selectedStringFormat = cleanArray(selectedStringFormat.split(','), 'false');
                     console.log(selectedStringFormat);
                     selectedStringFormat = jQuery.unique( selectedStringFormat );
                     console.log(selectedStringFormat);
@@ -1903,21 +1906,84 @@ var ClassroomEvents = function () {
     
     //--------------------------------
     
-    var cleanArray = function (actual) {
-        
-        var newArray = new Array();
-        
-        for (var i = 0; i < actual.length; i++) {
+    var cleanArray = function (actual, str) {
+
+        switch (str) {
             
-            if (actual[i]) {
-                
-                newArray.push(actual[i]);
-                
-            }
+            case 'true': //Clean zero array elements.
             
+                console.log(typeof actual);
+                
+                var newArray = new Array();
+        
+                for (var i = 0; i < actual.length; i++) {
+
+                    if (actual[i]) {
+
+                        newArray.push(actual[i]);
+
+                    }
+
+                
+                }
+
+                var toRemove = [ "0", " " ];
+                
+                console.log(typeof toRemove);
+                
+                console.log(toRemove);
+                console.log(newArray);
+                
+                newArray = newArray.filter( function( el ) {
+                    return !toRemove.includes( el );
+                } );
+                
+                return newArray;
+                
+                break;
+            
+            case 'false':
+                
+                var newArray = new Array();
+        
+                for (var i = 0; i < actual.length; i++) {
+
+                    if (actual[i]) {
+
+                        newArray.push(actual[i]);
+
+                    }
+
+                }
+                
+                console.log(newArray);
+                
+                return newArray;
+                
+                break;
+            
+            default:
+                
+                str = 'false';
+        
+                var newArray = new Array();
+        
+                for (var i = 0; i < actual.length; i++) {
+
+                    if (actual[i]) {
+
+                        newArray.push(actual[i]);
+
+                    }
+
+                }
+
+                return newArray;
+            
+                break;
+                
         }
         
-        return newArray;
         
     };
     
