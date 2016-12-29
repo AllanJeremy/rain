@@ -649,7 +649,7 @@ class DbInfo
     public static function GetAllStudentsInClass($class_id)
     {
         global $dbCon;
-        $student_ids = null;
+        $student_ids = array();
 
         $select_query = "SELECT student_ids FROM classrooms WHERE class_id=?";
         if($select_stmt = $dbCon->prepare($select_query))
@@ -664,12 +664,12 @@ class DbInfo
                 {
                     foreach($select_result as $std_id_list)
                     {
-                        $student_ids = $std_id_list["student_ids"];
+                        $student_ids = self::GetArrayFromList($std_id_list["student_ids"]);
                         break;
                     }
 
                     //Extract individual student_ids
-                    echo $student_ids;
+                    echo json_encode($student_ids);
                 }
             }
         }
