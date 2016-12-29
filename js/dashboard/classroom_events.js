@@ -95,7 +95,12 @@ var ClassroomEvents = function () {
                 
                 console.log(result);
                 
-                if (!result.trim() || result === '0') {
+                result = jQuery.parseJSON(result);
+                
+                console.log(jQuery.isEmptyObject(result));
+                
+                
+                if ( jQuery.isEmptyObject(result) ) {
                     // is empty or whitespace
                     console.log('empty. No students found');
 
@@ -111,7 +116,6 @@ var ClassroomEvents = function () {
                     //result = result.replace(/0,/, '');
                     console.log(result);
                     
-                    result = jQuery.parseJSON(result);
                     
                     result = cleanArray(result, 'true');
                     
