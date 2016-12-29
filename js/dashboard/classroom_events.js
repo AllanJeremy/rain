@@ -904,7 +904,7 @@ var ClassroomEvents = function () {
                                     .append('<div class="col s12 brookhurst-theme-primary previous students lighten-2 card-panel " data-total-students="'
                                             + totalSelected + '" data-selected-students="' 
                                             + previouslySelectedStudents + '"><p class="white-text php-data">A total of ' 
-                                            + totalSelected + ' students are in the classroom. </p> <p><a id="removeStudentsFromClassroom" class="btn btn-small"> Remove students</a></p><br></div>');
+                                            + totalSelected + ' student' + ( (totalSelected > 1) ? 's are' : ' is' ) + ' in the classroom. </p> <p><a id="removeStudentsFromClassroom" class="btn btn-small ' + ( (totalSelected < 1) ? 'disabled hide' : '' ) + '"> Remove students</a></p><br></div>');
 
                             }
 
@@ -1771,12 +1771,12 @@ var ClassroomEvents = function () {
                             console.log(selectedStringFormat.split(',').length);
 
                             $('.modal#editClassRoom .students').remove();
-
+                            
                             hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="'
                                         + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 
-                                        '"><p class="white-text php-data">' + previousTotal + ' students are already in the classroom<br>' + 
+                                        '"><p class="white-text php-data">' + previousTotal + ' student' + ( (previousTotal > 1) ? 's are' : ' is' ) + ' already in the classroom<br>' + 
                                         ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + 
-                                        ' more students will be added to the classroom on submit. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove students</a></p><br></div>');
+                                        ' more student' + ( (((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) > 1) ? 's' : '' ) + ' will be added to the classroom on submit. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove students</a></p><br></div>');
                             break;
                             
                         case 0:
@@ -1800,10 +1800,20 @@ var ClassroomEvents = function () {
                             console.log(selectedStringFormat);
                             selectedStringFormat = jQuery.unique( selectedStringFormat );
                             console.log(selectedStringFormat);
-
+                            
                             selectedStringFormat = selectedStringFormat.toString();
+
+                            if(selectedStringFormat === '') {
+                                
+                                selectedStringFormat += '0';
+                                
+                            } else {
+                                
+                                selectedStringFormat += ',';
+                            
+                            }
+                            
                             console.log(selectedStringFormat);
-                            selectedStringFormat += ',';
                             console.log(selectedStringFormat);
                             console.log(selectedStringFormat.split(',').length);
 
@@ -1813,7 +1823,7 @@ var ClassroomEvents = function () {
                                         + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 
                                         '"><p class="white-text php-data">' 
                                         + (parseInt(previousTotal) - (selectedStringFormat.split(',').length - 1)) + 
-                                        ' students will be removed from the classroom on submit. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove more students</a></p><br></div>');
+                                        ' student' + ( ((parseInt(previousTotal) - (selectedStringFormat.split(',').length - 1)) > 1) ? 's' : '' ) + ' will be removed from the classroom on submit. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove more students</a></p><br></div>');
                             
                             break;
                             

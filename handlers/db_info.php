@@ -1144,7 +1144,7 @@ if(isset($_GET['action'])) {
 
                 foreach ($students_found as $student) {
                     $newResult = array(
-                        "value" => $student['adm_no'],
+                        "id" => $student['adm_no'],
                         "name" => $student['full_name']
                     );
                     
