@@ -15,6 +15,8 @@ var ClassroomEvents = function () {
         editClassroomCard();
         submitNewClassroom();
         addStudentsInClassroom();
+        addMoreStudentsInClassroom();
+        removeStudentsFromClassroom();
         submitEdittedClassroom();
         viewStudentsinClassroom();
         viewAssignmentsinClassroom();
@@ -898,7 +900,11 @@ var ClassroomEvents = function () {
 
                                 var totalSelected = previouslySelectedStudents.split(',').length - 1;
 
-                                $('#' + template.modalId + ' .student-list').append('<div class="col s12 brookhurst-theme-primary previous students lighten-2 card-panel " data-total-students="' + totalSelected + '" data-selected-students="' + previouslySelectedStudents + '"><p class="white-text php-data">A total of ' + totalSelected + ' students are in the classroom.<p></div>');
+                                $('#' + template.modalId + ' .student-list')
+                                    .append('<div class="col s12 brookhurst-theme-primary previous students lighten-2 card-panel " data-total-students="'
+                                            + totalSelected + '" data-selected-students="' 
+                                            + previouslySelectedStudents + '"><p class="white-text php-data">A total of ' 
+                                            + totalSelected + ' students are in the classroom. </p> <p><a id="removeStudentsFromClassroom" class="btn btn-small"> Remove students</a></p><br></div>');
 
                             }
 
@@ -912,7 +918,7 @@ var ClassroomEvents = function () {
                                 if (ifExistsResult === 1) {
                                     //exists
                                     //append warning to that input
-                                    var warningText = '<p class="orange-text text-accent-1 col s9">Classroom ' + $(this).val() + 'exists, continue?</p><a class="btn btn-flat>Okay</a>"';
+                                    var warningText = '<p class="orange-text text-accent-1 col s9">Classroom ' + $(this).val() + ' exists, continue?</p><a class="btn btn-flat>Okay</a>"';
 
                                     $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').parent().append(warningText);
 
@@ -1030,9 +1036,9 @@ var ClassroomEvents = function () {
         /*4*/
                     var Result = Lists_Templates.classRoomCardData(formResults);
         /*5*/
-                    var hook = $('.card.to-edit').parent('.card-col');
+                    var hook = $('.card.to-edit').parent('.card-col[data-classroom-id=' + formResults.classroomid + ']');
                     
-                    $('.card.to-edit').remove();
+                    $('.card-col[data-classroom-id=' + formResults.classroomid + '] .card.to-edit').remove();
                     
                     hook.append(Result);
                     
@@ -1074,8 +1080,7 @@ var ClassroomEvents = function () {
     var addStudentsInClassroom = function () {
         console.log('students will be added');
         
-        var checkboxEl = 'input#addStudentsToClassroom, input#addMoreStudentsToClassroom';
-        var checkedCheckboxEl = 'input#addStudentsToClassroom:checked, input#addMoreStudentsToClassroom:checked';
+        var checkboxEl = 'input#addStudentsToClassroom';
         var modal_id = 'NewClassStudentList';
                         
         var main = $('main');
@@ -1166,9 +1171,11 @@ var ClassroomEvents = function () {
                                 data: autocompletedata
                             });
 
-                            var optionslist = output;
+                            var formOptionsTemplate = {
+                                "formData" : output
+                            };
 
-                            var formList = Forms_Templates.makeStudentFormList(optionslist);
+                            var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
 
                             //open the esomo modal Template
                             //append the list to esomo modal
@@ -1177,7 +1184,9 @@ var ClassroomEvents = function () {
 
                             var modal_body = formList;
 
-                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+                            var modal_action = 'Add';
+                            
+                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1187,7 +1196,7 @@ var ClassroomEvents = function () {
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
 
-                                addToForm(action2, hook, modal_id); //when add students is clicked//
+                                addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                             }); //when add students is clicked//
 
@@ -1206,7 +1215,7 @@ var ClassroomEvents = function () {
                     
 
 
-                    $.get('handlers/db_info.php', { "action" : action/*, "class_id" : localStorage.getItem("cardId")*/ }, function (result) {
+                    $.get('handlers/db_info.php', { "action" : action }, function (result) {
                         console.log('get results:- ');
 
                         result = JSON.parse(result);
@@ -1262,9 +1271,11 @@ var ClassroomEvents = function () {
                                 data: autocompletedata
                             });
 
-                            var optionslist = output;
+                            var formOptionsTemplate = {
+                                "formData" : output
+                            };
 
-                            var formList = Forms_Templates.makeStudentFormList(optionslist);
+                            var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
 
                             //open the esomo modal Template
                             //append the list to esomo modal
@@ -1273,7 +1284,9 @@ var ClassroomEvents = function () {
 
                             var modal_body = formList;
 
-                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+                            var modal_action = 'Add';
+                            
+                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1283,7 +1296,7 @@ var ClassroomEvents = function () {
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
 
-                                addToForm(action2, hook, modal_id); //when add students is clicked//
+                                addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                             }); //when add students is clicked//
 
@@ -1317,6 +1330,366 @@ var ClassroomEvents = function () {
         });
         
     };
+
+    //--------------------------------
+    
+    var addMoreStudentsInClassroom = function () {
+        
+        console.log('More students will be added');
+        
+        var el = 'a#addMoreStudentsToClassroom';
+        var modal_id = 'MoreClassStudentList';
+                        
+        var main = $('main');
+        
+        main.on('click', el, function (e) {
+        
+            e.preventDefault();
+            
+            var hook = $('.student-list');
+            
+            console.log('V- ' + $(el).attr('data-action'));
+            console.log('V- ' + $(el).attr('id'));
+            
+            var action = $(el).attr('data-action');
+            
+            //remove existing esomo modal
+            cleanOutModal('#esomoModal' + modal_id);
+
+            var classiD = localStorage.getItem("cardId");
+
+            console.log('adding list');
+
+            var subject = $('select#newClassroomSubject').val();
+
+            if( action === "GetAllStudentsNotInClass" ) {
+
+                $.get('handlers/db_info.php', {"action" : action, "class_id" : localStorage.getItem("cardId")}, function (result) {
+                    console.log('get results:- ');
+
+                    result = JSON.parse(result);
+                    console.log(result);
+                    console.log(typeof result);
+
+                    if (typeof result === 'undefined') {
+
+                    }
+
+                    if (typeof result === 'object') {
+                        //loop
+
+                        var output = '';
+                        var count = 0;
+                        var autocompletedata = '{';//limit autocomplete dropdown to 20;
+
+                        for (var key in result) {
+
+                            output += Forms_Templates.formOptionsTemplate(result[key]);
+
+                            if (count < 21 && result[key].name != 'undefined') {
+
+                                if (key > 0) {
+
+                                    autocompletedata += ',';
+
+                                }
+
+                                autocompletedata += '"';
+                                autocompletedata += result[key].name;
+                                autocompletedata += '" : ';
+                                autocompletedata += 'null';
+
+                                count++;
+
+                            }
+
+                        }
+
+                        output += '';
+
+                        autocompletedata += '}';
+
+                        //console.log(autocompletedata);
+
+
+                        autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                        //console.log(autocompletedata);
+
+                        $('input#searchStudentFormList').autocomplete({
+                            data: autocompletedata
+                        });
+
+                        var formOptionsTemplate = {
+                            "formData" : output
+                        };
+                        
+                        var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+
+                        //open the esomo modal Template
+                        //append the list to esomo modal
+
+                        var modal_header = 'Add students to the classroom';
+
+                        var modal_body = formList;
+
+                        var modal_action = 'Add';
+                        
+                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+
+                        $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
+
+                        console.log(formList);
+
+                        var action2 = 'morph-in';
+
+                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                            addToForm(action2, hook, modal_id, 1); //when add students is clicked//
+
+                        }); //when add students is clicked//
+
+
+                    }
+
+                })
+                  .success( function (result) {
+
+                    console.log('success');
+
+                }, 'json');
+
+            } else if ( action === "GetAllStudents" ) {
+
+                $.get('handlers/db_info.php', { "action" : action }, function (result) {
+                    console.log('get results:- ');
+
+                    result = JSON.parse(result);
+                    console.log(result);
+                    console.log(typeof result);
+
+                    if (typeof result === 'undefined') {
+
+                    }
+
+                    if (typeof result === 'object') {
+                        //loop
+
+                        var output = '';
+                        var count = 0;
+                        var autocompletedata = '{';//limit autocomplete dropdown to 20;
+
+                        for (var key in result) {
+
+                            output += Forms_Templates.formOptionsTemplate(result[key]);
+
+                            if (count < 21 && result[key].name != 'undefined') {
+
+                                if (key > 0) {
+
+                                    autocompletedata += ',';
+
+                                }
+
+                                autocompletedata += '"';
+                                autocompletedata += result[key].name;
+                                autocompletedata += '" : ';
+                                autocompletedata += 'null';
+
+                                count++;
+
+                            }
+
+                        }
+
+                        output += '';
+
+                        autocompletedata += '}';
+
+                        console.log(autocompletedata);
+
+
+                        autocompletedata = jQuery.parseJSON(autocompletedata);
+
+                        console.log(autocompletedata);
+
+                        $('input#searchStudentFormList').autocomplete({
+                            data: autocompletedata
+                        });
+
+                        var formOptionsTemplate = {
+                            "formData" : output
+                        };
+                        
+                        var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+
+                        //open the esomo modal Template
+                        //append the list to esomo modal
+
+                        var modal_header = 'Add students to the classroom';
+
+                        var modal_body = formList;
+
+                        var modal_action = 'Add';
+                        
+                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+
+                        $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
+
+                        console.log(formList);
+
+                        var action2 = 'morph-in';
+
+                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                            addToForm(action2, hook, modal_id, 1); //when add students is clicked//
+
+                        }); //when add students is clicked//
+
+
+                    }
+
+                })
+                  .success( function (result) {
+
+                    console.log('success');
+
+                }, 'json');
+            }
+            
+        });
+        
+    };
+       
+    //--------------------------------
+    
+    var removeStudentsFromClassroom = function () {
+        
+        console.log('More students will be added');
+        
+        var el = 'a#removeStudentsFromClassroom';
+        var modal_id = 'currentclassStudentList';
+                        
+        var main = $('main');
+        
+        main.on('click', el, function (e) {
+        
+            e.preventDefault();
+            
+            var hook = $('.student-list');
+            
+            console.log('V- ' + $(el).attr('data-action'));
+            console.log('V- ' + $(el).attr('id'));
+            
+            var action = $(el).attr('data-action');
+            
+            //remove existing esomo modal
+            cleanOutModal('#esomoModal' + modal_id);
+
+            var classiD = localStorage.getItem("cardId");
+
+            console.log('making list');
+
+            var currentChosenStudents = hook.children('.students').attr('data-selected-students');
+            console.log(currentChosenStudents);
+            
+            currentChosenStudents = cleanArray(currentChosenStudents.split(','));
+            console.log(currentChosenStudents);
+            
+            
+            var listVars = {
+                "id":"",
+                "name":"",
+            };
+
+            var formList = '';
+            var admNo = '';
+            var XHRs = [];
+            var ajaxObjectResult = '';
+
+            $.each(currentChosenStudents, function(i, v) {
+
+                admNo = v;
+
+                console.log(v);
+
+                XHRs.push(
+                    $.ajax({
+                        url: "handlers/db_info.php",
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {"action": "StudentIdExists", "adm_no": admNo}
+                    })
+                );
+
+            });
+
+            var responseLength = (XHRs.length - 1);
+            var k = 0;
+
+            $.each(XHRs, function(b, n) {
+
+                XHRs[b].done(function(x) {
+
+                    console.log(b);
+                    console.log(responseLength);
+
+                    if ( k < (responseLength) ) {
+
+                        console.log('still less');
+
+                        listVars.id = x.adm_no;
+                        listVars.name = x.full_name;
+
+                        formList += Forms_Templates.formOptionsTemplate(listVars);
+
+                        k++;
+
+                    } else {
+
+                        console.log('last one')
+
+                        listVars.id = x.adm_no;
+                        listVars.name = x.full_name;
+
+                        formList += Forms_Templates.formOptionsTemplate(listVars);
+
+                        //Continue with the rest of the functions
+                        var formOptionsTemplate = {
+                            "formData" : formList
+                        };
+
+                        var formListData = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                        
+                        var modal_header = 'Remove students from the classroom';
+
+                        var modal_body = formListData;
+                        
+                        var modal_action = 'Remove';
+
+                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+
+                        $('.modal#esomoModal' + modal_id).openModal({dismissible:false});
+
+                        console.log('modal students classroom list created.');
+
+                        var action2 = 'morph-in';
+
+                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+
+                            addToForm(action2, hook, modal_id, 0); //when add or remove students is clicked//
+                            
+                        }); //when add or remove students is clicked//
+
+                    }
+
+                });
+
+            });
+    
+        });
+        
+    };
        
     //--------------------------------
     //--------------------------------  END OF CLASSROOM EVENTS AND FUNCTIONS
@@ -1324,7 +1697,7 @@ var ClassroomEvents = function () {
   
     //--------------------------------
     
-    var addToForm = function (action2, hook, modal_id) {
+    var addToForm = function (action2, hook, modal_id, int) {
 
         console.log('Function Inited');
         
@@ -1338,6 +1711,7 @@ var ClassroomEvents = function () {
 
         }
 
+        
         var totalSelected = $('#esomoModal' + modal_id + ' .list').find('input[type="checkbox"]:checked').length;
 
         var selectedArrayResult = $('#esomoModal' + modal_id + ' .list').find('input[type="checkbox"]:checked').map(function(){
@@ -1369,32 +1743,94 @@ var ClassroomEvents = function () {
                     var previousTotal = $('.modal#editClassRoom .students').attr('data-total-students');
 
                     console.log(selectedStringFormat);
-                    if($('.modal#editClassRoom .students').attr('data-selected-students') === '0') {
-                        
-                    } else {
                     
-                        selectedStringFormat += $('.modal#editClassRoom .students').attr('data-selected-students');
-                        console.log(selectedStringFormat);
-                        
+                    switch (int) {
+                    
+                        case 1:
+                            console.log('Add, Don\'t tamper with the results');
+                            
+                            if ($('.modal#editClassRoom .students').attr('data-selected-students') === '0') {
+
+                            } else {
+
+                                //Add the students already in classroom with the current chosen students to be added.
+                                selectedStringFormat += $('.modal#editClassRoom .students').attr('data-selected-students');
+                                console.log(selectedStringFormat);
+
+                            }
+
+                            selectedStringFormat = cleanArray(selectedStringFormat.split(','));
+                            console.log(selectedStringFormat);
+                            selectedStringFormat = jQuery.unique( selectedStringFormat );
+                            console.log(selectedStringFormat);
+
+                            selectedStringFormat = selectedStringFormat.toString();
+                            console.log(selectedStringFormat);
+                            selectedStringFormat += ',';
+                            console.log(selectedStringFormat);
+                            console.log(selectedStringFormat.split(',').length);
+
+                            $('.modal#editClassRoom .students').remove();
+
+                            hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="'
+                                        + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 
+                                        '"><p class="white-text php-data">' + previousTotal + ' students are already in the classroom<br>' + 
+                                        ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + 
+                                        ' more students will be added to the classroom on submit. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove students</a></p><br></div>');
+                            break;
+                            
+                        case 0:
+                            console.log('Remove selected array from the previously selected students in classroom.');
+
+                            if ($('.modal#editClassRoom .students').attr('data-selected-students') === '0') {
+
+                            } else {
+                                
+                                var previousSelected = $('.modal#editClassRoom .students').attr('data-selected-students');
+                                
+                                previousSelected = cleanArray(previousSelected.split(','));
+                                
+                                //remove all elements contained in the other array.
+                                selectedStringFormat = previousSelected.filter( function( el ) {
+                                    return !selectedArrayResult.includes( el );
+                                } );
+
+                            }
+
+                            console.log(selectedStringFormat);
+                            selectedStringFormat = jQuery.unique( selectedStringFormat );
+                            console.log(selectedStringFormat);
+
+                            selectedStringFormat = selectedStringFormat.toString();
+                            console.log(selectedStringFormat);
+                            selectedStringFormat += ',';
+                            console.log(selectedStringFormat);
+                            console.log(selectedStringFormat.split(',').length);
+
+                            $('.modal#editClassRoom .students').remove();
+
+                            hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="'
+                                        + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 
+                                        '"><p class="white-text php-data">' 
+                                        + (parseInt(previousTotal) - (selectedStringFormat.split(',').length - 1)) + 
+                                        ' students will be removed from the classroom on submit. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove more students</a></p><br></div>');
+                            
+                            break;
+                            
+                        default:
+                            console.log('Error message in addToForm function.');
+                            console.log('AddToForm action not chosen');
+                            
+                            break;
                     }
-                    selectedStringFormat = cleanArray(selectedStringFormat.split(','));
-                    console.log(selectedStringFormat);
-                    selectedStringFormat = jQuery.unique( selectedStringFormat );
-                    console.log(selectedStringFormat);
-                    selectedStringFormat = selectedStringFormat.toString();
-                    console.log(selectedStringFormat);
-                    selectedStringFormat += ',';
-                    console.log(selectedStringFormat);
-                    console.log(selectedStringFormat.split(',').length);
 
-
-                    $('.modal#editClassRoom .students').remove();
-
-                    hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">' + previousTotal + ' students are already in the classroom<br>' + ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + ' more students will be added to the classroom on submit.<p></div>');
 
                 } else {
                     
-                    hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' + totalSelected + '" data-selected-students="' + selectedStringFormat + '"><p class="white-text php-data">A total of ' + totalSelected + ' students to be added in the classroom.<p></div>');
+                    hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' 
+                                + totalSelected + '" data-selected-students="' + selectedStringFormat + 
+                                '"><p class="white-text php-data">A total of ' + totalSelected + 
+                                ' students to be added in the classroom. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove students</a></p><br></div>');
                     
                 }
                 
@@ -1420,11 +1856,18 @@ var ClassroomEvents = function () {
 
                     $('.modal#editAssignment .classrooms').remove();
 
-                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' + (selectedStringFormat.split(',').length - 1) + '" data-selected-classrooms="' + selectedStringFormat + '"><p class="white-text php-data">' + previousTotal + ' classrooms have the assignment<br>' + ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + ' more classrooms will receive this assignment on submit.<p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');
+                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' 
+                                + (selectedStringFormat.split(',').length - 1) + '" data-selected-classrooms="' 
+                                + selectedStringFormat + '"><p class="white-text php-data">' 
+                                + previousTotal + ' classrooms have the assignment<br>' 
+                                + ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + ' more classrooms will receive this assignment on submit.<p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');
 
                 } else {
 
-                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' + totalSelected + '" data-selected-classrooms="' + selectedStringFormat + '"><p class="white-text php-data">A total of ' + totalSelected + ' classrooms to receive the assignment.</p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');
+                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' 
+                                + totalSelected + '" data-selected-classrooms="' 
+                                + selectedStringFormat + '"><p class="white-text php-data">A total of ' 
+                                + totalSelected + ' classrooms to receive the assignment.</p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');
 
                 }
 
@@ -1484,7 +1927,7 @@ var ClassroomEvents = function () {
     
     //----------------------------      FUNCTIONS
     
-    var loadEsomoModal = function (modal_id, modal_header, modal_body) {
+    var loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
         
         var args = {
             modalId: modal_id,
@@ -1492,6 +1935,7 @@ var ClassroomEvents = function () {
                 actionClose: 'close-hivi',
                 actionAdd: 'add-hivi'
             },
+            modal_action: modal_action,
             templateHeader: modal_header,
             templateBody: modal_body
             

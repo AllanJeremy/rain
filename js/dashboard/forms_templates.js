@@ -117,8 +117,7 @@ var Forms_Templates = function () {
         templateOutput += '<label>Subject</label>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row"><div class="input-field col s12"><p>';
-        templateOutput += '<input type="checkbox" id="addMoreStudentsToClassroom" name="add_more_students_to_classroom" value="GetAllStudentsNotInClass"/>';
-        templateOutput += '<label for="addMoreStudentsToClassroom">Add more students</label>';
+        templateOutput += '<a class="btn btn-flat" id="addMoreStudentsToClassroom" data-action="GetAllStudentsNotInClass">Add more students</a>';
         templateOutput += '</p></div></div>';
         templateOutput += '<div class="row student-list input-field"></div>';
         templateOutput += '<div class="row"><div class="input-field col s12">';
@@ -161,7 +160,7 @@ var Forms_Templates = function () {
     
     //--------------------------
     
-    this.makeStudentFormList = function (str) {
+    this.makeStudentFormList = function (obj) {
         
         var templateOutput = '';
         
@@ -181,7 +180,7 @@ var Forms_Templates = function () {
         templateOutput += '<div class="divider"></div>';
         templateOutput += '<div class="row"><div class="input-field col s12 list">';
         //loop
-        templateOutput += str;
+        templateOutput += obj.formData;
         //loop end
         templateOutput += '</div></div>';
         
@@ -195,8 +194,8 @@ var Forms_Templates = function () {
         var templateOutput = '';
         
         templateOutput += '<p class="col s6 m4">';
-        templateOutput += '<input type="checkbox" class="filled-in" id="' + obj.value + '" />';
-        templateOutput += '<label for="' + obj.value + '">' + obj.name + '</label>';
+        templateOutput += '<input type="checkbox" class="filled-in" id="' + obj.id + '" />';
+        templateOutput += '<label for="' + obj.id + '">' + obj.name + '</label>';
         templateOutput += '</p>';
         
         return templateOutput;
