@@ -25,7 +25,7 @@ var Dashboard = function () {
     
     var cleanOutModals = function () {
         
-        console.log('cleaning out modals');
+        console.log('cleaning out dashboard dialogs');
         
         $('a#createClassroom').attr('data-target', '');
             

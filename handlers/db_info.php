@@ -1116,7 +1116,7 @@ if(isset($_GET['action'])) {
             foreach ($result as $row) {
                 
                 $newResult = array(
-                    "value" => $row['adm_no'],
+                    "id" => $row['adm_no'],
                     "name" => $row['full_name']
                 );
                 

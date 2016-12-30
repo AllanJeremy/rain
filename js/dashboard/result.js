@@ -5,7 +5,7 @@ var Result = function () {
     //--------------
     
     this.__construct = function () {
-        console.log('result created');
+        console.log('results created');
         
     };
     

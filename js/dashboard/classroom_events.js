@@ -1085,14 +1085,16 @@ var ClassroomEvents = function () {
     //--------------------------------
     
     var addStudentsInClassroom = function () {
-        console.log('students will be added');
         
         var checkboxEl = 'input#addStudentsToClassroom';
+        var checkedCheckboxEl = 'input#addStudentsToClassroom:checked, input#addMoreStudentsToClassroom:checked';
         var modal_id = 'NewClassStudentList';
                         
         var main = $('main');
         
         main.on('change', checkboxEl, function (e) {
+        
+            console.log('students adding function on');
         
             e.preventDefault();
             
@@ -1342,7 +1344,6 @@ var ClassroomEvents = function () {
     
     var addMoreStudentsInClassroom = function () {
         
-        console.log('More students will be added');
         
         var el = 'a#addMoreStudentsToClassroom';
         var modal_id = 'MoreClassStudentList';
@@ -1350,6 +1351,8 @@ var ClassroomEvents = function () {
         var main = $('main');
         
         main.on('click', el, function (e) {
+        
+            console.log('More students adding on');
         
             e.preventDefault();
             
@@ -1572,7 +1575,6 @@ var ClassroomEvents = function () {
     
     var removeStudentsFromClassroom = function () {
         
-        console.log('More students will be added');
         
         var el = 'a#removeStudentsFromClassroom';
         var modal_id = 'currentclassStudentList';
@@ -1580,6 +1582,8 @@ var ClassroomEvents = function () {
         var main = $('main');
         
         main.on('click', el, function (e) {
+        
+            console.log('removing students function on');
         
             e.preventDefault();
             
@@ -2043,7 +2047,7 @@ var ClassroomEvents = function () {
     
     var cleanOutModals = function () {
         
-        console.log('cleaning out modals');
+        console.log('cleaning out classrooms dialogs');
         
         //$('a#createClassroom').attr('data-target', '');
         

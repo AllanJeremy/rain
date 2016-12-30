@@ -5,7 +5,7 @@ var Events = function () {
     //--------------
     
     this.__construct = function () {
-        console.log('events created');
+        console.log('global events created');
         
         ClassroomEvents = new ClassroomEvents();
         AssignmentEvents = new AssignmentEvents();
@@ -127,7 +127,7 @@ var Events = function () {
     
     var cleanOutModals = function () {
         
-        console.log('cleaning out modals');
+        console.log('cleaning out global events dialogs');
         
         //$('a#createClassroom').attr('data-target', '');
         
