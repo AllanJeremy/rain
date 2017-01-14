@@ -400,9 +400,9 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     </div>
 
                     <div class="container">
-                        <form action="" id="createTestForm" class="row">
+                        <form action="" id="createTestForm" class="row" method="POST">
                                 <div class=" input-field col s12 m6">
-                                    <input type="text" id="createTestTitle" name="create_test_title" class="validate" required>
+                                    <input type="text" id="createTestTitle" name="create_test_title" placeholder="Test Title" class="validate" required>
                                     <label for="createTestTitle">Title</label>
                                 </div>
                                 <div class=" input-field col s12 m6">
@@ -433,19 +433,24 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestDifficulty">Difficulty</label>
                                 </div>
                                 
-                                <div class=" input-field col s12 m6">
+                                <div class=" input-field col s12 m4">
                                     <input type="number" id="createTestMaxGrade" name="create_test_max_grade" min="10" max="100" value="100" class="validate" required>
                                     <label for="createTestMaxGrade">Max grade</label>
                                 </div>
                                 
-                                <div class=" input-field col s12 m6">
+                                <div class=" input-field col s12 m4">
                                     <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required>
                                     <label for="createTestPassGrade">Passing grade</label>
                                 </div>
-
+                            
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestCompletionTime" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
+                                    <label for="createTestCompletionTime">Time (Minutes)</label>
+                                </div>
+                            
                                 <div class=" input-field col s12 ">
-                                    <textarea id="createTestInstructions" class="materialize-textarea"></textarea>
-                                    <label for="createTestInstructions">Assignment instructions</label>
+                                    <textarea id="createTestInstructions" class="materialize-textarea" placeholder="Instructions students will get for the test"></textarea>
+                                    <label for="createTestInstructions">Test instructions</label>
                                 </div>
                                 
                                 <button type="submit" class="btn col s10 m4 right pull-s1">Create Test</button>

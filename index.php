@@ -218,11 +218,11 @@
 
                 <div class="row">
                 
-                    <div class="col s6 l4">
+                    <div class="col s12 l4">
                         <p class="grey-text text-darken-1">Brookhurst International School</p>
                     </div>
                     
-                    <div class="col s6 l4">
+                    <div class="col s12 l4">
                         <p class="grey-text text-darken-1">© <?php echo date("Y")?> <a href="http://www.deflix.co.ke">Deflix Enterprises</a></p>
                     </div>
                     
