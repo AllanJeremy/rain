@@ -402,7 +402,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     <div class="container">
                         <form action="" id="createTestForm" class="row">
                                 <div class=" input-field col s12 m6">
-                                    <input type="text" id="createTestTitle" name="create_test_title" class="validate" required></input>
+                                    <input type="text" id="createTestTitle" name="create_test_title" class="validate" required>
                                     <label for="createTestTitle">Title</label>
                                 </div>
                                 <div class=" input-field col s12 m6">
@@ -418,7 +418,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestSubject">Subject</label>
                                 </div>
                                 <div class=" input-field col s12 m6">
-                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count"  min="1" max="50" value="10" class="validate" required></input>
+                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count"  min="1" max="50" value="10" class="validate" required>
                                     <label for="createTestQuestionCount">No. of questions</label>
                                 </div>
 
@@ -434,12 +434,12 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 </div>
                                 
                                 <div class=" input-field col s12 m6">
-                                    <input type="number" id="createTestMaxGrade" name="create_test_max_grade" min="10" max="100" value="100" class="validate" required></input>
+                                    <input type="number" id="createTestMaxGrade" name="create_test_max_grade" min="10" max="100" value="100" class="validate" required>
                                     <label for="createTestMaxGrade">Max grade</label>
                                 </div>
                                 
                                 <div class=" input-field col s12 m6">
-                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required></input>
+                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required>
                                     <label for="createTestPassGrade">Passing grade</label>
                                 </div>
 
