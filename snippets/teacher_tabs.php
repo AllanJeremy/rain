@@ -132,7 +132,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                             </div>
                             <div class=" input-field col s12 ">
                                 <textarea id="assignmentInstructions" class="materialize-textarea"></textarea>
-                                <label for="textarea1">Assignment instructions</label>
+                                <label for="assignmentInstructions">Assignment instructions</label>
                             </div>
 <!--
                             <div class=" input-field col s6 ">
@@ -631,10 +631,78 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 </div>
 
                 <!--TESTS SECTION-->
+                <?php
+                    $subjects_found = DbInfo::GetAllSubjects();
+                ?>
                 <!--Create a test-->
                 <div class="row main-tab" id="createTestTab">
                     Create a test tab
                 </div>
+                    <div class="col s12">
+                        <p class="grey-text">Create test</p>
+                        <div class="divider"></div>
+                    <br>
+                    </div>
+
+                    <div class="container">
+                        <form action="" id="createTestForm" class="row" method="POST">
+                                <div class=" input-field col s12 m6">
+                                    <input type="text" id="createTestTitle" name="create_test_title" placeholder="Test Title" class="validate" required>
+                                    <label for="createTestTitle">Title</label>
+                                </div>
+                                <div class=" input-field col s12 m6">
+                                    <select id="createTestSubject">
+                                        <?php
+                                            foreach($subjects_found as $subject):
+                                        ?>
+                                        <option value="<?php echo $subject['subject_id']?>"><?php echo $subject["subject_name"] ?></option>
+                                        <?php
+                                            endforeach;
+                                        ?>
+                                    </select>
+                                    <label for="createTestSubject">Subject</label>
+                                </div>
+                                <div class=" input-field col s12 m6">
+                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count"  min="1" max="50" value="10" class="validate" required>
+                                    <label for="createTestQuestionCount">No. of questions</label>
+                                </div>
+
+
+                                <div class=" input-field col s12 m6">
+                                    <select id="createTestDifficulty" name="create_test_difficulty" class="validate" required>
+                                        <option value="1">Very Easy</option>
+                                        <option value="2">Easy</option>
+                                        <option value="3">Moderate</option>
+                                        <option value="4">Difficult</option>
+                                    </select>
+                                    <label for="createTestDifficulty">Difficulty</label>
+                                </div>
+
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestMaxGrade" name="create_test_max_grade" min="10" max="100" value="100" class="validate" required>
+                                    <label for="createTestMaxGrade">Max grade</label>
+                                </div>
+
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required>
+                                    <label for="createTestPassGrade">Passing grade</label>
+                                </div>
+
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestCompletionTime" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
+                                    <label for="createTestCompletionTime">Time (Minutes)</label>
+                                </div>
+
+                                <div class=" input-field col s12 ">
+                                    <textarea id="createTestInstructions" class="materialize-textarea" placeholder="Instructions students will get for the test"></textarea>
+                                    <label for="createTestInstructions">Test instructions</label>
+                                </div>
+
+                                <button type="submit" class="btn col s10 m4 right pull-s1">Create Test</button>
+                        </form>
+                        </div>
+                    </div>
+
                 <!--Test results-->
                 <div class="row main-tab" id="viewStudentsTestResultTab">
                     test results tab
