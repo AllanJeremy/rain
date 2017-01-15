@@ -4,7 +4,7 @@ var Lists_Templates = function () {
     'use strict';
     //--------------
     
-    this.__construct = function () {
+    this.construct = function () {
         console.log('Lists templates created');
         
     };
@@ -254,6 +254,8 @@ var Lists_Templates = function () {
         templateOutput += '<div class="modal-footer">';
         
         if (typeof obj.extraActions === 'undefined') {
+          
+            templateOutput += '';
             
         } else {
         
@@ -317,37 +319,39 @@ var Lists_Templates = function () {
         
         obj.progressWidth = '78%';
         
-        var formattedProgressWidth = $.trim(obj.progressWidth).split("%").join("");
+        var formattedProgressWidth = $.trim(obj.progressWidth).split("%").join(""),
+            warningClass = 'red',
+            okayClass = 'green',
+            infoClass = 'amber',
+            noneClass = 'grey',
+            colorClass = noneClass,
+            textColorClass = noneClass + '-text',
+            templateOutput = '';
         
-        var warningClass = 'red';
-        var okayClass = 'green';
-        var infoClass = 'amber';
-        var noneClass = 'grey';
+        if (formattedProgressWidth === 0) {
         
-        if(formattedProgressWidth == 0) {
+            colorClass = noneClass;
+            textColorClass = noneClass + '-text text-lighten-1';
         
-            var colorClass = noneClass;
-            var textColorClass = noneClass + '-text text-lighten-1';
-        
-        } else if(formattedProgressWidth >= 1 && formattedProgressWidth <= 31) {
+        } else if (formattedProgressWidth >= 1 && formattedProgressWidth <= 31) {
             
-            var colorClass = okayClass + ' lighten-2';
-            var textColorClass = okayClass + '-text text-darken-2';
+            colorClass = okayClass + ' lighten-2';
+            textColorClass = okayClass + '-text text-darken-2';
         
-        } else if(formattedProgressWidth >= 31 && formattedProgressWidth <= 80) {
+        } else if (formattedProgressWidth >= 31 && formattedProgressWidth <= 80) {
             
-            var colorClass = okayClass + ' lighten-2';
-            var textColorClass = okayClass + '-text text-darken-2';
+            colorClass = okayClass + ' lighten-2';
+            textColorClass = okayClass + '-text text-darken-2';
         
-        } else if(formattedProgressWidth >= 81 && formattedProgressWidth <= 92) {
+        } else if (formattedProgressWidth >= 81 && formattedProgressWidth <= 92) {
             
-            var colorClass = infoClass;
-            var textColorClass = infoClass + '-text';
+            colorClass = infoClass;
+            textColorClass = infoClass + '-text';
         
-        } else if(formattedProgressWidth >= 93 && formattedProgressWidth <= 100) {
+        } else if (formattedProgressWidth >= 93 && formattedProgressWidth <= 100) {
             
-            var colorClass = warningClass;
-            var textColorClass = warningClass + '-text';
+            colorClass = warningClass;
+            textColorClass = warningClass + '-text';
         
         } else {
             
@@ -356,7 +360,6 @@ var Lists_Templates = function () {
             
         }
         
-        var templateOutput = '';
         
         templateOutput += '<div id="esomoModal' + obj.modalId + '" class="esomo-modal modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content">';
@@ -379,16 +382,16 @@ var Lists_Templates = function () {
     
     this.updateModalProgressTemplate = function (str) {
         
-        var obj = {"updateWidth": str};
+        var obj = {"updateWidth": str},
         
-        var esomoModalTemplate = this.esomoModalTemplate(obj);
+            esomoModalTemplate = this.esomoModalTemplate(obj);
         
         //console.log(esomoModalTemplate);
             
         return esomoModalTemplate;
             
         
-    }
+    };
     
     //--------------------------
     
@@ -444,7 +447,7 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<table>';
+        templateOutput += '<table class="responsive-table">';
         templateOutput += '<thead><tr>';
         //templateOutput += '<th data-field="action"></th>';
         templateOutput += '<th data-field="name">Assignment name</th>';
@@ -486,7 +489,7 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<table>';
+        templateOutput += '<table class="responsive-table">';
         templateOutput += '<thead><tr>';
         templateOutput += '<th ></th>';
         templateOutput += '<th data-field="name">Classroom name</th>';
@@ -510,7 +513,7 @@ var Lists_Templates = function () {
         var templateOutput = '';
         
         templateOutput += '<tr>';
-        templateOutput += '<td><p><input type="checkbox" value="' + obj.id + '" class="filled-in" id="' + obj.id + '"><label for="' + obj.id + '"></label></p></td>';
+        templateOutput += '<td><p class="no-margin"><input type="checkbox" value="' + obj.id + '" class="filled-in" id="' + obj.id + '"><label for="' + obj.id + '"></label></p></td>';
         templateOutput += '<td>' + obj.name + '</td>';
         templateOutput += '<td>' + obj.subject + '</td>';
         templateOutput += '<td>' + obj.stream + '</td>';
@@ -523,43 +526,168 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
-    this.editExtraFooterActions = function (obj) {
+    this.scheduleList = function (obj) {
         
         var templateOutput = '';
         
-        $.each(obj, function(i, el) {
-            
-            
-            switch(el) {
-                    
-                case true:
+        templateOutput += '<tr> data-schedule-id="' + obj.scheduleid + '">';
+        templateOutput += this.scheduleListData(obj);
+        templateOutput += '</tr>';
         
-                    if (i === 'Delete' || i === 'delete') {
-                        
-                        var classes = 'red-text';
-                    
-                    } else {
-                        
-                        var classes = 'grey-text';
-                        
-                    }
-                    
-                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="' + classes + ' text-lighten-1 modal-action left btn btn-flat transparent" href="#!" id="moreCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+        return templateOutput;
+        
+    };
+    
+    //--------------------------------------
+    
+    this.scheduleListData = function (obj) {
+        
+        var templateOutput = '';
+        
+        templateOutput += '<td>' + obj.schedulename + '</td>';
+        templateOutput += '<td>' + obj.scheduledescription + '</td>';
+        templateOutput += '<td> class="right-align">' + obj.scheduletime + '</td>';
+        templateOutput += '<td> class="right-align schedule-action" width="120">';
+        templateOutput += '<a class="btn-icon" id="attendedSchedule' + obj.scheduleid + '" href="#!"><i class="material-icons">done</i></a>';
+        templateOutput += '<a class="btn-icon"><i class="material-icons">expand-more</i></a>';
+        templateOutput += '</td>';
+        
+        return templateOutput;
+        
+    };
+    
+    //--------------------------------------
+    
+    this.scheduleTable = function (obj) {
+        
+        obj.includethead = 'hide';
+        
+        var templateOutput = '';
+        
+        templateOutput += '<table class="bordered responsive-table" id="pendingScheduleTable">';
+        templateOutput += '<thead class="' + obj.includethead + '">';
+        templateOutput += '<tr>';
+        templateOutput += '<th> data-field="id">' + obj.tableidcolumnname + '</th>';
+        templateOutput += '<th> data-field="id">' + obj.tableschedulenamecolumnname + '</th>';
+        templateOutput += '<th> data-field="id">' + obj.tablescheduledescriptioncolumnname + '</th>';
+        templateOutput += '<th> data-field="id">' + obj.tablescheduletimecolumnname + '</th>';
+        templateOutput += '<th> data-field="id">' + obj.tablescheduleextraactionscolumn + '</th>';
+        templateOutput += '</tr>';
+        templateOutput += '</thead>';
+        templateOutput += '<tbody>';
+        templateOutput += obj.tableLists;
+        templateOutput += '</tbody>';
+        templateOutput += '</table>';
+        
+        return templateOutput;
+        
+    };
+    
+    //--------------------------------------
+    
+    this.paginationTemplate = function (obj, j) {
+        
+        obj.position = 'center';
+        
+        var templateOutput = '',
+            c;
+        
+        templateOutput += '<ul class="pagination ' + obj.position + '">';
+        
+        for (c = 1; c <= obj.pages; c++) {
+            
+            if (j === c && j === 1) {
+                //if the first page is active
+                templateOutput += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+                templateOutput += '<li class="active"><a href="#!">' + obj.c + '</a></li>';
+            
+            } else if (c === 1 && j !== 1) {
+                //if the first page is not active
+                templateOutput += '<li ><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+                templateOutput += '<li class="waves-effect"><a href="#!">' + obj.c + '</a></li>';
+                
+            } else if (j === c) {
+                //The current active page
+                templateOutput += '<li class="active"><a href="#!">' + obj.c + '</a></li>';
+                
+            } else if (j === obj.pages && c === j) {
+                //if the last page is active
+                templateOutput += '<li class="active"><a href="#!">' + obj.c + '</a></li>';
+                templateOutput += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+            
+            } else if (c === obj.pages && j !== obj.pages) {
+                //if the last page is not active
+                templateOutput += '<li class="waves-effect"><a href="#!">' + obj.c + '</a></li>';
+                templateOutput += '<li ><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                
+            } else {
+                //Page not active
+                templateOutput += '<li class="waves-effect"><a href="#!">' + obj.c + '</a></li>';
+            }
+            
+        }
+        
+        templateOutput += '</ul>';
+        templateOutput += '<br>';
+        
+        return templateOutput;
+        
+    };
+    
+    //--------------------------------------
+    
+    this.objective = function (obj) {
+    
+        var templateOutput = '';
+        
+        templateOutput += '<li>';
+        templateOutput += obj.text;
+        templateOutput += ( (obj.isSubtopic === false) ? '' : '<span class="tiny-info">ST</span>');
+        templateOutput += ( (obj.removable === false) ? '' : '<span class="right "><a class="mini-link btn-icon no-padding" href="#!">remove</a></span>');
+        templateOutput += '</li>';
 
-                    break;
-                    
-                case false:
+        return templateOutput;
         
-                    templateOutput += '';
-                    
-                    break;
-                    
-                default:
-                    
-                    return false;
+    };
+    
+    //--------------------------------------
+    
+    this.editExtraFooterActions = function (obj) {
+        
+        var templateOutput = '',
+            classes = '';
+        
+        $.each(obj, function (i, el) {
             
-                    break;
             
+            switch (el) {
+
+            case true:
+
+                if (i === 'Delete' || i === 'delete') {
+
+                    classes = 'red-text';
+
+                } else {
+
+                    classes = 'grey-text';
+
+                }
+
+                templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="' + classes + ' text-lighten-1 modal-action left btn btn-flat transparent" href="#!" id="moreCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+
+                break;
+
+            case false:
+
+                templateOutput += '';
+
+                break;
+
+            default:
+
+                return false;
+
             }
             
         });
@@ -569,6 +697,6 @@ var Lists_Templates = function () {
     
     //-------------------------
     
-    this.__construct();
+    this.construct();
     
 };

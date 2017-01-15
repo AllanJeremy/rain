@@ -1,11 +1,12 @@
 <?php
 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_handler.php"));#Updates information in the database
+require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 
 #Functions used by the schedule
 interface ScheduleFunctions
 {
-    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$schedule_date,$schedule_time);#create a schedule
+    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date);#create a schedule
     public static function MarkAttendedSchedule($schedule_id,$teacher_id);#mark a schedule as attended
     public static function UnmarkAttendedSchedule($schedule_id,$teacher_id);#unmark attended schedule
 
@@ -51,15 +52,15 @@ class Schedule implements ScheduleFunctions
     }
     
     //Create a Schedule
-    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$schedule_date,$schedule_time)
+    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date)
     {
         global $dbCon;
 
-        $insert_query = "INSERT INTO schedules(schedule_title,schedule_description,teacher_id,class_id,schedule_date,schedule_time) VALUES(?,?,?,?,?,?)";
+        $insert_query = "INSERT INTO schedules(schedule_title,schedule_description,teacher_id,class_id,due_date) VALUES(?,?,?,?,?)";
 
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            $insert_stmt->bind_param("ssiiss",$schedule_title,$schedule_description,$teacher_id,$class_id,$schedule_date,$schedule_time);
+            $insert_stmt->bind_param("ssiis",$schedule_title,$schedule_description,$teacher_id,$class_id,$due_date);
 
             if($insert_stmt->execute())
             {
@@ -72,7 +73,53 @@ class Schedule implements ScheduleFunctions
         }
         else
         {
-            return null;#failed to prepare insert query
+            return $dbCon->error;#failed to prepare insert query
         }
     }
-};
+};#END OF CLASS
+
+
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_POST['action'])) {
+    
+    switch($_POST['action']) {
+        case 'CreateSchedule':
+            
+            $args = array(
+                'schedule_title' => $_POST['scheduletitle'],
+                'schedule_description' => $_POST['scheduledescription'],
+                'teacher_id' => $_SESSION['admin_acc_id'],
+                'class_id' => $_POST['scheduleclassroom'],
+                'due_date' => $_POST['duedate']
+            );
+             
+            $result = Schedule::CreateSchedule($args['schedule_title'], $args['schedule_description'], $args['teacher_id'], $args['class_id'], $args['due_date']);
+            
+            echo $result;
+            
+            break;
+        case 'RemoveStudent':
+            
+            
+            //dddd
+            break;
+        default:
+            return null;
+            break;
+    }
+
+} else {
+    return null;
+}
+
+
+
+
+
+
+

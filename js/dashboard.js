@@ -13,9 +13,9 @@ var Dashboard = function () {
         
         cleanOutModals();
         
+        Result = new Result();
         Events = new Events();
         Tests = new Tests();
-        Result = new Result();
         
         //loadTestCard();
         

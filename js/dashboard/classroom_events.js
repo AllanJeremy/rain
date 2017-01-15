@@ -44,9 +44,9 @@ var ClassroomEvents = function () {
             
             var self = $(this);
             var classid = localStorage.getItem("cardId");
-            var toastMessage = '<p class="white-text" data-ref-class-id="' + classid + '">Preparing to delete classroom  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>'
+            var toastMessage = '<p class="white-text" data-ref-class-id="' + classid + '">Preparing to delete classroom  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
             
-            var re = new RegExp("regex","i");
+            var re = new RegExp("regex", "i");
             
             console.log('card id ' + classid + ' to be deleted.');
             
@@ -87,7 +87,7 @@ var ClassroomEvents = function () {
             
             var classroomId = $(this).parents('.card-col').attr('data-classroom-id');
         
-            $.get("handlers/db_info.php", {"action":"GetAllStudentsInClass", "class_id":classroomId}, function (result) {
+            $.get("handlers/db_info.php", {"action": "GetAllStudentsInClass", "class_id" : classroomId}, function (result) {
                 
                 console.log('fetching students in classroom id:' + classroomId);
                 
@@ -100,7 +100,7 @@ var ClassroomEvents = function () {
                 console.log(jQuery.isEmptyObject(result));
                 
                 
-                if ( jQuery.isEmptyObject(result) ) {
+                if (jQuery.isEmptyObject(result)) {
                     // is empty or whitespace
                     console.log('empty. No students found');
 
@@ -123,8 +123,8 @@ var ClassroomEvents = function () {
                     console.log(result);
 
                     var listVars = {
-                        "id":"",
-                        "name":"",
+                        "id": "",
+                        "name": ""
                     };
                     
                     var list = '';
@@ -132,7 +132,7 @@ var ClassroomEvents = function () {
                     var XHRs = [];
                     var ajaxObjectResult = '';
                     
-                    $.each(result, function(i, v) {
+                    $.each(result, function (i, v) {
                         
                         admNo = v;
                         
@@ -161,16 +161,16 @@ var ClassroomEvents = function () {
                     var responseLength = (XHRs.length - 1);
                     var k = 0;
                     
-                    $.each(XHRs, function(b, n) {
+                    $.each(XHRs, function (b, n) {
 
                         
                         
-                        XHRs[b].done(function(x) {
+                        XHRs[b].done(function (x) {
                         
                             console.log(b);
                             console.log(responseLength);
                             
-                            if ( k < (responseLength) ) {
+                            if (k < (responseLength)) {
                                 
                                 console.log('still less');
                                 
@@ -183,7 +183,7 @@ var ClassroomEvents = function () {
                                 
                             } else {
                             
-                                console.log('last one')
+                                console.log('last one');
                                 
                                 listVars.id = x.adm_no;
                                 listVars.name = x.full_name;
@@ -201,12 +201,12 @@ var ClassroomEvents = function () {
                                 var template = {
                                     modalId: 'ClassRoomStudents',
                                     templateHeader: 'Students in the classroom',
-                                    templateBody: listData,
+                                    templateBody: listData
                                 };
 
                                 $('main').append(Lists_Templates.modalTemplate(template));
 
-                                $('#' + template.modalId).openModal({dismissible:false});
+                                $('#' + template.modalId).openModal({dismissible: false});
 
                                 console.log('modal students classroom list created.');
 
@@ -297,7 +297,7 @@ var ClassroomEvents = function () {
             
             var classroomId = $(this).parents('.card-col').attr('data-classroom-id');
             
-            $.get("handlers/db_info.php", {"action":"GetTeacherAssInClass", "class_id":classroomId}, function (result) {
+            $.get("handlers/db_info.php", {"action": "GetTeacherAssInClass", "class_id" : classroomId}, function (result) {
                 
                 console.log('fetching Assignments in classroom id:' + classroomId);
                 
@@ -320,8 +320,8 @@ var ClassroomEvents = function () {
                     console.log(result);
 
                     var listVars = {
-                        "id":"",
-                        "name":"",
+                        "id": "",
+                        "name": ""
                     };
                     
                     var list = '';
@@ -329,7 +329,7 @@ var ClassroomEvents = function () {
                     var XHRs = [];
                     var ajaxObjectResult = '';
                     
-                    $.each(result, function(i, v) {
+                    $.each(result, function (i, v) {
                         
                         classId = v;
                         
@@ -357,14 +357,14 @@ var ClassroomEvents = function () {
                     
                     var responseLength = (XHRs.length - 1);
                     
-                    $.each(XHRs, function(b, n) {
+                    $.each(XHRs, function (b, n) {
 
-                        XHRs[b].done(function(x) {
+                        XHRs[b].done(function (x) {
                         
                             console.log(b);
                             console.log(responseLength);
                             
-                            if ( b < (responseLength) ) {
+                            if (b < (responseLength)) {
                                 
                                 console.log('still less');
                                 
@@ -375,7 +375,7 @@ var ClassroomEvents = function () {
 
                             } else {
                             
-                                console.log('last one')
+                                console.log('last one');
                                 
                                 listVars.id = x.adm_no;
                                 listVars.name = x.full_name;
@@ -393,12 +393,12 @@ var ClassroomEvents = function () {
                                 var template = {
                                     modalId: 'ClassRoomAssignments',
                                     templateHeader: 'All assignments given to the classroom',
-                                    templateBody: listData,
+                                    templateBody: listData
                                 };
 
                                 $('main').append(Lists_Templates.modalTemplate(template));
 
-                                $('#' + template.modalId).openModal({dismissible:false});
+                                $('#' + template.modalId).openModal({dismissible: false});
 
                                 console.log('modal assignments classroom list created.');
 
@@ -1044,6 +1044,8 @@ var ClassroomEvents = function () {
                     var Result = Lists_Templates.classRoomCardData(formResults);
         /*5*/
                     var hook = $('.card.to-edit').parent('.card-col[data-classroom-id=' + formResults.classroomid + ']');
+                    
+                    console.log('Updating card id ' + formResults.classroomid + '.');
                     
                     $('.card-col[data-classroom-id=' + formResults.classroomid + '] .card.to-edit').remove();
                     
