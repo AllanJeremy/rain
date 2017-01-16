@@ -391,13 +391,16 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 <?php
                     $subjects_found = DbInfo::GetAllSubjects();
                 ?>
-                <!--Create a test-->
+                <!--Create a test--> 
                 <div class="row main-tab" id="createTestTab">
-                    <div class="col s12">
-                        <p class="grey-text">Create test</p>
+                    <div class="col s12 grey-text">
+                        <a href="#!" class="breadcrumb grey-text text-darken-3">Create</a>
+                        <a href="#!" class="breadcrumb grey-text">Questions</a>
+                        <a href="#!" class="breadcrumb grey-text">Preview</a>
                         <div class="divider"></div>
                     <br>
                     </div>
+
 
                     <div class="container">
                         <form action="" id="createTestForm" class="row" method="POST">
@@ -418,7 +421,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestSubject">Subject</label>
                                 </div>
                                 <div class=" input-field col s12 m6">
-                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count"  min="1" max="50" value="10" class="validate" required>
+                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count" min="1" max="50" value="10" class="validate" required>
                                     <label for="createTestQuestionCount">No. of questions</label>
                                 </div>
 
@@ -444,7 +447,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 </div>
                             
                                 <div class=" input-field col s12 m4">
-                                    <input type="number" id="createTestCompletionTime" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
+                                    <input type="number" id="createTestCompletionTime" step="5" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
                                     <label for="createTestCompletionTime">Time (Minutes)</label>
                                 </div>
                             

@@ -2,7 +2,8 @@
 
 <html lang="en">
     <head>
-        <title>Esomo2</title>
+        <?php require_once("handlers/header_handler.php"); ?>
+        <title><?php echo MyHeaderHandler::SITE_TITLE;?> | Tests</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
@@ -12,6 +13,28 @@
     </head>
 
     <body>
+        <?php
+            //If statement that determines whether content can be viewed
+            if (MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn()):
+               
+                //Account type - from session variable storing the account type of the currently logged in user
+                $snippet_folder = "snippets/";#folder that contains snippets
+
+                $accType="";
+                //Determine what type of account is logged in and set accType to the appropriate value
+                if(MySessionHandler::AdminIsLoggedIn())
+                {
+                    $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
+                }
+                else if(MySessionHandler::StudentIsLoggedIn())
+                {
+                    $accType = "student";#corresponds with file name prefix
+                }
+                
+                //Allow editing of test if the test creator is logged in and the test is in an editable state
+                #tid = test_id | edit=1, anything else means no
+                if(isset($_GET["tid"]) && DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
+?>
         <header>
             <nav class="top-nav">
                 <div class="container ">
@@ -43,6 +66,7 @@
         </header>
         <main>
             <?php
+
             ?>
             <div class="row grey darken-2 z-depth-1">
                 <div class="container">
@@ -90,6 +114,15 @@
                     </form>
                 </div>
             </div>
+            
+            <?php
+                else:#testid is set and is a valid test
+                    header("Location:./404.html");
+                endif;
+            else:
+                header("Location:./");
+            endif;
+            ?>
         </main>
         <footer>
         </footer>
