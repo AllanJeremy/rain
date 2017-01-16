@@ -571,13 +571,48 @@ class DbInfo
     //Checks if the schedule with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function ScheduleExists($schedule_id)
     {
-        return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
+        
+        if($schedules = self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i"))
+        {
+            if($schedules->num_rows>0)
+            {
+                foreach($schedules as $schedule)
+                {
+                    return $schedule;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
+        }
     }
     
     //Checks if the test with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function TestExists($test_id)
     {
-        return self::SinglePropertyExists("tests","test_id",$test_id,"i");
+        if($tests = self::SinglePropertyExists("tests","test_id",$test_id,"i"))
+        {
+            if($tests->num_rows>0)
+            {
+                foreach($tests as $test)
+                {
+                    return $test;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return self::SinglePropertyExists("tests","test_id",$test_id,"i");
+        }
     }
 
     #Get specific teacher classrooms - returns classrooms on success | false if no records found | null if query couldn't execute

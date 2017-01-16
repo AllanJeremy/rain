@@ -394,9 +394,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 <!--Create a test--> 
                 <div class="row main-tab" id="createTestTab">
                     <div class="col s12 grey-text">
-                        <a href="#!" class="breadcrumb grey-text text-darken-3">Create</a>
-                        <a href="#!" class="breadcrumb grey-text">Questions</a>
-                        <a href="#!" class="breadcrumb grey-text">Preview</a>
+                        <p class="grey-text">Create Test. Once a test is created you will be redirected to the test editing page page</p>
                         <div class="divider"></div>
                     <br>
                     </div>
@@ -432,6 +430,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                         <option value="2">Easy</option>
                                         <option value="3">Moderate</option>
                                         <option value="4">Difficult</option>
+                                        <option value="5">Very Difficult</option>
                                     </select>
                                     <label for="createTestDifficulty">Difficulty</label>
                                 </div>

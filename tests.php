@@ -32,8 +32,7 @@
                 }
                 
                 //Allow editing of test if the test creator is logged in and the test is in an editable state
-                #tid = test_id | edit=1, anything else means no
-                if(isset($_GET["tid"]) && DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
+                if(isset($_GET["tid"]) && $test=DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
 ?>
         <header>
             <nav class="top-nav">
@@ -46,7 +45,7 @@
                                 </a>
                             </div>
                             <div class="col s8">
-                                <a class="page-title center-align">Test title</a>
+                                <a class="page-title center-align"><?php echo $test["test_title"];?></a>
                             </div>
                             <div class="col s2" id="fullScreenDiv">
                                 <a class="right" id="fullScreenToggle" href="#!FullScreenTestPage"><i class="material-icons">fullscreen</i></a>
@@ -55,29 +54,57 @@
                     </div>
                 </div>
             </nav>
-
-            <?php
-            
-            //Account type - from session variable storing the account type of the currently logged in user
-            $accType = "student";
-            
-            ?>
-
         </header>
+        
         <main>
             <?php
-
+                $taking_test = false;#if we are taking the test
+                $current_question = 1;
+                $question_count = $test["number_of_questions"];
+                switch($accType):
+                    case "teacher":#teacher logged in
+                        $teacher_acc_id = $_SESSION["admin_acc_id"];
+                        
+                        #tid = test_id | edit=1, anything else means no
+                        //If test is in edit state and the test belongs to the currently logged in teacher
+                        if(isset($_GET["edit"]) && (htmlspecialchars($_GET["edit"])=="1") && $test["teacher_id"]==$teacher_acc_id && $test["editable"]):
+                            #editing the test
             ?>
             <div class="row grey darken-2 z-depth-1">
                 <div class="container">
                     <div class="row no-margin">
-                        <div class="col s4 center-align">
-                            <p class="white-text">Question <span class="php-data">4</span> of 30</p>
+                        <div class="col s12 m4 center-align">
+                            <p class="white-text">Question <span class="php-data"><?php echo $current_question; ?></span> of <?php echo $question_count; ?></p>
                         </div>
-                        <div class="col s4 center-align">
+                        <div class="col s12 m4 center-align">
+                            <p class="white-text">Time left: <span class="php-data">1:00</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+                        else:#invalid edit credentials - redirect to the test
+                            $taking_test = true;                     
+                        endif;
+                    break;
+                    case "student":
+                        $taking_test = true;
+                    break;#student logged in
+                endswitch;
+
+                if($taking_test):
+            ?>
+            <div class="row grey darken-2 z-depth-1">
+                <div class="container">
+                    <div class="row no-margin">
+                        <div class="col s12 m4 center-align">
+                            <p class="white-text">Question <span class="php-data"><?php echo $current_question; ?></span> of <?php echo $question_count; ?></p>
+                        </div>
+                        <!--<div class="col s12 m4 center-align">
                             <p class="white-text"><span class="php-data">1</span> question skipped</p>
-                        </div>
-                        <div class="col s4 center-align">
+                        </div>-->
+                        <div class="col s12 m4 center-align">
                             <p class="white-text">Time left: <span class="php-data">1:04:32</span></p>
                         </div>
                     </div>
@@ -116,6 +143,8 @@
             </div>
             
             <?php
+                endif;#if taking test
+
                 else:#testid is set and is a valid test
                     header("Location:./404.html");
                 endif;
