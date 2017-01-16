@@ -9,7 +9,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 <!--CLASSROOMS SECTION-->
                 <div class="row main-tab active-bar" id="classroomTab">
                     
-                    <div class="row no-margin">
+                    <div class="row no-bottom-margin">
                         <div class="col s5">
                             <p class="grey-text">Your classrooms</p>
                         </div>
@@ -387,14 +387,264 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                         endif;#assignments
                     ?>
                 </div>
+
+                <!--SCHEDULE SECTION-->
+                <div class="row main-tab" id="schedulesTab">
+                    
+                    <div class="row no-bottom-margin" id="createScheduleCont">
+                        <br>
+                        <div class="col s11 right pull-s1">
+                            <a class="btn btn-flat right" id="openScheduleForm"><span class="hide-on-small-only">Add a schedule</span>
+                            <span class="hide-on-med-and-up">
+                            <i class="material-icons">add</i>
+                            </span>
+                            </a>
+                            
+                            <a class="btn-icon right hide" href="#!" id="closeScheduleForm">
+                                <i class="material-icons">close</i>
+                            </a>
+                        </div>
+                        
+                        <div class="col s12 " id="scheduleCreateFormContainer">
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col m5 s10 push-s1 push-m1">
+                                            <input placeholder="Schedule title" id="schedule_title" type="text" class="validate" length="20">
+                                            <label for="first_name">Schedule title</label>
+                                        </div>
+                                        <div class="input-field col m5 s10 push-s1 push-m1">
+                                            <select id="schedule_classroom">
+                                                <option value="" disabled selected>Classroom</option>
+                                                <?php
+                                                
+                                                    $teacher_acc_id = $_SESSION['admin_acc_id'];
+                                                
+                                                    $classrooms = DBInfo::GetSpecificTeacherClassrooms($teacher_acc_id);
+                                                
+                                                    foreach ($classrooms as $classroom) {
+                                                        
+                                                        $newResult = array(
+                                                            "id" => $classroom['class_id'],
+                                                            "name" => $classroom['class_name']
+                                                        );
+                                                        var_dump($classroom);
+                                                        //print_r($newResult);
+                                                        echo '<option value="'.$newResult["id"].'">'.$newResult["name"].'</option>';
+                                                        
+                                                        $subject = $classroom['subject_id'];
+                                                        $stream = $classroom['stream_id'];
+                                                        
+                                                    }
+                                                
+                                                ?>
+                                            </select>
+                                            <label>Choose classroom for the schedule</label>
+                                            
+                                            <div id="extraClassroomInfo" class="row no-margin">
+                                                <p class="col s6 php-data left"  id="ClassroomSubject">Subject: <span></span></p>
+                                                <p class="col s6 php-data right-align" id="ClassroomStream">Stream: <span></span></p>
+                                            </div>
+                                        </div>
+                                        <div class="input-field col m5 s10 push-s1 push-m1 " id="descriptionFormPanel">
+                                            
+                                            <textarea id="descriptionTextarea" class="materialize-textarea"></textarea>
+                                            <label for="descriptionTextarea">Description</label>
+                                        </div>
+                                        <div class="input-field col m5 push-m1 s10 push-s1 z-depth-1" id="objectivesFormPanel">
+                                            <h6>Objectives</h6>
+                                            <ul id="objectivesList">
+                                                
+                                            </ul>
+                                            
+                                            <input id="objectivesInput" class="materialize-textarea">
+                                            <div class="row no-margin">
+                                                <div class="col s4">
+                                                    <a class="btn-flat mini-link" id="addNewScheduleObjective" href="#!">Add</a>
+                                                </div>
+                                                <div class="col s8 input-field" id="selectContainerHook">
+                                                        <?php
+                                                        foreach ($classrooms as $Classroom) {
+                                                            
+                                                            $subjectResult = array(
+                                                                "id" => $Classroom['subject_id'],
+                                                                "classid" => $Classroom['class_id'],
+                                                            );
+                                                            
+                                                            $subjectData = DBInfo::GetSubjectById($subjectResult['id']);
+
+                                                            $topics = DBInfo::GetTopicBySubjectId($subjectResult['id']);
+                                                            
+                                                            echo '<select id="schedule_classroom_'.$subjectResult['classid'].'" class="hide">';
+                                                            echo '<option disabled selected>Sub-topics for subject '. $subjectData['subject_name'] .'</option>';
+                                                            
+                                                            foreach($topics as $topic) {
+
+                                                                $topicResult = array (
+                                                                    "id" => $topic['topic_id'],
+                                                                    "name" => $topic['topic_name']
+                                                                );
+                                                                
+                                                                echo '<optgroup id="'.$topicResult['id'].'" label="'.$topicResult['name'].'">';
+                                                                
+                                                                $subtopics = DBInfo::GetSubTopicByTopicId($topicResult['id']);
+                                                                
+                                                                if($subtopics) {
+                                                                    
+                                                                foreach($subtopics as $subtopic) {
+                                                                    
+                                                                    $subTopicResult = array (
+                                                                        "id" => $subtopic['sub_topic_id'],
+                                                                        "name" => $subtopic['sub_topic_name']
+                                                                    );
+                                                                    
+                                                                    echo '<option value="'. $subTopicResult['id'] .'">'. $subTopicResult['name'] .'</option>';
+                                                                    
+                                                                }
+                                                                } else {
+                                                                    
+                                                                    echo '<option disabled>Found no sub-topics for '.$topicResult['name'].'</option>';
+                                                                    
+                                                                }
+                                                                
+                                                                echo '</optgroup>';
+                                                                
+                                                                //print_r($topicResult);
+                                                                
+                                                            }
+                                                            
+                                                            echo '</select>';
+                                                            
+                                                        }
+                                                        ?>
+                                                    <select id="schedule_classroom_default">
+                                                        <option value="" disabled selected>Sub-topics</option>
+                                                        <option value="" disabled >Choose a classroom first</option>
+                                                    </select>
+                                                    <label>Add sub-topics as objectives</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-field col s10 push-s1">
+                                            <div class="row no-margin">
+                                                <div class="input-field col s6 date-picker-container">
+                                                    <input type="date" class="datepicker" id="scheduleDate">
+                                                    <label for="scheduleDate">Schedule a date</label>
+                                                </div>
+                                                <div class="input-field col s6 time-picker-container">
+                                                    <input type="time" class="timepicker" id="scheduleTime">
+                                                    <label for="scheduleTime">Schedule the time</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12 center-align">
+                                            <a class="btn " type="submit" id="submitNewSchedule">Create Schedule</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row no-bottom-margin">
+                        <div class="col s5">
+                            <p class="grey-text">Pending schedules</p>
+                        </div>
+                        <div class="col s7 ">
+                            <a class=" right btn-icon" href="#!" id="showAllPendingSchedules">
+                                <i class="material-icons">done_all</i>
+                            </a>
+                            <a class=" right btn-icon" href="#!" id="showAllPendingSchedules">
+                                <i class="material-icons">search</i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <br>
+                    <table class="bordered responsive-table" id="pendingScheduleTable">
+                        <thead class="hide">
+                            <tr>
+                                <th data-field="id">Name</th>
+                                <th data-field="name">Item Name</th>
+                                <th data-field="price">Item Price</th>
+                                <th data-field="price">Item Price</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Alvin</td>
+                                <td>Eclair</td>
+                                <td class="right-align">Wednesday 4th Jan 2:40 PM</td>
+                                <td class="right-align schedule-action" width="120">
+                                    <a class="btn-icon" id="attendedSchedule101" href="#!"><i class="material-icons">done</i></a>
+                                    <a class="btn-icon"><i class="material-icons">expand_more</i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Alan</td>
+                                <td>Jellybean</td>
+                                <td class="right-align">Tomorrow 2:40 PM</td>
+                                <td class="right-align schedule-action" width="120">
+                                    <a class="btn-icon" id="attendedSchedule102" href="#!"><i class="material-icons">done</i></a>
+                                    <a class="btn-icon"><i class="material-icons">expand_more</i></a>
+                                </td>
+                            </tr>
+                            <tr data-schedule-id="103">
+                                <td>Lollipop</td>
+                                <td>New class</td>
+                                <td class="right-align">Tomorrow 2:40 PM</td>
+                                <td class="right-align schedule-action" width="120">
+                                    <a class="btn-icon" id="attendedSchedule103" href="#!"><i class="material-icons">done</i></a>
+                                    <a class="btn-icon"><i class="material-icons">expand_more</i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <ul class="pagination center">
+                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                        <li class="active"><a href="#!">1</a></li>
+                        <li class="waves-effect"><a href="#!">2</a></li>
+                        <li class="waves-effect"><a href="#!">3</a></li>
+                        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                    </ul>
+                    <br>
+                    <br>
+                    <div class="row no-bottom-margin">
+                        <div class="col s5">
+                            <p class="grey-text">Schedules attended</p>
+                        </div>
+                        <div class="col s7">
+                            <a class="btn-icon right hide" href="#!" id="showAllDoneSchedules">
+                                <i class="material-icons">expand_more</i>
+                            </a>
+                            <a class="btn-icon right" href="#!" id="showAllDoneSchedules">
+                                <i class="material-icons">search</i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <br>
+                </div>
+
                 <!--TESTS SECTION-->
                 <?php
                     $subjects_found = DbInfo::GetAllSubjects();
                 ?>
                 <!--Create a test--> 
                 <div class="row main-tab" id="createTestTab">
+<<<<<<< HEAD
                     <div class="col s12 grey-text">
                         <p class="grey-text">Create Test. Once a test is created you will be redirected to the test editing page page</p>
+=======
+                    Create a test tab
+                </div>
+                    <div class="col s12">
+                        <p class="grey-text">Create test</p>
+>>>>>>> origin/master
                         <div class="divider"></div>
                     <br>
                     </div>
@@ -408,7 +658,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 </div>
                                 <div class=" input-field col s12 m6">
                                     <select id="createTestSubject">
-                                        <?php 
+                                        <?php
                                             foreach($subjects_found as $subject):
                                         ?>
                                         <option value="<?php echo $subject['subject_id']?>"><?php echo $subject["subject_name"] ?></option>
@@ -434,27 +684,27 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     </select>
                                     <label for="createTestDifficulty">Difficulty</label>
                                 </div>
-                                
+
                                 <div class=" input-field col s12 m4">
                                     <input type="number" id="createTestMaxGrade" name="create_test_max_grade" min="10" max="100" value="100" class="validate" required>
                                     <label for="createTestMaxGrade">Max grade</label>
                                 </div>
-                                
+
                                 <div class=" input-field col s12 m4">
                                     <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required>
                                     <label for="createTestPassGrade">Passing grade</label>
                                 </div>
-                            
+
                                 <div class=" input-field col s12 m4">
                                     <input type="number" id="createTestCompletionTime" step="5" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
                                     <label for="createTestCompletionTime">Time (Minutes)</label>
                                 </div>
-                            
+
                                 <div class=" input-field col s12 ">
                                     <textarea id="createTestInstructions" class="materialize-textarea" placeholder="Instructions students will get for the test"></textarea>
                                     <label for="createTestInstructions">Test instructions</label>
                                 </div>
-                                
+
                                 <button type="submit" class="btn col s10 m4 right pull-s1">Create Test</button>
                         </form>
                         </div>
@@ -476,11 +726,6 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 </div>
                 <div class="row main-tab" id="gradeBookTab">
                     gradeBook tab
-                </div>
-
-                <!--SCHEDULE SECTION-->
-                <div class="row main-tab" id="schedulesTab">
-                    schedules tab
                 </div>
 
                 <!--MY ACCOUNT SECTION-->

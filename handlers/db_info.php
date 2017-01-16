@@ -938,6 +938,24 @@ class DbInfo
        }
     }
 
+    //Get topics by subject id, returns all topics found on success, false on fail and null on query prepare error
+    public static function GetTopicBySubjectId($subject_id)
+    {
+        $topics =  self::SinglePropertyExists("topics","subject_id",$subject_id,"i");
+
+        return self::SinglePropertyExists("topics","subject_id",$subject_id,"i");
+
+    }
+
+    //Get sub-topic by topic id, returns all sub-topics found on success, false on fail and null on query prepare error
+    public static function GetSubTopicByTopicId($topic_id)
+    {
+        $sub_topics =  self::SinglePropertyExists("sub_topics","topic_id",$topic_id,"i");
+
+        return self::SinglePropertyExists("sub_topics","topic_id",$topic_id,"i");
+
+    }
+
     //Get the number of assignments in a certain class - specific to a teacher
     public static function GetTeacherAssInClass($class_id,$teacher_acc_id)
     {   
@@ -1267,6 +1285,51 @@ if(isset($_GET['action'])) {
             }
 
             echo json_encode($arrayResult);
+            
+            break;
+        case 'GetSubjectById':
+            
+            $result = DbInfo::GetSubjectById($_GET['subject_id']);
+            
+            $num = 0;
+            
+            $newResult = array(
+                "id" => $result['subject_id'],
+                "category" => $result['subject_category'],
+                "name" => $result['subject_name']
+            );
+            
+            echo json_encode($newResult);
+            
+            break;
+        case 'GetStreamById':
+            
+            $result = DbInfo::GetStreamById($_GET['stream_id']);
+            
+            $num = 0;
+            
+            $newResult = array(
+                "id" => $result['stream_id'],
+                "name" => $result['stream_name']
+            );
+            
+            echo json_encode($newResult);
+            
+            break;
+        case 'GetTopicBySubjectId':
+            
+            $result = DbInfo::GetTopicBySubjectId($_GET['subject_id']);
+            
+            echo $subject_id;
+            var_dump($result);
+
+            $newResult = array(
+                "value" => $row['topic_id'],
+                "category" => $subject_id,
+                "name" => $row['topic_name']
+            );
+
+            echo json_encode($newResult);
             
             break;
         default:

@@ -20,7 +20,6 @@ var AssignmentEvents = function () {
     //--------------------------------
     
     var addClassroomToAssignment = function () {
-        console.log('classrooms will be added');
         
         var checkboxEl = 'input#addClassroomToAssignment, input#addMoreClassroomToAssignment';
         var checkedCheckboxEl = 'input#addClassroomToAssignment:checked, input#addMoreClassroomToAssignment:checked';
@@ -29,6 +28,8 @@ var AssignmentEvents = function () {
         var main = $('main');
         
         main.on('change', checkboxEl, function (e) {
+        
+            console.log('classrooms adding function on');
         
             e.preventDefault();
             
@@ -288,7 +289,8 @@ var AssignmentEvents = function () {
         $('main').on('click', '.main-tab#createAssignmentsTab a#createNewAssignment', function (e) {
             e.preventDefault();
             
-            console.log('submit event handler ready');
+            
+            console.log('new assignment submit event handler ready');
             
             if ($('#assignmentCardList .card-col').first().attr('data-classroom-id')) {
                 var str2 = $('#assignmentCardList .card-col').first().attr('data-classroom-id');
@@ -302,6 +304,13 @@ var AssignmentEvents = function () {
             var newAssignmentDueDate = $('#createAssignmentsTab form#createAssignmentForm input#assDueDate').val();
             var newAssignmentResources = $('#createAssignmentsTab form#createAssignmentForm .file-field input[type="file"]').val();
 
+            
+            console.log(newAssignmentTitle);
+            console.log(newAssignmentDescription);
+            console.log(newAssignmentCanComment);
+            console.log(newAssignmentDueDate);
+            console.log(newAssignmentResources);
+            
             if (newAssignmentCanComment === 'on') {
                 
                 newAssignmentCanComment = 1;
@@ -650,7 +659,7 @@ var AssignmentEvents = function () {
     
     var cleanOutModals = function () {
         
-        console.log('cleaning out modals');
+        console.log('cleaning out assignments dialogs');
         
         //$('a#createClassroom').attr('data-target', '');
         

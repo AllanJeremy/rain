@@ -29,7 +29,23 @@ body {
   background-color: #fcfcfc;
 }
 .no-margin {
+	margin: 0 !Important;
+}
+.no-bottom-margin {
 	margin-bottom: 0 !Important;
+}
+span.tiny-info {
+    padding-left: 6px;
+    padding-bottom: 2px;
+    padding-right: 6px;
+    margin: 0;
+    margin-left: 8px;
+    padding-top: 2px;
+    background-color: color("grey", "darken-3");
+    border-radius: 2px;
+    font-weight: 600;
+    color: color("grey", "lighten-4");
+    
 }
 p.box {
   padding: 20px;
@@ -44,15 +60,55 @@ h1,h2,h3,h4,h5,h6 {
   -webkit-font-smoothing: antialiased;
 }
 
+td.schedule-action {
+    opacity: 0;
+}
+
+tr {
+    
+    td.schedule-action {
+        opacity: 0;
+    }
+    
+    &:hover {
+
+        .schedule-action {
+            opacity: 1;
+        }
+
+    }
+
+}
+
 h5 > span {
   font-size: 14px;
   margin-left: 15px;
   color: #777;
 }
 
+.border-thin {
+    
+    border: 1px solid rgba(0,0,0,0.54);
+    
+}
+
 .name, .card-title {
     text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
     text-transform: capitalize;//Always capitalize this class
+}
+
+a.btn-icon {
+    padding: 14px;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: rgba(0, 0, 0, 0.78);
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+    
+    .material-icons {
+        font-size: 1.3rem;
+        line-height: 1.3rem;
+    }
 }
 nav {
   // background-color: color("materialize-red", "lighten-2");
@@ -67,7 +123,7 @@ nav {
 form {
     a.mini-link {
         font-size: 12px;
-        line-height: inherit;
+        //line-height: inherit;
         opacity: .78;
     }
 }
@@ -100,7 +156,7 @@ main {
 }
 
 body.side-nav-page {
-    header, main, footer, .search-bar {
+    header, main, footer, .search-bar, .picker__holder {
       padding-left: 300px;
     }
 }
@@ -116,7 +172,7 @@ footer.example {
 
 @media #{$medium-and-down} {
     body.side-nav-page {
-        header, main, footer, .search-bar {
+        header, main, footer, .search-bar, .picker__holder {
             padding-left: 0;
         }
     }

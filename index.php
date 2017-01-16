@@ -21,6 +21,7 @@
         <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
         <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
         <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
         <script type="text/javascript" src="js/dashboard/tests.js"></script>
         <script type="text/javascript" src="js/dashboard.js"></script>
@@ -88,7 +89,7 @@
             <nav class="top-nav z-depth-0">
                 <div class="container ">
                     <div class="nav-wrapper ">
-                        <div class="row no-margin">
+                        <div class="row no-bottom-margin">
                             <div class="col s2">
                                 <a href="#" data-activates="slide-out" class="mobile-button-collapse full hide-on-large-only">
                                     <i class="material-icons">reorder</i>
@@ -241,8 +242,8 @@
             endif;#end the main if statement
         ?>
         
-        <!--<script type="text/javascript" src="js/character_counter.js"></script>
-        -->
+        <script type="text/javascript" src="js/picker.time.js"></script>
+
         <script>
         $(document).ready(function() {
             $('select').material_select();
@@ -260,8 +261,22 @@
             Materialize.updateTextFields();//doesn't work
             $('.datepicker').pickadate({
                 selectMonths: false, // Creates a dropdown to control month
-                selectYears: 2 // Creates a dropdown of 15 years to control year
+                selectYears: false, // Creates a dropdown of 2 years to control year
+                formatSubmit: 'yyyy-mm-dd',
+                hiddenName: true,
+                firstDay: 1,
+                disable: [7]
             });
+            
+            var $input = $( '.timepicker' ).pickatime({
+                formatSubmit: 'HH:i',
+                hiddenName: true
+                
+            });
+            
+            var picker = $input.pickatime('picker');
+            //picker.open();
+
         });
             
         function hideSideNav() {
