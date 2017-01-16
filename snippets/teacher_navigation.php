@@ -44,7 +44,7 @@
                         <a class="" id="createTest" data-activates="createTestTab" href="">Create test</a>
                     </li>
                     <li>
-                        <a href="" id="testResults" data-activates="viewStudentsTestResultTab" class="">View students' test results</a>
+                        <a href="" id="testResults" data-activates="viewStudentsTestResultTab" class="">View test results</a>
                     </li>
                     <li>
                         <a href="" id="takeATest" data-activates="takeTestTab" class="">Take a test</a>
