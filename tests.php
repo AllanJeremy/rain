@@ -62,7 +62,7 @@
         <main>
             <?php
                 $taking_test = false;#if we are taking the test
-                $current_question = 1;
+                
                 $question_count = $test["number_of_questions"];
                 switch($accType):
                     case "teacher":#teacher logged in
@@ -73,9 +73,9 @@
                         if(isset($_GET["edit"]) && (htmlspecialchars($_GET["edit"])=="1") && $test["teacher_id"]==$teacher_acc_id && $test["editable"]):
                             #editing the test
                         if(isset($_GET["q"])):#if question number is set
-                            $question_number = htmlspecialchars($_GET["q"]);
-                            if($question_number>0 && $question_number<= $test["number_of_questions"]):#if the question number is a valid number_format
-                                Test::DisplayEditQuestion($test["test_id"],$question_number,$question_count);
+                            $current_question = htmlspecialchars($_GET["q"]);
+                            if($current_question>0 && $current_question<= $test["number_of_questions"]):#if the question number is a valid number_format
+                                Test::DisplayEditQuestion($test,$current_question);
                             
                             else:#invalid question number provided
             ?>
@@ -84,8 +84,9 @@
             <?php
                     endif;   
                     else:#question number not set
+                        Test::DisplayTestInstructions($test);
             ?>
-            <h1 class="center">TEST INSTRUCTIONS</h1>
+            
             <?php
                         endif;
                         else:#invalid edit credentials - redirect to the test

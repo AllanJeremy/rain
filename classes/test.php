@@ -11,22 +11,67 @@ class Test
         
     }
 
+    //Display test instructions. Instructions seen just before opening the Test
+    public static function DisplayTestInstructions($test)
+    {
+?>
+    <br>
+    <div class="container row">
+
+        <!--Test details-->
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo $test["subject_id"];?></small></h5></div>
+        
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
+        
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Max Grade : <small class="grey-text text-darken-2"><?php echo $test["max_grade"];?></small></h5></div>
+        
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Passing Grade : <small class="grey-text text-darken-2"><?php echo $test["passing_grade"];?></small></h5></div>        
+        
+        <div class="col s12 divider"></div>
+        
+        <!--Test Description-->
+        <div class="col s12">
+            <br><h4>Description</h4>
+            <p><?php echo $test["test_description"];?></p>
+        </div>
+
+        <!--Test Instructions-->
+        <div class="col s12">
+            <br><h4>Instructions</h4>
+            <p>This test has about <?php echo $test["number_of_questions"];?> multiple choice questions and should take less than <?php echo $test["time_to_complete"];?> minutes to complete. Click start test when you're ready to begin. </p>
+        </div>
+
+        <div class="col s12">
+            <br>
+            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";?>
+            <a href="<?php echo $url_extension.'1'; ?>" class="btn btn-large ">START TEST</a>
+        </div>
+
+    </div>
+<?php
+    }
     //Displays a test, inclusive of all questions
-    public static function DisplayTest($test_id)
+    public static function DisplayTest($test)
     {
 
     }
 
     //Displays a question, depending on whether the question exists in the database or not
-    public static function DisplayEditQuestion($test_id,$question_id,$question_count)
+    public static function DisplayEditQuestion($test,$question_id)
     {
+        $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";
+        $question_count = $test["number_of_questions"];
+
+        $is_last_question = ($question_id == $question_count);
+        $is_first_question = ($question_id == 1);
+
         ?>
             <!--Test SubTitle section-->
             <div class="row grey darken-2 z-depth-1">
                 <div class="container">
                     <div class="row no-margin">
                         <div class="col s12 m4 center-align">
-                            <p class="white-text">Question <span class="php-data"><?php echo $question_id; ?></span> of <?php echo $question_count; ?></p>
+                            <p class="white-text">Question <span class="php-data"><?php echo $question_id; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
                         </div>
                         <div class="col s12 m4 center-align">
                             <p class="white-text">Time left: <span class="php-data">1:00</span></p>
@@ -135,17 +180,32 @@ class Test
                         </div>
                     </div>
                     
-                    <!--Open ended choice question | to be implemented later on as an update-->
-                    <div class="row open_ended_choice_question">
-                    </div>
-                    
+                    <!--Next and previous buttons-->
                     <div class="row">
+                    <?php
+                        if(!$is_first_question):#if it is not the first question, display the previous question button
+                            $prev_que_url = $url_extension . ($question_id-1);
+                    ?>
                         <div class="col s4 left">
-                            <a class="btn  disabled" href="javascript:void(0)">PREVIOUS QUESTION</a>
+                            <a class="btn" href="<?php echo $prev_que_url?>">PREVIOUS QUESTION</a>
                         </div>
+                    <?php
+                        endif;
+                        if(!$is_last_question):#if it is not the last question
+                            $next_que_url = $url_extension . ($question_id+1);
+                    ?>
                         <div class="col s4 right">
-                            <a class="btn right" href="javascript:void(0)">NEXT QUESTION</a>
+                            <a class="btn right" href="<?php echo $next_que_url?>">NEXT QUESTION</a>
                         </div>
+                    <?php
+                        else:#if the last question
+                    ?>
+                        <div class="col s4 right" id="completeTest">
+                            <a class="btn right" href="javascript:void(0)">COMPLETE TEST</a>
+                        </div>
+                    <?php
+                        endif;
+                    ?>
                     </div>
                 </div>
             </div>
