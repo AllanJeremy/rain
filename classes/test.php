@@ -100,11 +100,11 @@ class Test
                     <p class="grey-text text-darken-2">Question type</p>
                     <div class="row">
                         <div class="col s12 m4">
-                            <input name="test_question_type" type="radio" id="test_qtype_single" checked data-toggle-qid="<?php echo $q_id;?>"/>
+                            <input name="test_question_type" type="radio" id="test_qtype_single" class="test_q_type" value="single_choice" checked data-toggle-qid="<?php echo $q_id;?>"/>
                             <label for="test_qtype_single">Single Choice Question</label>
                         </div>
                         <div class="col s12 m4">
-                            <input name="test_question_type" type="radio" id="test_qtype_multiple" data-toggle-qid="<?php echo $q_id;?>"/>
+                            <input name="test_question_type" type="radio" id="test_qtype_multiple" class="test_q_type"  value="multiple_choice" data-toggle-qid="<?php echo $q_id;?>"/>
                             <label for="test_qtype_multiple">Multiple Choice Question</label>
                         </div>
 
@@ -120,7 +120,7 @@ class Test
                         <!--Default settings for the question-->
                         <div class="col s12 m6">
                             <label for="no_of_choices">Number of choices</label>
-                            <input type="number" value="1" min="1" max="8" id="no_of_choices" required/>
+                            <input type="number" value="3" min="1" max="8" id="no_of_choices" required/>
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
@@ -133,29 +133,34 @@ class Test
                         <!--Options-->
                         <div class=" col s12">
                             
+                            <div class="test_answer_container">
                                 <input type="radio" name="option_group" id="option_1" class="valign">
-                                <label for="option_1">Option 1</label>
-                                <input placeholder="Option 1">
+                                <label for="option_1" class="test_answer_label">Option 1</label>
+                                <input placeholder="Option 1" class="test_answer">
+                            </div>
                             
+                            <div class="test_answer_container">
                                 <input type="radio" name="option_group" id="option_2" class="valign">
-                                <label for="option_2">Option 2</label>
-                                <input placeholder="Option 2">
+                                <label for="option_2" class="test_answer_label">Option 2</label>
+                                <input placeholder="Option 2" class="test_answer">
+                            </div>
                             
+                            <div class="test_answer_container">
                                 <input type="radio" name="option_group" id="option_3" class="valign">
-                                <label for="option_3">Option 3</label>
-                                <input placeholder="Option 3">
+                                <label for="option_3" class="test_answer_label">Option 3</label>
+                                <input placeholder="Option 3" class="test_answer">
+                            </div>
                             
                         </div>
                     </div>
-                    <br><br>
                     <!--Multiple choice question-->
-                    <div class="row multiple_choice_question" data-qid="<?php echo $q_id;?>">
+                    <div class="row multiple_choice_question hide" data-qid="<?php echo $q_id;?>">
                         <p class="grey-text text-darken-2">Multiple choice Question</p>
                         <div class="divider col s12"></div><br>
                         <!--Default settings for the question-->
                         <div class="col s12 m6">
                             <label for="no_of_choices">Number of choices</label>
-                            <input type="number" value="1" min="1" max="8" id="no_of_choices" required/>
+                            <input type="number" value="3" min="1" max="8" id="no_of_choices" required/>
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
@@ -169,17 +174,23 @@ class Test
                         <!--Options-->
                         <div class=" col s12">
                             
-                                <input type="checkbox" name="option_group" id="m_option_1" class="valign">
-                                <label for="m_option_1">Option 1</label>
-                                <input placeholder="Option 1">
+                            <div class="test_answer_container">
+                                <input type="checkbox" name="option_group" id="m_option_1" class="valign" checked>
+                                <label for="m_option_1" class="test_answer_label">Option 1</label>
+                                <input placeholder="Option 1" class="test_answer">
+                            </div>
                             
+                            <div class="test_answer_container">
                                 <input type="checkbox" name="option_group" id="m_option_2" class="valign">
-                                <label for="m_option_2">Option 2</label>
-                                <input placeholder="Option 2">
+                                <label for="m_option_2" class="test_answer_label">Option 2</label>
+                                <input placeholder="Option 2" class="test_answer">
+                            </div>
                             
+                            <div class="test_answer_container">
                                 <input type="checkbox" name="option_group" id="m_option_3" class="valign">
-                                <label for="m_option_3">Option 3</label>
-                                <input placeholder="Option 3">
+                                <label for="m_option_3" class="test_answer_label">Option 3</label>
+                                <input placeholder="Option 3" class="test_answer">
+                            </div>
                             
                         </div>
                     </div>
@@ -191,7 +202,10 @@ class Test
                             $prev_que_url = $url_extension . ($question_id-1);
                     ?>
                         <div class="col s4 left">
-                            <a class="btn" href="<?php echo $prev_que_url?>">PREVIOUS QUESTION</a>
+                            <a class="btn" href="<?php echo $prev_que_url?>">
+                                <i class="material-icons hide-on-large-only">arrow_back</i>
+                                <span class="hide-on-med-and-down">PREVIOUS QUESTION</span>
+                                </a>
                         </div>
                     <?php
                         endif;
@@ -199,13 +213,17 @@ class Test
                             $next_que_url = $url_extension . ($question_id+1);
                     ?>
                         <div class="col s4 right">
-                            <a class="btn right" href="<?php echo $next_que_url?>">NEXT QUESTION</a>
+                            <a class="btn right" href="<?php echo $next_que_url?>">
+                                <i class="material-icons hide-on-large-only">arrow_forward
+</i>
+                                <span class="hide-on-med-and-down">NEXT QUESTION</span>
+                                </a>
                         </div>
                     <?php
                         else:#if the last question
                     ?>
                         <div class="col s4 right" id="completeTest">
-                            <a class="btn right" href="javascript:void(0)">COMPLETE TEST</a>
+                            <a class="btn right" href="javascript:void(0)">COMPLETE<span class="hide-on-med-and-down"> TEST</span></a>
                         </div>
                     <?php
                         endif;

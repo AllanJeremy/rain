@@ -57,8 +57,11 @@
                     </div>
                 </div>
             </nav>
+            <!--Jquery-->
+            <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         </header>
         
+
         <main>
             <?php
                 $taking_test = false;#if we are taking the test
@@ -160,11 +163,67 @@
         </main>
         <footer>
         </footer>
-        
-        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
+
+        <script>
+
+        $(document).ready(function(){
+            //function to hide and show content
+            function ToggleQuestionType(q_id)
+            {
+                $(".single_choice_question").attr("data-qid",function()
+                {
+                    if($(this).attr("data-qid")==q_id)
+                    {
+                        $(this).toggleClass("hide");
+                    } 
+                });
+
+                $(".multiple_choice_question").attr("data-qid",function()
+                {
+                    if($(this).attr("data-qid")==q_id)
+                    {
+                        $(this).toggleClass("hide");
+                    } 
+                });
+            }
+            //When the question type changes
+            $(".test_q_type").change(function(){
+                var q_id = $(this).attr("data-toggle-qid");//unique generated question id
+                var q_type = $(this).attr("value");//question type
+                
+                var qtype_single_id = "#test_qtype_single";
+                var qtype_multiple_id = "#test_qtype_multiple";
+
+                switch(q_type)
+                {
+                    case "single_choice":
+                        ToggleQuestionType(q_id);
+                    break;
+
+                    case "multiple_choice":
+                        //Select the container for single choice questions
+                        ToggleQuestionType(q_id);
+                    break;
+
+                    default:
+                        console.log("Unknown question type!");
+                }
+            });
+
+            //When content of the option/answers changes update the label for the radio/checkbox
+            $(".test_answer").on("input",function()
+            {
+                $(this).siblings(".test_answer_label").html($(this).val());
+            }
+            );
+        });
+
+        </script>
+
         <script type="text/javascript" src="js/tests-functions.js"></script>
         
         <script type="text/javascript" src="js/materialize.js"></script>
+        <script type="text/javascript" src="js/dashboard.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         
         <script>
