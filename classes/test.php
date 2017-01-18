@@ -59,12 +59,19 @@ class Test
     //Displays a question, depending on whether the question exists in the database or not
     public static function DisplayEditQuestion($test,$question_id)
     {
+        //Default variables for questions
+        $question_type = "single_choice";
+        $q_id = "t".$test["test_id"]."q".$question_id;#unique question id
+
+        //Check if the question exists in the database
+        
+        //Url extension for redirecting
         $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";
         $question_count = $test["number_of_questions"];
 
         $is_last_question = ($question_id == $question_count);
         $is_first_question = ($question_id == 1);
-
+        
         ?>
             <!--Test SubTitle section-->
             <div class="row grey darken-2 z-depth-1">
@@ -72,9 +79,6 @@ class Test
                     <div class="row no-margin">
                         <div class="col s12 m4 center-align">
                             <p class="white-text">Question <span class="php-data"><?php echo $question_id; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
-                        </div>
-                        <div class="col s12 m4 center-align">
-                            <p class="white-text">Time left: <span class="php-data">1:00</span></p>
                         </div>
                     </div>
                 </div>
@@ -96,11 +100,11 @@ class Test
                     <p class="grey-text text-darken-2">Question type</p>
                     <div class="row">
                         <div class="col s12 m4">
-                            <input name="test_question_type" type="radio" id="test_qtype_single" checked/>
+                            <input name="test_question_type" type="radio" id="test_qtype_single" checked data-toggle-qid="<?php echo $q_id;?>"/>
                             <label for="test_qtype_single">Single Choice Question</label>
                         </div>
                         <div class="col s12 m4">
-                            <input name="test_question_type" type="radio" id="test_qtype_multiple" />
+                            <input name="test_question_type" type="radio" id="test_qtype_multiple" data-toggle-qid="<?php echo $q_id;?>"/>
                             <label for="test_qtype_multiple">Multiple Choice Question</label>
                         </div>
 
@@ -110,7 +114,7 @@ class Test
                     <br><br>
 
                     <!--Single choice question-->
-                    <div class="row single_choice_question">
+                    <div class="row single_choice_question" data-qid="<?php echo $q_id;?>">
                         <p class="grey-text text-darken-2">Single choice Question</p>
                         <div class="divider col s12"></div><br>
                         <!--Default settings for the question-->
@@ -145,7 +149,7 @@ class Test
                     </div>
                     <br><br>
                     <!--Multiple choice question-->
-                    <div class="row multiple_choice_question">
+                    <div class="row multiple_choice_question" data-qid="<?php echo $q_id;?>">
                         <p class="grey-text text-darken-2">Multiple choice Question</p>
                         <div class="divider col s12"></div><br>
                         <!--Default settings for the question-->
