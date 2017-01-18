@@ -134,7 +134,7 @@ class Test
                         <div class=" col s12">
                             
                             <div class="test_answer_container">
-                                <input type="radio" name="option_group" id="option_1" class="valign">
+                                <input type="radio" name="option_group" id="option_1" class="valign" checked>
                                 <label for="option_1" class="test_answer_label">Option 1</label>
                                 <input placeholder="Option 1" class="test_answer">
                             </div>
