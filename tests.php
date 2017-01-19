@@ -216,6 +216,77 @@
                 $(this).siblings(".test_answer_label").html($(this).val());
             }
             );
+
+
+            //Initial values of the choice counts 
+            var single_choice_count = $("#single_choices_count").val();
+            var multiple_choice_count = $("#multiple_choices_count").val();
+            var option_dom_count = $(".s_que_answer_container").children().length;
+            
+            //Function to update the DOM, updating the number of choices
+            function UpdateChoicesCount()
+            {
+
+            }
+
+            //When the value of number of options changes
+            $(".option_count").change(function()
+            {
+                var option_type = $(this).attr("id");
+                var cur_choice_count = $(this).val();//current choice count
+                console.log("Choice count : "+cur_choice_count+" | Max value : "+$(this).attr("max"));
+                //Update current choice count to fit within the range provided
+                if(cur_choice_count < $(this).attr("min"))//If the value is less than the min. Set it to min
+                {
+                    $(this).val($(this).attr("min"));
+                }
+                else if(cur_choice_count > parseInt($(this).attr("max")))//If the value is greater than the max. Set it to max
+                {
+                    console.log("exceeded the max value");
+                    $(this).val($(this).attr("max"));
+                }
+
+                switch(option_type)
+                {
+                    case "single_choices_count": //If single choice
+
+                        //Means value increased
+                        if(cur_choice_count>single_choice_count)
+                        {
+                            console.log("value went up");
+                            $(".s_que_answer_container").append("<div class='test_answer_container' data-ans-index='1'><input type='radio' name='option_group' id='option_1' class='valign'><label for='option_1' class='test_answer_label'>Option 1</label><input placeholder='Option 1' class='test_answer'></div>");
+                        } 
+                        else if(cur_choice_count==single_choice_count)//Value did not change
+                        {
+                            console.log("value stayed the same");//this should not run since this code runs on changed value. Here incase something goes wrong.
+                        }
+                        else//Value reduced
+                        {
+                            if(cur_choice_count>0)
+                            {
+                                //Prevent deleting of the  last child
+                                if($(".s_que_answer_container").children().length>1)
+                                {
+                                    $(".s_que_answer_container").children(":last-child").remove();
+                                }
+                                console.log($(".s_que_answer_container").children().length);                     
+                            }
+                            
+                        }
+
+                       single_choice_count = cur_choice_count;//update the single choice count to be the current value. Used for the next cycle
+
+                    break;
+
+                    case "multiple_choices_count"://If multiple choice
+                        console.log("Multiple choice remove");
+                        //$(".m_que_answer_container:last-child").remove();
+                    break;
+
+                    default:
+                        console.log("Unknown question type selected");
+                }
+            });
         });
 
         </script>
