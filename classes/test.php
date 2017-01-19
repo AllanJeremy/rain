@@ -134,20 +134,20 @@ class Test
                         <div class=" col s12 s_que_answer_container">
                             
                             <div class="test_answer_container" data-ans-index="1">
-                                <input type="radio" name="option_group" id="option_1" class="valign" checked>
-                                <label for="option_1" class="test_answer_label">Option 1</label>
+                                <input type="radio" name="s_option_group" id="s_option_1" class="valign" checked>
+                                <label for="s_option_1" class="test_answer_label">Option 1</label>
                                 <input placeholder="Option 1" class="test_answer">
                             </div>
                             
                             <div class="test_answer_container" data-ans-index="2">
-                                <input type="radio" name="option_group" id="option_2" class="valign">
-                                <label for="option_2" class="test_answer_label">Option 2</label>
+                                <input type="radio" name="s_option_group" id="s_option_2" class="valign">
+                                <label for="s_option_2" class="test_answer_label">Option 2</label>
                                 <input placeholder="Option 2" class="test_answer">
                             </div>
                             
                             <div class="test_answer_container" data-ans-index="3">
-                                <input type="radio" name="option_group" id="option_3" class="valign">
-                                <label for="option_3" class="test_answer_label">Option 3</label>
+                                <input type="radio" name="s_option_group" id="s_option_3" class="valign">
+                                <label for="s_option_3" class="test_answer_label">Option 3</label>
                                 <input placeholder="Option 3" class="test_answer">
                             </div>
                             
@@ -175,19 +175,19 @@ class Test
                         <div class="col s12 m_que_answer_container">
                             
                             <div class="test_answer_container" data-ans-index="1">
-                                <input type="checkbox" name="option_group" id="m_option_1" class="valign" checked>
+                                <input type="checkbox" name="m_option_group" id="m_option_1" class="valign" checked>
                                 <label for="m_option_1" class="test_answer_label">Option 1</label>
                                 <input placeholder="Option 1" class="test_answer">
                             </div>
                             
                             <div class="test_answer_container" data-ans-index="2">
-                                <input type="checkbox" name="option_group" id="m_option_2" class="valign">
+                                <input type="checkbox" name="m_option_group" id="m_option_2" class="valign">
                                 <label for="m_option_2" class="test_answer_label">Option 2</label>
                                 <input placeholder="Option 2" class="test_answer">
                             </div>
                             
                             <div class="test_answer_container" data-ans-index="3">
-                                <input type="checkbox" name="option_group" id="m_option_3" class="valign">
+                                <input type="checkbox" name="m_option_group" id="m_option_3" class="valign">
                                 <label for="m_option_3" class="test_answer_label">Option 3</label>
                                 <input placeholder="Option 3" class="test_answer">
                             </div>

@@ -224,63 +224,76 @@
             var option_dom_count = $(".s_que_answer_container").children().length;
             
             //Function to update the DOM, updating the number of choices
-            function UpdateChoicesCount()
+            function UpdateChoicesCount(container_name,cur_choice_count)
             {
+                        var options_dom_count = $(container_name).children().length;
+                        
+                        var input_type = "radio";
+                        var type_prepend = "";//The text prepended to any corresponding attribute - s_ for single and m_ for multiple choice questions
+                       
+                        switch(container_name)
+                        {
+                            case ".s_que_answer_container":
+                                input_type = "radio";
+                                type_prepend = "s_";
+                            break;
+                            case ".m_que_answer_container":
+                                input_type = "checkbox";
+                                type_prepend = "m_";
+                            break;
+                            default:
+                                console.log("Unknown input type requested in UpdateChoicesCount");
+                        }
+                        //If the current value is more than the options available, add more options
+                        if(cur_choice_count>options_dom_count)
+                        {
+                            //Number of items to be added from the dom
+                            var items_to_add = (cur_choice_count - options_dom_count);
+                            for(var i=0; i<items_to_add; i++)
+                            {
+                                var opt_index = options_dom_count + i + 1;
+                                $(container_name).append("<div class='test_answer_container' data-ans-index='"+opt_index+"'><input type='"+input_type+"' name='"+type_prepend+"option_group' id='"+type_prepend+"option_"+opt_index+"' class='valign'><label for='"+type_prepend+"option_"+opt_index+"' class='test_answer_label'>Option "+opt_index+"</label><input placeholder='Option "+opt_index+"' class='test_answer'></div>");
+                            }
 
+                        }
+                        else if(cur_choice_count<options_dom_count)//If the current value is less than the options available take out the extra options
+                        {
+                            //Items to be removed from the dom
+                            var items_to_remove = (options_dom_count - cur_choice_count);
+                            
+                            //Remove all the extra items from DOM
+                            for(var i=0; i<items_to_remove ; i++)
+                            {
+                                $(container_name).children(":last-of-type").remove();
+                            }
+                        }
             }
 
             //When the value of number of options changes
             $(".option_count").change(function()
             {
-                var option_type = $(this).attr("id");
-                var cur_choice_count = $(this).val();//current choice count
-                console.log("Choice count : "+cur_choice_count+" | Max value : "+$(this).attr("max"));
-                //Update current choice count to fit within the range provided
-                if(cur_choice_count < $(this).attr("min"))//If the value is less than the min. Set it to min
+                //Regulate current choice count to fit within the range provided
+                if($(this).val() < parseInt($(this).attr("min")))//If the value is less than the min. Set it to min
                 {
                     $(this).val($(this).attr("min"));
                 }
-                else if(cur_choice_count > parseInt($(this).attr("max")))//If the value is greater than the max. Set it to max
+                else if($(this).val() > parseInt($(this).attr("max")))//If the value is greater than the max. Set it to max
                 {
-                    console.log("exceeded the max value");
                     $(this).val($(this).attr("max"));
                 }
 
+                var cur_choice_count = $(this).val();//current choice count
+
+                var option_type = $(this).attr("id");//The type is determined by what kind of id the question has
+                //Check which option_type was selected
                 switch(option_type)
                 {
                     case "single_choices_count": //If single choice
-
-                        //Means value increased
-                        if(cur_choice_count>single_choice_count)
-                        {
-                            console.log("value went up");
-                            $(".s_que_answer_container").append("<div class='test_answer_container' data-ans-index='1'><input type='radio' name='option_group' id='option_1' class='valign'><label for='option_1' class='test_answer_label'>Option 1</label><input placeholder='Option 1' class='test_answer'></div>");
-                        } 
-                        else if(cur_choice_count==single_choice_count)//Value did not change
-                        {
-                            console.log("value stayed the same");//this should not run since this code runs on changed value. Here incase something goes wrong.
-                        }
-                        else//Value reduced
-                        {
-                            if(cur_choice_count>0)
-                            {
-                                //Prevent deleting of the  last child
-                                if($(".s_que_answer_container").children().length>1)
-                                {
-                                    $(".s_que_answer_container").children(":last-child").remove();
-                                }
-                                console.log($(".s_que_answer_container").children().length);                     
-                            }
-                            
-                        }
-
-                       single_choice_count = cur_choice_count;//update the single choice count to be the current value. Used for the next cycle
-
+                         UpdateChoicesCount(".s_que_answer_container",cur_choice_count);
                     break;
 
                     case "multiple_choices_count"://If multiple choice
-                        console.log("Multiple choice remove");
-                        //$(".m_que_answer_container:last-child").remove();
+                         UpdateChoicesCount(".m_que_answer_container",cur_choice_count);
                     break;
 
                     default:
