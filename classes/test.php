@@ -117,9 +117,14 @@ class Test
                 //Default number of choices used when  a question is found in the database
                 $no_of_choices = 3;#should only be used once we have found answers ~ this value will be updated then
                 
+                //Boolean ~ returns true if the question is in the database
+                $question_is_in_database = false;#convenience for controlling whether we insert or update records into the db
+
                 #if the question exists in the database ~ try and get the answers
                 if($question_found = DbInfo::TestQuestionExists($test_id,$question_index))
                 {
+                    $question_is_in_database = true;#question was found in the database hence it is now true
+
                     $question_text = $question_found["question_text"];#set the placeholder to be equal to the question
                     $marks_attainable = $question_found["marks_attainable"];#update the marks attainable to match what's in the database
 
