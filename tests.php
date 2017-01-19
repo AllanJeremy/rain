@@ -211,7 +211,7 @@
             });
 
             //When content of the option/answers changes update the label for the radio/checkbox
-            $(".test_answer").on("input",function()
+            $(document.body).on("input",".test_answer",function()
             {
                 $(this).siblings(".test_answer_label").html($(this).val());
             }
@@ -254,7 +254,7 @@
                                 var opt_index = options_dom_count + i + 1;
                                 $(container_name).append("<div class='test_answer_container' data-ans-index='"+opt_index+"'><input type='"+input_type+"' name='"+type_prepend+"option_group' id='"+type_prepend+"option_"+opt_index+"' class='valign'><label for='"+type_prepend+"option_"+opt_index+"' class='test_answer_label'>Option "+opt_index+"</label><input placeholder='Option "+opt_index+"' class='test_answer'></div>");
                             }
-
+                            console.log("Number of test label objects is "+ $(".test_answer_label").length);
                         }
                         else if(cur_choice_count<options_dom_count)//If the current value is less than the options available take out the extra options
                         {
@@ -267,6 +267,7 @@
                                 $(container_name).children(":last-of-type").remove();
                             }
                         }
+
             }
 
             //When the value of number of options changes
