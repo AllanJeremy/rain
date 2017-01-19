@@ -866,8 +866,56 @@ class DbInfo
     {
         return self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
     }
+/*----------------------------------------------------------------------------------------------------------
+                    TESTS AND ANSWERS
+----------------------------------------------------------------------------------------------------------*/
 
-    
+    //TODO Ensure that question_index is always unique to every question in any given test
+    //If a question exists in a test
+    public static function TestQuestionExists($test_id,$question_index)
+    {
+        global $dbCon;
+        $select_query = "SELECT * FROM test_questions WHERE test_id=? AND question_index=?";
+        
+        #prepare the query - to prevent sql-injection
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("ii",$test_id,$question_index);
+
+            #if the query successfully executes
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    foreach($result as $question_found)
+                    {
+                        return $question_found;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else#query failed to execute
+            {
+                return false;
+            }
+        }
+        else#query failed to prepare
+        {
+            return null;
+        }
+        
+    }
+   
+   //Return answers belonging to a question
+    public static function GetQuestionAnswers($question_id)
+    {
+        return self::SinglePropertyExists("test_answers","question_id",$question_id,"i");        
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/

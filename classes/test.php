@@ -1,9 +1,14 @@
 <?php
 
+require_once (realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Allows connection to database
+
 #HANDLES TEST RELATED FUNCTIONS
 class Test
 {
-    //Variable initialization
+    //Constants. One for checked and one for hide. 
+    #Using constants so that if the classes being used to control if a radio button is checked and hide change we only need to change them herhe
+    const CHECKED = "checked";
+    const HIDE = "hide";
 
     //Constructor
     function __construct()
@@ -57,20 +62,19 @@ class Test
     }
 
     //Displays a question, depending on whether the question exists in the database or not
-    public static function DisplayEditQuestion($test,$question_id)
+    public static function DisplayEditQuestion($test,$question_index)#question_id is the question index
     {
         //Default variables for questions
         $question_type = "single_choice";
-        $q_id = "t".$test["test_id"]."q".$question_id;#unique question id
+        $test_id = htmlspecialchars($test["test_id"]);
+        $q_id = "t".$test_id."q".$question_index;#unique question id
 
-        //Check if the question exists in the database
-        
         //Url extension for redirecting
-        $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";
+        $url_extension = "tests.php?tid=".$test_id."&edit=".$test["editable"]."&q=";
         $question_count = $test["number_of_questions"];
 
-        $is_last_question = ($question_id == $question_count);
-        $is_first_question = ($question_id == 1);
+        $is_last_question = ($question_index == $question_count);
+        $is_first_question = ($question_index == 1);
         
         ?>
             <!--Test SubTitle section-->
@@ -78,7 +82,7 @@ class Test
                 <div class="container">
                     <div class="row no-margin">
                         <div class="col s12 m4 center-align">
-                            <p class="white-text">Question <span class="php-data"><?php echo $question_id; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
+                            <p class="white-text">Question <span class="php-data"><?php echo $question_index; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
                         </div>
                     </div>
                 </div>
@@ -89,10 +93,84 @@ class Test
                 <div class="container">
                     <p class="grey-text">Question Info | Tip : Select the answer(s) to the question by selecting in your question options </p>
                     <div class="divider"></div><br>
+
+            <?php
+                //Check if the question exists in the database
+                $question_text = "";
+                
+                //If the selected question is a single choice or multiple choice question when the page loads
+                $is_single_choice = true;
+                $is_multiple_choice = false;
+
+                //Single and multiple choice selected states and visibility
+                $single_choice_selected=self::CHECKED;
+                $single_choice_visibility="";
+
+                $multiple_choice_selected="";
+                $multiple_choice_visibility=self::HIDE;#controls the visibility of the single/multiple choice
+
+                //If the question has answers ~ by default is false unless answers are found later on
+                $has_answers = false;
+                $answers_found = null;#semi-global variable for storing the answers that are found
+
+                //Default number of choices used when  a question is found in the database
+                $no_of_choices = 3;#should only be used once we have found answers ~ this value will be updated then
+                
+                #if the question exists in the database ~ try and get the answers
+                if($question_found = DbInfo::TestQuestionExists($test_id,$question_index))
+                {
+                    $question_text = $question_found["question_text"];#set the placeholder to be equal to the question
+                    
+                    //Check what type the question found was
+                    switch($question_found["question_type"])
+                    {
+                        case "single_choice":
+                           $is_single_choice = true;
+                           $is_multiple_choice = false;
+
+                           $single_choice_selected = self::CHECKED;#make the single choice selection radio button checked
+                           $multiple_choice_selected = "";#uncheck the multiple choice selection radio button 
+
+                           $single_choice_visibility="";#make single choices visible
+                           $multiple_choice_visibility=self::HIDE;#hide multiple choices
+                        break;
+
+                        case "multiple_choice":
+                           $is_multiple_choice = true;
+                           $is_single_choice = false;
+                           
+                            $multiple_choice_selected = self::CHECKED;#make the multiple choice selection radio button checked
+                            $single_choice_selected = "";#uncheck the single choice selection radio button 
+                            
+                            $multiple_choice_visibility = "";#make multiple choices visible
+                            $single_choice_visibility=self::HIDE;#hide single choices
+                        break;
+
+                        default:#unrecognized question type. Assume single choice
+                           $is_single_choice = true;
+                           $is_multiple_choice = false;
+
+                           $single_choice_selected = self::CHECKED;#make the single choice selection radio button checked
+                           $multiple_choice_selected = "";#uncheck the multiple choice selection radio button 
+
+                           $single_choice_visibility="";#make single choices visible
+                           $multiple_choice_visibility=self::HIDE;#hide multiple choices
+                            
+                    }
+                    
+                    //Try getting the answers to the question ~ 
+                    if($question_answers = DbInfo::GetQuestionAnswers($question_found["question_id"]))
+                    {
+                        $has_answers = true;
+                        $answers_found = $question_answers;
+                        $no_of_choices = $question_answers->num_rows;#update the number of choices to be the number of answers found for the question
+                    }
+                }
+            ?>
                     <div class="row">
                         <div class="col s12">
                             <label for="test_question">Question</label>
-                            <textarea class="materialize-textarea" id="test_question" placeholder="Enter question here"></textarea>
+                            <textarea class="materialize-textarea" id="test_question" placeholder="Enter question here"><?php echo $question_text; ?></textarea>
                         </div>
                     </div>
                     
@@ -100,11 +178,11 @@ class Test
                     <p class="grey-text text-darken-2">Question type</p>
                     <div class="row">
                         <div class="col s12 m4">
-                            <input name="test_question_type" type="radio" id="test_qtype_single" class="test_q_type" value="single_choice" checked data-toggle-qid="<?php echo $q_id;?>"/>
+                            <input name="test_question_type" type="radio" id="test_qtype_single" class="test_q_type" value="single_choice" <?php echo $single_choice_selected; ?> data-toggle-qid="<?php echo $q_id;?>"/>
                             <label for="test_qtype_single">Single Choice Question</label>
                         </div>
                         <div class="col s12 m4">
-                            <input name="test_question_type" type="radio" id="test_qtype_multiple" class="test_q_type"  value="multiple_choice" data-toggle-qid="<?php echo $q_id;?>"/>
+                            <input name="test_question_type" type="radio" id="test_qtype_multiple" class="test_q_type"  value="multiple_choice" <?php echo $multiple_choice_selected; ?> data-toggle-qid="<?php echo $q_id;?>"/>
                             <label for="test_qtype_multiple">Multiple Choice Question</label>
                         </div>
 
@@ -114,13 +192,13 @@ class Test
                     <br><br>
 
                     <!--Single choice question-->
-                    <div class="row single_choice_question" data-qid="<?php echo $q_id;?>">
+                    <div class="row single_choice_question <?php echo $single_choice_visibility;?>" data-qid="<?php echo $q_id;?>">
                         <p class="grey-text text-darken-2">Single choice Question</p>
                         <div class="divider col s12"></div><br>
                         <!--Default settings for the question-->
                         <div class="col s12 m6">
                             <label for="single_choices_count">Number of choices</label>
-                            <input type="number" value="3" min="1" max="8" id="single_choices_count" class="option_count" required/>
+                            <input type="number" value="<?php echo $no_of_choices;?>" min="1" max="8" id="single_choices_count" class="option_count" required/>
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
@@ -132,7 +210,7 @@ class Test
 
                         <!--Options-->
                         <div class=" col s12 s_que_answer_container">
-                            
+                            <!--If answers for the question were not found-->
                             <div class="test_answer_container" data-ans-index="1">
                                 <input type="radio" name="s_option_group" id="s_option_1" class="valign" checked>
                                 <label for="s_option_1" class="test_answer_label">Option 1</label>
@@ -154,13 +232,13 @@ class Test
                         </div>
                     </div>
                     <!--Multiple choice question-->
-                    <div class="row multiple_choice_question hide" data-qid="<?php echo $q_id;?>">
+                    <div class="row multiple_choice_question <?php echo $multiple_choice_visibility;?>" data-qid="<?php echo $q_id;?>">
                         <p class="grey-text text-darken-2">Multiple choice Question</p>
                         <div class="divider col s12"></div><br>
                         <!--Default settings for the question-->
                         <div class="col s12 m6">
                             <label for="multiple_choices_count">Number of choices</label>
-                            <input type="number" value="3" min="1" max="8" id="multiple_choices_count" class="option_count" required/>
+                            <input type="number" value="<?php echo $no_of_choices;?>" min="1" max="8" id="multiple_choices_count" class="option_count" required/>
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
@@ -199,7 +277,7 @@ class Test
                     <div class="row">
                     <?php
                         if(!$is_first_question):#if it is not the first question, display the previous question button
-                            $prev_que_url = $url_extension . ($question_id-1);
+                            $prev_que_url = $url_extension . ($question_index-1);
                     ?>
                         <div class="col s4 left">
                             <a class="btn" href="<?php echo $prev_que_url?>">
@@ -210,7 +288,7 @@ class Test
                     <?php
                         endif;
                         if(!$is_last_question):#if it is not the last question
-                            $next_que_url = $url_extension . ($question_id+1);
+                            $next_que_url = $url_extension . ($question_index+1);
                     ?>
                         <div class="col s4 right">
                             <a class="btn right" href="<?php echo $next_que_url?>">
