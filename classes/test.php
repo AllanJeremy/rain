@@ -97,6 +97,7 @@ class Test
             <?php
                 //Check if the question exists in the database
                 $question_text = "";
+                $marks_attainable = 5;#default marks attainable per question is 5
                 
                 //If the selected question is a single choice or multiple choice question when the page loads
                 $is_single_choice = true;
@@ -120,7 +121,8 @@ class Test
                 if($question_found = DbInfo::TestQuestionExists($test_id,$question_index))
                 {
                     $question_text = $question_found["question_text"];#set the placeholder to be equal to the question
-                    
+                    $marks_attainable = $question_found["marks_attainable"];#update the marks attainable to match what's in the database
+
                     //Check what type the question found was
                     switch($question_found["question_type"])
                     {
@@ -202,7 +204,7 @@ class Test
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
-                            <input type="number" value="5" min="1" max="20" id="question_marks" required/>
+                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="question_marks" required/>
                         </div>
                         
                         <p class="grey-text text-darken-2">Options</p>
@@ -210,6 +212,29 @@ class Test
 
                         <!--Options-->
                         <div class=" col s12 s_que_answer_container">
+                            <?php
+                                //If the question is a single choice question that has answers and we managed to find the answers
+                                if($is_single_choice && $has_answers && $answers_found):
+                                    $ans_count = 0;
+                                    foreach($answers_found as $answer):
+                                        $ans_count += 1;#increase the answer count every time
+                                        
+                                        $checked_state="";#by default it is not checked
+                                        if($answer["right_answer"])#if it is the right answer
+                                        {
+                                            $checked_state = "checked";#have it checked
+                                        }
+                            ?>
+                            <div class="test_answer_container" data-ans-index="<?php echo $ans_count;?>">
+                                <input type="radio" name="s_option_group" id="s_option_<?php echo $ans_count;?>" class="valign" <?php echo $checked_state?>>
+                                <label for="s_option_<?php echo $ans_count;?>" class="test_answer_label"><?php echo $answer['answer_text'];?></label>
+                                <input placeholder="<?php echo $answer['answer_text'];?>" class="test_answer" value="<?php echo $answer['answer_text'];?>">
+                            </div>                                
+                            <?php
+                                    endforeach;
+                                else:#no answers were found, default behaviour
+                            ?>
+
                             <!--If answers for the question were not found-->
                             <div class="test_answer_container" data-ans-index="1">
                                 <input type="radio" name="s_option_group" id="s_option_1" class="valign" checked>
@@ -228,21 +253,25 @@ class Test
                                 <label for="s_option_3" class="test_answer_label">Option 3</label>
                                 <input placeholder="Option 3" class="test_answer">
                             </div>
-                            
+                            <?php
+                                endif;#end if (checking if answers were found)
+                            ?>
                         </div>
                     </div>
+
                     <!--Multiple choice question-->
                     <div class="row multiple_choice_question <?php echo $multiple_choice_visibility;?>" data-qid="<?php echo $q_id;?>">
                         <p class="grey-text text-darken-2">Multiple choice Question</p>
                         <div class="divider col s12"></div><br>
-                        <!--Default settings for the question-->
+                        
+                        <!--Default single choice options-->
                         <div class="col s12 m6">
                             <label for="multiple_choices_count">Number of choices</label>
                             <input type="number" value="<?php echo $no_of_choices;?>" min="1" max="8" id="multiple_choices_count" class="option_count" required/>
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
-                            <input type="number" value="5" min="1" max="20" id="question_marks" required/>
+                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="question_marks" required/>
                         </div>
                         
                         
@@ -251,7 +280,32 @@ class Test
 
                         <!--Options-->
                         <div class="col s12 m_que_answer_container">
+                            <?php
+                                //If the question is a single choice question that has answers and we managed to find the answers
+                                if($is_multiple_choice && $has_answers && $answers_found):
+                                    $ans_count = 0;
+                                    foreach($answers_found as $answer):
+                                        $ans_count += 1;#increase the answer count every time
+                                        
+                                        $checked_state="";#by default it is not checked
+                                        if($answer["right_answer"])#if it is the right answer
+                                        {
+                                            $checked_state = "checked";#have it checked
+                                        }
+                                        
+                            ?>
+                            <div class="test_answer_container" data-ans-index="<?php echo $ans_count;?>">
+                                <input type="checkbox" name="m_option_group" id="m_option_<?php echo $ans_count;?>" class="valign" <?php echo $checked_state?>>
+                                <label for="m_option_<?php echo $ans_count;?>" class="test_answer_label"><?php echo $answer['answer_text'];?></label>
+                                <input placeholder="<?php echo $answer['answer_text'];?>" class="test_answer" value="<?php echo $answer['answer_text'];?>">
+                            </div>
+                                                            
+                            <?php
+                                    endforeach;
+                                else:#no answers were found, default behaviour
+                            ?>
                             
+                            <!--Default multiple choice options-->
                             <div class="test_answer_container" data-ans-index="1">
                                 <input type="checkbox" name="m_option_group" id="m_option_1" class="valign" checked>
                                 <label for="m_option_1" class="test_answer_label">Option 1</label>
@@ -269,7 +323,9 @@ class Test
                                 <label for="m_option_3" class="test_answer_label">Option 3</label>
                                 <input placeholder="Option 3" class="test_answer">
                             </div>
-                            
+                            <?php
+                                endif;#end if (checking if answers were found)
+                            ?>
                         </div>
                     </div>
                     
