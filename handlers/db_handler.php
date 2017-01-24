@@ -619,7 +619,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 }
                 
                 #Run update answers here
-                return true;
+                return this::UpdateAnswers($result_question_id,$q_data["answers"]);#update the answers;
             }
             else #failed to execute the query
             {
