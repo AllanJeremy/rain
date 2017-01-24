@@ -161,18 +161,6 @@
             endif;
             ?>
 
-            <?php
-                //AJAX ~AJ (may be broken)
-                if(isset($_GET["action"]))
-                {
-                    switch($_GET["action"])
-                    {
-                        case "AjTestFunction":
-                            echo "Received data!";
-                        break;
-                    }
-                }
-            ?>
         </main>
         <footer>
         </footer>
@@ -401,19 +389,20 @@
                 return answerListJson;
             }
             //Get the question data
-            function GetQuestionData()
+            function GetQuestionData(redirect_url)
             {
                 //Check what type of question the question is ~ to know what answers to store
                 var q_type = $(".test_q_type:checked").val();
                 
                 //Json storing the question data
                 var qData = {
-                "question_id":"",
+                "question_index":"",
                 "question_text":"",
                 "question_type":"",
                 "no_of_choices":"",
                 "marks_attainable":"",
-                "answers":""
+                "answers":"",
+                "redirect_url":redirect_url
                 };
 
                 //Variables for storing the question data
@@ -442,7 +431,7 @@
                 }
 
                 //Set values for the question data
-                qData["question_id"] = $("#test_question").attr("data-qid");
+                qData["question_index"] = $("#test_question").attr("data-qid");
                 qData["question_text"] = question_text;
                 qData["question_type"] = question_type;
                 qData["no_of_choices"] = no_of_choices;
@@ -459,7 +448,7 @@
             $("#prev_question").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
-                question_data =  GetQuestionData();
+                question_data =  GetQuestionData(redirect_url);
                 
                 //Redirect to the previous page
                 //window.location.replace(redirect_url);
@@ -468,9 +457,9 @@
             $("#next_question").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
-                question_data = GetQuestionData();
+                question_data = GetQuestionData(redirect_url);
                 
-                $.post(redirect_url,{"action":"AjTestFunction","q_data":question_data},function(question_data,status){
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
                   //  alert("Data :"+ question_data+" Status:"+status);
                 });
                 //Redirect to the next page
@@ -480,7 +469,7 @@
             $("#complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
-                question_data = GetQuestionData();
+                question_data = GetQuestionData(redirect_url);
 
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);

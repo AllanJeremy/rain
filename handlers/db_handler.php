@@ -577,7 +577,24 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return false;
         }       
     }
+/*
+-----------------------------------------------------------------------------------------
+                    UPDATING AND DELETING TEST QUESTIONS AND ANSWERS
+-----------------------------------------------------------------------------------------
+*/
+    
 
+    #Update the question in the database if it exists | Add the question to the database if it does not exist
+    public static function UpdateQuestion($test_id,$q_index,$q_data)
+    {
+
+    }
+
+    #Update the question in the database if it exists | Add the question to the database if it does not exist
+    public static function UpdateAnswers($q_id,$answers)
+    {
+
+    }
 };#END OF CLASS
 
 /*
@@ -587,8 +604,6 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 */
 
 if(isset($_POST['action'])) {
-    
-    $dbhandler = new DbHandler();
     
     switch($_POST['action']) {
         case 'UpdateClassroomInfo':
@@ -611,7 +626,7 @@ if(isset($_POST['action'])) {
                 
             }
             
-            $result = $dbhandler::UpdateClassroomInfo($args['class_id'],$args['class_name'],$args['stream_id'],$args['subject_id'],$args['student_ids'],$args['classes']);
+            $result = DbHandler::UpdateClassroomInfo($args['class_id'],$args['class_name'],$args['stream_id'],$args['subject_id'],$args['student_ids'],$args['classes']);
             
             echo $result;
             
@@ -619,7 +634,7 @@ if(isset($_POST['action'])) {
         case 'RemoveStudent':
             
             
-            //dddd
+            //Remove a student
             break;
         case 'DeleteClassroom':
           
@@ -627,7 +642,7 @@ if(isset($_POST['action'])) {
             
             if(isset($class_id)) {
                 
-                $result = $dbhandler::DeleteClassroom($class_id);
+                $result = DbHandler::DeleteClassroom($class_id);
             
                 echo $result;
                 
@@ -635,7 +650,23 @@ if(isset($_POST['action'])) {
             
             //dddd
             break;
-        
+        case 'UpdateTestQuestion': //AJ ~ may be broken 
+            
+            //~Computational delay to prevent bots from spamming and DDOS
+            sleep(200);
+            $q_data = htmlspecialchars($_POST["q_data"]);
+            var_dump($q_data);
+            //file_put_contents("AJ_TestDebug.txt",$q_data["question_text"]);
+            /*
+            $q_data["question_index"];#question id
+            $q_data["question_text"];#question text
+            $q_data["question_type"];#question type
+            $q_data["no_of_choices"];#number of choices
+            $q_data["marks_attainable"];#marks attainable for the question
+            $answers = $q_data["answers"];#array containing all the answers
+            
+            /*
+        break;
         default:
             return null;
             break;
