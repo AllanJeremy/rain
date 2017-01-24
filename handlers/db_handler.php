@@ -617,7 +617,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 {
                     $result_question_id = $update_stmt->insert_id;
                 }
-                
+                echo "success updating the question";
                 #Run update answers here
                 return self::UpdateAnswers($result_question_id,$q_data["answers"]);#update the answers;
             }
@@ -647,17 +647,18 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             }
             else#If the answer does not exist in the database
             {
-                $update_query = "INSERT INTO test_answers(question_id,answer_text,right_answer,marks_attainable,answer_index) VALUES(?????)";
+                $update_query = "INSERT INTO test_answers(question_id,answer_text,right_answer,marks_attainable,answer_index) VALUES(?,?,?,?,?)";
             }
             
             //Attempt to prepare the query
             if($update_stmt = $dbCon->prepare($update_query))
             {
+                
                 $update_stmt->bind_param("isiii",$q_id,$ans_data["answer_text"],$ans_data["right_answer"],$ans_data["marks_attainable"],$ans_data["answer_index"]);
 
                 if($update_stmt->execute())
                 {
-                    echo "success";
+                    echo "<p>success updating the answer</p>";
                     return true;
                 }
                 else #failed to execute the query
@@ -667,6 +668,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             }
             else #failed to prepare the query
             {
+                echo "<p>Failed to prepare the update answer query</p>";
                 return false;
             }
         }
