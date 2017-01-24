@@ -619,7 +619,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 }
                 
                 #Run update answers here
-                return this::UpdateAnswers($result_question_id,$q_data["answers"]);#update the answers;
+                return self::UpdateAnswers($result_question_id,$q_data["answers"]);#update the answers;
             }
             else #failed to execute the query
             {
@@ -635,6 +635,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     #Update the answer in the database if it exists | Add the question to the database if it does not exist
     public static function UpdateAnswers($q_id,$answers_data)
     {
+        global $dbCon; #db connection string
         $update_query = "";#the query that is used to update/insert records into the database. By default, blank
 
         foreach($answers_data as $ans_data)
@@ -656,6 +657,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
                 if($update_stmt->execute())
                 {
+                    echo "success";
                     return true;
                 }
                 else #failed to execute the query
@@ -731,7 +733,7 @@ if(isset($_POST['action'])) {
             
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);
-            $q_data = htmlspecialchars($_POST["q_data"]);
+            $q_data = $_POST["q_data"];
             DbHandler::UpdateQuestion($q_data);
             /*
             $q_data["test_id"];#test id
@@ -742,7 +744,7 @@ if(isset($_POST['action'])) {
             $q_data["marks_attainable"];#marks attainable for the question
             $answers = $q_data["answers"];#array containing all the answers
             
-            /*
+            */
         break;
         default:
             return null;
