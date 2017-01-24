@@ -438,19 +438,22 @@
                 return qData;
             }
 
-            
+            var question_data;//Question data ~ Json
+
             $("#prev_question").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
-
+                question_data =  GetQuestionData();
+                
                 //Redirect to the previous page
-                window.location.replace(redirect_url);
+                //window.location.replace(redirect_url);
             });
             //When the next question button is clicked
             $("#next_question").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
-                GetQuestionData();
+                question_data = GetQuestionData();
+                
                 //Redirect to the next page
                 //window.location.replace(redirect_url);
             });
@@ -458,8 +461,9 @@
             $("#complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
+                question_data = GetQuestionData();
 
-
+                
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);
             });
