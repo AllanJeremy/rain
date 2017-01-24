@@ -168,7 +168,9 @@
         <script>
 
         $(document).ready(function(){
-
+            //Get URL params script 
+            jQuery.fn.extend({getUrlParam:function(a){a=escape(unescape(a));var b=new Array,c=null;if("#document"==$(this).attr("nodeName"))window.location.search.search(a)>-1&&(c=window.location.search.substr(1,window.location.search.length).split("&"));else if("undefined"!=$(this).attr("src")){var d=$(this).attr("src");if(d.indexOf("?")>-1){var e=d.substr(d.indexOf("?")+1);c=e.split("&")}}else{if("undefined"==$(this).attr("href"))return null;var d=$(this).attr("href");if(d.indexOf("?")>-1){var e=d.substr(d.indexOf("?")+1);c=e.split("&")}}if(null==c)return null;for(var f=0;f<c.length;f++)escape(unescape(c[f].split("=")[0]))==a&&b.push(c[f].split("=")[1]);return 0==b.length?null:1==b.length?b[0]:b}});
+            
             //function to hide and show content
             function ToggleQuestionType(q_id)
             {
@@ -388,6 +390,7 @@
                 console.log(answerListJson);
                 return answerListJson;
             }
+
             //Get the question data
             function GetQuestionData(redirect_url)
             {
@@ -396,7 +399,8 @@
                 
                 //Json storing the question data
                 var qData = {
-                "question_index":"",
+                "test_id":parseInt($(document).getUrlParam("tid")),
+                "question_index":parseInt($(document).getUrlParam("q")),
                 "question_text":"",
                 "question_type":"",
                 "no_of_choices":"",
@@ -431,7 +435,6 @@
                 }
 
                 //Set values for the question data
-                qData["question_index"] = $("#test_question").attr("data-qid");
                 qData["question_text"] = question_text;
                 qData["question_type"] = question_type;
                 qData["no_of_choices"] = no_of_choices;

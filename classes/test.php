@@ -177,7 +177,7 @@ class Test
                     <div class="row">
                         <div class="col s12">
                             <label for="test_question">Question</label>
-                            <textarea class="materialize-textarea" id="test_question" placeholder="Enter question here" data-qid="<?php echo htmlspecialchars($_GET['q']);?>"><?php echo $question_text; ?></textarea>
+                            <textarea class="materialize-textarea" id="test_question" placeholder="Enter question here"><?php echo $question_text; ?></textarea>
                         </div>
                     </div>
                     

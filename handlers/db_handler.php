@@ -585,12 +585,43 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     
 
     #Update the question in the database if it exists | Add the question to the database if it does not exist
-    public static function UpdateQuestion($test_id,$q_index,$q_data)
+    public static function UpdateQuestion($q_data)
     {
+        global $dbCon;#db connection string
+        $update_query = "";
 
+        //Question Exists in the database 
+        if($question = DbInfo::TestQuestionExists(1,$q_data["question_index"]))
+        {
+            $update_query = "UPDATE test_questions SET test_id=?,question_text=?,question_type=?,number_of_options=?,marks_attainable=?,question_index=? WHERE question_id=".$question["question_id"];
+        }
+        else//Question does not exist in the database ~ Insert records
+        {
+            $update_query = "INSERT INTO test_questions(test_id,question_text,question_type,number_of_options,marks_attainable,question_index) VALUES (?,?,?,?,?,?)";
+        }
+
+        //Try preparing the query
+        if($update_stmt = $dbCon->prepare($update_query))
+        {
+            $update_stmt->bind_param("issiii",$q_data["test_id"],$q_data["question_text"],$q_data["question_type"],$q_data["no_of_choices"],$q_data["marks_attainable"],$q_data["question_index"]);
+
+            //If the query successfully executes
+            if($update_stmt->execute())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    #Update the question in the database if it exists | Add the question to the database if it does not exist
+    #Update the answer in the database if it exists | Add the question to the database if it does not exist
     public static function UpdateAnswers($q_id,$answers)
     {
 
@@ -653,11 +684,11 @@ if(isset($_POST['action'])) {
         case 'UpdateTestQuestion': //AJ ~ may be broken 
             
             //~Computational delay to prevent bots from spamming and DDOS
-            sleep(200);
+            //sleep(200);
             $q_data = htmlspecialchars($_POST["q_data"]);
-            var_dump($q_data);
-            //file_put_contents("AJ_TestDebug.txt",$q_data["question_text"]);
+            DbHandler::UpdateQuestion($q_data);
             /*
+            $q_data["test_id"];#test id
             $q_data["question_index"];#question id
             $q_data["question_text"];#question text
             $q_data["question_type"];#question type
