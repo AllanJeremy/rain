@@ -584,7 +584,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 */
     
 
-    #Update the question in the database if it exists | Add the question to the database if it does not exist
+    //Update the question in the database if it exists | Add the question to the database if it does not exist
     public static function UpdateQuestion($q_data)
     {
         global $dbCon;#db connection string
@@ -633,7 +633,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         }
     }
 
-    #Update the answer in the database if it exists | Add the question to the database if it does not exist
+    //Update the answer in the database if it exists | Add the question to the database if it does not exist
     public static function UpdateAnswers($q_id,$answers_data)
     {
         global $dbCon; #db connection string
@@ -672,10 +672,33 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 echo "<p>Failed to prepare the update answer query</p>";
             }
         }
-        
-        
-
     }
+
+        //Delete an answer from the database
+        public static function DeleteQuestionAnswer($q_index,$answer_index)
+        {
+            global $dbCon;
+            $delete_query = "DELETE FROM test_answers WHERE question_id=? AND answer_index=?";
+
+            if($delete_stmt = $dbCon->prepare($delete_query))
+            {
+                $delete_stmt->bind_param("ii",$q_index,$answer_index);
+                if($delete_stmt->execute())
+                {
+                    echo "<br>Successfully removed answer";
+                }
+                else
+                {
+                    echo "<br><b>Failed to remove answer.</b><br> Remove query failed to execute";
+                }
+            }
+            else
+            {
+                echo "<br><b>Error :</b> Failed to prepare the delete answer query";
+                return null;
+            }
+        }
+
 };#END OF CLASS
 
 /*
@@ -731,23 +754,27 @@ if(isset($_POST['action'])) {
             
             //dddd
             break;
+        
+        case 'DeleteQuestionAnswer':
+            $answers_data = $_POST["answers_data"];
+            foreach($answers_data as $ans_data)
+            {
+                DbHandler::DeleteQuestionAnswer($ans_data["question_index"],$ans_data["answer_index"]);
+            }
+        
+        break;
+
         case 'UpdateTestQuestion': //AJ ~ may be broken 
             
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);
             $q_data = $_POST["q_data"];
             DbHandler::UpdateQuestion($q_data);
-            /*
-            $q_data["test_id"];#test id
-            $q_data["question_index"];#question id
-            $q_data["question_text"];#question text
-            $q_data["question_type"];#question type
-            $q_data["no_of_choices"];#number of choices
-            $q_data["marks_attainable"];#marks attainable for the question
-            $answers = $q_data["answers"];#array containing all the answers
-            
-            */
+
+            #once this is done redirect the user to the redirect page as soon as the data is updated
         break;
+
+
         default:
             return null;
             break;

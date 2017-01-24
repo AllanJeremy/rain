@@ -248,6 +248,8 @@
                             default:
                                 console.log("Unknown input type requested in UpdateChoicesCount");
                         }
+                        
+                        marks_attainable_selector= "#"+type_prepend+"_question_marks";
                         //If the current value is more than the options available, add more options
                         if(cur_choice_count>options_dom_count)
                         {
@@ -265,11 +267,47 @@
                             //Items to be removed from the dom
                             var items_to_remove = (options_dom_count - cur_choice_count);
                             
+                            var answersListJson = [];
+                             
                             //Remove all the extra items from DOM
                             for(var i=0; i<items_to_remove ; i++)
                             {
-                                $(container_name).children(":last-of-type").remove();
+                                $ans_container = $(container_name).children(":last-of-type");
+                                var answerJson = {
+                                    "question_index":parseInt($(document).getUrlParam("q")),
+                                    "answer_text":$($ans_container).children("input.test_answer").val(),
+                                    "answer_index":parseInt($($ans_container).attr("data-ans-index")),
+                                    "right_answer":"",
+                                    "marks_attainable":""
+                                };
+                                
+                                //Setting the other answerJson attribute values
+                                if($($ans_container).children("input:"+input_type).is(":checked"))
+                                {
+                                    answerJson["right_answer"] = 1; 
+                                }
+                                else
+                                {
+                                    answerJson["right_answer"] = 0;
+                                }
+                                if(container_name == ".m_que_answer_container")
+                                {
+                                    answerJson["marks_attainable"] = $(marks_attainable_selector).val()/correct_answer_count;
+                                }
+                                else
+                                {
+                                    answerJson["marks_attainable"] = parseInt($(marks_attainable_selector).val());
+                                }
+
+                                answersListJson.push(answerJson);//Append the json to the json array for answers
+                                
+                                $ans_container.remove();
                             }
+
+                             $.post("handlers/db_handler.php",{"action":"DeleteQuestionAnswer","answers_data":answersListJson},function(status)
+                             {
+                                 console.log("Delete answer ajax status : "+status);
+                             });
                         }
 
             }
@@ -348,7 +386,7 @@
                         "answer_index":"",
                         "right_answer":"",
                         "marks_attainable":""
-                    };//TODO : Remember to get the question_id in php
+                    };
 
                     var $cur_ans = $answers[i];//Current answer - container of the answer test_answer_container
 
