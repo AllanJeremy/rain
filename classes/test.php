@@ -209,7 +209,7 @@ class Test
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
-                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="question_marks" required/>
+                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="s_question_marks" required/>
                         </div>
                         
                         <p class="grey-text text-darken-2">Options</p>
@@ -276,7 +276,7 @@ class Test
                         </div>
                         <div class="col s12 m6">
                             <label for="question_marks">Marks attainable</label>
-                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="question_marks" required/>
+                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="m_question_marks" required/>
                         </div>
                         
                         
@@ -341,7 +341,7 @@ class Test
                             $prev_que_url = $url_extension . ($question_index-1);
                     ?>
                         <div class="col s4 left">
-                            <a class="btn" href="<?php echo $prev_que_url?>">
+                            <a class="btn" id="prev_question" data-redirect-url="<?php echo $prev_que_url;?>">
                                 <i class="material-icons hide-on-large-only">arrow_back</i>
                                 <span class="hide-on-med-and-down">PREVIOUS QUESTION</span>
                                 </a>
@@ -352,7 +352,7 @@ class Test
                             $next_que_url = $url_extension . ($question_index+1);
                     ?>
                         <div class="col s4 right">
-                            <a class="btn right" href="<?php echo $next_que_url?>">
+                            <a class="btn right" id="next_question"  data-redirect-url="<?php echo $next_que_url;?>">
                                 <i class="material-icons hide-on-large-only">arrow_forward
 </i>
                                 <span class="hide-on-med-and-down">NEXT QUESTION</span>
@@ -362,7 +362,9 @@ class Test
                         else:#if the last question
                     ?>
                         <div class="col s4 right" id="completeTest">
-                            <a class="btn right" href="javascript:void(0)">COMPLETE<span class="hide-on-med-and-down"> TEST</span></a>
+                            <a class="btn right" href="javascript:void(0)" id="complete_test" data-redirect-url="tests.php?complete=1">
+                                COMPLETE<span class="hide-on-med-and-down"> TEST</span>
+                            </a>
                         </div>
                     <?php
                         endif;

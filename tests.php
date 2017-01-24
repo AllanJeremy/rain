@@ -167,6 +167,7 @@
         <script>
 
         $(document).ready(function(){
+
             //function to hide and show content
             function ToggleQuestionType(q_id)
             {
@@ -301,7 +302,142 @@
                         console.log("Unknown question type selected");
                 }
             });
-        });
+
+            //Returns question answer data ~ q_type is either "single" or "multiple"
+            function GetQuestionAnswerData(q_type)
+            {
+                var ans_container = "";
+                var marks_attainable_selector = "";
+                var input_type = "";//Type of the answer | radio or checkbox
+                switch(q_type)
+                {
+                    case "single":
+                        ans_container = ".s_que_answer_container";
+                        marks_attainable_selector= "#s_question_marks";
+                        input_type = "radio";
+                    break;
+
+                    case "multiple":
+                        ans_container = ".m_que_answer_container";
+                        marks_attainable_selector= "#m_question_marks";
+                        input_type = "checkbox";
+                    break;
+
+                    default:
+                        console.log("Unknown Question type. Unable to retrieve question answers");
+                }
+
+                //Im[;e,]
+                var $answers = $(ans_container).children(".test_answer_container");
+
+                var answerListJson = [];
+
+                var correct_answer_count = 0;//Number of correct answers
+                //Get individual answers
+                for(var i=0; i<$answers.length;i++)
+                {
+                    //Json storing the answer
+                    var answerJson = {
+                        "answer_text":"",
+                        "answer_index":"",
+                        "right_answer":"",
+                        "marks_attainable":""
+                    };//TODO : Remember to get the question_id in php
+
+                    var $cur_ans = $answers[i];//Current answer - container of the answer test_answer_container
+
+                    var $ans_text = $($cur_ans).children("input.test_answer").val();
+                    var marks_attainable = 0;
+
+                    //If no answer has been entered yet. Make the label value for the corresponding radio button the answer
+                    if($ans_text == "" || $ans_text==null)
+                    {
+                        $ans_text = $($cur_ans).children(".test_answer_label").text();
+                    }
+                    answerJson["answer_text"] = $ans_text;
+                    answerJson["answer_index"] = $($cur_ans).attr("data-ans-index");
+
+                    //If the answer is checked then it is the right answer. if not it is not 
+                    if($($cur_ans).children("input:"+input_type).is(":checked"))
+                    {
+                        answerJson["right_answer"] = 1;
+                        correct_answer_count += 1;
+                    }
+                    else
+                    {
+                        answerJson["right_answer"] = 0;
+                    }
+                    
+                    //If it is a multiple choice question, distribute the points equally across correct answers
+                    if(q_type == "multiple")
+                    {
+                        answerJson["marks_attainable"] = $(marks_attainable_selector).val()/correct_answer_count;
+                    }
+                    else
+                    {
+                        answerJson["marks_attainable"] = $(marks_attainable_selector).val();
+                    }
+                    
+                    answerListJson.push(answerJson);//Bugged ~ Only pushes the last element
+                    
+                
+                }
+                console.log(answerListJson);
+                return answerListJson;
+            }
+            //Get the question data
+            function GetQuestionData()
+            {
+                //Check what type of question the question is ~ to know what answers to store
+                var q_type = $(".test_q_type:checked").val();
+                var qData = {"question_text":"",
+                "question_type":"",
+                "no_of_choices":"",
+                "marks_attainable":"",
+                "answers":""
+                };
+
+                switch(q_type)
+                {
+                    case "single_choice":
+                        GetQuestionAnswerData("single");
+                    break;
+
+                    case "multiple_choice":
+                        GetQuestionAnswerData("multiple");
+                    break;
+
+                    default:
+                    console.log("Unknown question type");
+                }
+            }
+
+            
+            $("#prev_question").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                //Do everything that needs to be done first here
+
+                //Redirect to the previous page
+                window.location.replace(redirect_url);
+            });
+            //When the next question button is clicked
+            $("#next_question").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                //Do everything that needs to be done first here
+                GetQuestionData();
+                //Redirect to the next page
+                //window.location.replace(redirect_url);
+            });
+            //When the complete test button is clicked
+            $("#complete_test").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                //Do everything that needs to be done first here
+
+
+                //Redirect to the completed test page
+                window.location.replace(redirect_url);
+            });
+        });//End of document ready
 
         </script>
 
@@ -320,9 +456,8 @@
                 e.preventDefault();
                 toggleFullScreen();
             });
-
-           // 
         });
+
         </script>
     </body>
 </html>
