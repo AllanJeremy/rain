@@ -619,6 +619,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 }
                 echo "success updating the question";
                 #Run update answers here
+                echo "<br>Question ID : ".$result_question_id;
                 return self::UpdateAnswers($result_question_id,$q_data["answers"]);#update the answers;
             }
             else #failed to execute the query
@@ -637,11 +638,11 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     {
         global $dbCon; #db connection string
         $update_query = "";#the query that is used to update/insert records into the database. By default, blank
-
+        
         foreach($answers_data as $ans_data)
         {
             #if the answer already exists in the database
-            if($ans_found = DbInfo::QuestionAnswerExists($q_id,$q_id))#$ans_found is available incase we need it later ~ if not - to be deleted
+            if($ans_found = DbInfo::QuestionAnswerExists($q_id,$ans_data["answer_index"]))#$ans_found is available incase we need it later ~ if not - to be deleted
             {
                 $update_query = "UPDATE test_answers SET question_id=?,answer_text=?,right_answer=?,marks_attainable=?,answer_index=? WHERE question_id=$q_id AND answer_index=".$ans_data["answer_index"];
             }
@@ -653,23 +654,22 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             //Attempt to prepare the query
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                
+                $ans_data["answer_index"] = (int)$ans_data["answer_index"];
                 $update_stmt->bind_param("isiii",$q_id,$ans_data["answer_text"],$ans_data["right_answer"],$ans_data["marks_attainable"],$ans_data["answer_index"]);
-
+               // echo "<br>Answer index:".$ans_data["answer_index"];
+               
                 if($update_stmt->execute())
                 {
-                    echo "<p>success updating the answer</p>";
-                    return true;
+                    echo "<p>Success updating the answer</p>";
                 }
                 else #failed to execute the query
                 {
-                    return false;
+                    echo "<p>Failed to execute the update answer query</p>";
                 }
             }
             else #failed to prepare the query
             {
                 echo "<p>Failed to prepare the update answer query</p>";
-                return false;
             }
         }
         
