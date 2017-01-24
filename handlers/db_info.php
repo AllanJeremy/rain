@@ -916,6 +916,39 @@ class DbInfo
         return self::SinglePropertyExists("test_answers","question_id",$question_id,"i");        
     }
 
+    //Checks if an answer exists in the database based on the question_id and answer_index
+    public static function QuestionAnswerExists($question_id,$answer_index)
+    {
+        global $dbCon;
+        $select_query = "SELECT * FROM test_answers WHERE question_id=? AND answer_index=?";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("ii",$question_id,$answer_index);
+            
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    foreach($result as $answer_found)
+                    {
+                        return $answer_found;
+                    }
+                }
+            } 
+            else
+            {
+                return false;
+            }   
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/

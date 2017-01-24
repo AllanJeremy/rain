@@ -621,21 +621,56 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 #Run update answers here
                 return true;
             }
-            else
+            else #failed to execute the query
             {
                 return false;
             }
         }
-        else
+        else #failed to prepare the query
         {
             return null;
         }
     }
 
     #Update the answer in the database if it exists | Add the question to the database if it does not exist
-    public static function UpdateAnswers($q_id,$answers)
+    public static function UpdateAnswers($q_id,$answers_data)
     {
+        $update_query = "";#the query that is used to update/insert records into the database. By default, blank
+
+        foreach($answers_data as $ans_data)
+        {
+            #if the answer already exists in the database
+            if($ans_found = DbInfo::QuestionAnswerExists($q_id,$q_id))#$ans_found is available incase we need it later ~ if not - to be deleted
+            {
+                $update_query = "UPDATE test_answers SET question_id=?,answer_text=?,right_answer=?,marks_attainable=?,answer_index=? WHERE question_id=$q_id AND answer_index=".$ans_data["answer_index"];
+            }
+            else#If the answer does not exist in the database
+            {
+                $update_query = "INSERT INTO test_answers(question_id,answer_text,right_answer,marks_attainable,answer_index) VALUES(?????)";
+            }
+            
+            //Attempt to prepare the query
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("isiii",$q_id,$ans_data["answer_text"],$ans_data["right_answer"],$ans_data["marks_attainable"],$ans_data["answer_index"]);
+
+                if($update_stmt->execute())
+                {
+                    return true;
+                }
+                else #failed to execute the query
+                {
+                    return false;
+                }
+            }
+            else #failed to prepare the query
+            {
+                return false;
+            }
+        }
         
+        
+
     }
 };#END OF CLASS
 
