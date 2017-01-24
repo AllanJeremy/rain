@@ -309,6 +309,7 @@
                 var ans_container = "";
                 var marks_attainable_selector = "";
                 var input_type = "";//Type of the answer | radio or checkbox
+                
                 switch(q_type)
                 {
                     case "single":
@@ -330,9 +331,11 @@
                 //Im[;e,]
                 var $answers = $(ans_container).children(".test_answer_container");
 
-                var answerListJson = [];
+                var answerListJson = [];//Contains the list of answers
 
-                var correct_answer_count = 0;//Number of correct answers
+                //Number of correct answers
+                var correct_answer_count = $($answers).children("input:"+input_type+":checked").length;
+               
                 //Get individual answers
                 for(var i=0; i<$answers.length;i++)
                 {
@@ -348,20 +351,19 @@
 
                     var $ans_text = $($cur_ans).children("input.test_answer").val();
                     var marks_attainable = 0;
-
+                    
                     //If no answer has been entered yet. Make the label value for the corresponding radio button the answer
                     if($ans_text == "" || $ans_text==null)
                     {
                         $ans_text = $($cur_ans).children(".test_answer_label").text();
                     }
                     answerJson["answer_text"] = $ans_text;
-                    answerJson["answer_index"] = $($cur_ans).attr("data-ans-index");
-
+                    answerJson["answer_index"] = parseInt($($cur_ans).attr("data-ans-index"));
+                    
                     //If the answer is checked then it is the right answer. if not it is not 
                     if($($cur_ans).children("input:"+input_type).is(":checked"))
                     {
-                        answerJson["right_answer"] = 1;
-                        correct_answer_count += 1;
+                        answerJson["right_answer"] = 1; 
                     }
                     else
                     {
@@ -375,7 +377,7 @@
                     }
                     else
                     {
-                        answerJson["marks_attainable"] = $(marks_attainable_selector).val();
+                        answerJson["marks_attainable"] = parseInt($(marks_attainable_selector).val());
                     }
                     
                     answerListJson.push(answerJson);//Bugged ~ Only pushes the last element
@@ -390,6 +392,8 @@
             {
                 //Check what type of question the question is ~ to know what answers to store
                 var q_type = $(".test_q_type:checked").val();
+                
+                //Json storing the question data
                 var qData = {"question_text":"",
                 "question_type":"",
                 "no_of_choices":"",
@@ -397,19 +401,41 @@
                 "answers":""
                 };
 
+                //Variables for storing the question data
+                var question_text = $("#test_question").val();//TODO : Make sure question cannot be blank
+                var question_type = q_type;
+                var no_of_choices;
+                var marks_attainable;
+                var answersJsonArray;
+                
                 switch(q_type)
                 {
                     case "single_choice":
-                        GetQuestionAnswerData("single");
+                        no_of_choices = parseInt($("#single_choices_count").val());
+                        marks_attainable = parseInt($("#s_question_marks").val());
+                        answersJsonArray = GetQuestionAnswerData("single");
                     break;
 
                     case "multiple_choice":
-                        GetQuestionAnswerData("multiple");
+                        no_of_choices = parseInt($("#multiple_choices_count").val());
+                        marks_attainable = parseInt($("#m_question_marks").val());
+                        answersJsonArray = GetQuestionAnswerData("multiple");
                     break;
 
                     default:
                     console.log("Unknown question type");
                 }
+
+                //Set values for the question data
+                qData["question_text"] = question_text;
+                qData["question_type"] = question_type;
+                qData["no_of_choices"] = no_of_choices;
+                qData["marks_attainable"] = marks_attainable;
+                qData["answers"] = answersJsonArray;
+
+                console.log("Question data \n");
+                console.log(qData);
+                return qData;
             }
 
             
