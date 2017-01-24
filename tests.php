@@ -273,6 +273,8 @@
                             for(var i=0; i<items_to_remove ; i++)
                             {
                                 $ans_container = $(container_name).children(":last-of-type");
+                                $answers = $($ans_container).children(".test_answer_container");
+
                                 var answerJson = {
                                     "question_index":parseInt($(document).getUrlParam("q")),
                                     "answer_text":$($ans_container).children("input.test_answer").val(),
@@ -281,6 +283,7 @@
                                     "marks_attainable":""
                                 };
                                 
+                                correct_answer_count = $($answers).children("input:"+input_type+":checked").length;
                                 //Setting the other answerJson attribute values
                                 if($($ans_container).children("input:"+input_type).is(":checked"))
                                 {
@@ -369,7 +372,7 @@
                         console.log("Unknown Question type. Unable to retrieve question answers");
                 }
 
-                //Im[;e,]
+                //Contains all the answers
                 var $answers = $(ans_container).children(".test_answer_container");
 
                 var answerListJson = [];//Contains the list of answers
