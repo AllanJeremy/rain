@@ -589,15 +589,19 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     {
         global $dbCon;#db connection string
         $update_query = "";
+        $result_question_id=0;
+        $is_insert_op = false;#true if it is an insert operation
 
         //Question Exists in the database 
         if($question = DbInfo::TestQuestionExists(1,$q_data["question_index"]))
         {
+            $result_question_id = $question["question_id"];
             $update_query = "UPDATE test_questions SET test_id=?,question_text=?,question_type=?,number_of_options=?,marks_attainable=?,question_index=? WHERE question_id=".$question["question_id"];
         }
         else//Question does not exist in the database ~ Insert records
         {
             $update_query = "INSERT INTO test_questions(test_id,question_text,question_type,number_of_options,marks_attainable,question_index) VALUES (?,?,?,?,?,?)";
+            $is_insert_op = true;
         }
 
         //Try preparing the query
@@ -608,6 +612,13 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             //If the query successfully executes
             if($update_stmt->execute())
             {
+                //If it was an insert operation, then get the id of the last inserted value
+                if($is_insert_op)
+                {
+                    $result_question_id = $update_stmt->insert_id;
+                }
+                
+                #Run update answers here
                 return true;
             }
             else
@@ -624,7 +635,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     #Update the answer in the database if it exists | Add the question to the database if it does not exist
     public static function UpdateAnswers($q_id,$answers)
     {
-
+        
     }
 };#END OF CLASS
 
