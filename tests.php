@@ -160,6 +160,19 @@
                 header("Location:./");
             endif;
             ?>
+
+            <?php
+                //AJAX ~AJ (may be broken)
+                if(isset($_GET["action"]))
+                {
+                    switch($_GET["action"])
+                    {
+                        case "AjTestFunction":
+                            echo "Received data!";
+                        break;
+                    }
+                }
+            ?>
         </main>
         <footer>
         </footer>
@@ -394,7 +407,9 @@
                 var q_type = $(".test_q_type:checked").val();
                 
                 //Json storing the question data
-                var qData = {"question_text":"",
+                var qData = {
+                "question_id":"",
+                "question_text":"",
                 "question_type":"",
                 "no_of_choices":"",
                 "marks_attainable":"",
@@ -427,6 +442,7 @@
                 }
 
                 //Set values for the question data
+                qData["question_id"] = $("#test_question").attr("data-qid");
                 qData["question_text"] = question_text;
                 qData["question_type"] = question_type;
                 qData["no_of_choices"] = no_of_choices;
@@ -454,6 +470,9 @@
                 //Do everything that needs to be done first here
                 question_data = GetQuestionData();
                 
+                $.post(redirect_url,{"action":"AjTestFunction","q_data":question_data},function(question_data,status){
+                  //  alert("Data :"+ question_data+" Status:"+status);
+                });
                 //Redirect to the next page
                 //window.location.replace(redirect_url);
             });
@@ -463,7 +482,6 @@
                 //Do everything that needs to be done first here
                 question_data = GetQuestionData();
 
-                
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);
             });
