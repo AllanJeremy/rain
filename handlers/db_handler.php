@@ -541,10 +541,43 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                               UPDATING AND DELETING TESTS
 -----------------------------------------------------------------------------------------
 */
+    //Create a Test
+    public static function CreateTest($test_data)
+    {
+        global $dbCon;
+
+        $insert_query = "INSERT INTO tests(test_title,test_description,number_of_questions,teacher_id,time_to_complete,subject_id,difficulty,max_grade,passing_grade) VALUES(?,?,?,?,?,?,?,?,?)";
+
+        $response = array("message"=>"","redirect_url"=>"");
+        if($insert_stmt = $dbCon->prepare($insert_query))
+        {
+            $insert_stmt->bind_param("ssiiiisii",$test_data["test_title"],$test_data["test_instructions"],$test_data["test_question_count"],$_SESSION["admin_acc_id"],$test_data["test_completion_time"],$test_data["test_subject_id"],$test_data["test_difficulty"],$test_data["test_max_grade"],$test_data["test_pass_grade"]);
+
+            if($insert_stmt->execute())
+            {
+                $response["message"] = "success";
+                $response["redirect_url"] = "tests.php?tid=".$insert_stmt->insert_id."&edit=1";
+                echo json_encode($response);
+                //return true
+            }
+            else
+            {
+                $response["message"] = "failure";
+                echo json_encode($response);
+                //return false
+            }
+        }
+        else
+        {
+            $response["message"] = "failure";
+            echo json_encode($response);
+            //return null
+        }
+    }
 
     //Update Test information
     //TODO Add parameters for UpdateTestInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
-    public static function UpdateTestInfo()
+    public static function UpdateTest()
     {
         global $dbCon;#Connection string mysqli object
 
@@ -582,8 +615,6 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                     UPDATING AND DELETING TEST QUESTIONS AND ANSWERS
 -----------------------------------------------------------------------------------------
 */
-    
-
     //Update the question in the database if it exists | Add the question to the database if it does not exist
     public static function UpdateQuestion($q_data)
     {
@@ -756,7 +787,8 @@ if(isset($_POST['action'])) {
             break;
         //Create a Test
         case 'CreateTest':
-            echo "Creating test ~ Sample AJ response";
+            $test_data = $_POST["test_data"];
+            echo DbHandler::CreateTest($test_data);
         break;
         //Delete question answer
         case 'DeleteQuestionAnswer':

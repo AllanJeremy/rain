@@ -283,7 +283,7 @@
                 var testJson = 
                 {
                     "test_title" : $("#createTestTitle").val(),
-                    "test_subject" : $("#createTestSubject").val(),
+                    "test_subject_id" : $("#createTestSubject").val(),
                     "test_question_count" : $("#createTestQuestionCount").val(),
                     "test_difficulty" : $("#createTestDifficulty").val(),
                     "test_max_grade" : $("#createTestMaxGrade").val(),
@@ -293,7 +293,20 @@
                 }
 
                 $.post("handlers/db_handler.php",{"action":"CreateTest","test_data":testJson},function(data,status){
-                         alert("Data: " + data + "\nStatus: " + status);
+
+                    //Parse the data as JSON for data retrieval
+                    data = JSON.parse(data);
+
+                    //Successfully created the test
+                    if(data["message"]=="success")
+                    {
+                         Materialize.toast('Successfully created the test. Redirecting to the question creation section', 4000);
+                         window.location = (data["redirect_url"]);//Redirect to the page for editing questions
+                    }
+                    else //Failed to create the test
+                    {
+                        Materialize.toast('Unknown Error. Failed to create test', 4000);
+                    }
                 });
             });
 
