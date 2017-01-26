@@ -501,6 +501,14 @@
                 //Redirect to the previous page
                 //window.location.replace(redirect_url);
             });
+            //When the save button is clicked
+            $("#save_question").click(function(){
+                question_data = GetQuestionData("#!");
+                
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                  //  alert("Data :"+ question_data+" Status:"+status);
+                });
+            });
             //When the next question button is clicked
             $("#next_question").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
