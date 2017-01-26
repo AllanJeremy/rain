@@ -754,7 +754,11 @@ if(isset($_POST['action'])) {
             
             //dddd
             break;
-        
+        //Create a Test
+        case 'CreateTest':
+            echo "Creating test ~ Sample AJ response";
+        break;
+        //Delete question answer
         case 'DeleteQuestionAnswer':
             $answers_data = $_POST["answers_data"];
             foreach($answers_data as $ans_data)
@@ -764,7 +768,8 @@ if(isset($_POST['action'])) {
         
         break;
 
-        case 'UpdateTestQuestion': //AJ ~ may be broken 
+        //Update a question in the test
+        case 'UpdateTestQuestion': 
             
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);

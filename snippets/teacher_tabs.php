@@ -644,7 +644,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 
 
                     <div class="container">
-                        <form action="" id="createTestForm" class="row" method="POST">
+                        <form id="createTestForm" class="row" method="POST">
                                 <div class=" input-field col s12 m6">
                                     <input type="text" id="createTestTitle" name="create_test_title" placeholder="Test Title" class="validate" required>
                                     <label for="createTestTitle">Title</label>
@@ -684,7 +684,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 </div>
 
                                 <div class=" input-field col s12 m4">
-                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required>
+                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="50" class="validate" required>
                                     <label for="createTestPassGrade">Passing grade</label>
                                 </div>
 
@@ -698,7 +698,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestInstructions">Test instructions</label>
                                 </div>
 
-                                <button type="submit" class="btn col s10 m4 right pull-s1">Create Test</button>
+                                <a class="btn col s10 m4 right pull-s1" href="javascript:void(0)" id="create_test_btn">Create Test</a>
                         </form>
                         </div>
                     </div>

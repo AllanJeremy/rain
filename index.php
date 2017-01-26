@@ -277,6 +277,26 @@
             var picker = $input.pickatime('picker');
             //picker.open();
 
+            //When the create test button is clicked
+            $("#create_test_btn").click(function(){
+                //Stores test data
+                var testJson = 
+                {
+                    "test_title" : $("#createTestTitle").val(),
+                    "test_subject" : $("#createTestSubject").val(),
+                    "test_question_count" : $("#createTestQuestionCount").val(),
+                    "test_difficulty" : $("#createTestDifficulty").val(),
+                    "test_max_grade" : $("#createTestMaxGrade").val(),
+                    "test_pass_grade" : $("#createTestPassGrade").val(),
+                    "test_completion_time" : $("#createTestCompletionTime").val(),
+                    "test_instructions" : $("#createTestInstructions").val(),
+                }
+
+                $.post("handlers/db_handler.php",{"action":"CreateTest","test_data":testJson},function(data,status){
+                         alert("Data: " + data + "\nStatus: " + status);
+                });
+            });
+
         });
             
         function hideSideNav() {

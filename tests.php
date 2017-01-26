@@ -492,7 +492,7 @@
             $("#save_question").click(function(){
                 question_data = GetQuestionData("#!");
                 
-                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
                   //  alert("Data :"+ question_data+" Status:"+status);
                 });
             });
@@ -503,7 +503,7 @@
                 //Do everything that needs to be done first here
                 question_data =  GetQuestionData(redirect_url);
                 
-                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
                     window.location= (redirect_url);
                 });
             });
@@ -514,7 +514,7 @@
                 //Do everything that needs to be done first here
                 question_data = GetQuestionData(redirect_url);
                 
-                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
                    window.location= (redirect_url);
                 });
                 //Redirect to the next page
@@ -526,7 +526,7 @@
                 //Do everything that needs to be done first here
                 question_data = GetQuestionData(redirect_url);
                 
-                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
                   //  alert("Data :"+ question_data+" Status:"+status);
                 });
 
