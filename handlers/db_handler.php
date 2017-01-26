@@ -545,35 +545,44 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     public static function CreateTest($test_data)
     {
         global $dbCon;
-
-        $insert_query = "INSERT INTO tests(test_title,test_description,number_of_questions,teacher_id,time_to_complete,subject_id,difficulty,max_grade,passing_grade) VALUES(?,?,?,?,?,?,?,?,?)";
-
         $response = array("message"=>"","redirect_url"=>"","Error"=>"");
-        if($insert_stmt = $dbCon->prepare($insert_query))
+        if($test_data["test_title"] || $test_data["test_instructions"])
         {
-            $insert_stmt->bind_param("ssiiiisii",$test_data["test_title"],$test_data["test_instructions"],$test_data["test_question_count"],$_SESSION["admin_acc_id"],$test_data["test_completion_time"],$test_data["test_subject_id"],$test_data["test_difficulty"],$test_data["test_max_grade"],$test_data["test_pass_grade"]);
+            $insert_query = "INSERT INTO tests(test_title,test_description,number_of_questions,teacher_id,time_to_complete,subject_id,difficulty,max_grade,passing_grade) VALUES(?,?,?,?,?,?,?,?,?)";
 
-            if($insert_stmt->execute())
+            if($insert_stmt = $dbCon->prepare($insert_query))
             {
-                $response["message"] = "success";
-                $response["redirect_url"] = "tests.php?tid=".$insert_stmt->insert_id."&edit=1";
-                echo json_encode($response);
-                //return true
+                $insert_stmt->bind_param("ssiiiisii",$test_data["test_title"],$test_data["test_instructions"],$test_data["test_question_count"],$_SESSION["admin_acc_id"],$test_data["test_completion_time"],$test_data["test_subject_id"],$test_data["test_difficulty"],$test_data["test_max_grade"],$test_data["test_pass_grade"]);
+
+                if($insert_stmt->execute())
+                {
+                    $response["message"] = "success";
+                    $response["redirect_url"] = "tests.php?tid=".$insert_stmt->insert_id."&edit=1";
+                    echo json_encode($response);
+                    //return true
+                }
+                else
+                {
+                    $response["message"] = "failure";
+                    $response["error"] = $dbCon->error;
+                    echo json_encode($response);
+                    //return false
+                }
             }
             else
             {
                 $response["message"] = "failure";
-                $response["error"] = $dbCon->error;
                 echo json_encode($response);
-                //return false
+                //return null
             }
         }
-        else
+        else//Missing values
         {
             $response["message"] = "failure";
-            echo json_encode($response);
-            //return null
+            $response["error"] = "Failed to create test. Missing test title and/or instructions";
+            echo $response;
         }
+
     }
 
     //Update Test information
