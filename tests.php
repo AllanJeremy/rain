@@ -493,7 +493,11 @@
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
                 question_data =  GetQuestionData(redirect_url);
+                question_data = GetQuestionData(redirect_url);
                 
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                  //  alert("Data :"+ question_data+" Status:"+status);
+                });
                 //Redirect to the previous page
                 //window.location.replace(redirect_url);
             });
@@ -514,6 +518,10 @@
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
                 question_data = GetQuestionData(redirect_url);
+                
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                  //  alert("Data :"+ question_data+" Status:"+status);
+                });
 
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);

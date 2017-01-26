@@ -219,7 +219,7 @@ class Test
                         <div class=" col s12 s_que_answer_container">
                             <?php
                                 //If the question is a single choice question that has answers and we managed to find the answers
-                                if($is_single_choice && $has_answers && $answers_found):
+                                if($has_answers && $answers_found):
                                     $ans_count = 0;
                                     foreach($answers_found as $answer):
                                         $ans_count += 1;#increase the answer count every time
@@ -287,7 +287,7 @@ class Test
                         <div class="col s12 m_que_answer_container">
                             <?php
                                 //If the question is a single choice question that has answers and we managed to find the answers
-                                if($is_multiple_choice && $has_answers && $answers_found):
+                                if($has_answers && $answers_found):
                                     $ans_count = 0;
                                     foreach($answers_found as $answer):
                                         $ans_count += 1;#increase the answer count every time
