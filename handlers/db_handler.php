@@ -548,7 +548,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
         $insert_query = "INSERT INTO tests(test_title,test_description,number_of_questions,teacher_id,time_to_complete,subject_id,difficulty,max_grade,passing_grade) VALUES(?,?,?,?,?,?,?,?,?)";
 
-        $response = array("message"=>"","redirect_url"=>"");
+        $response = array("message"=>"","redirect_url"=>"","Error"=>"");
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
             $insert_stmt->bind_param("ssiiiisii",$test_data["test_title"],$test_data["test_instructions"],$test_data["test_question_count"],$_SESSION["admin_acc_id"],$test_data["test_completion_time"],$test_data["test_subject_id"],$test_data["test_difficulty"],$test_data["test_max_grade"],$test_data["test_pass_grade"]);
@@ -563,6 +563,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             else
             {
                 $response["message"] = "failure";
+                $response["error"] = $dbCon->error;
                 echo json_encode($response);
                 //return false
             }
