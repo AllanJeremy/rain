@@ -1137,7 +1137,7 @@ class DbInfo
 
 if(isset($_GET['action'])) {
     
-    
+    sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
     switch($_GET['action']) {
         case 'StudentIdExists':
             

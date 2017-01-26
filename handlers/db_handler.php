@@ -750,6 +750,8 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
 if(isset($_POST['action'])) {
     
+    sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
+    
     switch($_POST['action']) {
         case 'UpdateClassroomInfo':
             
