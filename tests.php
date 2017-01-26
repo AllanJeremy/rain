@@ -488,19 +488,6 @@
             }
 
             var question_data;//Question data ~ Json
-
-            $("#prev_question").click(function(){
-                var redirect_url = $(this).attr("data-redirect-url");
-                //Do everything that needs to be done first here
-                question_data =  GetQuestionData(redirect_url);
-                question_data = GetQuestionData(redirect_url);
-                
-                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
-                  //  alert("Data :"+ question_data+" Status:"+status);
-                });
-                //Redirect to the previous page
-                //window.location.replace(redirect_url);
-            });
             //When the save button is clicked
             $("#save_question").click(function(){
                 question_data = GetQuestionData("#!");
@@ -509,6 +496,18 @@
                   //  alert("Data :"+ question_data+" Status:"+status);
                 });
             });
+
+            //When the previous button is clicked
+            $("#prev_question").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                //Do everything that needs to be done first here
+                question_data =  GetQuestionData(redirect_url);
+                
+                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
+                    window.location= (redirect_url);
+                });
+            });
+
             //When the next question button is clicked
             $("#next_question").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
@@ -516,10 +515,10 @@
                 question_data = GetQuestionData(redirect_url);
                 
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(question_data,status){
-                  //  alert("Data :"+ question_data+" Status:"+status);
+                   window.location= (redirect_url);
                 });
                 //Redirect to the next page
-                //window.location.replace(redirect_url);
+                
             });
             //When the complete test button is clicked
             $("#complete_test").click(function(){
