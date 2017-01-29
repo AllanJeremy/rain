@@ -34,19 +34,8 @@
                     $accType = "student";#corresponds with file name prefix
                 }
                 
-                /*$back_url = "";
                 //Allow editing of test if the test creator is logged in and the test is in an editable state
                 if(isset($_GET["tid"]) && $test=DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
-                {
-                    if(isset($_GET["edit"]) && (htmlspecialchars($_GET["edit"])=="1") && $test["teacher_id"]==@$_SESSION["admin_acc_id"] && $test["editable"])
-                    {
-                        $backurl = 'tests.php?tid='.htmlspecialchars($_GET['tid'])."&edit=1";
-                    }
-                    else
-                    {
-                        $backurl = 'tests.php?tid='.htmlspecialchars($_GET['tid'])."&edit=1";
-                    }
-                }*/
 ?>
         <header>
             <nav class="top-nav">
@@ -98,7 +87,7 @@
             <?php
                     endif;   
                     else:#question number not set
-                        Test::DisplayTestInstructions($test);
+                        Test::DisplayTestInstructions($test);//Display test creator's instructions
             ?>
             
             <?php
@@ -124,7 +113,7 @@
                         Test::DisplayTest($test,$current_question);#Display the current question
                     }else
                     {
-                        Test::DisplayTestInstructions($test);
+                        Test::DisplayTestInstructions($test,true);//Display test taker's instructions
                     }
 
                     
