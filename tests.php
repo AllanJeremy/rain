@@ -34,8 +34,19 @@
                     $accType = "student";#corresponds with file name prefix
                 }
                 
+                /*$back_url = "";
                 //Allow editing of test if the test creator is logged in and the test is in an editable state
                 if(isset($_GET["tid"]) && $test=DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
+                {
+                    if(isset($_GET["edit"]) && (htmlspecialchars($_GET["edit"])=="1") && $test["teacher_id"]==@$_SESSION["admin_acc_id"] && $test["editable"])
+                    {
+                        $backurl = 'tests.php?tid='.htmlspecialchars($_GET['tid'])."&edit=1";
+                    }
+                    else
+                    {
+                        $backurl = 'tests.php?tid='.htmlspecialchars($_GET['tid'])."&edit=1";
+                    }
+                }*/
 ?>
         <header>
             <nav class="top-nav">
@@ -43,7 +54,7 @@
                     <div class="nav-wrapper ">
                         <div class="row no-margin">
                             <div class="col s2">
-                                <a href="index.php" class="">
+                                <a href="<?php echo 'tests.php?tid='.htmlspecialchars($_GET['tid'])?>" class="">
                                     <i class="material-icons">arrow_back</i>
                                 </a>
                             </div>
@@ -101,54 +112,25 @@
                     break;#student logged in
                 endswitch;
 
+                //If we are taking the test
                 if($taking_test):
-            ?>
-            <div class="row grey darken-2 z-depth-1">
-                <div class="container">
-                    <div class="row no-margin">
-                        <div class="col s12 m4 center-align">
-                            <p class="white-text">Question <span class="php-data"><?php echo $current_question; ?></span> of <?php echo $question_count; ?></p>
-                        </div>
-                        <!--<div class="col s12 m4 center-align">
-                            <p class="white-text"><span class="php-data">1</span> question skipped</p>
-                        </div>-->
-                        <div class="col s12 m4 center-align">
-                            <p class="white-text">Time left: <span class="php-data">1:04:32</span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row my-container">
-                <h4 class="col s12 grey-text thin text-darken-4 question-number">Question 4</h4>
-                <br>
-                <h5 class="question light black-text">
-                    Tables are a nice way to organize a lot of data. We provide a few utility classes to help you style your table as easily as possible. In addition, to improve mobile experience, all tables on mobile-screen widths are centered automatically. Which color?
-                </h5>
-                <br>
-                <div class="col s12">
-                    <form action="#" class="row">
-                        <p>
-                            <input name="group1" type="radio" id="test1" />
-                            <label for="test1">Red</label>
-                        </p>
-                        <p>
-                            <input name="group1" type="radio" id="test2" />
-                            <label for="test2">Yellow</label>
-                        </p>
-                        <p>
-                            <input class="" name="group1" type="radio" id="test3"  />
-                            <label for="test3">Green</label>
-                        </p>
                         
-                        <div class="col s6 input-field">
-                            <a class="btn right" type="submit">Next</a>
-                        </div>
-                        <div class="col s6 input-field">
-                            <a class="btn-flat btn-skip-question right" type="submit">skip</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                    $current_question = 0;
+                    if(isset($_GET["q"]))#if question number is set
+                    {   
+                        $current_question = htmlspecialchars($_GET["q"]);
+                        if($current_question<1 || $current_question>$test["number_of_questions"])
+                        {header("Location:404.html");}
+                        Test::DisplayTest($test,$current_question);#Display the current question
+                    }else
+                    {
+                        Test::DisplayTestInstructions($test);
+                    }
+
+                    
+            ?>
+
+            
             
             <?php
                 endif;#if taking test

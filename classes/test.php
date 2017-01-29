@@ -24,7 +24,7 @@ class Test
     <div class="container row">
 
         <!--Test details-->
-        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo $test["subject_id"];?></small></h5></div>
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo (DbInfo::GetSubjectById($test["subject_id"]))["subject_name"];?></small></h5></div>
         
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
         
@@ -36,13 +36,13 @@ class Test
         
         <!--Test Description-->
         <div class="col s12">
-            <br><h4>Description</h4>
+            <br><h4>Instructions</h4>
             <p><?php echo $test["test_description"];?></p>
         </div>
 
         <!--Test Instructions-->
         <div class="col s12">
-            <br><h4>Instructions</h4>
+            <br><h4>Description</h4>
             <p>This test has about <?php echo $test["number_of_questions"];?> multiple choice questions and should take less than <?php echo $test["time_to_complete"];?> minutes to complete. Click start test when you're ready to begin. </p>
         </div>
 
@@ -56,9 +56,115 @@ class Test
 <?php
     }
     //Displays a test, inclusive of all questions
-    public static function DisplayTest($test)
+    public static function DisplayTest($test,$question_index)
     {
+        //Find the question in the database
+        if($question = DbInfo::TestQuestionExists($test["test_id"],$question_index)):
+        
+?>
+    <div class="row grey darken-2 z-depth-1">
+        <div class="container">
+            <div class="row no-margin">
+                <div class="col s6 m4 center-align">
+                    <p class="white-text">Question <span class="php-data"><?php echo $question_index; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
+                </div>
+                <div class="col s6 m4 right pull-s1">
+                    <p class="white-text valign">Time Left <span class="php-data ">1:00</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row my-container">
+                <h4 class="col s12 grey-text thin text-darken-4 question-number">Question <?php echo $question_index." ( ".$question["marks_attainable"]." Marks)"; ?></h4>
+                <br>
+                <h5 class="question light black-text">
+                    <?php echo $question["question_text"];?>
+                </h5>
+                <br>
+                
+                <div class="col s12">
+                    <form action="#" class="row">
+                        <?php
+                            //Get the question type
+                            $input_type = "radio";
+                            $is_last_question = false;
+                            
+                            if($question_index == $test["number_of_questions"])
+                            {
+                                $is_last_question = true;
+                            }
 
+                            //Find the question type so that we can display the appropriate options
+                            switch($question["question_type"])
+                            {
+                                case "single_choice":#if the question is a single choice question
+                                    $input_type = "radio";
+                                break;
+
+                                case "multiple_choice":
+                                    $input_type = "checkbox";
+                                break;
+
+                                default:
+                                    echo "<p>Unknown question type</p>";
+                            }
+
+                            //Get the question answers
+                            if($answers = DbInfo::GetQuestionAnswers($question["question_id"])):
+                                #Id of the test answer is the answer_index in the database
+                                foreach($answers as $answer):
+                        ?>
+                        <p>
+                            <input name="test_answer" type="<?php echo $input_type?>" id="<?php echo $answer['answer_index']?>" />
+                            <label for="<?php echo $answer['answer_index']?>"><?php echo $answer["answer_text"]; ?></label>
+                        </p>
+                        
+                        <?php
+                                endforeach;#Answers loop
+                            else:#Answers not found in the database
+                        ?>
+                        <h4 class="question light black-text">Error : Answers for the question could not be found</h4>
+                        <?php
+                            endif;#if checking for whether answers for the question exist
+                        ?>
+                        <br>
+                        
+                        <?php
+                            $url_extension = "tests.php?tid=".$test["test_id"]."&q=";
+                            if(!$is_last_question):
+                                $next_que_url = $url_extension.($question_index+1);
+                        ?>
+                        <!--Progress buttons-->
+                        <div class="col s6 input-field">
+                            <a class="btn-flat btn-skip-question center" type="submit">skip</a>
+                        </div>
+                        <div class="col s6 input-field">
+                            <a class="btn right" id="next_question" href="<?php echo $next_que_url;?>"><span class="hidden-on-small-only">Next Question</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
+                        </div>
+                        <?php
+                            else:
+                        ?>
+                        <div class="col s6 input-field">
+                            <a class="btn-flat btn-skip-question center" type="submit">skipped questions</a>
+                        </div>
+                        <div class="col s6 input-field">
+                            <a class="btn right" id="complete_test" data-redirect-url="<?php echo $complete_test_url;?>"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>                  
+                        </div>
+                        <?php
+                            endif;
+                        ?>
+
+                    </form>
+                </div>
+            </div>
+<?php
+    else://If the question exists in the database
+?>
+ <div class="row my-container">
+    <h4 class="col s12 grey-text thin text-darken-4 question-number">Oops, we could not find that question :(</h4>
+ </div>
+<?php
+    endif;
     }
 
     //Displays a question, depending on whether the question exists in the database or not
