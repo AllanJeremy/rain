@@ -162,7 +162,7 @@ class Test
 ?>
  <div class="row my-container">
     <h4 class="col s12 grey-text thin text-darken-4 question-number">Oops, we could not find that question :(</h4>
-    <p class="flow-text">A common reason for this is that the test is incomplete. We recommend that you report the missing question so that it may be rectified.</p>
+    <p class="flow-text">A common reason for this is that the test is incomplete. We recommend that you report the missing question so that it can be fixed.</p>
     <br>
     <a class="btn flat" href="javascript:void(0)">Report Missing question</a>
  </div>
