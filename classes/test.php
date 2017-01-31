@@ -162,6 +162,9 @@ class Test
 ?>
  <div class="row my-container">
     <h4 class="col s12 grey-text thin text-darken-4 question-number">Oops, we could not find that question :(</h4>
+    <p class="flow-text">A common reason for this is that the test is incomplete. We recommend that you report the missing question so that it may be rectified.</p>
+    <br>
+    <a class="btn flat" href="javascript:void(0)">Report Missing question</a>
  </div>
 <?php
     endif;
@@ -190,9 +193,13 @@ class Test
                         <div class="col s10 m4 center-align">
                             <p class="white-text">Question <span class="php-data"><?php echo $question_index; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
                         </div>
+
                         <div class="col s2 m2 right pull-s1">
-                        
                             <span><a class="btn" id="save_question" href="javascript:void(0)" style="margin-top:0.45em"><i class="material-icons">save</i></a></span>
+                        </div>
+                        
+                        <div class="col s12 m4 center-align">
+                            <p class="white-text">Marks Allocated : <span class="php-data cyan-text text-accent-4" id="txt_marks_allocated">1 </span> / <?php echo $test["max_grade"]; ?></span></p>
                         </div>
                     </div>
                 </div>
