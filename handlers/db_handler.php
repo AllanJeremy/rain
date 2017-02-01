@@ -740,6 +740,42 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             }
         }
 
+        public static function GetMarksUsed($test,$question_index)
+        {
+            if($questions = DbInfo::GetTestQuestions($test["test_id"]))
+            {
+                $return_array = array("display_class"=>"","marks_allocated"=>0);
+                $marks_allocated = 0;
+                foreach($questions as $question)
+                {
+                    //If the question being looped through is not the current question, add the marks attainable to the total marks allocated
+                    if(!($question["question_index"]==$question_index))
+                    {
+                        $marks_allocated += $question["marks_attainable"];
+                    }
+                }
+
+                //If marks allocated are less than the maximum marks attainable for the test
+                if($marks_allocated < $test["max_grade"])
+                {
+                    $return_array["display_class"] = "green-text text-accent-3";
+                }
+                else if($marks_allocated > $test["max_grade"])//More marks allocated than the max grade
+                {
+                    $return_array["display_class"] = "red-text text-accent-2";
+                }
+                else//Marks allocated == max grade
+                {
+                    $return_array["display_class"] = "cyan-text";
+                }
+
+                //Update the return array marks_allocated
+                $return_array["marks_allocated"] = $marks_allocated;
+                return $return_array;
+            }
+            return false;
+        }
+
 };#END OF CLASS
 
 /*
@@ -822,7 +858,6 @@ if(isset($_POST['action'])) {
 
             #once this is done redirect the user to the redirect page as soon as the data is updated
         break;
-
 
         default:
             return null;

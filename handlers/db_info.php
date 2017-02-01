@@ -870,6 +870,12 @@ class DbInfo
                     TESTS AND ANSWERS
 ----------------------------------------------------------------------------------------------------------*/
 
+    //Get all questions in a Test
+    public static function GetTestQuestions($test_id)
+    {
+        return self::SinglePropertyExists("test_questions","test_id",$test_id,"i");
+    }
+    
     //TODO Ensure that question_index is always unique to every question in any given test
     //If a question exists in a test
     public static function TestQuestionExists($test_id,$question_index)

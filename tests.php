@@ -142,6 +142,61 @@
             //Get URL params script 
             jQuery.fn.extend({getUrlParam:function(a){a=escape(unescape(a));var b=new Array,c=null;if("#document"==$(this).attr("nodeName"))window.location.search.search(a)>-1&&(c=window.location.search.substr(1,window.location.search.length).split("&"));else if("undefined"!=$(this).attr("src")){var d=$(this).attr("src");if(d.indexOf("?")>-1){var e=d.substr(d.indexOf("?")+1);c=e.split("&")}}else{if("undefined"==$(this).attr("href"))return null;var d=$(this).attr("href");if(d.indexOf("?")>-1){var e=d.substr(d.indexOf("?")+1);c=e.split("&")}}if(null==c)return null;for(var f=0;f<c.length;f++)escape(unescape(c[f].split("=")[0]))==a&&b.push(c[f].split("=")[1]);return 0==b.length?null:1==b.length?b[0]:b}});
             
+            /* 
+                UPDATING THE MARKS ALLOCATED TEXT IN THE SUBMENU BAR
+            */
+            var max_grade = parseInt($("#test_max_grade").text());
+            //Update the classes used to display the different colors based on how many marks have been allocated
+            function UpdateMarksClasses(cur_marks,max_grade)
+            {
+                var $txt_marks_alloc = $("#txt_marks_allocated");
+                $txt_marks_alloc.removeClass();
+                var class_to_add="";
+                if(cur_marks<max_grade)
+                {       
+                    class_to_add="green-text text-accent-3";
+                }
+                else if(cur_marks>max_grade)
+                {
+                    class_to_add="red-text text-accent-2";
+                }
+                else
+                {
+                    class_to_add="cyan-text";
+                }
+
+                $txt_marks_alloc.addClass(class_to_add);
+            }
+
+            //Init when the page first loads
+            var marks_alloc = parseInt($("#txt_marks_allocated").text());//Marks allocated
+            var init_marks_val = 0;
+            //Send the marks attainable to the server and compute the total marks allocated
+            function InitMarksAttainable()
+            {
+                var q_type = $(".test_q_type:checked").val();
+                var question_marks = 0;
+                
+                switch(q_type)
+                {
+                    case "single_choice":
+                        question_marks = $("#s_question_marks").val();
+                    break;
+                    case "multiple_choice":
+                        question_marks = $("#m_question_marks").val();
+                    break;
+                    default:
+                        console.log("Unknown question type");
+                }
+                init_marks_val = question_marks;
+                marks_alloc += parseInt(question_marks);
+                $("#txt_marks_allocated").text(marks_alloc);
+
+                UpdateMarksClasses(marks_alloc,max_grade)
+            }
+
+            //Get marks attainable once the page has loaded
+            InitMarksAttainable();
             //function to hide and show content
             function ToggleQuestionType(q_id)
             {
@@ -503,6 +558,18 @@
 
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);
+            });
+
+            //When the marks attainable change
+            $(".question_marks").change(function(){
+                var cur_val = $(this).val();
+                marks_alloc = parseInt($("#txt_marks_allocated").text());
+
+                marks_alloc+=(cur_val-init_marks_val);
+                init_marks_val = cur_val;//Reset the initial value to the new current value
+
+                $("#txt_marks_allocated").text(marks_alloc);
+                UpdateMarksClasses(marks_alloc,max_grade);//Update the classes showing the different colors
             });
         });//End of document ready
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once (realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Allows connection to database
+require_once (realpath(dirname(__FILE__) . "/../handlers/db_handler.php")); #Allows connection to database
 
 #HANDLES TEST RELATED FUNCTIONS
 class Test
@@ -199,7 +199,11 @@ class Test
                         </div>
                         
                         <div class="col s12 m4 center-align">
-                            <p class="white-text">Marks Allocated : <span class="php-data cyan-text text-accent-4" id="txt_marks_allocated">1 </span> / <?php echo $test["max_grade"]; ?></span></p>
+                            <?php
+                                //Marks for everything except the current question
+                                $marks_used =  DbHandler::GetMarksUsed($test,$question_index);
+                            ?> 
+                            <p class="white-text">Marks Allocated : <span class="<?php echo $marks_used['display_class'];?>" id="txt_marks_allocated"><?php echo $marks_used['marks_allocated'];?></span>  / <span id="test_max_grade"><?php echo $test["max_grade"]; ?></span></p>
                         </div>
                     </div>
                 </div>
@@ -212,7 +216,6 @@ class Test
                     <div class="divider"></div><br>
 
             <?php
-                //Check if the question exists in the database
                 $question_text = "";
                 $marks_attainable = 5;#default marks attainable per question is 5
                 
@@ -325,8 +328,8 @@ class Test
                             <input type="number" value="<?php echo $no_of_choices;?>" min="1" max="8" id="single_choices_count" class="option_count" required/>
                         </div>
                         <div class="col s12 m6">
-                            <label for="question_marks">Marks attainable</label>
-                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="s_question_marks" required/>
+                            <label for="s_question_marks">Marks attainable</label>
+                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" class="question_marks" id="s_question_marks" required/>
                         </div>
                         
                         <p class="grey-text text-darken-2">Options</p>
@@ -392,8 +395,8 @@ class Test
                             <input type="number" value="<?php echo $no_of_choices;?>" min="1" max="8" id="multiple_choices_count" class="option_count" required/>
                         </div>
                         <div class="col s12 m6">
-                            <label for="question_marks">Marks attainable</label>
-                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" id="m_question_marks" required/>
+                            <label for="m_question_marks">Marks attainable</label>
+                            <input type="number" value="<?php echo $marks_attainable;?>" min="1" max="20" class="question_marks" id="m_question_marks" required/>
                         </div>
                         
                         
