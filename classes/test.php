@@ -201,9 +201,9 @@ class Test
                         <div class="col s12 m4 center-align">
                             <?php
                                 //Marks for everything except the current question
-                                $marks_used =  DbHandler::GetMarksUsed($test,$question_index);
+                                $marks_allocated =  DbHandler::GetMarksUsed($test,$question_index);
                             ?> 
-                            <p class="white-text">Marks Allocated : <span class="<?php echo $marks_used['display_class'];?>" id="txt_marks_allocated"><?php echo $marks_used['marks_allocated'];?></span>  / <span id="test_max_grade"><?php echo $test["max_grade"]; ?></span></p>
+                            <p class="white-text">Marks Allocated : <span id="txt_marks_allocated"><?php echo $marks_allocated;?></span>  / <span id="test_max_grade"><?php echo $test["max_grade"]; ?></span></p>
                         </div>
                     </div>
                 </div>

@@ -744,7 +744,6 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         {
             if($questions = DbInfo::GetTestQuestions($test["test_id"]))
             {
-                $return_array = array("display_class"=>"","marks_allocated"=>0);
                 $marks_allocated = 0;
                 foreach($questions as $question)
                 {
@@ -754,24 +753,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                         $marks_allocated += $question["marks_attainable"];
                     }
                 }
-
-                //If marks allocated are less than the maximum marks attainable for the test
-                if($marks_allocated < $test["max_grade"])
-                {
-                    $return_array["display_class"] = "green-text text-accent-3";
-                }
-                else if($marks_allocated > $test["max_grade"])//More marks allocated than the max grade
-                {
-                    $return_array["display_class"] = "red-text text-accent-2";
-                }
-                else//Marks allocated == max grade
-                {
-                    $return_array["display_class"] = "cyan-text";
-                }
-
-                //Update the return array marks_allocated
-                $return_array["marks_allocated"] = $marks_allocated;
-                return $return_array;
+                return $marks_allocated;
             }
             return false;
         }
