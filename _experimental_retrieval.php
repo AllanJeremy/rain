@@ -18,6 +18,7 @@
 
     <main >
     <div class="container">
+        <blockquote>Someone needs to start paying for services rendered to them</blockquote>
 <?php
 
 /* EXPERIMENTAL FILE, TO BE DELETED AT THE END OF PROJECT. ANY EXPERIMENTS AND TESTS CAN BE DONE HERE*/

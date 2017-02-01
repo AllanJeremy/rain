@@ -277,6 +277,96 @@
             var picker = $input.pickatime('picker');
             //picker.open();
 
+            //Create test button
+            var $create_test_btn = $("#create_test_btn");
+
+            //Missing create test test fields, returns true if theres any missing values
+            function MissingCreateTestFields()
+            {
+                return ($("#createTestTitle").val()=="" || $("#createTestInstructions").val()=="");
+            }
+
+            //Update the Create test button ~ Enabling and disabling the button
+            function UpdateCreateTestButton()
+            {
+                if(MissingCreateTestFields())
+                {
+                    $create_test_btn.addClass("disabled");
+                    $create_test_btn.prop("disabled",true);
+                }
+                else
+                {
+                    $create_test_btn.removeClass("disabled");
+                    $create_test_btn.prop("disabled",false);
+                }
+            }
+
+            //Disable all input fields ~ when the create test button is clicked
+            function DisableAllInputFields()
+            {
+                $("#createTestForm").children(":input",function(){
+                    $(this).disabled=true;
+                });
+
+            }
+            //Update the Create test button at start ~ when document first loads
+            UpdateCreateTestButton();
+
+            //When the value of either the test title or instructions changes ~ update the button status
+            $(document.body).on("input",("#createTestTitle,#createTestInstructions"),function()
+            {
+                UpdateCreateTestButton();
+            });
+
+            //When the create test button is clicked
+            $($create_test_btn).click(function(){
+
+                //If there are any values missing
+                if(MissingCreateTestFields())
+                {
+                    Materialize.toast('Failed to create test. Ensure you have filled in all details', 4000);
+                }
+                else
+                {
+                    DisableAllInputFields()
+                    //Stores test data
+                    var testJson =
+                    {
+                        "test_title" : $("#createTestTitle").val(),
+                        "test_subject_id" : $("#createTestSubject").val(),
+                        "test_question_count" : $("#createTestQuestionCount").val(),
+                        "test_difficulty" : $("#createTestDifficulty").val(),
+                        "test_max_grade" : $("#createTestMaxGrade").val(),
+                        "test_pass_grade" : $("#createTestPassGrade").val(),
+                        "test_completion_time" : $("#createTestCompletionTime").val(),
+                        "test_instructions" : $("#createTestInstructions").val(),
+                    }
+                    console.log(testJson);
+
+                    $.post("handlers/db_handler.php",{"action":"CreateTest","test_data":testJson},function(data,status){
+
+                        //Parse the data as JSON for data retrieval
+                        data = JSON.parse(data);
+                        var toast_delay = 2500;
+
+                        //Successfully created the test
+                        if(data["message"]=="success")
+                        {
+                            Materialize.toast('Successfully created the test. Redirecting to the question creation section', toast_delay);
+                            setTimeout(function(){
+                                window.location = (data["redirect_url"]);//Redirect to the page for editing questions
+                            },(toast_delay+250));
+
+                        }
+                        else //Failed to create the test
+                        {
+                            Materialize.toast('Error : '+data["error"]+'. Failed to create test', 4000);
+                        }
+                    });
+                }
+
+            });
+
         });
             
         function hideSideNav() {

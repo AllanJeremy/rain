@@ -4,6 +4,7 @@
 $(function () {
     'use strict';
     
+    //Toggles fullscreen
     function toggleFullScreen() {
         console.log('going fullscreen');
         
@@ -27,4 +28,7 @@ $(function () {
         }
     }
     
+
+
+
 }, jQuery); // end of document ready

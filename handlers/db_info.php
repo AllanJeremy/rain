@@ -571,7 +571,25 @@ class DbInfo
     //Checks if the schedule with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function ScheduleExists($schedule_id)
     {
-        return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
+
+        if($schedules = self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i"))
+        {
+            if($schedules->num_rows>0)
+            {
+                foreach($schedules as $schedule)
+                {
+                    return $schedule;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
+        }
     }
     
     //Checks if the schedule with the given guid_id exists, returns true on success | false if no records found | null if query couldn't execute
@@ -583,7 +601,24 @@ class DbInfo
     //Checks if the test with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function TestExists($test_id)
     {
-        return self::SinglePropertyExists("tests","test_id",$test_id,"i");
+        if($tests = self::SinglePropertyExists("tests","test_id",$test_id,"i"))
+        {
+            if($tests->num_rows>0)
+            {
+                foreach($tests as $test)
+                {
+                    return $test;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return self::SinglePropertyExists("tests","test_id",$test_id,"i");
+        }
     }
 
     #Get specific teacher classrooms - returns classrooms on success | false if no records found | null if query couldn't execute
@@ -837,8 +872,95 @@ class DbInfo
     {
         return self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
     }
+/*----------------------------------------------------------------------------------------------------------
+                    TESTS AND ANSWERS
+----------------------------------------------------------------------------------------------------------*/
 
+    //Get all questions in a Test
+    public static function GetTestQuestions($test_id)
+    {
+        return self::SinglePropertyExists("test_questions","test_id",$test_id,"i");
+    }
     
+    //TODO Ensure that question_index is always unique to every question in any given test
+    //If a question exists in a test
+    public static function TestQuestionExists($test_id,$question_index)
+    {
+        global $dbCon;
+        $select_query = "SELECT * FROM test_questions WHERE test_id=? AND question_index=?";
+
+        #prepare the query - to prevent sql-injection
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("ii",$test_id,$question_index);
+
+            #if the query successfully executes
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    foreach($result as $question_found)
+                    {
+                        return $question_found;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else#query failed to execute
+            {
+                return false;
+            }
+        }
+        else#query failed to prepare
+        {
+            return null;
+        }
+
+    }
+
+   //Return answers belonging to a question
+    public static function GetQuestionAnswers($question_id)
+    {
+        return self::SinglePropertyExists("test_answers","question_id",$question_id,"i");
+    }
+
+    //Checks if an answer exists in the database based on the question_id and answer_index
+    public static function QuestionAnswerExists($question_id,$answer_index)
+    {
+        global $dbCon;
+        $select_query = "SELECT * FROM test_answers WHERE question_id=? AND answer_index=?";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("ii",$question_id,$answer_index);
+
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    foreach($result as $answer_found)
+                    {
+                        return $answer_found;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
@@ -1156,7 +1278,7 @@ class DbInfo
 
 if(isset($_GET['action'])) {
     
-    
+    sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
     switch($_GET['action']) {
         case 'StudentIdExists':
             
@@ -1178,7 +1300,7 @@ if(isset($_GET['action'])) {
             
             
             foreach ($result as $row) {
-            
+
                 $subject_id = $row['subject_id'];
                 $stream_id = $row['stream_id'];
                 

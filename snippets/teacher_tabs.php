@@ -681,15 +681,21 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 ?>
                 <!--Create a test-->
                 <div class="row main-tab" id="createTestTab">
+<<<<<<< HEAD
 
                     <div class="col s12">
                         <p class="grey-text">Create test</p>
+=======
+                    <div class="col s12 grey-text">
+                        <p class="grey-text">Create Test. Once a test is created you will be redirected to the test editing page page</p>
+>>>>>>> origin/master
                         <div class="divider"></div>
                     <br>
                     </div>
 
+
                     <div class="container">
-                        <form action="" id="createTestForm" class="row" method="POST">
+                        <form id="createTestForm" class="row" method="POST">
                                 <div class=" input-field col s12 m6">
                                     <input type="text" id="createTestTitle" name="create_test_title" placeholder="Test Title" class="validate" required>
                                     <label for="createTestTitle">Title</label>
@@ -707,7 +713,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestSubject">Subject</label>
                                 </div>
                                 <div class=" input-field col s12 m6">
-                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count"  min="1" max="50" value="10" class="validate" required>
+                                    <input type="number" id="createTestQuestionCount" name="create_test_question_count" min="1" max="50" value="10" class="validate" required>
                                     <label for="createTestQuestionCount">No. of questions</label>
                                 </div>
 
@@ -718,6 +724,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                         <option value="2">Easy</option>
                                         <option value="3">Moderate</option>
                                         <option value="4">Difficult</option>
+                                        <option value="5">Very Difficult</option>
                                     </select>
                                     <label for="createTestDifficulty">Difficulty</label>
                                 </div>
@@ -728,12 +735,12 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 </div>
 
                                 <div class=" input-field col s12 m4">
-                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="100" class="validate" required>
+                                    <input type="number" id="createTestPassGrade" name="create_test_pass_grade" min="10" max="100" value="50" class="validate" required>
                                     <label for="createTestPassGrade">Passing grade</label>
                                 </div>
 
                                 <div class=" input-field col s12 m4">
-                                    <input type="number" id="createTestCompletionTime" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
+                                    <input type="number" id="createTestCompletionTime" step="5" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
                                     <label for="createTestCompletionTime">Time (Minutes)</label>
                                 </div>
 
@@ -742,7 +749,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestInstructions">Test instructions</label>
                                 </div>
 
-                                <button type="submit" class="btn col s10 m4 right pull-s1">Create Test</button>
+                                <a class="btn col s10 m4 right pull-s1" href="javascript:void(0)" id="create_test_btn">Create Test</a>
                         </form>
                         </div>
                     </div>

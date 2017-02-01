@@ -541,10 +541,53 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                               UPDATING AND DELETING TESTS
 -----------------------------------------------------------------------------------------
 */
+    //Create a Test
+    public static function CreateTest($test_data)
+    {
+        global $dbCon;
+        $response = array("message"=>"","redirect_url"=>"","Error"=>"");
+        if($test_data["test_title"] || $test_data["test_instructions"])
+        {
+            $insert_query = "INSERT INTO tests(test_title,test_description,number_of_questions,teacher_id,time_to_complete,subject_id,difficulty,max_grade,passing_grade) VALUES(?,?,?,?,?,?,?,?,?)";
+
+            if($insert_stmt = $dbCon->prepare($insert_query))
+            {
+                $insert_stmt->bind_param("ssiiiisii",$test_data["test_title"],$test_data["test_instructions"],$test_data["test_question_count"],$_SESSION["admin_acc_id"],$test_data["test_completion_time"],$test_data["test_subject_id"],$test_data["test_difficulty"],$test_data["test_max_grade"],$test_data["test_pass_grade"]);
+
+                if($insert_stmt->execute())
+                {
+                    $response["message"] = "success";
+                    $response["redirect_url"] = "tests.php?tid=".$insert_stmt->insert_id."&edit=1";
+                    echo json_encode($response);
+                    //return true
+                }
+                else
+                {
+                    $response["message"] = "failure";
+                    $response["error"] = $dbCon->error;
+                    echo json_encode($response);
+                    //return false
+                }
+            }
+            else
+            {
+                $response["message"] = "failure";
+                echo json_encode($response);
+                //return null
+            }
+        }
+        else//Missing values
+        {
+            $response["message"] = "failure";
+            $response["error"] = "Failed to create test. Missing test title and/or instructions";
+            echo $response;
+        }
+
+    }
 
     //Update Test information
     //TODO Add parameters for UpdateTestInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
-    public static function UpdateTestInfo()
+    public static function UpdateTest()
     {
         global $dbCon;#Connection string mysqli object
 
@@ -577,6 +620,140 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return false;
         }       
     }
+/*
+-----------------------------------------------------------------------------------------
+                    UPDATING AND DELETING TEST QUESTIONS AND ANSWERS
+-----------------------------------------------------------------------------------------
+*/
+    //Update the question in the database if it exists | Add the question to the database if it does not exist
+    public static function UpdateQuestion($q_data)
+    {
+        global $dbCon;#db connection string
+        $update_query = "";
+        $result_question_id=0;
+        $is_insert_op = false;#true if it is an insert operation
+
+        //Question Exists in the database
+        if($question = DbInfo::TestQuestionExists(1,$q_data["question_index"]))
+        {
+            $result_question_id = $question["question_id"];
+            $update_query = "UPDATE test_questions SET test_id=?,question_text=?,question_type=?,number_of_options=?,marks_attainable=?,question_index=? WHERE question_id=".$question["question_id"];
+        }
+        else//Question does not exist in the database ~ Insert records
+        {
+            $update_query = "INSERT INTO test_questions(test_id,question_text,question_type,number_of_options,marks_attainable,question_index) VALUES (?,?,?,?,?,?)";
+            $is_insert_op = true;
+        }
+
+        //Try preparing the query
+        if($update_stmt = $dbCon->prepare($update_query))
+        {
+            $update_stmt->bind_param("issiii",$q_data["test_id"],$q_data["question_text"],$q_data["question_type"],$q_data["no_of_choices"],$q_data["marks_attainable"],$q_data["question_index"]);
+
+            //If the query successfully executes
+            if($update_stmt->execute())
+            {
+                //If it was an insert operation, then get the id of the last inserted value
+                if($is_insert_op)
+                {
+                    $result_question_id = $update_stmt->insert_id;
+                }
+                echo "success updating the question";
+                #Run update answers here
+                echo "<br>Question ID : ".$result_question_id;
+                return self::UpdateAnswers($result_question_id,$q_data["answers"]);#update the answers;
+            }
+            else #failed to execute the query
+            {
+                return false;
+            }
+        }
+        else #failed to prepare the query
+        {
+            return null;
+        }
+    }
+
+    //Update the answer in the database if it exists | Add the question to the database if it does not exist
+    public static function UpdateAnswers($q_id,$answers_data)
+    {
+        global $dbCon; #db connection string
+        $update_query = "";#the query that is used to update/insert records into the database. By default, blank
+
+        foreach($answers_data as $ans_data)
+        {
+            #if the answer already exists in the database
+            if($ans_found = DbInfo::QuestionAnswerExists($q_id,$ans_data["answer_index"]))#$ans_found is available incase we need it later ~ if not - to be deleted
+            {
+                $update_query = "UPDATE test_answers SET question_id=?,answer_text=?,right_answer=?,marks_attainable=?,answer_index=? WHERE question_id=$q_id AND answer_index=".$ans_data["answer_index"];
+            }
+            else#If the answer does not exist in the database
+            {
+                $update_query = "INSERT INTO test_answers(question_id,answer_text,right_answer,marks_attainable,answer_index) VALUES(?,?,?,?,?)";
+            }
+
+            //Attempt to prepare the query
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $ans_data["answer_index"] = (int)$ans_data["answer_index"];
+                $update_stmt->bind_param("isiii",$q_id,$ans_data["answer_text"],$ans_data["right_answer"],$ans_data["marks_attainable"],$ans_data["answer_index"]);
+               // echo "<br>Answer index:".$ans_data["answer_index"];
+
+                if($update_stmt->execute())
+                {
+                    echo "<p>Success updating the answer</p>";
+                }
+                else #failed to execute the query
+                {
+                    echo "<p>Failed to execute the update answer query</p>";
+                }
+            }
+            else #failed to prepare the query
+            {
+                echo "<p>Failed to prepare the update answer query</p>";
+            }
+        }
+    }
+
+        //Delete an answer from the database
+        public static function DeleteQuestionAnswer($q_index,$answer_index)
+        {
+            global $dbCon;
+            $delete_query = "DELETE FROM test_answers WHERE question_id=? AND answer_index=?";
+
+            if($delete_stmt = $dbCon->prepare($delete_query))
+            {
+                $delete_stmt->bind_param("ii",$q_index,$answer_index);
+                if($delete_stmt->execute())
+                {
+                    echo "<br>Successfully removed answer";
+                }
+                else
+                {
+                    echo "<br><b>Failed to remove answer.</b><br> Remove query failed to execute";
+                }
+            }
+            else
+            {
+                echo "<br><b>Error :</b> Failed to prepare the delete answer query";
+                return null;
+            }
+        }
+
+        //Get the total number of marks used
+        public static function GetMarksUsed($test,$question_index)
+        {
+            if($questions = DbInfo::GetTestQuestions($test["test_id"]))
+            {
+                $marks_allocated = 0;
+                foreach($questions as $question)
+                {
+                     $marks_allocated += $question["marks_attainable"];
+                }
+                return $marks_allocated;
+            }
+            return false;
+        }
 
 };#END OF CLASS
 
@@ -588,7 +765,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
 if(isset($_POST['action'])) {
     
-    $dbhandler = new DbHandler();
+    sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
     
     switch($_POST['action']) {
         case 'UpdateClassroomInfo':
@@ -611,7 +788,7 @@ if(isset($_POST['action'])) {
                 
             }
             
-            $result = $dbhandler::UpdateClassroomInfo($args['class_id'],$args['class_name'],$args['stream_id'],$args['subject_id'],$args['student_ids'],$args['classes']);
+            $result = DbHandler::UpdateClassroomInfo($args['class_id'],$args['class_name'],$args['stream_id'],$args['subject_id'],$args['student_ids'],$args['classes']);
             
             echo $result;
             
@@ -619,7 +796,7 @@ if(isset($_POST['action'])) {
         case 'RemoveStudent':
             
             
-            //dddd
+            //Remove a student
             break;
         case 'DeleteClassroom':
           
@@ -627,7 +804,7 @@ if(isset($_POST['action'])) {
             
             if(isset($class_id)) {
                 
-                $result = $dbhandler::DeleteClassroom($class_id);
+                $result = DbHandler::DeleteClassroom($class_id);
             
                 echo $result;
                 
@@ -635,7 +812,32 @@ if(isset($_POST['action'])) {
             
             //dddd
             break;
+        //Create a Test
+        case 'CreateTest':
+            $test_data = $_POST["test_data"];
+            echo DbHandler::CreateTest($test_data);
+        break;
+        //Delete question answer
+        case 'DeleteQuestionAnswer':
+            $answers_data = $_POST["answers_data"];
+            foreach($answers_data as $ans_data)
+            {
+                DbHandler::DeleteQuestionAnswer($ans_data["question_index"],$ans_data["answer_index"]);
+            }
         
+        break;
+
+        //Update a question in the test
+        case 'UpdateTestQuestion':
+
+            //~Computational delay to prevent bots from spamming and DDOS
+            //sleep(200);
+            $q_data = $_POST["q_data"];
+            DbHandler::UpdateQuestion($q_data);
+
+            #once this is done redirect the user to the redirect page as soon as the data is updated
+        break;
+
         default:
             return null;
             break;
