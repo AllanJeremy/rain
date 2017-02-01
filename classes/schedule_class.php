@@ -6,7 +6,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 #Functions used by the schedule
 interface ScheduleFunctions
 {
-    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date);#create a schedule
+    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date,$guid_id);#create a schedule
     public static function MarkAttendedSchedule($schedule_id,$teacher_id);#mark a schedule as attended
     public static function UnmarkAttendedSchedule($schedule_id,$teacher_id);#unmark attended schedule
 
@@ -52,15 +52,15 @@ class Schedule implements ScheduleFunctions
     }
     
     //Create a Schedule
-    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date)
+    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date,$guid_id)
     {
         global $dbCon;
 
-        $insert_query = "INSERT INTO schedules(schedule_title,schedule_description,teacher_id,class_id,due_date) VALUES(?,?,?,?,?)";
+        $insert_query = "INSERT INTO schedules(schedule_title,schedule_description,teacher_id,class_id,due_date,guid_id) VALUES(?,?,?,?,?,?)";
 
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            $insert_stmt->bind_param("ssiis",$schedule_title,$schedule_description,$teacher_id,$class_id,$due_date);
+            $insert_stmt->bind_param("ssiiss",$schedule_title,$schedule_description,$teacher_id,$class_id,$due_date,$guid_id);
 
             if($insert_stmt->execute())
             {
@@ -68,7 +68,7 @@ class Schedule implements ScheduleFunctions
             }
             else
             {
-                return false;#failed to execute query
+                return $dbCon->error;#failed to execute query
             }
         }
         else
@@ -95,10 +95,11 @@ if(isset($_POST['action'])) {
                 'schedule_description' => $_POST['scheduledescription'],
                 'teacher_id' => $_SESSION['admin_acc_id'],
                 'class_id' => $_POST['scheduleclassroom'],
-                'due_date' => $_POST['duedate']
+                'due_date' => $_POST['duedate'],
+                'guid_id' => $_POST['guidid']
             );
              
-            $result = Schedule::CreateSchedule($args['schedule_title'], $args['schedule_description'], $args['teacher_id'], $args['class_id'], $args['due_date']);
+            $result = Schedule::CreateSchedule($args['schedule_title'], $args['schedule_description'], $args['teacher_id'], $args['class_id'], $args['due_date'], $args['guid_id']);
             
             echo $result;
             

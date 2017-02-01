@@ -12,8 +12,7 @@ $(function (z) {
     /**************
     TABS SWITCH FUNCTIONALITIES
     ************/
-    
-    
+
     /********** ON DOCUMENT LOAD EVENT **********/
     
     //hide all tabs in <main> then remove 'hide' class on the active bar

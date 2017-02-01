@@ -98,6 +98,8 @@ var ScheduleEvents = function () {
             var scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val();
             var scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val();
             var scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val();
+            var scheduleguidid = Materialize.guid();
+
             scheduleobjectives.each(function (i, e) {
                
                 console.log(e.innerHTML);
@@ -115,6 +117,7 @@ var ScheduleEvents = function () {
             console.log(scheduledescription);
             console.log(scheduledate);
             console.log(scheduletime);
+            console.log(scheduleguidid);
             
             var scheduleformatteddatetime = scheduledate + ' ' + scheduletime;
             
@@ -125,43 +128,73 @@ var ScheduleEvents = function () {
                     "scheduletitle" : scheduletitle,
                     "scheduledescription" : scheduledescription,
                     "scheduleclassroom" : scheduleclassroom,
-                    "duedate" : scheduleformatteddatetime
+                    "duedate" : scheduleformatteddatetime,
+                    "guidid" : scheduleguidid
                 }, function (result) {
                    
                     console.log(result);
+                    console.log(typeof result);
                     
-                    if(typeof result === number) {
+                    if(typeof result === 'number') {
                         
-                        $('#scheduleCreateFormContainer input#schedule_title').val('');
-                        $('#scheduleCreateFormContainer select#schedule_classroom').val('');
-                        $('#scheduleCreateFormContainer #descriptionTextarea').val('');
-                        $('#scheduleCreateFormContainer ul#objectivesList').children('li').remove();
-                        $('#scheduleCreateFormContainer input#scheduleDate').val('');
-                        $('#scheduleCreateFormContainer input#scheduleTime').val('');
-                        $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val('');
-                        $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val('');
-                        
-                        $('#scheduleCreateFormContainer').slideUp('600', function () {
-                            
-                            $('#createScheduleCont').removeClass('z-depth-1');
-                            $('#createScheduleCont').removeClass('blue');
-                            $('#createScheduleCont').removeClass('lighten-5');
-                            
-                            $('a#closeScheduleForm').addClass('hide');
-                            $('a#openScheduleForm').removeClass('hide');
+                        $.get("handlers/db_info.php", {"action": "ScheduleExistsByGuid", "guid_id" : scheduleguidid }, function (data) {
 
-                        });
-                        
-                        //Prepend the new schedule to Pending schedule list
-                        
-                        var scheduleData = {
-                            "schedulename": scheduletitle,
-                            "scheduledescription": scheduledescription,
-                            "scheduledatetime": scheduledatetime,
-                            "scheduleId": scheduleid
-                        };
-                        
-                        
+                            $('#scheduleCreateFormContainer input#schedule_title').val('');
+                            $('#scheduleCreateFormContainer select#schedule_classroom').val('');
+                            $('#scheduleCreateFormContainer #descriptionTextarea').val('');
+                            $('#scheduleCreateFormContainer ul#objectivesList').children('li').remove();
+                            $('#scheduleCreateFormContainer input#scheduleDate').val('');
+                            $('#scheduleCreateFormContainer input#scheduleTime').val('');
+                            $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val('');
+                            $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val('');
+
+                            $('#scheduleCreateFormContainer').slideUp('600', function () {
+
+                                $('#createScheduleCont').removeClass('z-depth-1');
+                                $('#createScheduleCont').removeClass('blue');
+                                $('#createScheduleCont').removeClass('lighten-5');
+
+                                $('a#closeScheduleForm').addClass('hide');
+                                $('a#openScheduleForm').removeClass('hide');
+
+                            });
+                            
+                            //Prepend the new schedule to Pending schedule list
+                            
+                            var pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').find('tbody:first');
+
+                            var scheduledata = {
+                                "schedulename": data.schedule_title,
+                                "scheduledescription": data.schedule_description,
+                                "scheduleclass": $('#scheduleCreateFormContainer #extraClassroomInfo p#ClassroomSubject').find('span').text(),
+                                "scheduledatetime": scheduledatetime,
+                                "scheduleid": data.schedule_id
+                            };
+
+                            console.log(scheduledata.scheduleclass);
+
+                            console.log(scheduledata);
+
+                            var scheduleData = Lists_Templates.scheduleList(scheduledata);
+
+                            console.log(scheduleData);
+                            console.log($('#schedulesTab table#pendingScheduleTable > tbody').length);
+                            console.log(pendingScheduleHook.children('tr').length);
+
+//                            $(scheduleData).prependTo("#schedulesTab table#pendingScheduleTable > tbody");
+                            pendingScheduleHook.prepend(scheduleData);
+
+                            var paginationthrough = $('#schedulesTab table#pendingScheduleTable').attr('data-paginate-through');
+
+                            console.log(paginationthrough);
+
+                            if (pendingScheduleHook.children('tr').length > paginationthrough) {
+
+                                updatePagination('#schedulesTab table#pendingScheduleTable > tbody:first', '#pendingScheduleTable');
+
+                            }
+
+                        }, 'json');
                         
                     } else {
                         
@@ -169,16 +202,19 @@ var ScheduleEvents = function () {
                         
                     }
                     
-                }, 'text');
-                
+                }, 'json');
                 
             }
 
         });
         
     };
-        
-    var editSchedule = function () {
+
+    var updatePagination = function (str1, str2) {
+
+        var hook = str1,
+            tableid = str2;
+
         
     };
     
@@ -213,7 +249,46 @@ var ScheduleEvents = function () {
         });
         
     };
+
+    var addObjectiveFromSubtopics = function () {
+        console.log('Adding objectives from list of topics init');
+
+        var teacherClassroomids = $('#scheduleCreateFormContainer select#schedule_classroom').children('option:not(:disabled)').map(function () {
+            return this.value;
+        }).get();
+
+        var target = '';
         
+        teacherClassroomids.forEach(function (i) {
+
+            target += '#scheduleCreateFormContainer select#schedule_classroom_' + i + ', ';
+
+        });
+
+        console.log(target);
+
+        $('main').on('change', target + '#scheduleCreateFormContainer select#schedule_classroom_default', function (e) {
+            e.preventDefault();
+            console.log('clicked!!!');
+            //Know which select is active;
+
+            var currentActiveSelect = $('#scheduleCreateFormContainer #selectContainerHook').children('.select-wrapper:not(.hide)').find('select:not(.hide) option:selected:not(:disabled)').text();
+
+            var newObjectiveData = {
+                "text": currentActiveSelect,
+                "removable": true,
+                "isSubtopic" : true
+            };
+
+            newObjectiveData = Lists_Templates.objective(newObjectiveData);
+
+            $('#scheduleCreateFormContainer ul#objectivesList').append(newObjectiveData);
+
+            console.log(currentActiveSelect);
+
+        });
+    };
+
     var removeObjective = function () {
         
         console.log('Removing Objectives function init');
@@ -245,36 +320,48 @@ var ScheduleEvents = function () {
             console.log(streamHook.length);
             
             //gets data about the classroom
-            $.get('handlers/db_info.php', {"action": "ClassroomExists", "class_id": selectedteacherClassroomid}, function (data) {
+            if(selectedteacherClassroomid != 'null') {
                 
-                subjectid = data.subject_id;
-                streamid = data.stream_id;
-                
-                //gets data about the subject of the selected classroom
-                $.get('handlers/db_info.php', {"action": "GetSubjectById", "subject_id": subjectid}, function (subjectdata) {
-                    
-                    var subjectName = subjectdata.name;
-                    
-                    subjectHook.find('span').remove();
-                    subjectHook.append('<span>' + subjectName + '</span>');
-                    
+                $.get('handlers/db_info.php', {"action": "ClassroomExists", "class_id": selectedteacherClassroomid}, function (data) {
+
+                    subjectid = data.subject_id;
+                    streamid = data.stream_id;
+
+                    //gets data about the subject of the selected classroom
+                    $.get('handlers/db_info.php', {"action": "GetSubjectById", "subject_id": subjectid}, function (subjectdata) {
+
+                        var subjectName = subjectdata.name;
+
+                        subjectHook.find('span').remove();
+                        subjectHook.append('<span>' + subjectName + '</span>');
+
+                    }, 'json');
+
+                    //gets data about the stream of the selected classroom
+                    $.get('handlers/db_info.php', {"action": "GetStreamById", "stream_id": streamid}, function (streamdata) {
+
+                        var streamName = streamdata.name;
+                        console.log(streamName);
+
+                        streamHook.find('span').remove();
+                        streamHook.append('<span>' + streamName + '</span>');
+
+                    }, 'json');
+
+                    console.log(selectedteacherClassroomid);
+
                 }, 'json');
 
-                //gets data about the stream of the selected classroom
-                $.get('handlers/db_info.php', {"action": "GetStreamById", "stream_id": streamid}, function (streamdata) {
-                    
-                    var streamName = streamdata.name;
-                    console.log(streamName);
-                    
-                    streamHook.find('span').remove();
-                    streamHook.append('<span>' + streamName + '</span>');
-                    
-                }, 'json');
+            } else {
 
-                console.log(selectedteacherClassroomid);
-            
-            }, 'json');
-        
+                subjectHook.find('span').remove();
+                subjectHook.append('<span> </span>');
+
+                streamHook.find('span').remove();
+                streamHook.append('<span> </span>');
+
+            }
+
         });
     
     };
@@ -303,43 +390,8 @@ var ScheduleEvents = function () {
         });
     };
     
-    var addObjectiveFromSubtopics = function () {
-        console.log('Adding objectives from list of topics init');
-        
-        var teacherClassroomids = $('#scheduleCreateFormContainer select#schedule_classroom').children('option:not(:disabled)').map(function () {
-            return this.value;
-        }).get();
-        
-        var target = '';
-        
-        teacherClassroomids.forEach(function (i) {
-            
-            target += '#scheduleCreateFormContainer select#schedule_classroom_' + i + ', ';
-            
-        });
-        
-        console.log(target);
-        
-        $('main').on('change', target + '#scheduleCreateFormContainer select#schedule_classroom_default', function (e) {
-            e.preventDefault();
-            console.log('clicked!!!');
-            //Know which select is active;
-            
-            var currentActiveSelect = $('#scheduleCreateFormContainer #selectContainerHook').children('.select-wrapper:not(.hide)').find('select:not(.hide) option:selected:not(:disabled)').text();
-            
-            var newObjectiveData = {
-                "text": currentActiveSelect,
-                "removable": true,
-                "isSubtopic" : true
-            };
-            
-            newObjectiveData = Lists_Templates.objective(newObjectiveData);
-            
-            $('#scheduleCreateFormContainer ul#objectivesList').append(newObjectiveData);
-            
-            console.log(currentActiveSelect);
-            
-        });
+    var editSchedule = function () {
+
     };
     
     var deleteSchedule = function () {

@@ -574,6 +574,12 @@ class DbInfo
         return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
     }
     
+    //Checks if the schedule with the given guid_id exists, returns true on success | false if no records found | null if query couldn't execute
+    public static function ScheduleExistsByGuid($guid_id)
+    {
+        return self::SinglePropertyExists("schedules","guid_id",$guid_id,"s");
+    }
+
     //Checks if the test with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function TestExists($test_id)
     {
@@ -837,6 +843,135 @@ class DbInfo
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
     //Reverses a mysqli_result and returns an array with the values reversed
+    public static function Paginate($listdata,$paginationtype, $numberperrows, $active) {
+
+        if(count($listdata) > 11) {
+
+            $numberOfTbody = ceil((count($listdata) / $numberperrows));
+
+            $tbodyNumber = 1;
+
+            while (list($key, $val) = each($listdata)) {
+
+                if($paginationtype == 'table') {
+
+                    if (($key - 1) % $numberperrows == 0 || $key == 0) {
+
+                        if(($key - 1) != 0) {
+
+                            if ($tbodyNumber == $active ) {
+
+                                echo '<tbody class="active" data-tbody-number="'.$tbodyNumber.'">';
+                            } else {
+
+                                echo '<tbody class="hide" data-tbody-number="'.$tbodyNumber.'">';
+                            }
+                        }
+                    }
+
+                    echo '<tr data-schedule-id="'.$val['schedule_id'].'">';
+                    echo '<td>'.$val['schedule_title'].'</td>';
+                    echo '<td>'.$val['schedule_description'].'</td>';
+                    echo '<td class="right-align" >'.$val['due_date'].'</td>';
+                    echo '<td class="right-align schedule-action" width="120">';
+                    echo '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
+                    echo '<a class="btn-icon" id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                    echo '</td>';
+                    echo '</tr>';
+
+                    if ($key % $numberperrows == 0 && $key != 0) {
+
+                        $tbodyNumber++;
+
+                        echo '</tbody>';
+                    }
+                }
+            }
+        } else {
+
+            echo '<tbody class="active" data-tbody-number="1">';
+
+            foreach($listdata as $list) {
+
+                echo '<tr data-schedule-id="'.$list['schedule_id'].'">';
+                echo '<td>'.$list['schedule_title'].'</td>';
+                echo '<td>'.$list['schedule_description'].'</td>';
+                echo '<td class="right-align" >'.$list['due_date'].'</td>';
+                echo '<td class="right-align schedule-action" width="120">';
+                echo '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
+                echo '<a class="btn-icon" id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                echo '</td>';
+                echo '</tr>';
+
+            }
+
+            echo '</tbody>';
+
+        }
+    }
+
+    public static function PaginateControl($active, $position, $numberOfTbody) {
+
+        echo '<ul class="pagination '.$position.'">';
+
+        if ($numberOfTbody > 1) {
+            //loop
+
+
+            for($v= 1; $v <= $numberOfTbody; $v++ ) {
+
+                if ($v == 1 && $active == 1) {
+                    #start
+
+                    echo '<li class="disabled"><a id="goToLeftPage" href="#!"><i class="material-icons">chevron_left</i></a></li>';
+
+                } elseif ($v == 1 && $active != 1) {
+
+                    echo '<li ><a id="goToLeftPage" href="#!"><i class="material-icons">chevron_left</i></a></li>';
+
+                }
+
+                if ($v == $active) {
+                    #active-page
+
+                    echo '<li class="active"><a href="#!">'.$v.'</a></li>';
+
+                } else {
+
+                    echo '<li class="waves-effect"><a href="#!">'.$v.'</a></li>';
+
+                }
+
+                if ($v == $numberOfTbody && $active == $numberOfTbody) {
+                    #end
+
+                    echo '<li class="disabled"><a id="goToRightPage" href="#!"><i class="material-icons">chevron_right</i></a></li>';
+
+                } elseif ($v == $numberOfTbody && $active != $numberOfTbody) {
+
+                    echo '<li ><a id="goToRightPage" href="#!"><i class="material-icons">chevron_right</i></a></li>';
+
+                }
+
+            }
+
+
+
+        } elseif($numberOfTbody == 1 && $active == 1) {
+
+            echo '<li class="disabled"><a id="goToLeftPage" href="#!"><i class="material-icons">chevron_left</i></a></li>';
+            echo '<li class="active"><a href="#!">'.$numberOfTbody.'</a></li>';
+            echo '<li class="disabled"><a id="goToRightPage" href="#!"><i class="material-icons">chevron_right</i></a></li>';
+            echo '</ul>';
+
+        } else {
+
+            echo '<li class="waves-effect"><a href="#!">'.$numberOfTbody.'</a></li>';
+            echo '</ul>';
+
+        }
+    }
+
     public static function ReverseResult($mysqli_result)
     {
         $result_array = array();
@@ -1296,6 +1431,35 @@ if(isset($_GET['action'])) {
 
             echo json_encode($newResult);
             
+            break;
+        case 'ScheduleExistsByGuid':
+
+            $result = DbInfo::ScheduleExistsByGuid($_GET['guid_id']);
+
+            $num = 0;
+
+            //var_dump($result);
+
+            if($result != null) {
+
+                foreach ($result as $row) {
+
+
+                    echo json_encode($row);
+
+                    //echo $num;
+
+                }
+
+            } else {
+
+                $result = 'null';
+
+                echo json_encode($result);
+                //echo 'null';
+
+            }
+
             break;
         default:
             return null;

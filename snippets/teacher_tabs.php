@@ -415,7 +415,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                         </div>
                                         <div class="input-field col m5 s10 push-s1 push-m1">
                                             <select id="schedule_classroom">
-                                                <option value="" disabled selected>Classroom</option>
+                                                <option value="null" disabled selected>Classroom</option>
                                                 <?php
                                                 
                                                     $teacher_acc_id = $_SESSION['admin_acc_id'];
@@ -428,7 +428,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                                             "id" => $classroom['class_id'],
                                                             "name" => $classroom['class_name']
                                                         );
-                                                        var_dump($classroom);
+
                                                         //print_r($newResult);
                                                         echo '<option value="'.$newResult["id"].'">'.$newResult["name"].'</option>';
                                                         
@@ -563,56 +563,55 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     </div>
                     <div class="divider"></div>
                     <br>
-                    <table class="bordered responsive-table" id="pendingScheduleTable">
-                        <thead class="hide">
+                    <table class="bordered responsive-table" id="pendingScheduleTable" data-paginate-through="6">
+                        <thead>
                             <tr>
-                                <th data-field="id">Name</th>
-                                <th data-field="name">Item Name</th>
-                                <th data-field="price">Item Price</th>
-                                <th data-field="price">Item Price</th>
+                                <th data-field="name">Schedule title</th>
+                                <th data-field="description">schedule description</th>
+                                <th data-field="due" class="right-align">Due date</th>
+                                <th data-field="action" class="hide">Action</th>
                             </tr>
                         </thead>
+                            <?php
 
-                        <tbody>
-                            <tr>
-                                <td>Alvin</td>
-                                <td>Eclair</td>
-                                <td class="right-align">Wednesday 4th Jan 2:40 PM</td>
-                                <td class="right-align schedule-action" width="120">
-                                    <a class="btn-icon" id="attendedSchedule101" href="#!"><i class="material-icons">done</i></a>
-                                    <a class="btn-icon"><i class="material-icons">expand_more</i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Alan</td>
-                                <td>Jellybean</td>
-                                <td class="right-align">Tomorrow 2:40 PM</td>
-                                <td class="right-align schedule-action" width="120">
-                                    <a class="btn-icon" id="attendedSchedule102" href="#!"><i class="material-icons">done</i></a>
-                                    <a class="btn-icon"><i class="material-icons">expand_more</i></a>
-                                </td>
-                            </tr>
-                            <tr data-schedule-id="103">
-                                <td>Lollipop</td>
-                                <td>New class</td>
-                                <td class="right-align">Tomorrow 2:40 PM</td>
-                                <td class="right-align schedule-action" width="120">
-                                    <a class="btn-icon" id="attendedSchedule103" href="#!"><i class="material-icons">done</i></a>
-                                    <a class="btn-icon"><i class="material-icons">expand_more</i></a>
-                                </td>
-                            </tr>
-                        </tbody>
+                            $teacher_acc_id = $_SESSION['admin_acc_id'];
+
+                            $teacherSchedules = DBInfo::GetSpecificTeacherSchedules($teacher_acc_id);
+//                                var_dump($teacherSchedules=>num_rows);
+
+                            $i = 0;
+
+                            foreach($teacherSchedules as $pendingschedules) {
+
+                                if($pendingschedules['attended_schedule'] == 0) {
+
+                                    $pendingSchedulesData[$i] = $pendingschedules;
+                                }
+
+                                $i++;
+                            }
+
+                            $listdata = $pendingSchedulesData;
+                            $paginationtype = 'table';
+                            $numberperrows = 6;
+                            $active = 1;
+
+                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active);
+
+                            ?>
                     </table>
+                    <div class="row">
+                    <?php
                     
-                    <ul class="pagination center">
-                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                        <li class="active"><a href="#!">1</a></li>
-                        <li class="waves-effect"><a href="#!">2</a></li>
-                        <li class="waves-effect"><a href="#!">3</a></li>
-                        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                    </ul>
-                    <br>
-                    <br>
+                    $numberOfTbody = ceil((count($listdata) / $numberperrows));
+
+                    $position = 'center';
+
+                    DBInfo::PaginateControl($active, $position, $numberOfTbody);
+
+                    ?>
+
+                    </div>
                     <div class="row no-bottom-margin">
                         <div class="col s5">
                             <p class="grey-text">Schedules attended</p>
@@ -628,6 +627,52 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     </div>
                     <div class="divider"></div>
                     <br>
+                    <table class="bordered responsive-table" id="attendedScheduleTable" data-paginate-through="6">
+                        <thead >
+                            <tr>
+                                <th data-field="name">Schedule title</th>
+                                <th data-field="description">schedule description</th>
+                                <th data-field="due" class="right-align">Due date</th>
+                                <th data-field="action" class="hide">Action</th>
+                            </tr>
+                        </thead>
+                            <?php
+
+                            $i = 0;
+
+                            foreach($teacherSchedules as $attendedschedules) {
+
+                                if($attendedschedules['attended_schedule'] == 1) {
+
+                                    $attendedSchedulesData[$i] = $attendedschedules;
+                                }
+
+                                $i++;
+                            }
+
+                            $listdata = $attendedSchedulesData;
+                            $paginationtype = 'table';
+                            $numberperrows = 6;
+                            $active = 1;
+
+                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active);
+
+                            //var_dump($teacherSchedules);
+
+                            ?>
+                    </table>
+                    <div class="row">
+                    <?php
+
+                    $numberOfTbody = ceil((count($listdata) / $numberperrows));
+
+                    $position = 'center';
+
+                    DBInfo::PaginateControl($active, $position, $numberOfTbody);
+
+                    ?>
+
+                    </div>
                 </div>
 
                 <!--TESTS SECTION-->
@@ -636,8 +681,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 ?>
                 <!--Create a test-->
                 <div class="row main-tab" id="createTestTab">
-                    Create a test tab
-                </div>
+
                     <div class="col s12">
                         <p class="grey-text">Create test</p>
                         <div class="divider"></div>
@@ -702,6 +746,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                         </form>
                         </div>
                     </div>
+                </div>
 
                 <!--Test results-->
                 <div class="row main-tab" id="viewStudentsTestResultTab">
