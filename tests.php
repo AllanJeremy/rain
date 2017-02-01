@@ -189,8 +189,6 @@
                         console.log("Unknown question type");
                 }
                 init_marks_val = question_marks;
-                marks_alloc += parseInt(question_marks);
-                $("#txt_marks_allocated").text(marks_alloc);
 
                 UpdateMarksClasses(marks_alloc,max_grade)
             }

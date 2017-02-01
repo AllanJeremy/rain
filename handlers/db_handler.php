@@ -740,6 +740,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             }
         }
 
+        //Get the total number of marks used
         public static function GetMarksUsed($test,$question_index)
         {
             if($questions = DbInfo::GetTestQuestions($test["test_id"]))
@@ -747,11 +748,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 $marks_allocated = 0;
                 foreach($questions as $question)
                 {
-                    //If the question being looped through is not the current question, add the marks attainable to the total marks allocated
-                    if(!($question["question_index"]==$question_index))
-                    {
-                        $marks_allocated += $question["marks_attainable"];
-                    }
+                     $marks_allocated += $question["marks_attainable"]; 
                 }
                 return $marks_allocated;
             }
