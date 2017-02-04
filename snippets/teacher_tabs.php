@@ -681,14 +681,9 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 ?>
                 <!--Create a test-->
                 <div class="row main-tab" id="createTestTab">
-<<<<<<< HEAD
 
-                    <div class="col s12">
-                        <p class="grey-text">Create test</p>
-=======
                     <div class="col s12 grey-text">
                         <p class="grey-text">Create Test. Once a test is created you will be redirected to the test editing page page</p>
->>>>>>> origin/master
                         <div class="divider"></div>
                     <br>
                     </div>
