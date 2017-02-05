@@ -970,7 +970,31 @@ class DbInfo
         
         if($select_stmt = $dbCon->prepare($select_query))
         {
+            //Bind params
+            $select_stmt->bind_param("isii",$taker_id,$taker_type,$test_id,$question_index);
 
+            //Try executing the query
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    foreach($result as $test_que_submission)
+                    {
+                        return $test_que_submission;
+                    }
+                }
+                else #no test question submissions found
+                {
+                    echo "<p>No test submissions matching those criteria found</p>";
+                    return false;
+                }
+            }
+            else #failed to execute query
+            {
+                echo "Database error : ".$dbCon->error;
+                return false;
+            }
         }
         else #failed to prepare query
         {

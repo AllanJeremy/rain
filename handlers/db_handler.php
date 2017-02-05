@@ -764,7 +764,64 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     public static function UpdateTestQuestionSubmission($q_data)
     {
         global $dbCon;#db connection string
-        
+
+        //Returns user info if there is a logged in user ~ returns false if no user is logged in
+        if($user_info = MySessionHandler::GetLoggedUserInfo())
+        {
+            $sub_info = array(
+                "taker_id"=>$user_info["user_id"],
+                "taker_type"=>$user_info["account_type"],
+                "test_id"=>$q_data["test_id"],
+                "question_index"=>$q_data["question_index"],
+                "answers_provided"=>"",#to be updated below
+                "skipped"=>$q_data["skipped"]
+            );
+
+            //Add answers provided into a string of concatenated comma separated values
+            foreach($q_data["answers_provided"] as $answer_provided)
+            {
+                $sub_info["answers_provided"] .= $answer_provided.",";#concatenate the answer_index
+            }
+            
+            //Query used to update/insert records into the database
+            $update_query = "";
+            
+            if($submission_found = DbInfo::TestQueSubmissionExists($sub_info["taker_id"],$sub_info["taker_type"],$sub_info["test_id"],$sub_info["question_index"]))
+            {
+                $update_query = "UPDATE test_submissions SET taker_id=?,taker_type=?,test_id=?,question_index=?,answers_provided=?,skipped=? WHERE submission_id=".$submission_found["submission_id"];
+            }
+            else
+            {
+                $update_query = "INSERT INTO test_submissions(taker_id,taker_type,test_id,question_index,answers_provided,skipped) VALUES(?,?,?,?,?,?)";
+            }
+
+            //Attempt to prepare the query
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("isiisi",$sub_info["taker_id"],$sub_info["taker_type"],$sub_info["test_id"],$sub_info["question_index"],$sub_info["answers_provided"],$sub_info["skipped"]);
+
+                if($update_stmt->execute())
+                {
+                    echo "<p>Successfully updated question submission</p>";
+                    return true;
+                }
+                else
+                {
+                    echo "<p>Failed to <b>run</b> query.<br>Error : ".$dbCon->error."</p>";
+                    return false;
+                }
+            }
+            else #failed to prepare query
+            {
+                echo "<p>Failed to <b>prepare</b> query.<br>Error : ".$dbCon->error."</p>";
+                return null;
+            }
+        }
+        else
+        {
+            echo "<p>No logged in user. Failed to update Test Question Submissions</p>";
+            return false;
+        }
     }
 
 };#END OF CLASS
@@ -841,7 +898,6 @@ if(isset($_POST['action'])) {
 
         //Update a question in the test
         case 'UpdateTestQuestion':
-
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);
             $q_data = $_POST["q_data"];
@@ -852,7 +908,11 @@ if(isset($_POST['action'])) {
 
         //Update a test submission ~ Add submission info into the database
         case 'UpdateTestSubmission':
-            echo "test submission received";
+            //~Computational delay to prevent bots from spamming and DDOS
+            //sleep(200);
+            $q_data = $_POST["qData"];
+            DbHandler::UpdateTestQuestionSubmission($q_data);
+
         break;
 
         default:
