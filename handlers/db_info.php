@@ -961,6 +961,22 @@ class DbInfo
 
     }
 
+    //Check if a test question submission exists in the database. return it if it exists | false if not and null if query couldn't prepare
+    public static function TestQueSubmissionExists($taker_id,$taker_type,$test_id,$question_index)
+    {
+        global $dbCon;#db connection string
+        
+        $select_query = "SELECT * FROM test_submissions WHERE taker_id=? AND taker_type=? AND test_id=? AND question_index=?";
+        
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+
+        }
+        else #failed to prepare query
+        {
+            return null;
+        }
+    }
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
@@ -1094,6 +1110,7 @@ class DbInfo
         }
     }
 
+    //Reverses the result of a mysqli_result and returns an array in reversed order
     public static function ReverseResult($mysqli_result)
     {
         $result_array = array();

@@ -2,6 +2,7 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php"));#Used to retrieve information from the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Used for password encryption
 
+require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php"));
 
 #HANDLES DATABASE FUNCTIONS THAT INVOLVE UPDATING/DELETING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
@@ -754,6 +755,17 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             }
             return false;
         }
+    /*
+    -----------------------------------------------------------------------------------------
+                                UPDATING TEST QUESTION SUBMISSIONS
+    -----------------------------------------------------------------------------------------
+    */
+    //Update a test question submission if it exists or add a new one if it does not exist;
+    public static function UpdateTestQuestionSubmission($q_data)
+    {
+        global $dbCon;#db connection string
+        
+    }
 
 };#END OF CLASS
 
@@ -842,7 +854,7 @@ if(isset($_POST['action'])) {
         case 'UpdateTestSubmission':
             echo "test submission received";
         break;
-        
+
         default:
             return null;
             break;

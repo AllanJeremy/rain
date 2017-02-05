@@ -183,4 +183,31 @@ class MySessionHandler
         );
     }
 
+/*
+-----------------------------------------------------------------------------------------
+                                    CONVENIENCE
+-----------------------------------------------------------------------------------------
+*/
+    //Get the information of the currently logged user
+    public static function GetLoggedUserInfo()
+    {
+        $user_info = array("user_id"=>"","account_type"=>"");
+
+
+        if(this::AdminIsLoggedIn())
+        {
+            $user_info["user_id"] =  $_SESSION["admin_acc_id"];
+            $user_info["account_type"]=$_SESSION["admin_account_type"];
+        }
+        else if(this::StudentIsLoggedIn())
+        {
+            $user_info["user_id"] = $_SESSION["student_acc_id"];
+            $user_info["account_type"] = "student";        
+        }
+        else
+        {
+            $user_info = false;//No user logged in
+        }
+        return $user_info;
+    }
 }
