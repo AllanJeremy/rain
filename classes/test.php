@@ -115,7 +115,7 @@ class Test
                                 foreach($answers as $answer):
                         ?>
                         <p>
-                            <input name="test_answer" type="<?php echo $input_type?>" id="<?php echo $answer['answer_index']?>" />
+                            <input class="t_test_answer" name="test_answer" type="<?php echo $input_type?>" id="<?php echo $answer['answer_index']?>" />
                             <label for="<?php echo $answer['answer_index']?>"><?php echo $answer["answer_text"]; ?></label>
                         </p>
 

@@ -552,22 +552,41 @@
             //Takers next question button pressed
             $(".taker_next_url").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
+                var answers_provided = ($(".t_test_answer").is(":checked"));//True if answers have been provided
+                
+                //Message displayed when no answer is provided
+                var missing_answer_message = "Please provide at least one answer. Note : Unless you skip this question, you will not be able to come back to it. ";
 
-                //Save question data input
-                var qData = {
-                    "test_id":parseInt($(document).getUrlParam("tid")),
-                    "question_index":parseInt($(document).getUrlParam("q")),
-                    "answers_provided":[],
-                    "skipped":false,
-                };  
+                //Ensure that at least one answer is provided in order to submit data
+                if(answers_provided)
+                {
+                    //Save question data input as json
+                    var qData = {
+                        "test_id":parseInt($(document).getUrlParam("tid")),
+                        "question_index":parseInt($(document).getUrlParam("q")),
+                        "answers_provided":[],
+                        "skipped":($(this).is("#t_skip_que"))
+                    };  
 
-                //Update the values for qData
+                    //Add all provided answers to an array and update the qData
+                    $.each($(".t_test_answer:checked"),function(index,value)
+                    {
+                        qData["answers_provided"].push($(this).attr("id"));
+                    });
+                    console.log(qData);
+                    
+                    //Send the information to the handler
+                    $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(data,status){
+                        console.log("Successfully updated the test submission");
+                        //window.location= (redirect_url);
+                    });
+                }
+                else//No answer was provided for the question
+                {
+                    Materialize.toast(missing_answer_message,5000);
+                }
 
-                //Send the information to the database handler
-                $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(data,status){
-                    console.log("Successfully updated the test submission");
-                });
-                //window.location= (redirect_url);
+                
             });
 
             //When the complete test button is clicked
