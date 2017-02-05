@@ -601,7 +601,8 @@
 
         <script type="text/javascript" src="js/tests-functions.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
-        
+
+        <!--Fullscreen functionality-->
         <script>
         $(document).ready(function() {
             
