@@ -544,6 +544,25 @@
                 //Redirect to the next page
 
             });
+
+            //Takers next question button pressed
+            $(".taker_next_url").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+
+                //Save question data input
+                var qData = {
+                    "test_id":parseInt($(document).getUrlParam("tid")),
+                    "question_index":parseInt($(document).getUrlParam("q")),
+                    "answers_provided":[],
+                    "skipped":false,
+                };  
+
+                $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(status,data){
+                    console.log("Updating submission status : "+status);
+                });
+                window.location= (redirect_url);
+            });
+
             //When the complete test button is clicked
             $("#complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");

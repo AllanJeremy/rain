@@ -136,10 +136,10 @@ class Test
                         ?>
                         <!--Progress buttons-->
                         <div class="col s6 input-field">
-                            <a class="btn-flat btn-skip-question center" type="submit">skip</a>
+                            <a class="btn-flat btn-skip-question center taker_next_url" id="t_skip_que" data-redirect-url="<?php echo $next_que_url;?>">skip</a>
                         </div>
                         <div class="col s6 input-field">
-                            <a class="btn right" id="next_question" href="<?php echo $next_que_url;?>"><span class="hidden-on-small-only">Next Question</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
+                            <a class="btn right taker_next_url" id="t_next_que" data-redirect-url="<?php echo $next_que_url;?>"><span class="hidden-on-small-only">Next Question</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
                         </div>
                         <?php
                             else:
