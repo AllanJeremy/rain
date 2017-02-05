@@ -824,6 +824,20 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         }
     }
 
+    /*
+    -----------------------------------------------------------------------------------------
+                               MARKING TESTS
+    -----------------------------------------------------------------------------------------
+    */
+    //Marks the test and returns an associative array containing the results information
+    public static function MarkTest($test_id,$user_info)
+    {   
+        //Associative array storing results information. This is the same information that is entered into the database and printed on the pdf
+        $results = array("first_name"=>"","last_name"=>"","full_name"=>"","grade"=>"","date_generated"=>"","completion_time"=>"");
+
+        return $results;
+    }
+
 };#END OF CLASS
 
 /*
@@ -836,6 +850,8 @@ if(isset($_POST['action'])) {
     
     sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
     
+    $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
+
     switch($_POST['action']) {
         case 'UpdateClassroomInfo':
             
@@ -879,7 +895,6 @@ if(isset($_POST['action'])) {
                 
             }
             
-            //dddd
             break;
         //Create a Test
         case 'CreateTest':
@@ -913,6 +928,11 @@ if(isset($_POST['action'])) {
             $q_data = $_POST["qData"];
             DbHandler::UpdateTestQuestionSubmission($q_data);
 
+        break;
+
+        //Complete a test ~ Mark the test and return results
+        case 'CompleteTest':
+        
         break;
 
         default:
