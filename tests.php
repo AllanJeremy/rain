@@ -194,7 +194,11 @@
             }
 
             //Get marks attainable once the page has loaded
-            InitMarksAttainable();
+            if(parseInt($(document).getUrlParam("edit"))===1)
+            {
+                InitMarksAttainable();
+            }
+            
             //function to hide and show content
             function ToggleQuestionType(q_id)
             {
@@ -557,10 +561,13 @@
                     "skipped":false,
                 };  
 
-                $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(status,data){
-                    console.log("Updating submission status : "+status);
+                //Update the values for qData
+
+                //Send the information to the database handler
+                $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(data,status){
+                    console.log("Successfully updated the test submission");
                 });
-                window.location= (redirect_url);
+                //window.location= (redirect_url);
             });
 
             //When the complete test button is clicked
@@ -593,10 +600,7 @@
         </script>
 
         <script type="text/javascript" src="js/tests-functions.js"></script>
-        
         <script type="text/javascript" src="js/materialize.js"></script>
-        <script type="text/javascript" src="js/dashboard.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
         
         <script>
         $(document).ready(function() {

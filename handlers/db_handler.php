@@ -838,6 +838,11 @@ if(isset($_POST['action'])) {
             #once this is done redirect the user to the redirect page as soon as the data is updated
         break;
 
+        //Update a test submission ~ Add submission info into the database
+        case 'UpdateTestSubmission':
+            echo "test submission received";
+        break;
+        
         default:
             return null;
             break;
