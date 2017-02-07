@@ -592,7 +592,7 @@
             //When the complete test button is clicked
             $("#complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
-                //Do everything that needs to be done first here
+                
                 question_data = GetQuestionData(redirect_url);
 
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
@@ -601,6 +601,39 @@
 
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);
+            });
+
+            //Takers complete test handler
+            $("#t_complete_test").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
+                
+                //Marking the last question
+                var answers_provided = ($(".t_test_answer").is(":checked"));//True if answers have been provided
+
+                //Ensure that at least one answer is provided in order to submit data
+                if(answers_provided)
+                {
+                    //Save question data input as json
+                    var qData = {
+                        "test_id":parseInt($(document).getUrlParam("tid")),
+                        "question_index":parseInt($(document).getUrlParam("q")),
+                        "answers_provided":[],
+                        "skipped":false //Last question cannot be skipped
+                    };  
+
+                    //Add all provided answers to an array and update the qData
+                    $.each($(".t_test_answer:checked"),function(index,value)
+                    {
+                        qData["answers_provided"].push($(this).attr("id"));
+                    });
+                    $.post("handlers/db_handler.php",{"action":"CompleteTakingTest",qData},function(data,status){
+                        console.log("Completed test");
+                    });
+                }
+
+                //Redirect to the completed test page
+                //window.location.replace(redirect_url);
             });
 
             //When the marks attainable change

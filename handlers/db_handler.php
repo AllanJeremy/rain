@@ -851,40 +851,54 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $total_marks = 0;
             $answers_right = 0;
             $answers_wrong = 0;
+            $question_id = 1;
 
             //TODO : Add loading bar and variable to keep track of result generation progress
+           
+            
             //Check every submission and calculate performance
             foreach($submissions as $sub)
             {
-                // Create  an array from csv answers in db
-                if($answers = DbInfo::GetArrayFromList($sub["answers_provided"]))
+                //Check if the question exists. If it does, set the question_id
+                if($question = DbInfo::TestQuestionExists($test_id,$sub["question_index"]))
                 {
-                    foreach($answers as $answer_index)                    
+                    $question_id = $question["question_id"];
+                    
+                    // Create  an array from csv answers in db
+                    if($answers = DbInfo::GetArrayFromList($sub["answers_provided"]))
                     {
-                        //If we found the answer in teh database
-                        if($answer_found = DbInfo::QuestionAnswerExists($question_id,$answer_index))
+                        foreach($answers as $answer_index)                    
                         {
-                            //Check if it is the correct answer, if it is, ++marks and ++answers_right else ++answers_wrong
-                            if($answer_found["right_answer"])
+                            //If we found the answer in teh database
+                            if($answer_found = DbInfo::QuestionAnswerExists($question_id,$answer_index))
                             {
-                                $total_marks += answer_found["marks_attainable"];
-                                $answers_right++;                                
+                                //Check if it is the correct answer, if it is, ++marks and ++answers_right else ++answers_wrong
+                                if($answer_found["right_answer"])
+                                {
+                                    $total_marks += $answer_found["marks_attainable"];
+                                    $answers_right++;                                
+                                }
+                                else
+                                {
+                                    $answers_wrong++;
+                                    continue 1;#check the next answer
+                                }
                             }
-                            else
+                            else #Answer was not found in the database
                             {
-                                $answers_wrong++;
-                                continue 1;#check the next answer
+                                echo "Answer was not found in the database";
                             }
-                        }
-                        else #Answer was not found in the database
-                        {
-                            echo "Answer was not found in the database";
                         }
                     }
+                    else # Answers for this question could not be found
+                    {
+                        continue 1; #next loop iteration ~ Check the next question (submission)
+                    }
                 }
-                else # Answers for this question could not be found
+                else
                 {
-                    continue 1; #next loop iteration ~ Check the next question (submission)
+                    echo "Could not find the question in the database";
+                    continue 1;
                 }
 
             }#end of foreach $submissions
@@ -892,14 +906,22 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             
             //Update some result values
             $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
-            $result["grade"] = $total_marks;
-            $result["percentage"] = $grade_info["percentage"];
-            $result["grade_text"] = $grade_info["grade_text"];
-            $result["answers_right"] = $answers_right;
-            $result["answers_wrong"] = $answers_wrong;
-            $result["date_generated"] = "";
-            $result["completion_time"] = 0;
+            $results["grade"] = $total_marks;
+            $results["percentage"] = ($grade_info["percentage"]*100)."% ";
+            $results["grade_text"] = $grade_info["grade_text"];
+            $results["answers_right"] = $answers_right;
+            $results["answers_wrong"] = $answers_wrong;
+            $results["date_generated"] = "";
+            $results["completion_time"] = 0;
 
+            echo "<h3>Test results</h3><ul>";
+                echo "<li>Full Name : ".$results["full_name"]."</li>";
+                echo "<li>Grade :".$results["grade"]." out of ".$max_grade."</li>";
+                echo "<li>Percentage : ".$results["percentage"]."</li>";
+                echo "<li>Verdict : ".$results["grade_text"]."</li>";
+                echo "<li>Answers right : ".$results["answers_right"]."</li>";
+                echo "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
+            echo "</ul>";
             return $results;
         }
         else
@@ -1026,13 +1048,14 @@ if(isset($_POST['action'])) {
             //sleep(200);
             $q_data = $_POST["qData"];
             DbHandler::UpdateTestQuestionSubmission($q_data);
-
         break;
 
         //Complete a test ~ Mark the test and return results
-        case 'CompleteTest':
-            DbHandler::MarkTest($_POST["testId"],$user_info);
-            echo "<p>Completed test</p>";
+        case 'CompleteTakingTest':
+            $q_data = $_POST["qData"];
+            DbHandler::UpdateTestQuestionSubmission($q_data);//Add the current question submission
+            
+            $test_results = DbHandler::MarkTest($q_data["test_id"],$user_info);
         break;
 
         default:
