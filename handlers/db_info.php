@@ -921,7 +921,7 @@ class DbInfo
         }
 
     }
-
+    
    //Return answers belonging to a question
     public static function GetQuestionAnswers($question_id)
     {

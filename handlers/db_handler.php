@@ -2,7 +2,8 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php"));#Used to retrieve information from the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Used for password encryption
 
-require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php"));
+require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Session related functions ~ eg. login info
+require_once(realpath(dirname(__FILE__). "/../handlers/grade_handler.php")); #Handles grade related functions
 
 #HANDLES DATABASE FUNCTIONS THAT INVOLVE UPDATING/DELETING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
@@ -831,11 +832,81 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     */
     //Marks the test and returns an associative array containing the results information
     public static function MarkTest($test_id,$user_info)
-    {   
-        //Associative array storing results information. This is the same information that is entered into the database and printed on the pdf
-        $results = array("first_name"=>"","last_name"=>"","full_name"=>"","grade"=>"","date_generated"=>"","completion_time"=>"");
+    {
+        $max_grade = 100; #default max grade for the test if we cannot find it in the database
+        
+        if($test = DbInfo::TestExists($test_id))
+        {
+            $max_grade = (int)$test["max_grade"];
+        }
 
-        return $results;
+
+        //Get the question submissions for the currently test taker
+        if($submissions = DbInfo::GetSpecificTestSubmissions($test_id,$user_info))
+        {
+            //Associative array storing results information. Db info to be printed in a pdf
+            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"");
+
+            #Variables for storing the information on the various questions
+            $total_marks = 0;
+            $answers_right = 0;
+            $answers_wrong = 0;
+
+            //TODO : Add loading bar and variable to keep track of result generation progress
+            //Check every submission and calculate performance
+            foreach($submissions as $sub)
+            {
+                // Create  an array from csv answers in db
+                if($answers = DbInfo::GetArrayFromList($sub["answers_provided"]))
+                {
+                    foreach($answers as $answer_index)                    
+                    {
+                        //If we found the answer in teh database
+                        if($answer_found = DbInfo::QuestionAnswerExists($question_id,$answer_index))
+                        {
+                            //Check if it is the correct answer, if it is, ++marks and ++answers_right else ++answers_wrong
+                            if($answer_found["right_answer"])
+                            {
+                                $total_marks += answer_found["marks_attainable"];
+                                $answers_right++;                                
+                            }
+                            else
+                            {
+                                $answers_wrong++;
+                                continue 1;#check the next answer
+                            }
+                        }
+                        else #Answer was not found in the database
+                        {
+                            echo "Answer was not found in the database";
+                        }
+                    }
+                }
+                else # Answers for this question could not be found
+                {
+                    continue 1; #next loop iteration ~ Check the next question (submission)
+                }
+
+            }#end of foreach $submissions
+
+            
+            //Update some result values
+            $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
+            $result["grade"] = $total_marks;
+            $result["percentage"] = $grade_info["percentage"];
+            $result["grade_text"] = $grade_info["grade_text"];
+            $result["answers_right"] = $answers_right;
+            $result["answers_wrong"] = $answers_wrong;
+            $result["date_generated"] = "";
+            $result["completion_time"] = 0;
+
+            return $results;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     //Delete a test's and user's submission ~ typically used once the submission data has been used to mark the exam
@@ -849,7 +920,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $delete_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
             if($delete_stmt->execute())
             {
-                echo "Deleted all specified submissions";
+                echo "Deleted ".$delete_stmt->affected_rows." specified submissions";
                 return true;
             }
             else
@@ -960,7 +1031,8 @@ if(isset($_POST['action'])) {
 
         //Complete a test ~ Mark the test and return results
         case 'CompleteTest':
-        
+            DbHandler::MarkTest($_POST["testId"],$user_info);
+            echo "<p>Completed test</p>";
         break;
 
         default:
