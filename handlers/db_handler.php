@@ -830,6 +830,12 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                                MARKING TESTS
     -----------------------------------------------------------------------------------------
     */
+    //Enters the results into the database
+    private static function StoreTestResults($results)
+    {
+        global $dbCon;
+    }
+
     //Marks the test and returns an associative array containing the results information
     public static function MarkTest($test_id,$user_info)
     {
@@ -845,7 +851,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         if($submissions = DbInfo::GetSpecificTestSubmissions($test_id,$user_info))
         {
             //Associative array storing results information. Db info to be printed in a pdf
-            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"");
+            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"");
 
             #Variables for storing the information on the various questions
             $total_marks = 0;
@@ -914,14 +920,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $results["date_generated"] = "";
             $results["completion_time"] = 0;
 
-            echo "<h3>Test results</h3><ul>";
-                echo "<li>Full Name : ".$results["full_name"]."</li>";
-                echo "<li>Grade :".$results["grade"]." out of ".$max_grade."</li>";
-                echo "<li>Percentage : ".$results["percentage"]."</li>";
-                echo "<li>Verdict : ".$results["grade_text"]."</li>";
-                echo "<li>Answers right : ".$results["answers_right"]."</li>";
-                echo "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
-            echo "</ul>";
+            self::StoreTestResults($results); # Store the test results in the database
             return $results;
         }
         else
@@ -957,6 +956,25 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return null;
         }
 
+    }
+
+    /*
+    -----------------------------------------------------------------------------------------
+                               PROCESSING TEST RESULTS
+    -----------------------------------------------------------------------------------------
+    */
+
+    //Generates a report for the results as well as writes to pdf
+    public static function GenerateTestResultsReport($results)
+    {
+        echo "<h3>Test results Report</h3><ul>";
+            echo "<li>Full Name : ".$results["full_name"]."</li>";
+            echo "<li>Grade :".$results["grade"]." out of ".$results["max_grade"]."</li>";
+            echo "<li>Percentage : ".$results["percentage"]."</li>";
+            echo "<li>Verdict : ".$results["grade_text"]."</li>";
+            echo "<li>Answers right : ".$results["answers_right"]."</li>";
+            echo "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
+        echo "</ul>";
     }
 
 };#END OF CLASS
@@ -1056,6 +1074,7 @@ if(isset($_POST['action'])) {
             DbHandler::UpdateTestQuestionSubmission($q_data);//Add the current question submission
             
             $test_results = DbHandler::MarkTest($q_data["test_id"],$user_info);
+            DbHandler::GenerateTestResultsReport($test_results);
         break;
 
         default:
