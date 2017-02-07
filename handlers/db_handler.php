@@ -823,7 +823,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return false;
         }
     }
-
+    
     /*
     -----------------------------------------------------------------------------------------
                                MARKING TESTS
@@ -836,6 +836,34 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         $results = array("first_name"=>"","last_name"=>"","full_name"=>"","grade"=>"","date_generated"=>"","completion_time"=>"");
 
         return $results;
+    }
+
+    //Delete a test's and user's submission ~ typically used once the submission data has been used to mark the exam
+    public static function DeleteSpecificSubmission($test_id,$user_info)
+    {
+        global $dbCon; #db connection string
+        $delete_query = "DELETE * FROM test_submissions WHERE test_id=? AND taker_id=? AND taker_type=?";
+
+        if($delete_stmt = $dbCon->prepare($delete_query))
+        {
+            $delete_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
+            if($delete_stmt->execute())
+            {
+                echo "Deleted all specified submissions";
+                return true;
+            }
+            else
+            {
+                echo "Failed to run query to delete specific submissions";    
+                return false;
+            }
+        }
+        else
+        {
+            echo "Failed to prepare query to delete specific submissions";
+            return null;
+        }
+
     }
 
 };#END OF CLASS

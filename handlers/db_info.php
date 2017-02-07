@@ -961,7 +961,7 @@ class DbInfo
 
     }
     //Return submissions for a specific test and taker'
-    public static function GetSpecificTestSubmissions($test_id,$taker_id,$taker_type)
+    public static function GetSpecificTestSubmissions($test_id,$user_info)
     {
         global $dbCon;
         
@@ -969,7 +969,7 @@ class DbInfo
 
         if($select_stmt = $dbCon->prepare($select_query))
         {
-            $select_stmt->bind_param("iis",$test_id,$taker_id,$taker_type);
+            $select_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
 
             if($select_stmt->execute())
             {
