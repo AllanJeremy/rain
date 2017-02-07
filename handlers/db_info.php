@@ -960,6 +960,42 @@ class DbInfo
         }
 
     }
+    //Return submissions for a specific test and taker'
+    public static function GetSpecificTestSubmissions($test_id,$taker_id,$taker_type)
+    {
+        global $dbCon;
+        
+        $select_query = "SELECT * FROM test_submissions WHERE test_id=? AND taker_id=? AND taker_type=?";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("iis",$test_id,$taker_id,$taker_type);
+
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    return $result;
+                }
+                else # no submissions found but query executed successfully
+                {
+                    echo "No specific test submissions found";
+                    return false;
+                }
+            }
+            else # failed to execute the query
+            {
+                echo "Failed to execute GetSpecificTestSubmissions query";
+                return false;
+            }
+        }
+        else #failed to prepare query
+        {
+            echo "Failed to prepare GetSpecificTestSubmissions query";
+            return null;
+        }
+    }
 
     //Check if a test question submission exists in the database. return it if it exists | false if not and null if query couldn't prepare
     public static function TestQueSubmissionExists($taker_id,$taker_type,$test_id,$question_index)

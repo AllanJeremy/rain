@@ -100,8 +100,5 @@ class GradeHandler
             echo "Error occured ".$e;
             return false;
         }
-
-
-        
     }
-}
+};
