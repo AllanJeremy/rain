@@ -1,4 +1,8 @@
 <?php
+
+require_once(realpath(dirname(__FILE__) ."/../handlers/global_init_handler.php")); #global settings initialization
+
+//Interface containing functions that must be implemented by the EsomoDate class
 interface EsomoDateFunctions
 {
     #returns the text that will be used for due dates
@@ -12,9 +16,15 @@ interface EsomoDateFunctions
     
     #Gets the date info and returns it in an array - takes a date_diff as a parameter    
     public static function GetDateInfo($date_diff);
+
+    #returns the current date the database date format
+    public static function GetCurrentDate();
 }
+
 class EsomoDate implements EsomoDateFunctions
 {
+    const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+
     //returns the text that will be used for due dates
     public static function GetDueText($due_date)
     {
@@ -23,7 +33,7 @@ class EsomoDate implements EsomoDateFunctions
         $due_class = "";
         
         //Finding the difference between the date today and the date before
-        $date_today = date('Y-m-d H:i:s');
+        $date_today = date(self::DB_DATE_FORMAT);
         $date_difference = self::GetDateDiff($date_today,$due_date);
         $date_info = self::GetDateInfo($date_difference); 
 
@@ -83,7 +93,7 @@ class EsomoDate implements EsomoDateFunctions
     //Returns a date item based on a phpmyadmin date
     private static function GetDbDate($date_input)
     {
-        return DateTime::createFromFormat("Y-m-d H:i:s",$date_input);
+        return DateTime::createFromFormat(self::DB_DATE_FORMAT,$date_input);
     }
 
     //returns the optimal date and time used to display the text in browser
@@ -114,9 +124,15 @@ class EsomoDate implements EsomoDateFunctions
     {
         $date = new DateTime($date_input);
         $interval = "P".$date_interval["days"]."DT".$date_interval["hours"]."H".$date_interval["min"]."M";
-        $date_sum = DateTime::add($date,$interval);
+        $date_sum = $date->add(new DateInterval($interval));
 
         return self::GetDateInfo($date_sum);
+    }
+
+    //Get the current date. Return a database friendly type
+    public static function GetCurrentDate()
+    {
+        return date(self::DB_DATE_FORMAT);
     }
 
     //Gets the date info and returns it in an array - takes a date_input as a parameter    

@@ -4,6 +4,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Us
 
 require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Session related functions ~ eg. login info
 require_once(realpath(dirname(__FILE__). "/../handlers/grade_handler.php")); #Handles grade related functions
+require_once(realpath(dirname(__FILE__). "/../handlers/date_handler.php")); #Handles date related functions
+
 
 #HANDLES DATABASE FUNCTIONS THAT INVOLVE UPDATING/DELETING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
@@ -824,7 +826,67 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return false;
         }
     }
-    
+    /*
+    -----------------------------------------------------------------------------------------
+                               MANAGING TEST RETAKES
+    -----------------------------------------------------------------------------------------
+    */    
+ 
+    //Update Test retake ~ only used internally by other functions (private function)
+    private static function UpdateTestRetake($test_id,$user_info)
+    {
+        global $dbCon;
+        $date_taken = NULL; $retake_date=NULL; #Initialization to make the variables accessible in the scope of the function
+        
+        if($test = DbInfo::TestExists($test_id))
+        {
+            //Dates
+            $date_taken = EsomoDate::GetCurrentDate();
+            $retake_date = EsomoDate::GetDateSum($date_taken,array("days"=>$test["retake_delay_days"],"hours"=>$test["retake_delay_hours"],"min"=>$test["retake_delay_min"]));
+        }
+        else
+        {
+            echo "<p>Test with the id provided could not be found in database.<br><b>Accessed from UpdateTestRetake</b>, terminating execution of the function</p>";
+            return false;
+        }
+
+        //Update query
+        $update_query = "";
+        
+        //If the retake information exists in the database, update it, otherwise, add it to the database
+        if($retake_info = DbInfo::GetTestRetake($test_id,$user_info))
+        {
+            $update_query = "UPDATE test_retakes SET test_id=?,taker_id=?,taker_type=?,date_taken=?,retake_date=? WHERE retake_id=".$retake_info["retake_id"];
+        }
+        else
+        {
+            $update_query = "INSERT INTO test_retakes(test_id,taker_id,taker_type,date_taken,retake_date) VALUES(?,?,?,?,?)";
+        }
+
+        //Prepare the query
+        if ($update_stmt = $dbCon->prepare($update_query))
+        {
+            $update_stmt->bind_param("iisss",$test_id,$user_info["user_id"],$user_info["account_type"],$date_taken,$retake_date);
+            
+            //Try executing the update statement
+            if($update_stmt->execute())
+            {
+                echo "<p>Updated test retake info</p>";                
+                return true;
+            }
+            else #failed to execute the query
+            {
+                echo "<p>Failed to run query to update test retake info</p>";
+                return false;
+            }
+        }
+        else #failed to prepare the query
+        {
+            echo "<p>Failed to prepare query to update test retake info</p>";
+            return null;
+        }
+    }
+
     /*
     -----------------------------------------------------------------------------------------
                                MARKING TESTS
@@ -920,6 +982,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $results["date_generated"] = "";
             $results["completion_time"] = 0;
 
+            self::UpdateTestRetake($test_id,$user_info);
             self::StoreTestResults($results); # Store the test results in the database
             return $results;
         }

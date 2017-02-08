@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <?php
-            require_once("handlers/header_handler.php");
+            require_once(realpath(dirname(__FILE__) ."/handlers/header_handler.php"));
             require_once(realpath(dirname(__FILE__) . "/classes/test.php"));
         ?>
         <title><?php echo MyHeaderHandler::SITE_TITLE;?> | Tests</title>
