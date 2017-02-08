@@ -734,10 +734,29 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <label for="createTestPassGrade">Passing grade</label>
                                 </div>
 
+
                                 <div class=" input-field col s12 m4">
                                     <input type="number" id="createTestCompletionTime" step="5" name="create_test_completion_time" class="validate" min="10" max="45" value="30" required>
                                     <label for="createTestCompletionTime">Time (Minutes)</label>
                                 </div>
+                                
+                                <!--Retake delays-->
+                            <!--
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestRetakeDelay_days" name="create_test_rDelay_days" min="0" max="100" value="0" class="validate" required>
+                                    <label for="createTestRetakeDelay_days">Retake Delay (Days)</label>
+                                </div>
+                                
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestRetakeDelay_hours" name="create_test_rDelay_hours" min="0" max="100" value="0" class="validate" required>
+                                    <label for="createTestRetakeDelay_hours">Retake Delay (Hours)</label>
+                                </div>
+                                
+                                <div class=" input-field col s12 m4">
+                                    <input type="number" id="createTestRetakeDelay_min" name="create_test_rDelay_min" min="10" max="100" value="30" class="validate" required>
+                                    <label for="createTestRetakeDelay_min">Retake Delay (Minutes)</label>
+                                </div>
+                            -->
 
                                 <div class=" input-field col s12 ">
                                     <textarea id="createTestInstructions" class="materialize-textarea" placeholder="Instructions students will get for the test"></textarea>
