@@ -135,6 +135,13 @@ class EsomoDate implements EsomoDateFunctions
         return date(self::DB_DATE_FORMAT);
     }
 
+    //Return whether the current time has already elapsed/passed ~ true if it has and false if not
+    public static function DateTimeHasElapsed($date_time_input)
+    {
+        $current_date_time = strtotime(self::GetCurrentDate());
+        return ($current_date_time > $date_time_input);
+    }
+
     //Gets the date info and returns it in an array - takes a date_input as a parameter    
     public static function GetDateInfo($date_input)
     {

@@ -844,7 +844,6 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $date_taken = EsomoDate::GetCurrentDate();
             $retake_date = EsomoDate::GetDateSum($date_taken,array("days"=>$test["retake_delay_days"],"hours"=>$test["retake_delay_hours"],"min"=>$test["retake_delay_min"]));
 
-            echo "<p>Retake date : <b>$retake_date</b></p>";
         }
         else
         {
@@ -1135,11 +1134,36 @@ if(isset($_POST['action'])) {
 
         //Complete a test ~ Mark the test and return results
         case 'CompleteTakingTest':
-            $q_data = $_POST["qData"];
+            $q_data = $_POST["qData"]; #question data
+            $test_id = htmlspecialchars($q_data["test_id"]); #current test id
+
             DbHandler::UpdateTestQuestionSubmission($q_data);//Add the current question submission
             
-            $test_results = DbHandler::MarkTest($q_data["test_id"],$user_info);
-            DbHandler::GenerateTestResultsReport($test_results);
+            //If the test has already been taken
+            if($retake_info = Dbinfo::GetTestRetake($test_id,$user_info))
+            {
+                $retake_date_time = strtotime($retake_info["retake_date"]);
+                $time_has_elapsed = EsomoDate::DateTimeHasElapsed($retake_date_time);
+                echo "<p>Time has elapsed : ";
+                var_dump($time_has_elapsed);
+                echo "</p>";
+                //If the current time is a time past the retake time ~ allow for retake
+                if($time_has_elapsed)
+                {
+                    $test_results = DbHandler::MarkTest($test_id,$user_info);
+                    DbHandler::GenerateTestResultsReport($test_results);
+                }
+                else
+                {
+                    echo "<p>You need to wait before you can retake the exam</p>";
+                }
+            }   
+            else # the test does not exist in the database
+            {
+                $test_results = DbHandler::MarkTest($test_id,$user_info);
+                DbHandler::GenerateTestResultsReport($test_results);
+            }
+
         break;
 
         default:
