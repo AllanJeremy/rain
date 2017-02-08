@@ -843,6 +843,8 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             //Dates
             $date_taken = EsomoDate::GetCurrentDate();
             $retake_date = EsomoDate::GetDateSum($date_taken,array("days"=>$test["retake_delay_days"],"hours"=>$test["retake_delay_hours"],"min"=>$test["retake_delay_min"]));
+
+            echo "<p>Retake date : <b>$retake_date</b></p>";
         }
         else
         {

@@ -126,7 +126,7 @@ class EsomoDate implements EsomoDateFunctions
         $interval = "P".$date_interval["days"]."DT".$date_interval["hours"]."H".$date_interval["min"]."M";
         $date_sum = $date->add(new DateInterval($interval));
 
-        return self::GetDateInfo($date_sum);
+        return $date_sum->format(self::DB_DATE_FORMAT);
     }
 
     //Get the current date. Return a database friendly type
