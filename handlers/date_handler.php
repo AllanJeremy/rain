@@ -109,14 +109,24 @@ class EsomoDate implements EsomoDateFunctions
         return date_diff($sent,$due);
     } 
 
-    //Gets the date info and returns it in an array - takes a date_diff as a parameter    
-    public static function GetDateInfo($date_diff)
+    //Returns the sum of a date and an interval - #date_interval is an array that contains days hours minutes
+    public static function GetDateSum($date_input, $date_interval=array("days"=>0,"hours"=>0,"min"=>10))
     {
-        $years = $date_diff->format("%r%y");
-        $months = $date_diff->format("%r%m");
-        $days = $date_diff->format("%r%d");
-        $hours = $date_diff->format("%r%H");
-        $minutes = $date_diff->format("%r%I");
+        $date = new DateTime($date_input);
+        $interval = "P".$date_interval["days"]."DT".$date_interval["hours"]."H".$date_interval["min"]."M";
+        $date_sum = DateTime::add($date,$interval);
+
+        return self::GetDateInfo($date_sum);
+    }
+
+    //Gets the date info and returns it in an array - takes a date_input as a parameter    
+    public static function GetDateInfo($date_input)
+    {
+        $years = $date_input->format("%r%y");
+        $months = $date_input->format("%r%m");
+        $days = $date_input->format("%r%d");
+        $hours = $date_input->format("%r%H");
+        $minutes = $date_input->format("%r%I");
 
         return array("years"=>$years,"months"=>$months,"days"=>$days,"hours"=>$hours,"minutes"=>$minutes);
     }
