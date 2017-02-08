@@ -1037,6 +1037,50 @@ class DbInfo
             return null;
         }
     }
+
+    //Get the test retake information for a given taker
+    public static function GetTestRetake($test_id,$user_info)
+    {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM test_retakes WHERE test_id=? AND taker_id=? AND taker_type=?";
+        
+        //Prepare the query
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
+            
+            //Try to execute the query after binding the parameters
+            if($select_stmt->execute())
+            {
+                $results = $select_stmt->get_result();
+                
+                //Check if any records were found
+                if($results->num_rows>0)
+                {
+                    foreach($results as $result_found)
+                    {
+                        return $result_found; #return a single result
+                    }
+                }
+                else
+                {
+                    echo "<p>Test retake info query ran.<br>Could not find any test retake info based on the parameter values provided</p>";
+                    return false;
+                }
+            }
+            else
+            {
+                echo "<p>Failed to execute query to retrieve test retake info</p>";
+                return false;
+            }
+        }
+        else # failed to prepare the query
+        {
+            echo "<p>Failed to prepare query to retrieve test retake information </p>";
+            return null;
+        }
+    }
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
