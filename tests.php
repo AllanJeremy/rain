@@ -34,8 +34,15 @@
                     $accType = "student";#corresponds with file name prefix
                 }
 
+                //Store the logged in user's information
+                $user_info = MySessionHandler::GetLoggedUserInfo();
+                $test_in_waiting_state = false; #true if the taker needs to wait before retaking the test, false if not
+
                 //Allow editing of test if the test creator is logged in and the test is in an editable state
                 if(isset($_GET["tid"]) && $test=DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
+                    //TODO : Make it so that if a test is in waiting state, it cannot be taken ~ Questions are not displayed
+                    
+
 ?>
         <header>
             <nav class="top-nav">
@@ -128,7 +135,7 @@
                     header("Location:./404.html");
                 endif;
             else:#if no test id is provided
-                header("Location:./");
+                header("Location:./"); #redirect to the home page
             endif;
             ?>
 
