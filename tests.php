@@ -5,6 +5,7 @@
         <?php
             require_once(realpath(dirname(__FILE__) ."/handlers/header_handler.php"));
             require_once(realpath(dirname(__FILE__) . "/classes/test.php"));
+            require_once(realpath(dirname(__FILE__) . "/handlers/date_handler.php"));
         ?>
         <title><?php echo MyHeaderHandler::SITE_TITLE;?> | Tests</title>
         <meta charset="utf-8">
@@ -41,8 +42,18 @@
                 //Allow editing of test if the test creator is logged in and the test is in an editable state
                 if(isset($_GET["tid"]) && $test=DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
                     //TODO : Make it so that if a test is in waiting state, it cannot be taken ~ Questions are not displayed
+                    //Check if the test has already been taken before. IF it has, check the soones it can be retaken
+                    $retake_info = DbInfo::GetTestRetake($test["test_id"],$user_info);#retake info
                     
+                    if($retake_info)
+                    {
+                        $retake_date = strtotime($retake_info["retake_date"]);
+                        #test is in waiting state if the time until test can be retaken has NOT elapsed
+                        $test_in_waiting_state = !(EsomoDate::DateTimeHasElapsed($retake_date));
+                    }
 
+                    //If the test is not in waiting state, show it
+                    if(!$test_in_waiting_state):
 ?>
         <header>
             <nav class="top-nav">
@@ -125,15 +136,19 @@
 
 
             ?>
-
-
-
             <?php
                 endif;#if taking test
+                
+                else:#if we need to wait to take the test ~ Test is in waiting state
+                    Test::DisplayWaitRetakeMessage($retake_info,$user_info);
+                endif;
 
-                else:#testid is set and is a valid test
+                else:#testid is set and is not a valid test
                     header("Location:./404.html");
                 endif;
+
+
+
             else:#if no test id is provided
                 header("Location:./"); #redirect to the home page
             endif;

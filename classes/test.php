@@ -493,5 +493,22 @@ class Test
                 </div>
             </div>
         <?php
+    }#end of  DisplayEditQuestion
+
+    //Display wait until you can retake Test
+    public static function DisplayWaitRetakeMessage($retake_info)
+    {
+        $retake_date = EsomoDate::GetOptimalDateTime($retake_info["retake_date"]);
+
+?>
+    <div class="container center">
+        <br><br><br><br>
+        <h5 class="grey-text text-darken-1">You need to wait before you can retake this test</h5>
+        <h5 class="grey-text">The soonest you can retake this test is</h5>
+        <h4 class="grey-text text-darken-2"><?php echo $retake_date["date"]." on ".$retake_date["day"]." at ".$retake_date["time"]?></h4>
+        <br>
+        <a class="btn btn-large" href="./#takeATest">BACK TO TESTS</a>
+    </div>
+<?php
     }
 };?>
