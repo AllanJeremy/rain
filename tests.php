@@ -669,6 +669,17 @@
                 $("#txt_marks_allocated").text(marks_alloc);
                 UpdateMarksClasses(marks_alloc,max_grade);//Update the classes showing the different colors
             });
+
+                        //Start test clicked
+            $("#start_test").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
+                //Start timer
+                $.post("handlers/timer_handler.php",{"action":"StartTestTimer","test_id":test_id},function(){
+                    console.log("Started timer");
+                });
+            
+            });
         });//End of document ready
 
         </script>

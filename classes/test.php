@@ -49,7 +49,7 @@ class Test
         <div class="col s12">
             <br>
             <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";?>
-            <a href="<?php echo $url_extension.'1'; ?>" class="btn btn-large ">START TEST</a>
+            <a data-redirect-url="<?php echo $url_extension.'1'; ?>" class="btn btn-large" id="start_test">START TEST</a>
         </div>
 
     </div>

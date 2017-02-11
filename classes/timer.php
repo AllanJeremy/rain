@@ -13,6 +13,9 @@ class EsomoTimer
     //Constants ~ All timer session variables start with timer_
     const TEST_TIMER_ARRAY_NAME = "timer_test";
 
+    //Variables
+    public $timer_array;
+
     //Constructor
     function __construct()
     {
@@ -36,7 +39,7 @@ class EsomoTimer
     }
 
     //Check if a certain entry exists in the test timer
-    private static function SpecificTestTimerExists($test,$user_info)
+    public static function SpecificTestTimerExists($test,$user_info)
     {
         #passed by reference ~ directly manipulating the session variable by manipulating this
         $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME];
@@ -83,7 +86,7 @@ class EsomoTimer
         $taker_type = $user_info["account_type"];#account type of the test taker
 
         //Array containing all the above info
-        $timer_array = array(
+        $this->timer_array = array(
             "test_id"=>$test_id,
             "time_to_complete"=>$time_to_complete,
             "time_started"=>$time_started,
@@ -96,7 +99,7 @@ class EsomoTimer
         $test_timer_exists = self::SpecificTestTimerExists($test,$user_info);
 
         //if the specific timer for this user DOES NOT EXIST, add  a new timer | if it exists, do nothing
-        if(!test_timer_exists)
+        if(!$test_timer_exists)
         {
             array_push($test_timer,$timer_array);#Add a new value to the array ~ If it does not exist in the array
         }
