@@ -122,7 +122,16 @@ class EsomoDate implements EsomoDateFunctions
     //Returns the sum of a date and an interval - #date_interval is an array that contains days hours minutes
     public static function GetDateSum($date_input, $date_interval=array("days"=>0,"hours"=>0,"min"=>10))
     {
-        $date = new DateTime($date_input);
+        $date = "";
+        //If the time entered is not date time, create a new date time from it. 
+        if(!is_a($date_input,"DateTime"))
+        {
+            $date = new DateTime($date_input);
+        }
+        else //otherwise, if it is datetime, then set the date equal to it
+        {
+            $date = $date_input;
+        }
         $interval = "P".$date_interval["days"]."DT".$date_interval["hours"]."H".$date_interval["min"]."M";
         $date_sum = $date->add(new DateInterval($interval));
 
