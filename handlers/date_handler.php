@@ -159,7 +159,8 @@ class EsomoDate implements EsomoDateFunctions
         $days = $date_input->format("%r%d");
         $hours = $date_input->format("%r%H");
         $minutes = $date_input->format("%r%I");
+        $seconds = $date_input->format("%r%s");
 
-        return array("years"=>$years,"months"=>$months,"days"=>$days,"hours"=>$hours,"minutes"=>$minutes);
+        return array("years"=>$years,"months"=>$months,"days"=>$days,"hours"=>$hours,"minutes"=>$minutes,"seconds"=>$seconds);
     }
 }

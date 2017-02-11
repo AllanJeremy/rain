@@ -1,6 +1,7 @@
 <?php
 
 require_once (realpath(dirname(__FILE__) . "/../handlers/db_handler.php")); #Allows connection to database
+require_once (realpath(dirname(__FILE__) . "/../classes/timer.php")); #Allows connection to database
 
 #HANDLES TEST RELATED FUNCTIONS
 class Test
@@ -58,8 +59,11 @@ class Test
     //Displays a test, inclusive of all questions
     public static function DisplayTest($test,$question_index)
     {
+        $user_info = MySessionHandler::GetLoggedUserInfo();
+
         //Find the question in the database
         if($question = DbInfo::TestQuestionExists($test["test_id"],$question_index)):
+            $timer_info = EsomoTimer::GetTestTimerInfo($test,$user_info);
 
 ?>
     <div class="row grey darken-2 z-depth-1">
@@ -69,7 +73,7 @@ class Test
                     <p class="white-text">Question <span class="php-data"><?php echo $question_index; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
                 </div>
                 <div class="col s6 m4 right pull-s1">
-                    <p class="white-text valign">Time Left <span class="php-data ">1:00</span></p>
+                    <p class="white-text valign">Time Left : <span class="<?php echo $timer_info['timer_class'];?>"><?php echo $timer_info['timer_text'];?></span></p>
                 </div>
             </div>
         </div>

@@ -66,7 +66,46 @@ class EsomoTimer
         }
 
     }
+    //Get Timer text
+    public static function GetTestTimerInfo($test,$user_info)
+    {
+        $timer_index = self::TestTimerExists($test,$user_info);#index of the timer
+        $timer_text = "00:00:00";#text that will be displayed
+        $timer_class = "red-text text-lighten-2";
+        
+        #passed by reference ~ directly manipulating the session variable by manipulating this
+        $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME];
+        
+        //If the timer index was found ~ means the timer was found
+        if($timer_index!==false)
+        {
+            $timer_found = $test_timer[$timer_index];
+            $cur_date = EsomoDate::GetCurrentDate();
+            
+            $remaining_time = EsomoDate::GetDateDiff($cur_date,$timer_found["time_to_end"]);
+                        
+            $time_info = EsomoDate::GetDateInfo($remaining_time);
+            
+            #total number of seconds
+            $total_sec = ($time_info["hours"]*3600)+($time_info["minutes"]*60)+($time_info["seconds"]);
+            
+            if($total_sec>0)
+            {
+                $timer_text = $time_info["hours"].":".$time_info["minutes"].":".$time_info["seconds"];
+                $timer_class = "php-data";
+            }
+            else
+            {
+                $timer_text = "00:00:00";
+                $timer_class = "red-text text-lighten-2";
+            }
+            
+        }
+        
+        $timer_info = array("timer_text"=>$timer_text,"timer_class"=>$timer_class);
+        return $timer_info;
 
+    }
     //Create  a test timer ~ [{},{}]
     public function CreateTestTimer($test,$user_info)
     {
@@ -101,7 +140,7 @@ class EsomoTimer
         //if the specific timer for this user DOES NOT EXIST, add  a new timer | if it exists, do nothing
         if(!$test_timer_exists)
         {
-            array_push($test_timer,$timer_array);#Add a new value to the array ~ If it does not exist in the array
+            array_push($test_timer,$this->timer_array);#Add a new value to the array ~ If it does not exist in the array
         }
 
     }
@@ -114,6 +153,4 @@ class EsomoTimer
 };
 
 
-//Testing
-/*$test_timer = new EsomoTimer();
-$test_timer->CreateTestTimer(DbInfo::TestExists(2),MySessionHandler::GetLoggedUserInfo());*/
+//
