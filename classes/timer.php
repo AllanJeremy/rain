@@ -50,7 +50,7 @@ class EsomoTimer
             $timer_found = null;
             for($i=0;$i<$timer_count;$i++)
             {
-                $timer_found = $test_timer[$i];
+                $timer_found = @$test_timer[$i];
                 
                 //Found a timer that matches the given criteria
                 if(($timer_found["test_id"] == $test["test_id"]) && ($timer_found["taker_id"] == $user_info["user_id"]) && ($timer_found["taker_type"] == $user_info["account_type"]))
@@ -69,7 +69,7 @@ class EsomoTimer
     //Get Timer text
     public static function GetTestTimerInfo($test,$user_info)
     {
-        $timer_index = self::TestTimerExists($test,$user_info);#index of the timer
+        $timer_info = self::SpecificTestTimerExists($test,$user_info);#index of the timer
         $timer_text = "00:00:00";#text that will be displayed
         $timer_class = "red-text text-lighten-2";
         
@@ -77,18 +77,16 @@ class EsomoTimer
         $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME];
         
         //If the timer index was found ~ means the timer was found
-        if($timer_index!==false)
+        if($timer_info)
         {
-            $timer_found = $test_timer[$timer_index];
+            $timer_found = $test_timer[$timer_info["index"]];
             $cur_date = EsomoDate::GetCurrentDate();
             
             $remaining_time = EsomoDate::GetDateDiff($cur_date,$timer_found["time_to_end"]);
-                        
             $time_info = EsomoDate::GetDateInfo($remaining_time);
             
             #total number of seconds
             $total_sec = ($time_info["hours"]*3600)+($time_info["minutes"]*60)+($time_info["seconds"]);
-            
             if($total_sec>0)
             {
                 $timer_text = $time_info["hours"].":".$time_info["minutes"].":".$time_info["seconds"];
@@ -142,7 +140,10 @@ class EsomoTimer
         {
             array_push($test_timer,$this->timer_array);#Add a new value to the array ~ If it does not exist in the array
         }
-
+        else #if the timer does exist
+        {
+            self::ResetSpecificTestTimer($test,$user_info);
+        }
     }
 
     //Delete all test timers
@@ -150,7 +151,24 @@ class EsomoTimer
     {
         unset($_SESSION[self::TEST_TIMER_ARRAY_NAME]);
     }
+
+    //Reset a specific test TestTimerExists
+    public static function ResetSpecificTestTimer($test,$user_info)
+    {
+        $timer_info = self::SpecificTestTimerExists($test,$user_info);
+        $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME]; #pass by reference
+
+        #if the timer requested exists 
+        if($timer_info)
+        {
+            $i = $timer_info["index"];#timer index
+            unset($test_timer[$i]);
+            return true;
+        }
+        else #the timer requested does not exist
+        {
+            return $timer_info;#return false/null
+        }
+    }
 };
 
-
-//

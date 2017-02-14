@@ -105,6 +105,7 @@
             <?php
                     endif;
                     else:#question number not set
+                        // $reset_status = EsomoTimer::ResetSpecificTestTimer($test,$user_info);
                         Test::DisplayTestInstructions($test);//Display test creator's instructions
             ?>
 
@@ -131,6 +132,7 @@
                         Test::DisplayTest($test,$current_question);#Display the current question
                     }else
                     {
+                        // $reset_status = EsomoTimer::ResetSpecificTestTimer($test,$user_info);
                         Test::DisplayTestInstructions($test,true);//Display test taker's instructions
                     }
 
@@ -600,7 +602,7 @@
                     //Send the information to the handler
                     $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(data,status){
                         console.log("Successfully updated the test submission");
-                        //window.location= (redirect_url);
+                        window.location= (redirect_url);
                     });
                 }
                 else//No answer was provided for the question
@@ -676,7 +678,7 @@
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
                 //Start timer
                 $.post("handlers/timer_handler.php",{"action":"StartTestTimer","test_id":test_id},function(){
-                    console.log("Started timer");
+                    // window.location=(redirect_url);
                 });
             
             });

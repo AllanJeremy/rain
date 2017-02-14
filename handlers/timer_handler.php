@@ -15,6 +15,8 @@ if(isset($_POST["action"]))
             $test = DbInfo::TestExists($_POST["test_id"]);#get the test
             
             $test_timer = new EsomoTimer();#create new timer object
+            
+            $test_timer->DeleteTestTimers();
             $test_timer->CreateTestTimer($test,$user_info);#create a test timer for the test provided and user provided
             
             $timer_array = $test_timer->timer_array;#array containing the created timer's information'

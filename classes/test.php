@@ -49,7 +49,7 @@ class Test
 
         <div class="col s12">
             <br>
-            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";?>
+            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&q=";?>
             <a data-redirect-url="<?php echo $url_extension.'1'; ?>" class="btn btn-large" id="start_test">START TEST</a>
         </div>
 
@@ -64,7 +64,6 @@ class Test
         //Find the question in the database
         if($question = DbInfo::TestQuestionExists($test["test_id"],$question_index)):
             $timer_info = EsomoTimer::GetTestTimerInfo($test,$user_info);
-
 ?>
     <div class="row grey darken-2 z-depth-1">
         <div class="container">
