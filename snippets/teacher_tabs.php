@@ -770,13 +770,64 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 </div>
 
                 <!--Test results-->
-                <div class="row main-tab" id="viewStudentsTestResultTab">
-                    test results tab
+                <div class="container row main-tab" id="viewStudentsTestResultTab">
+                    <p>Test results will be displayed here</p>
                 </div>
 
                 <!--Take a test-->
-                <div class="row main-tab" id="takeTestTab">
-                    Take a test tab
+                <div class="container row main-tab" id="takeTestTab">
+                    <?php
+                        $tests = DbInfo::GetSpecificTeacherTests($loggedInTeacherId);
+                        if($tests):
+                            $redirect_url = "";#url the test redirects to
+                            $test_id = 0;
+                    ?>
+                    <div class="row">
+                        <div class="input-field col s8">
+                            <label for="search_take_test">Search Tests</label>
+                            <input type="search" id="search_take_test" class="validate" placeholder="Search Here"/>
+                        </div>
+                        <div class="col s4">
+                            <a class="btn btn_search_take_test" href="javascript:void(0)">Search</a>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    
+                    <h4 class="grey-text text-darken-1">YOUR TESTS</h4>
+
+                    <?php
+                            foreach($tests as $test):
+                                $test_id = $test["test_id"];
+                                $redirect_url = "tests.php?tid=".$test_id;
+                                
+                    ?>
+                        <div class="card test_container col s12 m6 l4" id="<?php echo $test_id;?>" >
+                            <div class="card-header">
+                                <div class="container">
+                                    <h5><a href="<?php echo $redirect_url?>"><?php echo $test["test_title"];?></a><span></span></h5>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="container">
+                                    <p>Subject: | Difficulty: <?php echo $test["difficulty"];?></p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="container">
+                                    <a class="btn btn-flat" class="EditTest" id="<?php echo $test_id?>">Edit</a>
+                                    <a class="btn" href="<?php echo $redirect_url?>">TAKE</a>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    <?php
+                            endforeach;
+                        else:
+                    ?>
+                        <p>Could not retrieve your tests</p>
+                    <?php
+                        endif;
+                    ?>
                 </div>
 
                 <!--GRADES SECTION-->
