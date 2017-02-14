@@ -105,7 +105,6 @@
             <?php
                     endif;
                     else:#question number not set
-                        // $reset_status = EsomoTimer::ResetSpecificTestTimer($test,$user_info);
                         Test::DisplayTestInstructions($test);//Display test creator's instructions
             ?>
 
@@ -132,7 +131,6 @@
                         Test::DisplayTest($test,$current_question);#Display the current question
                     }else
                     {
-                        // $reset_status = EsomoTimer::ResetSpecificTestTimer($test,$user_info);
                         Test::DisplayTestInstructions($test,true);//Display test taker's instructions
                     }
 
@@ -678,7 +676,7 @@
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
                 //Start timer
                 $.post("handlers/timer_handler.php",{"action":"StartTestTimer","test_id":test_id},function(){
-                    // window.location=(redirect_url);
+                    window.location=(redirect_url);
                 });
             
             });

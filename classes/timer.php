@@ -156,13 +156,13 @@ class EsomoTimer
     public static function ResetSpecificTestTimer($test,$user_info)
     {
         $timer_info = self::SpecificTestTimerExists($test,$user_info);
-        $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME]; #pass by reference
+        // $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME]; #pass by reference
 
         #if the timer requested exists 
         if($timer_info)
         {
             $i = $timer_info["index"];#timer index
-            unset($test_timer[$i]);
+            unset($_SESSION[self::TEST_TIMER_ARRAY_NAME][$i]);
             return true;
         }
         else #the timer requested does not exist
