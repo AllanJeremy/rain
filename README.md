@@ -18,7 +18,7 @@ There are 3 major types of accounts :
   - Teacher can comment on assignment submissions in classroom
   
 - Teacher can create tests which can be taken by *any student*. 
-  - Two types of tests : Open ended tests, Multiple choice (single answer and multiple answer questions)
+  - Two types of tests : Single choice and  Multiple choice questions
   - Teacher can mark tests and send them back to students
 
 - Teachers can plan classes and schedule classes
