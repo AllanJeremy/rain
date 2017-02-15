@@ -913,8 +913,10 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         //Get the question submissions for the currently test taker
         if($submissions = DbInfo::GetSpecificTestSubmissions($test_id,$user_info))
         {
+            $test = DbInfo::TestExists($test_id);
+            
             //Associative array storing results information. Db info to be printed in a pdf
-            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"");
+            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"","verdict"=>"PASS");
 
             #Variables for storing the information on the various questions
             $total_marks = 0;
@@ -982,7 +984,19 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $results["answers_wrong"] = $answers_wrong;
             $results["date_generated"] = "";
             $results["completion_time"] = 0;
-
+            
+            //Determine the verdict of test results
+            if($pass_grade = $test["passing_grade"])
+            {
+                if($results["grade"]>=$pass_grade)
+                {
+                    $results["verdict"] = "PASS";
+                }
+                else
+                {
+                    $results["verdict"] = "FAIL";
+                }
+            }   
             self::UpdateTestRetake($test_id,$user_info);
             self::StoreTestResults($results); # Store the test results in the database
             return $results;
