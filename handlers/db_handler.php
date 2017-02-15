@@ -1047,9 +1047,10 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     {
         echo "<h3>Test results Report</h3><ul>";
             echo "<li>Full Name : ".$results["full_name"]."</li>";
-            echo "<li>Grade :".$results["grade"]." out of ".$results["max_grade"]."</li>";
+            echo "<li>Grade (marks) :".$results["grade"]." out of ".$results["max_grade"]."</li>";
             echo "<li>Percentage : ".$results["percentage"]."</li>";
-            echo "<li>Verdict : ".$results["grade_text"]."</li>";
+            echo "<li>Grade Achieved : ".$results["grade_text"]."</li>";
+            echo "<li>Verdict : ".$results["verdict"]."</li>";
             echo "<li>Answers right : ".$results["answers_right"]."</li>";
             echo "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
         echo "</ul>";
