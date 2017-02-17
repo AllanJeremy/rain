@@ -103,6 +103,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 ?> 
                     
                 </div>
+
+                <!--Sent assignments-->
                 <div class="row main-tab" id="sentAssignments">
                     <div class="col card-col" data-assignment-id="">
                         <div class="card white">
@@ -138,7 +140,7 @@ about how you came to achieve this.</p>
                 </div>
                 <div class="row main-tab" id="takeATest">
                     <div class="row" id="tests">
-                        <!--- LOAD TEST CARDS HERE --->
+                        <!-- LOAD TEST CARDS HERE -->
                         <div class="col card-col">
                             <div class="card blue-grey darken-1">
                                 <div class="card-content white-text">
@@ -222,17 +224,23 @@ about how you came to achieve this.</p>
                     </div>
 
                 </div>
+
+                <!--Test results-->
                 <div class="row main-tab" id="testResults">
-                    testResults tab
+                    <p>Test results will be displayed here</p>
                 </div>
+
+                <!--Grades-->
                 <div class="row main-tab" id="myGrades">
-                    myGrades tab
+                    <p>Your grades will be displayed here</p>
                 </div>
+
+                <!--Gradebooks-->
                 <div class="row main-tab" id="gradeBook">
-                    gradeBook tab
+                    <p>Your Grade books will be displayed here</p>
                 </div>
                 <div class="row main-tab" id="chat">
-                    chat tab
+                    <p>Chat will be displayed here</p>
                 </div>
                 <!--<p class="grey-text">Tests</p>
                 <div class="divider"></div>-->

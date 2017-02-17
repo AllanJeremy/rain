@@ -3,8 +3,9 @@
 <html lang="en">
     <head>
         <?php
-            require_once("handlers/header_handler.php");
+            require_once(realpath(dirname(__FILE__) ."/handlers/header_handler.php"));
             require_once(realpath(dirname(__FILE__) . "/classes/test.php"));
+            require_once(realpath(dirname(__FILE__) . "/handlers/date_handler.php"));
         ?>
         <title><?php echo MyHeaderHandler::SITE_TITLE;?> | Tests</title>
         <meta charset="utf-8">
@@ -34,8 +35,25 @@
                     $accType = "student";#corresponds with file name prefix
                 }
 
+                //Store the logged in user's information
+                $user_info = MySessionHandler::GetLoggedUserInfo();
+                $test_in_waiting_state = false; #true if the taker needs to wait before retaking the test, false if not
+
                 //Allow editing of test if the test creator is logged in and the test is in an editable state
                 if(isset($_GET["tid"]) && $test=DbInfo::TestExists(htmlspecialchars($_GET["tid"]))):#If the test can be identified
+                    //TODO : Make it so that if a test is in waiting state, it cannot be taken ~ Questions are not displayed
+                    //Check if the test has already been taken before. IF it has, check the soones it can be retaken
+                    $retake_info = DbInfo::GetTestRetake($test["test_id"],$user_info);#retake info
+
+                    if($retake_info)
+                    {
+                        $retake_date = strtotime($retake_info["retake_date"]);
+                        #test is in waiting state if the time until test can be retaken has NOT elapsed
+                        $test_in_waiting_state = !(EsomoDate::DateTimeHasElapsed($retake_date));
+                    }
+
+                    //If the test is not in waiting state, show it
+                    if(!$test_in_waiting_state):
 ?>
         <header>
             <nav class="top-nav">
@@ -118,17 +136,21 @@
 
 
             ?>
-
-
-
             <?php
                 endif;#if taking test
 
-                else:#testid is set and is a valid test
+                else:#if we need to wait to take the test ~ Test is in waiting state
+                    Test::DisplayWaitRetakeMessage($retake_info,$user_info);
+                endif;
+
+                else:#testid is set and is not a valid test
                     header("Location:./404.html");
                 endif;
+
+
+
             else:#if no test id is provided
-                header("Location:./");
+                header("Location:./"); #redirect to the home page
             endif;
             ?>
 
@@ -194,7 +216,11 @@
             }
 
             //Get marks attainable once the page has loaded
-            InitMarksAttainable();
+            if(parseInt($(document).getUrlParam("edit"))===1)
+            {
+                InitMarksAttainable();
+            }
+
             //function to hide and show content
             function ToggleQuestionType(q_id)
             {
@@ -544,10 +570,51 @@
                 //Redirect to the next page
 
             });
+
+            //Takers next question button pressed
+            $(".taker_next_url").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                var answers_provided = ($(".t_test_answer").is(":checked"));//True if answers have been provided
+
+                //Message displayed when no answer is provided
+                var missing_answer_message = "Please provide at least one answer. Note : Unless you skip this question, you will not be able to come back to it. ";
+
+                //Ensure that at least one answer is provided in order to submit data
+                if(answers_provided)
+                {
+                    //Save question data input as json
+                    var qData = {
+                        "test_id":parseInt($(document).getUrlParam("tid")),
+                        "question_index":parseInt($(document).getUrlParam("q")),
+                        "answers_provided":[],
+                        "skipped":($(this).is("#t_skip_que"))
+                    };
+
+                    //Add all provided answers to an array and update the qData
+                    $.each($(".t_test_answer:checked"),function(index,value)
+                    {
+                        qData["answers_provided"].push($(this).attr("id"));
+                    });
+                    console.log(qData);
+
+                    //Send the information to the handler
+                    $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(data,status){
+                        console.log("Successfully updated the test submission");
+                        window.location= (redirect_url);
+                    });
+                }
+                else//No answer was provided for the question
+                {
+                    Materialize.toast(missing_answer_message,5000);
+                }
+
+
+            });
+
             //When the complete test button is clicked
             $("#complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
-                //Do everything that needs to be done first here
+
                 question_data = GetQuestionData(redirect_url);
 
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
@@ -556,6 +623,39 @@
 
                 //Redirect to the completed test page
                 window.location.replace(redirect_url);
+            });
+
+            //Takers complete test handler
+            $("#t_complete_test").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
+
+                //Marking the last question
+                var answers_provided = ($(".t_test_answer").is(":checked"));//True if answers have been provided
+
+                //Ensure that at least one answer is provided in order to submit data
+                if(answers_provided)
+                {
+                    //Save question data input as json
+                    var qData = {
+                        "test_id":parseInt($(document).getUrlParam("tid")),
+                        "question_index":parseInt($(document).getUrlParam("q")),
+                        "answers_provided":[],
+                        "skipped":false //Last question cannot be skipped
+                    };
+
+                    //Add all provided answers to an array and update the qData
+                    $.each($(".t_test_answer:checked"),function(index,value)
+                    {
+                        qData["answers_provided"].push($(this).attr("id"));
+                    });
+                    $.post("handlers/db_handler.php",{"action":"CompleteTakingTest",qData},function(data,status){
+                        console.log("Completed test");
+                    });
+                }
+
+                //Redirect to the completed test page
+                //window.location.replace(redirect_url);
             });
 
             //When the marks attainable change
@@ -569,16 +669,25 @@
                 $("#txt_marks_allocated").text(marks_alloc);
                 UpdateMarksClasses(marks_alloc,max_grade);//Update the classes showing the different colors
             });
+
+                        //Start test clicked
+            $("#start_test").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
+                //Start timer
+                $.post("handlers/timer_handler.php",{"action":"StartTestTimer","test_id":test_id},function(){
+                    window.location=(redirect_url);
+                });
+
+            });
         });//End of document ready
 
         </script>
 
         <script type="text/javascript" src="js/tests-functions.js"></script>
-        
         <script type="text/javascript" src="js/materialize.js"></script>
-        <script type="text/javascript" src="js/dashboard.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        
+
+        <!--Fullscreen functionality-->
         <script>
         $(document).ready(function() {
             

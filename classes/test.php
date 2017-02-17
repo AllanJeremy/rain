@@ -1,6 +1,7 @@
 <?php
 
 require_once (realpath(dirname(__FILE__) . "/../handlers/db_handler.php")); #Allows connection to database
+require_once (realpath(dirname(__FILE__) . "/../classes/timer.php")); #Allows connection to database
 
 #HANDLES TEST RELATED FUNCTIONS
 class Test
@@ -48,8 +49,8 @@ class Test
 
         <div class="col s12">
             <br>
-            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=".$test["editable"]."&q=";?>
-            <a href="<?php echo $url_extension.'1'; ?>" class="btn btn-large ">START TEST</a>
+            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&q=";?>
+            <a data-redirect-url="<?php echo $url_extension.'1'; ?>" class="btn btn-large" id="start_test">START TEST</a>
         </div>
 
     </div>
@@ -58,9 +59,11 @@ class Test
     //Displays a test, inclusive of all questions
     public static function DisplayTest($test,$question_index)
     {
+        $user_info = MySessionHandler::GetLoggedUserInfo();
+
         //Find the question in the database
         if($question = DbInfo::TestQuestionExists($test["test_id"],$question_index)):
-
+            $timer_info = EsomoTimer::GetTestTimerInfo($test,$user_info);
 ?>
     <div class="row grey darken-2 z-depth-1">
         <div class="container">
@@ -69,7 +72,7 @@ class Test
                     <p class="white-text">Question <span class="php-data"><?php echo $question_index; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
                 </div>
                 <div class="col s6 m4 right pull-s1">
-                    <p class="white-text valign">Time Left <span class="php-data ">1:00</span></p>
+                    <p class="white-text valign">Time Left : <span class="<?php echo $timer_info['timer_class'];?>"><?php echo $timer_info['timer_text'];?></span></p>
                 </div>
             </div>
         </div>
@@ -115,7 +118,7 @@ class Test
                                 foreach($answers as $answer):
                         ?>
                         <p>
-                            <input name="test_answer" type="<?php echo $input_type?>" id="<?php echo $answer['answer_index']?>" />
+                            <input class="t_test_answer" name="test_answer" type="<?php echo $input_type?>" id="<?php echo $answer['answer_index']?>" />
                             <label for="<?php echo $answer['answer_index']?>"><?php echo $answer["answer_text"]; ?></label>
                         </p>
 
@@ -136,10 +139,10 @@ class Test
                         ?>
                         <!--Progress buttons-->
                         <div class="col s6 input-field">
-                            <a class="btn-flat btn-skip-question center" type="submit">skip</a>
+                            <a class="btn-flat btn-skip-question center taker_next_url" id="t_skip_que" data-redirect-url="<?php echo $next_que_url;?>">skip</a>
                         </div>
                         <div class="col s6 input-field">
-                            <a class="btn right" id="next_question" href="<?php echo $next_que_url;?>"><span class="hidden-on-small-only">Next Question</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
+                            <a class="btn right taker_next_url" id="t_next_que" data-redirect-url="<?php echo $next_que_url;?>"><span class="hidden-on-small-only">Next Question</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
                         </div>
                         <?php
                             else:
@@ -148,7 +151,7 @@ class Test
                             <a class="btn-flat btn-skip-question center" type="submit">skipped questions</a>
                         </div>
                         <div class="col s6 input-field">
-                            <a class="btn right" id="complete_test" data-redirect-url="<?php echo $complete_test_url;?>"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
+                            <a class="btn right" id="t_complete_test" data-redirect-url="tests.php?complete_test=1"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
                         </div>
                         <?php
                             endif;
@@ -493,5 +496,22 @@ class Test
                 </div>
             </div>
         <?php
+    }#end of  DisplayEditQuestion
+
+    //Display wait until you can retake Test
+    public static function DisplayWaitRetakeMessage($retake_info)
+    {
+        $retake_date = EsomoDate::GetOptimalDateTime($retake_info["retake_date"]);
+
+?>
+    <div class="container center">
+        <br><br><br><br>
+        <h5 class="grey-text text-darken-1">You need to wait before you can retake this test</h5>
+        <h5 class="grey-text">The soonest you can retake this test is</h5>
+        <h4 class="grey-text text-darken-2"><?php echo $retake_date["date"]." on ".$retake_date["day"]." at ".$retake_date["time"]?></h4>
+        <br>
+        <a class="btn btn-large" href="./#takeATest">BACK TO TESTS</a>
+    </div>
+<?php
     }
 };?>

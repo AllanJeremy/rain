@@ -960,7 +960,127 @@ class DbInfo
         }
 
     }
+    //Return submissions for a specific test and taker'
+    public static function GetSpecificTestSubmissions($test_id,$user_info)
+    {
+        global $dbCon;
 
+        $select_query = "SELECT * FROM test_submissions WHERE test_id=? AND taker_id=? AND taker_type=?";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
+
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    return $result;
+                }
+                else # no submissions found but query executed successfully
+                {
+                    echo "No specific test submissions found";
+                    return false;
+                }
+            }
+            else # failed to execute the query
+            {
+                echo "Failed to execute GetSpecificTestSubmissions query";
+                return false;
+            }
+        }
+        else #failed to prepare query
+        {
+            echo "Failed to prepare GetSpecificTestSubmissions query";
+            return null;
+        }
+    }
+
+    //Check if a test question submission exists in the database. return it if it exists | false if not and null if query couldn't prepare
+    public static function TestQueSubmissionExists($taker_id,$taker_type,$test_id,$question_index)
+    {
+        global $dbCon;#db connection string
+
+        $select_query = "SELECT * FROM test_submissions WHERE taker_id=? AND taker_type=? AND test_id=? AND question_index=?";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            //Bind params
+            $select_stmt->bind_param("isii",$taker_id,$taker_type,$test_id,$question_index);
+
+            //Try executing the query
+            if($select_stmt->execute())
+            {
+                $result = $select_stmt->get_result();
+                if($result->num_rows>0)
+                {
+                    foreach($result as $test_que_submission)
+                    {
+                        return $test_que_submission;
+                    }
+                }
+                else #no test question submissions found
+                {
+                    echo "<p>No test submissions matching those criteria found</p>";
+                    return false;
+                }
+            }
+            else #failed to execute query
+            {
+                echo "Database error : ".$dbCon->error;
+                return false;
+            }
+        }
+        else #failed to prepare query
+        {
+            return null;
+        }
+    }
+
+    //Get the test retake information for a given taker
+    public static function GetTestRetake($test_id,$user_info)
+    {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM test_retakes WHERE test_id=? AND taker_id=? AND taker_type=?";
+
+        //Prepare the query
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
+
+            //Try to execute the query after binding the parameters
+            if($select_stmt->execute())
+            {
+                $results = $select_stmt->get_result();
+
+                //Check if any records were found
+                if($results->num_rows>0)
+                {
+                    foreach($results as $result_found)
+                    {
+                        return $result_found; #return a single result
+                    }
+                }
+                else
+                {
+                    echo "<p>Test retake info query ran.<br>Could not find any test retake info based on the parameter values provided</p>";
+                    return false;
+                }
+            }
+            else
+            {
+                echo "<p>Failed to execute query to retrieve test retake info</p>";
+                return false;
+            }
+        }
+        else # failed to prepare the query
+        {
+            echo "<p>Failed to prepare query to retrieve test retake information </p>";
+            return null;
+        }
+    }
 /*----------------------------------------------------------------------------------------------------------
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
@@ -1094,6 +1214,7 @@ class DbInfo
         }
     }
 
+    //Reverses the result of a mysqli_result and returns an array in reversed order
     public static function ReverseResult($mysqli_result)
     {
         $result_array = array();

@@ -2,6 +2,10 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php"));#Used to retrieve information from the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Used for password encryption
 
+require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Session related functions ~ eg. login info
+require_once(realpath(dirname(__FILE__). "/../handlers/grade_handler.php")); #Handles grade related functions
+require_once(realpath(dirname(__FILE__). "/../handlers/date_handler.php")); #Handles date related functions
+
 
 #HANDLES DATABASE FUNCTIONS THAT INVOLVE UPDATING/DELETING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
@@ -754,6 +758,303 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             }
             return false;
         }
+    /*
+    -----------------------------------------------------------------------------------------
+                                UPDATING TEST QUESTION SUBMISSIONS
+    -----------------------------------------------------------------------------------------
+    */
+    //Update a test question submission if it exists or add a new one if it does not exist;
+    public static function UpdateTestQuestionSubmission($q_data)
+    {
+        global $dbCon;#db connection string
+
+        //Returns user info if there is a logged in user ~ returns false if no user is logged in
+        if($user_info = MySessionHandler::GetLoggedUserInfo())
+        {
+            $sub_info = array(
+                "taker_id"=>$user_info["user_id"],
+                "taker_type"=>$user_info["account_type"],
+                "test_id"=>$q_data["test_id"],
+                "question_index"=>$q_data["question_index"],
+                "answers_provided"=>"",#to be updated below
+                "skipped"=>$q_data["skipped"]
+            );
+
+            //Add answers provided into a string of concatenated comma separated values
+            foreach($q_data["answers_provided"] as $answer_provided)
+            {
+                $sub_info["answers_provided"] .= $answer_provided.",";#concatenate the answer_index
+            }
+
+            //Query used to update/insert records into the database
+            $update_query = "";
+
+            if($submission_found = DbInfo::TestQueSubmissionExists($sub_info["taker_id"],$sub_info["taker_type"],$sub_info["test_id"],$sub_info["question_index"]))
+            {
+                $update_query = "UPDATE test_submissions SET taker_id=?,taker_type=?,test_id=?,question_index=?,answers_provided=?,skipped=? WHERE submission_id=".$submission_found["submission_id"];
+            }
+            else
+            {
+                $update_query = "INSERT INTO test_submissions(taker_id,taker_type,test_id,question_index,answers_provided,skipped) VALUES(?,?,?,?,?,?)";
+            }
+
+            //Attempt to prepare the query
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("isiisi",$sub_info["taker_id"],$sub_info["taker_type"],$sub_info["test_id"],$sub_info["question_index"],$sub_info["answers_provided"],$sub_info["skipped"]);
+
+                if($update_stmt->execute())
+                {
+                    echo "<p>Successfully updated question submission</p>";
+                    return true;
+                }
+                else
+                {
+                    echo "<p>Failed to <b>run</b> query.<br>Error : ".$dbCon->error."</p>";
+                    return false;
+                }
+            }
+            else #failed to prepare query
+            {
+                echo "<p>Failed to <b>prepare</b> query.<br>Error : ".$dbCon->error."</p>";
+                return null;
+            }
+        }
+        else
+        {
+            echo "<p>No logged in user. Failed to update Test Question Submissions</p>";
+            return false;
+        }
+    }
+    /*
+    -----------------------------------------------------------------------------------------
+                               MANAGING TEST RETAKES
+    -----------------------------------------------------------------------------------------
+    */
+
+    //Update Test retake ~ only used internally by other functions (private function)
+    private static function UpdateTestRetake($test_id,$user_info)
+    {
+        global $dbCon;
+        $date_taken = NULL; $retake_date=NULL; #Initialization to make the variables accessible in the scope of the function
+
+        if($test = DbInfo::TestExists($test_id))
+        {
+            //Dates
+            $date_taken = EsomoDate::GetCurrentDate();
+            $retake_date = EsomoDate::GetDateSum($date_taken,array("days"=>$test["retake_delay_days"],"hours"=>$test["retake_delay_hours"],"min"=>$test["retake_delay_min"]));
+
+        }
+        else
+        {
+            echo "<p>Test with the id provided could not be found in database.<br><b>Accessed from UpdateTestRetake</b>, terminating execution of the function</p>";
+            return false;
+        }
+
+        //Update query
+        $update_query = "";
+
+        //If the retake information exists in the database, update it, otherwise, add it to the database
+        if($retake_info = DbInfo::GetTestRetake($test_id,$user_info))
+        {
+            $update_query = "UPDATE test_retakes SET test_id=?,taker_id=?,taker_type=?,date_taken=?,retake_date=? WHERE retake_id=".$retake_info["retake_id"];
+        }
+        else
+        {
+            $update_query = "INSERT INTO test_retakes(test_id,taker_id,taker_type,date_taken,retake_date) VALUES(?,?,?,?,?)";
+        }
+
+        //Prepare the query
+        if ($update_stmt = $dbCon->prepare($update_query))
+        {
+            $update_stmt->bind_param("iisss",$test_id,$user_info["user_id"],$user_info["account_type"],$date_taken,$retake_date);
+
+            //Try executing the update statement
+            if($update_stmt->execute())
+            {
+                echo "<p>Updated test retake info</p>";
+                return true;
+            }
+            else #failed to execute the query
+            {
+                echo "<p>Failed to run query to update test retake info</p>";
+                return false;
+            }
+        }
+        else #failed to prepare the query
+        {
+            echo "<p>Failed to prepare query to update test retake info</p>";
+            return null;
+        }
+    }
+
+    /*
+    -----------------------------------------------------------------------------------------
+                               MARKING TESTS
+    -----------------------------------------------------------------------------------------
+    */
+    //Enters the results into the database
+    private static function StoreTestResults($results)
+    {
+        global $dbCon;
+    }
+
+    //Marks the test and returns an associative array containing the results information
+    public static function MarkTest($test_id,$user_info)
+    {
+        $max_grade = 100; #default max grade for the test if we cannot find it in the database
+
+        if($test = DbInfo::TestExists($test_id))
+        {
+            $max_grade = (int)$test["max_grade"];
+        }
+
+
+        //Get the question submissions for the currently test taker
+        if($submissions = DbInfo::GetSpecificTestSubmissions($test_id,$user_info))
+        {
+            $test = DbInfo::TestExists($test_id);
+
+            //Associative array storing results information. Db info to be printed in a pdf
+            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"","verdict"=>"PASS");
+
+            #Variables for storing the information on the various questions
+            $total_marks = 0;
+            $answers_right = 0;
+            $answers_wrong = 0;
+            $question_id = 1;
+
+            //TODO : Add loading bar and variable to keep track of result generation progress
+
+
+            //Check every submission and calculate performance
+            foreach($submissions as $sub)
+            {
+                //Check if the question exists. If it does, set the question_id
+                if($question = DbInfo::TestQuestionExists($test_id,$sub["question_index"]))
+                {
+                    $question_id = $question["question_id"];
+
+                    // Create  an array from csv answers in db
+                    if($answers = DbInfo::GetArrayFromList($sub["answers_provided"]))
+                    {
+                        foreach($answers as $answer_index)
+                        {
+                            //If we found the answer in teh database
+                            if($answer_found = DbInfo::QuestionAnswerExists($question_id,$answer_index))
+                            {
+                                //Check if it is the correct answer, if it is, ++marks and ++answers_right else ++answers_wrong
+                                if($answer_found["right_answer"])
+                                {
+                                    $total_marks += $answer_found["marks_attainable"];
+                                    $answers_right++;
+                                }
+                                else
+                                {
+                                    $answers_wrong++;
+                                    continue 1;#check the next answer
+                                }
+                            }
+                            else #Answer was not found in the database
+                            {
+                                echo "Answer was not found in the database";
+                            }
+                        }
+                    }
+                    else # Answers for this question could not be found
+                    {
+                        continue 1; #next loop iteration ~ Check the next question (submission)
+                    }
+                }
+                else
+                {
+                    echo "Could not find the question in the database";
+                    continue 1;
+                }
+
+            }#end of foreach $submissions
+
+
+            //Update some result values
+            $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
+            $results["grade"] = $total_marks;
+            $results["percentage"] = ($grade_info["percentage"]*100)."% ";
+            $results["grade_text"] = $grade_info["grade_text"];
+            $results["answers_right"] = $answers_right;
+            $results["answers_wrong"] = $answers_wrong;
+            $results["date_generated"] = "";
+            $results["completion_time"] = 0;
+
+            //Determine the verdict of test results
+            if($pass_grade = $test["passing_grade"])
+            {
+                if($results["grade"]>=$pass_grade)
+                {
+                    $results["verdict"] = "PASS";
+                }
+                else
+                {
+                    $results["verdict"] = "FAIL";
+                }
+            }
+            self::UpdateTestRetake($test_id,$user_info);
+            self::StoreTestResults($results); # Store the test results in the database
+            return $results;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    //Delete a test's and user's submission ~ typically used once the submission data has been used to mark the exam
+    public static function DeleteSpecificSubmission($test_id,$user_info)
+    {
+        global $dbCon; #db connection string
+        $delete_query = "DELETE * FROM test_submissions WHERE test_id=? AND taker_id=? AND taker_type=?";
+
+        if($delete_stmt = $dbCon->prepare($delete_query))
+        {
+            $delete_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
+            if($delete_stmt->execute())
+            {
+                echo "Deleted ".$delete_stmt->affected_rows." specified submissions";
+                return true;
+            }
+            else
+            {
+                echo "Failed to run query to delete specific submissions";
+                return false;
+            }
+        }
+        else
+        {
+            echo "Failed to prepare query to delete specific submissions";
+            return null;
+        }
+
+    }
+
+    /*
+    -----------------------------------------------------------------------------------------
+                               PROCESSING TEST RESULTS
+    -----------------------------------------------------------------------------------------
+    */
+
+    //Generates a report for the results as well as writes to pdf
+    public static function GenerateTestResultsReport($results)
+    {
+        echo "<h3>Test results Report</h3><ul>";
+            echo "<li>Full Name : ".$results["full_name"]."</li>";
+            echo "<li>Grade (marks) :".$results["grade"]." out of ".$results["max_grade"]."</li>";
+            echo "<li>Percentage : ".$results["percentage"]."</li>";
+            echo "<li>Grade Achieved : ".$results["grade_text"]."</li>";
+            echo "<li>Verdict : ".$results["verdict"]."</li>";
+            echo "<li>Answers right : ".$results["answers_right"]."</li>";
+            echo "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
+        echo "</ul>";
+    }
 
 };#END OF CLASS
 
@@ -767,6 +1068,8 @@ if(isset($_POST['action'])) {
     
     sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
     
+    $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
+
     switch($_POST['action']) {
         case 'UpdateClassroomInfo':
             
@@ -809,8 +1112,7 @@ if(isset($_POST['action'])) {
                 echo $result;
                 
             }
-            
-            //dddd
+
             break;
         //Create a Test
         case 'CreateTest':
@@ -829,13 +1131,54 @@ if(isset($_POST['action'])) {
 
         //Update a question in the test
         case 'UpdateTestQuestion':
-
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);
             $q_data = $_POST["q_data"];
             DbHandler::UpdateQuestion($q_data);
 
             #once this is done redirect the user to the redirect page as soon as the data is updated
+        break;
+
+        //Update a test submission ~ Add submission info into the database
+        case 'UpdateTestSubmission':
+            //~Computational delay to prevent bots from spamming and DDOS
+            //sleep(200);
+            $q_data = $_POST["qData"];
+            DbHandler::UpdateTestQuestionSubmission($q_data);
+        break;
+
+        //Complete a test ~ Mark the test and return results
+        case 'CompleteTakingTest':
+            $q_data = $_POST["qData"]; #question data
+            $test_id = htmlspecialchars($q_data["test_id"]); #current test id
+
+            DbHandler::UpdateTestQuestionSubmission($q_data);//Add the current question submission
+
+            //If the test has already been taken
+            if($retake_info = Dbinfo::GetTestRetake($test_id,$user_info))
+            {
+                $retake_date_time = strtotime($retake_info["retake_date"]);
+                $time_has_elapsed = EsomoDate::DateTimeHasElapsed($retake_date_time);
+                echo "<p>Time has elapsed : ";
+                var_dump($time_has_elapsed);
+                echo "</p>";
+                //If the current time is a time past the retake time ~ allow for retake
+                if($time_has_elapsed)
+                {
+                    $test_results = DbHandler::MarkTest($test_id,$user_info);
+                    DbHandler::GenerateTestResultsReport($test_results);
+                }
+                else
+                {
+                    echo "<p>You need to wait before you can retake the exam</p>";
+                }
+            }
+            else # the test does not exist in the database
+            {
+                $test_results = DbHandler::MarkTest($test_id,$user_info);
+                DbHandler::GenerateTestResultsReport($test_results);
+            }
+
         break;
 
         default:
