@@ -965,7 +965,7 @@ class DbInfo
                     EXTRA FUNCTIONALITY 
 ----------------------------------------------------------------------------------------------------------*/
     //Reverses a mysqli_result and returns an array with the values reversed
-    public static function Paginate($listdata,$paginationtype, $numberperrows, $active) {
+    public static function Paginate($listdata,$paginationtype, $numberperrows, $active, $type) {
 
         if(count($listdata) > 11) {
 
@@ -997,7 +997,7 @@ class DbInfo
                     echo '<td class="right-align" >'.$val['due_date'].'</td>';
                     echo '<td class="right-align schedule-action" width="120">';
                     echo '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-                    echo '<a class="btn-icon" id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                    echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
                     echo '</td>';
                     echo '</tr>';
 
@@ -1020,8 +1020,8 @@ class DbInfo
                 echo '<td>'.$list['schedule_description'].'</td>';
                 echo '<td class="right-align" >'.$list['due_date'].'</td>';
                 echo '<td class="right-align schedule-action" width="120">';
-                echo '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-                echo '<a class="btn-icon" id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
                 echo '</td>';
                 echo '</tr>';
 
@@ -1032,9 +1032,9 @@ class DbInfo
         }
     }
 
-    public static function PaginateControl($active, $position, $numberOfTbody) {
+    public static function PaginateControl($active, $position, $numberOfTbody, $tableid) {
 
-        echo '<ul class="pagination '.$position.'">';
+        echo '<ul class="pagination '.$position.'" data-table-target="'.$tableid.'">';
 
         if ($numberOfTbody > 1) {
             //loop

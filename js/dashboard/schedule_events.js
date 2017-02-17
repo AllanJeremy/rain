@@ -14,11 +14,12 @@ var ScheduleEvents = function () {
         //schedule inits
         openScheduleForm();     //done
         closeScheduleForm();    //done
-        submitSchedule();       //60%
+        submitSchedule();       //done
         editSchedule();
         deleteSchedule();
         markDone();
         markAllDone();
+        openSchedule();
         overdueScheduleReminder();
         getPendingSchedules();
         archiveSchedule();
@@ -27,6 +28,7 @@ var ScheduleEvents = function () {
         updateClassroomDropdownExtraInfo();     //done
         updateSubTopicDropdown();               //done
         addObjectiveFromSubtopics();            //done
+        tableNavigate();                        //done
         
     };
     
@@ -139,6 +141,8 @@ var ScheduleEvents = function () {
                         
                         $.get("handlers/db_info.php", {"action": "ScheduleExistsByGuid", "guid_id" : scheduleguidid }, function (data) {
 
+                            //clear the form inputs
+
                             $('#scheduleCreateFormContainer input#schedule_title').val('');
                             $('#scheduleCreateFormContainer select#schedule_classroom').val('');
                             $('#scheduleCreateFormContainer #descriptionTextarea').val('');
@@ -147,6 +151,8 @@ var ScheduleEvents = function () {
                             $('#scheduleCreateFormContainer input#scheduleTime').val('');
                             $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val('');
                             $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val('');
+
+                            //close the form
 
                             $('#scheduleCreateFormContainer').slideUp('600', function () {
 
@@ -168,7 +174,8 @@ var ScheduleEvents = function () {
                                 "scheduledescription": data.schedule_description,
                                 "scheduleclass": $('#scheduleCreateFormContainer #extraClassroomInfo p#ClassroomSubject').find('span').text(),
                                 "scheduledatetime": scheduledatetime,
-                                "scheduleid": data.schedule_id
+                                "scheduleid": data.schedule_id,
+                                "scheduletype": 'pending'
                             };
 
                             console.log(scheduledata.scheduleclass);
@@ -190,7 +197,7 @@ var ScheduleEvents = function () {
 
                             if (pendingScheduleHook.children('tr').length > paginationthrough) {
 
-                                updatePagination('#schedulesTab table#pendingScheduleTable > tbody:first', '#pendingScheduleTable');
+                                updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', paginationthrough, 'forward');
 
                             }
 
@@ -210,12 +217,239 @@ var ScheduleEvents = function () {
         
     };
 
-    var updatePagination = function (str1, str2) {
+    var updatePagination = function (str1, str2, str3, str4, str5) {
 
-        var hook = str1,
-            tableid = str2;
+        var tablehook = str1,
+            child = str2,
+            tableid = str3,
+            listlimit = str4,
+            direction = str5,
+            toMove = '';
 
+        if (direction === 'forward') {
+
+            for(var k = 0; k < $(tablehook).children(child).length; k++) {
+
+                var next = k + 1;
+
+                $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr').each( function (i,el) {
+
+                    if (i > (listlimit - 1)) {
+
+                        toMove += el.outerHTML;
+
+                        if ($(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[i] !== undefined) {
+
+                            $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[i].outerHTML = '';
+
+                        } else {
+
+                            $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[(listlimit - 1)].outerHTML = '';
+                        }
+
+                    } else {
+
+                        toMove += '';
+
+                    }
+
+                });
+                console.log('data for tbody number : ' + k + ' is => ' + toMove);
+                console.log(next + ' : ' + $(tablehook).children(child).length);
+
+                if (toMove !== '') {
+
+                    if(next <= $(tablehook).children(child).length) {
+
+                        $(tablehook + ' ' + child + '[data-tbody-number=' + next + ']').prepend(toMove);
+
+                        toMove = '';
+
+                    }
+                }
+            };
+
+        } else if (direction === 'backward') {
+
+            for(var k = 0; k < $(tablehook).children(child).length; k++) {
+
+                var next = k + 1,
+                    needed = listlimit - $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr').length;
+
+                if(next <= $(tablehook).children(child).length) {
+
+                    $(tablehook + ' ' + child + '[data-tbody-number=' + next + ']').children('tr').each( function (i,el) {
+
+                        if (i <= (needed - 1)) {
+
+                            toMove += el.outerHTML;
+
+                            $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[0].outerHTML = '';
+
+                        } else {
+
+                            toMove += '';
+
+                        }
+
+                    });
+
+                    console.log('data for tbody number : ' + k + ' is => ' + toMove);
+                    console.log(next + ' : ' + $(tablehook).children(child).length);
+
+                    if (toMove !== '') {
+
+                        $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').append(toMove);
+
+                        toMove = '';
+
+                    }
+                }
+            };
+
+        }
+    };
+
+    var tableNavigate = function () {
+
+        console.log('Adding navigation function init');
+
+        $('main').on('click', 'ul.pagination li', function (e) {
         
+            e.preventDefault();
+
+            if ($(this).hasClass('active') || $(this).hasClass('disabled')) { //If the clicked li is active or disabled, do nothing
+                console.log('is active. do nothing');
+                return false;
+            } else {
+
+                var targettable = $(this).parent('ul').attr('data-table-target'),
+                    paginationcontroltype = $(this).children('a').attr('id'),
+                    activepagenumber = $(this).parent('ul').find('li.active').children('a')[0].innerHTML,
+                    activepagecontrol = $(this).parent('ul').find('li.active'),
+                    clickedpagecontrol = $(this),
+                    clickedpagenumber = $(this).children('a')[0].innerHTML,
+                    totalpagecontrols = $(this).parent('ul')[0].childElementCount;
+
+                switch (paginationcontroltype) {
+
+                    case 'goToLeftPage' : //Left
+                        console.log('left clicked');
+
+                        var previouspage = (parseInt(activepagenumber) - 1),
+                            previouspagecontrol = clickedpagecontrol.parent('ul').find('li:nth(' + previouspage + ')');
+
+                        if (previouspage > 0) {
+
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').fadeOut(300, function() {
+
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').removeClass('active');
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').addClass('hide');
+
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ previouspage +']')[0].style.opacity = 0;
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ previouspage +']').addClass('active');
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ previouspage +']').removeClass('hide');
+
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ previouspage +']').animate({
+                                    opacity : 1
+                                }, 330);
+
+                                activepagecontrol.removeClass('active');
+                                console.log(previouspagecontrol);
+                                previouspagecontrol.addClass('active');
+
+                                $(this).fadeIn(200);
+
+                                if (parseInt(activepagenumber) === 2) {
+                                    clickedpagecontrol.parent('ul').find('li:first-child').addClass('disabled');
+
+                                }
+
+                            });
+
+                        }
+
+                        break;
+                    case 'goToRightPage' : //Left
+                        console.log('right clicked');
+
+                        var nextpage = (parseInt(activepagenumber) + 1),
+                            nextpagecontrol = clickedpagecontrol.parent('ul').find('li:nth(' + nextpage + ')');
+
+                        if (nextpage <= (totalpagecontrols - 2)) {
+
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').fadeOut(300, function() {
+
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').removeClass('active');
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').addClass('hide');
+
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ nextpage +']')[0].style.opacity = 0;
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ nextpage +']').addClass('active');
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ nextpage +']').removeClass('hide');
+
+                                $('table#' + targettable).find('tbody[data-tbody-number='+ nextpage +']').animate({
+                                    opacity : 1
+                                }, 330);
+
+                                activepagecontrol.removeClass('active');
+                                //console.log(nextpagecontrol);
+                                nextpagecontrol.addClass('active');
+
+                                $(this).fadeIn(200);
+
+                                if (parseInt(activepagenumber) === 1) {
+                                    clickedpagecontrol.parent('ul').find('li:first-child').removeClass('disabled');
+
+                                } else if (parseInt(nextpagecontrol.children('a')[0].innerHTML) === (totalpagecontrols - 2)) {
+                                    clickedpagecontrol.parent('ul').find('li:last-child').addClass('disabled');
+
+                                }
+                            });
+                        }
+
+                        break;
+                    default : //normal
+                        console.log('others clicked');
+
+                        $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').fadeOut(300, function() {
+
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').removeClass('active');
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ parseInt(activepagenumber) +']').addClass('hide');
+
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ clickedpagenumber +']')[0].style.opacity = 0;
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ clickedpagenumber +']').addClass('active');
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ clickedpagenumber +']').removeClass('hide');
+
+                            $('table#' + targettable).find('tbody[data-tbody-number='+ clickedpagenumber +']').animate({
+                                opacity : 1
+                            }, 330);
+
+                            activepagecontrol.removeClass('active');
+                            clickedpagecontrol.addClass('active');
+
+                            $(this).fadeIn(200);
+
+                            if (parseInt(activepagenumber) === 1 && clickedpagecontrol.parent('ul').find('li:first-child').hasClass('disabled')) {
+                                clickedpagecontrol.parent('ul').find('li:first-child').removeClass('disabled');
+
+                            } else if (clickedpagecontrol.parent('ul').find('li:last-child').hasClass('disabled') && clickedpagenumber !== (totalpagecontrols - 2)) {
+                                clickedpagecontrol.parent('ul').find('li:last-child').removeClass('disabled');
+
+                            }
+
+                            if (parseInt(clickedpagenumber) === (totalpagecontrols - 2)) {
+                                clickedpagecontrol.parent('ul').find('li:last-child').addClass('disabled');
+
+                            } else if (parseInt(clickedpagenumber) === 1) {
+                                clickedpagecontrol.parent('ul').find('li:first-child').addClass('disabled');
+
+                            }
+                        });
+
+                        break;
+                }
+            }
+        });
     };
     
     var addObjective = function () {
@@ -400,6 +634,44 @@ var ScheduleEvents = function () {
         
     var markDone = function () {
         
+        $('main').on('click', 'a#attendedSchedule', function(e) {
+            e.preventDefault();
+
+
+            console.log('marking done...');
+        });
+    };
+
+    var openSchedule = function () {
+
+        $('main').on('click', 'a#openSchedule', function(e) {
+            e.preventDefault();
+
+            console.log('opening...');
+
+            //variables for the modal
+            var template = {
+                classes: resultData.classes,
+                modalId: 'editClassRoom',
+                templateHeader: 'Edit Classroom',
+                templateBody: formTemplate,
+                modalActionType: 'type="submit"',
+                modalActionTypeText: 'Update classroom',
+                extraActions: Lists_Templates.editExtraFooterActions({
+                    "Delete" : true,
+                    "Archive" : true,
+                    "Reload" : false
+                })
+            };
+            //Ajax
+            //load the modal in the DOM
+            $('main').append(Lists_Templates.modalTemplate(template));
+
+            $(this).attr('data-target', template.modalId);
+
+            $('#' + template.modalId).openModal({dismissible:false});
+
+        });
     };
         
     var markAllDone = function () {
@@ -418,6 +690,60 @@ var ScheduleEvents = function () {
         
     };
     
+    //--------------------------------
+    //--------------------------------  MODAL EVENTS AND FUNCTIONS
+    //--------------------------------
+
+    //----------------------------      FUNCTIONS
+
+    var loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
+
+        var args = {
+            modalId: modal_id,
+            modalActionType: {
+                actionClose: 'close-hivi',
+                actionAdd: 'add-hivi'
+            },
+            modal_action: modal_action,
+            templateHeader: modal_header,
+            templateBody: modal_body
+
+        };
+
+    var esomoModal = Lists_Templates.esomoModalTemplate(args);
+
+        $('main').append(esomoModal);
+
+    };
+
+    //--------------------------------
+
+    var cleanOutModal = function (str) {
+
+        console.log('cleaning out modal' + str);
+
+        $('.modal' + str).remove();
+
+        console.log($('main').find('.modal' + str).length);
+
+    };
+
+    //----------------------------
+
+    var cleanOutModals = function () {
+
+        console.log('cleaning out classrooms dialogs');
+
+        //$('a#createClassroom').attr('data-target', '');
+
+        $('.modal ').remove();
+
+    };
+
+    //--------------------------------
+    //--------------------------------  END OF MODAL EVENTS AND FUNCTIONS
+    //--------------------------------
+
     this.__construct();
 
 };

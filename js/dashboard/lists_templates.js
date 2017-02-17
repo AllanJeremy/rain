@@ -549,7 +549,8 @@ var Lists_Templates = function () {
         templateOutput += '<td class="right-align">' + obj.scheduledatetime + '</td>';
         templateOutput += '<td class="right-align schedule-action" width="120">';
         templateOutput += '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-        templateOutput += '<a class="btn-icon" id="openSchedule"><i class="material-icons">expand_more</i></a>';
+        templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide': '') + '" id="openSchedule">';
+        templateOutput += '<i class="material-icons">expand_more</i></a>';
         templateOutput += '</td>';
         
         return templateOutput;
@@ -564,14 +565,14 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<table class="bordered responsive-table" id="pendingScheduleTable">';
+        templateOutput += '<table class="bordered-light responsive-table" id="pendingScheduleTable">';
         templateOutput += '<thead class="' + obj.includethead + '">';
         templateOutput += '<tr>';
-        templateOutput += '<th data-field="id">' + obj.tableidcolumnname + '</th>';
-        templateOutput += '<th data-field="id">' + obj.tableschedulenamecolumnname + '</th>';
-        templateOutput += '<th data-field="id">' + obj.tablescheduledescriptioncolumnname + '</th>';
-        templateOutput += '<th data-field="id">' + obj.tablescheduletimecolumnname + '</th>';
-        templateOutput += '<th data-field="id">' + obj.tablescheduleextraactionscolumn + '</th>';
+        templateOutput += '<th data-field="id" class="center-align">' + obj.tableidcolumnname + '</th>';
+        templateOutput += '<th data-field="id" class="center-align">' + obj.tableschedulenamecolumnname + '</th>';
+        templateOutput += '<th data-field="id" class="center-align">' + obj.tablescheduledescriptioncolumnname + '</th>';
+        templateOutput += '<th data-field="id" class="center-align">' + obj.tablescheduletimecolumnname + '</th>';
+        templateOutput += '<th data-field="id" class="center-align">' + obj.tablescheduleextraactionscolumn + '</th>';
         templateOutput += '</tr>';
         templateOutput += '</thead>';
         templateOutput += '<tbody>';

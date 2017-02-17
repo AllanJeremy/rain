@@ -376,6 +376,11 @@ table {
     border-bottom: 1px solid $table-border-color;
   }
 
+  &.bordered-light > thead > tr,
+  &.bordered-light > tbody > tr {
+    border-bottom: 1px solid $table-border-light-color;
+  }
+
   &.striped > tbody {
     > tr:nth-child(odd) {
       background-color: $table-striped-color;
@@ -406,7 +411,7 @@ thead {
 }
 
 td, th{
-  padding: 12px 5px;
+  padding: 13px 5px;
   display: table-cell;
   text-align: left;
   vertical-align: middle;
@@ -481,6 +486,13 @@ td, th{
       td { border-left: 0; border-right: 0; border-bottom: 0; }
       tr { border: 0; }
       tbody tr { border-right: 1px solid $table-border-color; }
+    }
+
+    &.bordered-light {
+      th { border-bottom: 0; border-left: 0; }
+      td { border-left: 0; border-right: 0; border-bottom: 0; }
+      tr { border: 0; }
+      tbody tr { border-right: 1px solid $table-border-light-color; }
     }
 
   }

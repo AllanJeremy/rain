@@ -563,42 +563,43 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     </div>
                     <div class="divider"></div>
                     <br>
-                    <table class="bordered responsive-table" id="pendingScheduleTable" data-paginate-through="6">
+                    <table class="bordered-light responsive-table" id="pendingScheduleTable" data-paginate-through="6">
                         <thead>
                             <tr>
-                                <th data-field="name">Schedule title</th>
-                                <th data-field="description">schedule description</th>
-                                <th data-field="due" class="right-align">Due date</th>
-                                <th data-field="action" class="hide">Action</th>
+                                <th data-field="name" class="center-align">Schedule title</th>
+                                <th data-field="description" class="center-align">schedule description</th>
+                                <th data-field="due" class="center-align">Due date</th>
+                                <th data-field="action" class="center-align">Action</th>
                             </tr>
                         </thead>
-                            <?php
+                        <?php
 
-                            $teacher_acc_id = $_SESSION['admin_acc_id'];
+//                        $teacher_acc_id = $_SESSION['admin_acc_id'];
 
-                            $teacherSchedules = DBInfo::GetSpecificTeacherSchedules($teacher_acc_id);
+                        $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
 //                                var_dump($teacherSchedules=>num_rows);
 
-                            $i = 0;
+                        $i = 0;
 
-                            foreach($teacherSchedules as $pendingschedules) {
+                        foreach($teacherSchedules as $pendingschedules) {
 
-                                if($pendingschedules['attended_schedule'] == 0) {
+                            if($pendingschedules['attended_schedule'] == 0) {
 
-                                    $pendingSchedulesData[$i] = $pendingschedules;
-                                }
-
-                                $i++;
+                                $pendingSchedulesData[$i] = $pendingschedules;
                             }
 
-                            $listdata = $pendingSchedulesData;
-                            $paginationtype = 'table';
-                            $numberperrows = 6;
-                            $active = 1;
+                            $i++;
+                        }
 
-                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active);
+                        $listdata = $pendingSchedulesData;
+                        $paginationtype = 'table';
+                        $numberperrows = 6;
+                        $active = 1;
+                        $type = 'pending';
 
-                            ?>
+                        DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+
+                        ?>
                     </table>
                     <div class="row">
                     <?php
@@ -607,7 +608,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 
                     $position = 'center';
 
-                    DBInfo::PaginateControl($active, $position, $numberOfTbody);
+                    DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
 
                     ?>
 
@@ -627,39 +628,40 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     </div>
                     <div class="divider"></div>
                     <br>
-                    <table class="bordered responsive-table" id="attendedScheduleTable" data-paginate-through="6">
+                    <table class="bordered-light responsive-table" id="attendedScheduleTable" data-paginate-through="6">
                         <thead >
                             <tr>
-                                <th data-field="name">Schedule title</th>
-                                <th data-field="description">schedule description</th>
-                                <th data-field="due" class="right-align">Due date</th>
-                                <th data-field="action" class="hide">Action</th>
+                                <th data-field="name" class="center-align">Schedule title</th>
+                                <th data-field="description" class="center-align">schedule description</th>
+                                <th data-field="due" class="center-align">Due date</th>
+                                <th data-field="action" class="center-align">Action</th>
                             </tr>
                         </thead>
-                            <?php
+                        <?php
 
-                            $i = 0;
+                        $i = 0;
 
-                            foreach($teacherSchedules as $attendedschedules) {
+                        foreach($teacherSchedules as $attendedschedules) {
 
-                                if($attendedschedules['attended_schedule'] == 1) {
+                            if($attendedschedules['attended_schedule'] == 1) {
 
-                                    $attendedSchedulesData[$i] = $attendedschedules;
-                                }
-
-                                $i++;
+                                $attendedSchedulesData[$i] = $attendedschedules;
                             }
 
-                            $listdata = $attendedSchedulesData;
-                            $paginationtype = 'table';
-                            $numberperrows = 6;
-                            $active = 1;
+                            $i++;
+                        }
 
-                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active);
+                        $listdata = $attendedSchedulesData;
+                        $paginationtype = 'table';
+                        $numberperrows = 6;
+                        $active = 1;
+                        $type = 'done';
 
-                            //var_dump($teacherSchedules);
+                        DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
 
-                            ?>
+                        //var_dump($teacherSchedules);
+
+                        ?>
                     </table>
                     <div class="row">
                     <?php
@@ -668,7 +670,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 
                     $position = 'center';
 
-                    DBInfo::PaginateControl($active, $position, $numberOfTbody);
+                    DBInfo::PaginateControl($active, $position, $numberOfTbody, 'attendedScheduleTable');
 
                     ?>
 
@@ -681,14 +683,11 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 ?>
                 <!--Create a test-->
                 <div class="row main-tab" id="createTestTab">
-<<<<<<< HEAD
 
                     <div class="col s12">
                         <p class="grey-text">Create test</p>
-=======
                     <div class="col s12 grey-text">
                         <p class="grey-text">Create Test. Once a test is created you will be redirected to the test editing page page</p>
->>>>>>> origin/master
                         <div class="divider"></div>
                     <br>
                     </div>
