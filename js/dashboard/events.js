@@ -60,6 +60,8 @@ var Events = function () {
         
         $('main').on('change', 'input[type="checkbox"]', function (o) {
             
+            o.preventDefault();
+
             var totalCount = $('#' + modal_id).find('input[type="checkbox"]:checked').length;
             
             console.log('progress bar event listener on ' + totalCount + ' checkboxes.');
@@ -71,7 +73,9 @@ var Events = function () {
     
     var closeModalsEvent = function () {
         
-        $('main').on('click', '.modal a#modalFooterCloseAction.modal-close', function () {
+        $('main').on('click', '.modal a#modalFooterCloseAction.modal-close', function (e) {
+
+            e.preventDefault();
             
             console.log('removing modal from DOM');
         

@@ -586,31 +586,45 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                             if($pendingschedules['attended_schedule'] == 0) {
 
                                 $pendingSchedulesData[$i] = $pendingschedules;
+
+                                $i++;
                             }
 
-                            $i++;
                         }
 
-                        $listdata = $pendingSchedulesData;
                         $paginationtype = 'table';
                         $numberperrows = 6;
                         $active = 1;
                         $type = 'pending';
+                        $listdata = '1';
 
-                        DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+                        if (isset($pendingSchedulesData)) {
+
+                            $listdata = $pendingSchedulesData;
+
+                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+
+                        } else {
+
+                            echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                        }
 
                         ?>
                     </table>
                     <div class="row">
-                    <?php
-                    
-                    $numberOfTbody = ceil((count($listdata) / $numberperrows));
+                        <?php
 
-                    $position = 'center';
+                        $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
 
-                    DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
+                        if ($numberOfTbody == 0) {
+                            $numberOfTbody = 1;
+                        }
 
-                    ?>
+                        $position = 'center';
+
+                        DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
+
+                        ?>
 
                     </div>
                     <div class="row no-bottom-margin">
@@ -641,38 +655,48 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 
                         $i = 0;
 
+                        $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
+
                         foreach($teacherSchedules as $attendedschedules) {
 
                             if($attendedschedules['attended_schedule'] == 1) {
 
                                 $attendedSchedulesData[$i] = $attendedschedules;
+
+                                $i++;
                             }
 
-                            $i++;
                         }
 
-                        $listdata = $attendedSchedulesData;
                         $paginationtype = 'table';
                         $numberperrows = 6;
                         $active = 1;
                         $type = 'done';
+                        $listdata = '1';
 
-                        DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+                        if (isset($attendedSchedulesData)) {
 
-                        //var_dump($teacherSchedules);
+                            $listdata = $attendedSchedulesData;
+
+                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+
+                        } else {
+
+                            echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                        }
 
                         ?>
                     </table>
                     <div class="row">
-                    <?php
+                        <?php
 
-                    $numberOfTbody = ceil((count($listdata) / $numberperrows));
+                        $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
 
-                    $position = 'center';
+                        $position = 'center';
 
-                    DBInfo::PaginateControl($active, $position, $numberOfTbody, 'attendedScheduleTable');
+                        DBInfo::PaginateControl($active, $position, $numberOfTbody, 'attendedScheduleTable');
 
-                    ?>
+                        ?>
 
                     </div>
                 </div>

@@ -6,7 +6,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 #Functions used by the schedule
 interface ScheduleFunctions
 {
-    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date,$guid_id);#create a schedule
+    public static function CreateSchedule($schedule_title,$schedule_description,$schedule_objectives,$teacher_id,$class_id,$due_date,$guid_id);#create a schedule
     public static function MarkAttendedSchedule($schedule_id,$teacher_id);#mark a schedule as attended
     public static function UnmarkAttendedSchedule($schedule_id,$teacher_id);#unmark attended schedule
 
@@ -42,25 +42,25 @@ class Schedule implements ScheduleFunctions
     #Mark a schedule as attended
     public static function MarkAttendedSchedule($schedule_id,$teacher_id)
     {
-        self::UpdateAttendedSchchedule($schedule_id,$teacher_id,true);
+        return self::UpdateAttendedSchedule($schedule_id,$teacher_id,true);
     }
 
     #Unmark attended schedule
     public static function UnmarkAttendedSchedule($schedule_id,$teacher_id)
     {
-        self::UpdateAttendedSchchedule($schedule_id,$teacher_id,false);
+        return self::UpdateAttendedSchedule($schedule_id,$teacher_id,false);
     }
     
     //Create a Schedule
-    public static function CreateSchedule($schedule_title,$schedule_description,$teacher_id,$class_id,$due_date,$guid_id)
+    public static function CreateSchedule($schedule_title,$schedule_description,$schedule_objectives,$teacher_id,$class_id,$due_date,$guid_id)
     {
         global $dbCon;
 
-        $insert_query = "INSERT INTO schedules(schedule_title,schedule_description,teacher_id,class_id,due_date,guid_id) VALUES(?,?,?,?,?,?)";
+        $insert_query = "INSERT INTO schedules(schedule_title,schedule_description,schedule_objectives,teacher_id,class_id,due_date,guid_id) VALUES(?,?,?,?,?,?,?)";
 
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            $insert_stmt->bind_param("ssiiss",$schedule_title,$schedule_description,$teacher_id,$class_id,$due_date,$guid_id);
+            $insert_stmt->bind_param("sssiiss",$schedule_title,$schedule_description,$schedule_objectives,$teacher_id,$class_id,$due_date,$guid_id);
 
             if($insert_stmt->execute())
             {
@@ -93,6 +93,7 @@ if(isset($_POST['action'])) {
             $args = array(
                 'schedule_title' => $_POST['scheduletitle'],
                 'schedule_description' => $_POST['scheduledescription'],
+                'schedule_objectives' => $_POST['scheduleobjectives'],
                 'teacher_id' => $_SESSION['admin_acc_id'],
                 'class_id' => $_POST['scheduleclassroom'],
                 'due_date' => $_POST['duedate'],
@@ -107,6 +108,22 @@ if(isset($_POST['action'])) {
         case 'RemoveStudent':
             
             
+            //dddd
+            break;
+        case 'MarkAttendedSchedule':
+
+            $result = Schedule::MarkAttendedSchedule($_POST['scheduleid'], $_SESSION['admin_acc_id']);
+
+            echo json_encode($result);
+
+            //dddd
+            break;
+        case 'UnmarkAttendedSchedule':
+
+            $result = Schedule::UnmarkAttendedSchedule($_POST['scheduleid'], $_SESSION['admin_acc_id']);
+
+            echo json_encode($result);
+
             //dddd
             break;
         default:

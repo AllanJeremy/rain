@@ -1087,9 +1087,9 @@ class DbInfo
     //Reverses a mysqli_result and returns an array with the values reversed
     public static function Paginate($listdata,$paginationtype, $numberperrows, $active, $type) {
 
-        if(count($listdata) > 11) {
+        if(count($listdata) > $numberperrows) {
 
-            $numberOfTbody = ceil((count($listdata) / $numberperrows));
+            $numberOfTbody = ceil(count($listdata) / $numberperrows);
 
             $tbodyNumber = 1;
 
@@ -1116,8 +1116,9 @@ class DbInfo
                     echo '<td>'.$val['schedule_description'].'</td>';
                     echo '<td class="right-align" >'.$val['due_date'].'</td>';
                     echo '<td class="right-align schedule-action" width="120">';
-                    echo '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-                    echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                    echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
+                    echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
+                    echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>' : '');
                     echo '</td>';
                     echo '</tr>';
 
@@ -1142,6 +1143,7 @@ class DbInfo
                 echo '<td class="right-align schedule-action" width="120">';
                 echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
                 echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
+                echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>' : '');
                 echo '</td>';
                 echo '</tr>';
 
@@ -1693,6 +1695,28 @@ if(isset($_GET['action'])) {
                     //echo $num;
 
                 }
+
+            } else {
+
+                $result = 'null';
+
+                echo json_encode($result);
+                //echo 'null';
+
+            }
+
+            break;
+        case 'ScheduleExists':
+
+            $result = DbInfo::ScheduleExists($_GET['schedule_id']);
+
+            $num = 0;
+
+            //var_dump($result);
+
+            if($result != null) {
+
+                echo json_encode($result);
 
             } else {
 

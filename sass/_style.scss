@@ -104,10 +104,17 @@ a.btn-icon {
     color: rgba(0, 0, 0, 0.78);
     font-size: 1.3rem;
     line-height: 1.3rem;
+    transition: all .3s;
+    border-radius: 50%;
+    background-color: transparent;
     
     .material-icons {
         font-size: 1.3rem;
         line-height: 1.3rem;
+    }
+
+    &:active {
+        background-color: #f5f5f5;
     }
 }
 nav {

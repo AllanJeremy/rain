@@ -242,6 +242,51 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.scheduleInfo = function (obj) {
+
+        var templateOutput = '',
+            text = obj.schedule_objectives.replace(/,/g, '.<br>');
+
+        obj.schedule_objectives = text;
+
+        templateOutput += '<div class="scheduledata">';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div class="col s7">';
+        templateOutput += '<h6 class="grey-text">Name</h6>';
+        templateOutput += '<div class="col s10 divider"></div>';
+        templateOutput += '<p>' + obj.schedule_title + '</p>';
+        templateOutput += '</div><div class="col s5">';
+        templateOutput += '<h6 class="grey-text">Due</h6>';
+        templateOutput += '<div class="col s8 divider"></div>';
+        templateOutput += '<p class="red-text">' + obj.due_date_formatted + '</p>';
+        templateOutput += '<p class="grey-text">( ' + obj.due_date + ' )</p>';
+        templateOutput += '</div></div>';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div class="col s12">';
+        templateOutput += '<h6 class="grey-text">Description</h6>';
+        templateOutput += '<div class="col s8 divider"></div>';
+        templateOutput += '<p>' + obj.schedule_description + '</p>';
+        templateOutput += '</div></div>';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div class="col s12">';
+        templateOutput += '<h6 class="grey-text">Objectives</h6>';
+        templateOutput += '<div class="col s8 divider"></div>';
+        templateOutput += '<p>' + obj.schedule_objectives + '</p>';
+        if (obj.attended_schedule === 0) {
+
+            templateOutput += '</div></div><br><div class="row"><a class="btn" id="attendedScheduleFromModal">Mark attended<i class="material-icons right">done</i></a></div></div>';
+
+        } else {
+
+            templateOutput += '</div></div></div>';
+        }
+
+        return templateOutput;
+
+    };
+
+    //--------------------------------------
+
     this.modalTemplate = function (obj) {
         
         var templateOutput = '';
@@ -653,6 +698,57 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.infoExtraFooterActions = function (obj) {
+
+        var templateOutput = '',
+            classes = '';
+
+        $.each(obj, function (i, el) {
+
+            switch (el) {
+                case true:
+
+                    if (i === 'Previous') {
+
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
+                    } else if (i === 'Next') {
+
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
+                    } else if (i === 'Delete') {
+
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; margin-right:24px;" class="red-text text-lighten-1 modal-action left btn btn-flat transparent" title="delete the schedule" href="#!" id="moreScheduleCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                    }
+
+                    break;
+                case false:
+
+                    if (i === 'Previous') {
+
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
+                    } else if (i === 'Next') {
+
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
+
+                    } else if (i === 'Delete') {
+
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="red-text disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!"  title="delete the schedule" id="moreScheduleCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                    }
+
+                    break;
+
+                default:
+
+                    return false;
+
+            }
+
+        });
+
+        return templateOutput;
+
+    };
+    //--------------------------------------
+
     this.editExtraFooterActions = function (obj) {
         
         var templateOutput = '',

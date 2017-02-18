@@ -15,6 +15,7 @@
         
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
+        <script type="text/javascript" src="js/moment.js"></script>
         <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>
         <script type="text/javascript" src="js/dashboard/result.js"></script>
         <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>

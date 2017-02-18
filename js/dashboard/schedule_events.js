@@ -15,11 +15,12 @@ var ScheduleEvents = function () {
         openScheduleForm();     //done
         closeScheduleForm();    //done
         submitSchedule();       //done
-        editSchedule();
+        editSchedule();         //Beta - version
         deleteSchedule();
-        markDone();
-        markAllDone();
-        openSchedule();
+        markAttendedSchedule();             //60%
+        unmarkAttendedSchedule();             //60%
+        markAllDone();          //Beta - version
+        openSchedule();         //done
         overdueScheduleReminder();
         getPendingSchedules();
         archiveSchedule();
@@ -29,6 +30,7 @@ var ScheduleEvents = function () {
         updateSubTopicDropdown();               //done
         addObjectiveFromSubtopics();            //done
         tableNavigate();                        //done
+        nextPrevSchedule();                     //done
         
     };
     
@@ -129,6 +131,7 @@ var ScheduleEvents = function () {
                     "action" : "CreateSchedule",
                     "scheduletitle" : scheduletitle,
                     "scheduledescription" : scheduledescription,
+                    "scheduleobjectives" : scheduleobjectivesformatted,
                     "scheduleclassroom" : scheduleclassroom,
                     "duedate" : scheduleformatteddatetime,
                     "guidid" : scheduleguidid
@@ -172,8 +175,9 @@ var ScheduleEvents = function () {
                             var scheduledata = {
                                 "schedulename": data.schedule_title,
                                 "scheduledescription": data.schedule_description,
+                                "scheduleobjectives": data.schedule_objectives,
                                 "scheduleclass": $('#scheduleCreateFormContainer #extraClassroomInfo p#ClassroomSubject').find('span').text(),
-                                "scheduledatetime": scheduledatetime,
+                                "scheduledatetime": moment(data.due_date).fromNow(),
                                 "scheduleid": data.schedule_id,
                                 "scheduletype": 'pending'
                             };
@@ -189,7 +193,16 @@ var ScheduleEvents = function () {
                             console.log(pendingScheduleHook.children('tr').length);
 
 //                            $(scheduleData).prependTo("#schedulesTab table#pendingScheduleTable > tbody");
-                            pendingScheduleHook.prepend(scheduleData);
+                            if (pendingScheduleHook.attr('data-tbody-number') === 'noData') {
+
+                                pendingScheduleHook.remove();
+
+                                $('#schedulesTab table#pendingScheduleTable').append('<tbody data-tbody-number="1" class="active">' + scheduleData + '</tbody>');
+
+                            } else {
+
+                                pendingScheduleHook.prepend(scheduleData);
+                            }
 
                             var paginationthrough = $('#schedulesTab table#pendingScheduleTable').attr('data-paginate-through');
 
@@ -228,7 +241,7 @@ var ScheduleEvents = function () {
 
         if (direction === 'forward') {
 
-            for(var k = 0; k < $(tablehook).children(child).length; k++) {
+            for (var k = 0; k < $(tablehook).children(child).length; k++) {
 
                 var next = k + 1;
 
@@ -364,6 +377,10 @@ var ScheduleEvents = function () {
                                     clickedpagecontrol.parent('ul').find('li:first-child').addClass('disabled');
 
                                 }
+                                if (parseInt(activepagenumber) === (totalpagecontrols - 2)) {
+                                    clickedpagecontrol.parent('ul').find('li:last-child').addClass('disabled');
+
+                                }
 
                             });
 
@@ -375,6 +392,9 @@ var ScheduleEvents = function () {
 
                         var nextpage = (parseInt(activepagenumber) + 1),
                             nextpagecontrol = clickedpagecontrol.parent('ul').find('li:nth(' + nextpage + ')');
+
+                        console.log(parseInt(nextpagecontrol.children('a')[0].innerHTML));
+                        console.log((totalpagecontrols - 2));
 
                         if (nextpage <= (totalpagecontrols - 2)) {
 
@@ -392,7 +412,6 @@ var ScheduleEvents = function () {
                                 }, 330);
 
                                 activepagecontrol.removeClass('active');
-                                //console.log(nextpagecontrol);
                                 nextpagecontrol.addClass('active');
 
                                 $(this).fadeIn(200);
@@ -400,7 +419,8 @@ var ScheduleEvents = function () {
                                 if (parseInt(activepagenumber) === 1) {
                                     clickedpagecontrol.parent('ul').find('li:first-child').removeClass('disabled');
 
-                                } else if (parseInt(nextpagecontrol.children('a')[0].innerHTML) === (totalpagecontrols - 2)) {
+                                }
+                                if (parseInt(nextpagecontrol.children('a')[0].innerHTML) === (totalpagecontrols - 2)) {
                                     clickedpagecontrol.parent('ul').find('li:last-child').addClass('disabled');
 
                                 }
@@ -632,13 +652,89 @@ var ScheduleEvents = function () {
         
     };
         
-    var markDone = function () {
+    var markAttendedSchedule = function () {
         
-        $('main').on('click', 'a#attendedSchedule', function(e) {
+        $('main').on('click', 'a#attendedSchedule, a#attendedScheduleFromModal', function(e) {
             e.preventDefault();
 
+            var parentEl, scheduleid,
+                anchor = $(this),
+                attendedScheduleHook = $('#schedulesTab table#attendedScheduleTable').children('tbody:first').find('tr:first');
 
-            console.log('marking done...');
+            if (anchor.attr('id') === 'attendedSchedule') {
+                parentEl = anchor.parents('tr');
+                scheduleid = parentEl.attr('data-schedule-id');
+
+                console.log('marking done...');
+
+            } else {
+                scheduleid = anchor.parents('.modal').attr('id').split('_').pop();
+                parentEl = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]');
+
+                console.log('marking done from modal...');
+
+            }
+
+
+            console.log(parentEl);
+
+
+            $.post("classes/schedule_class.php", {
+                    "action" : "MarkAttendedSchedule",
+                    "scheduleid" : scheduleid
+                }, function (result) {
+
+                    console.log(result);
+                    console.log(typeof result);
+                if (result === true) {
+
+                    console.log(attendedScheduleHook);
+                    console.log(parentEl[0].outerHTML);
+                    parentEl.html('');
+
+                    attendedScheduleHook.before(parentEl[0].outerHTML);
+
+                    cleanOutModals();
+
+                    updatePagination('#schedulesTab table#attendedScheduleTable', 'tbody', '#attendedScheduleTable', 6, 'forward');
+
+                }
+            }, 'json');
+        });
+    };
+
+    var unmarkAttendedSchedule = function () {
+
+        $('main').on('click', 'a#unmarkdoneSchedule', function(e) {
+            e.preventDefault();
+
+            var parentEl = $(this).parents('tr'),
+                scheduleid = parentEl.attr('data-schedule-id'),
+                pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').children('tbody:first').find('tr:first');
+
+            console.log(scheduleid);
+
+            console.log('unmarking done...');
+
+            $.post("classes/schedule_class.php", {
+                    "action" : "unmarkAttendedSchedule",
+                    "scheduleid" : scheduleid
+                }, function (result) {
+
+                    console.log(result);
+                    console.log(typeof result);
+                if (result === true) {
+
+                    console.log(attendedScheduleHook);
+                    console.log(parentEl);
+                    parentEl.html('');
+
+                    attendedScheduleHook.before(parentEl[0].outerHTML);
+
+                    updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', 6, 'forward');
+
+                }
+            }, 'json');
         });
     };
 
@@ -648,32 +744,332 @@ var ScheduleEvents = function () {
             e.preventDefault();
 
             console.log('opening...');
+            var scheduleid = $(this).parents('tr').attr('data-schedule-id'),
+                hook = $(this),
+                tableid = hook.parents('table').attr('id');
 
             //variables for the modal
-            var template = {
-                classes: resultData.classes,
-                modalId: 'editClassRoom',
-                templateHeader: 'Edit Classroom',
-                templateBody: formTemplate,
-                modalActionType: 'type="submit"',
-                modalActionTypeText: 'Update classroom',
-                extraActions: Lists_Templates.editExtraFooterActions({
-                    "Delete" : true,
-                    "Archive" : true,
-                    "Reload" : false
-                })
-            };
-            //Ajax
-            //load the modal in the DOM
-            $('main').append(Lists_Templates.modalTemplate(template));
+            $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : scheduleid }, function (data) {
 
-            $(this).attr('data-target', template.modalId);
+                console.log(data);
 
-            $('#' + template.modalId).openModal({dismissible:false});
+                data.due_date_formatted = moment(data.due_date).fromNow();
+
+                var body = Lists_Templates.scheduleInfo(data),
+                    prev = true,
+                    next = true;
+
+                console.log(scheduleid);
+                console.log(hook.parents('table').children('tbody:first').find('tr:first').attr('data-schedule-id'));
+
+                if (scheduleid === hook.parents('table#' + tableid).children('tbody:first').find('tr:first').attr('data-schedule-id')) {
+                    prev = false;
+                }
+                if (scheduleid === hook.parents('table#' + tableid).children('tbody:last').find('tr:last').attr('data-schedule-id')) {
+                    next = false;
+                }
+
+                var template = {
+
+                    modalId: 'viewScheduleInfo_' + data.schedule_id,
+                    templateHeader: 'Schedule Info',
+                    templateBody: body,
+                    extraActions: Lists_Templates.infoExtraFooterActions({
+                        "Delete" : true,
+                        "Previous" : prev,
+                        "Next" : next,
+                    })
+                };
+    //            Ajax
+    //            load the modal in the DOM
+                $('main').append(Lists_Templates.modalTemplate(template));
+
+                $(this).attr('data-target', template.modalId);
+
+                $('#' + template.modalId).openModal({dismissible:false});
+
+            }, 'json');
 
         });
     };
         
+    var nextPrevSchedule = function () {
+        /*
+        *   Function for the next/previous schedule button in the modal.
+        *
+        *   On click, the current schedule is gotten from the modal id
+        *   It is then used to find the current Element
+        *   Next/Previous element's schedule id is gotten.
+        *
+        *   Ajax get by found id.
+        *
+        *   If the result is null, it means the element was the first/last element
+        *       among the tr list, thus modal closes.
+        *   But to have a smarter modal, and prevent the sudden unexplained modal
+        *       closing, the next/previous element's id is used to see if its
+        *       next/previous element exists (for the next/previous tbody if exists).
+        *       If not, the next/previous button in the modal is disabled.
+        */
+
+        var scheduleid, array,
+            previoustbody, nexttbody,
+            previousattribute, nextattribute,
+            previousattributeid, nextattributeid,
+            modalid, tableid;
+
+        $('main').on('click', 'a#moreScheduleCardPrevious.disabled, a#moreScheduleCardNext.disabled', function(e) {
+            e.preventDefault();
+
+            console.log('disabled button. Do nothing');
+
+        });
+
+        $('main').on('click', 'a#moreScheduleCardPrevious:not(.disabled)', function(e) {
+            e.preventDefault();
+
+            modalid = $(this).parents('.modal').attr('id');
+            tableid = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]').parents('table').attr('id');
+            scheduleid = modalid.split('_').pop();
+
+            console.log('fetching previous schedule...');
+
+            console.log('current schedule id: ' + scheduleid);
+
+            previousattribute = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]');
+
+            // $( "tr" ).index( listItems );
+
+            previousattribute = previousattribute[0].previousElementSibling;
+
+            if (previousattribute !== null) {
+
+                previousattributeid = previousattribute.attributes[0].nodeValue;
+
+                console.log('previous schedule id: ' + previousattributeid);
+
+                //Ajax get previous
+                $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : previousattributeid }, function (data) {
+
+                    console.log(data);
+
+                    data.due_date_formatted = moment(data.due_date).fromNow();
+
+                    var body = Lists_Templates.scheduleInfo(data);
+
+                    //append the body to the modal
+                    $('.modal#' + modalid).find('.scheduledata').fadeOut(300, function() {
+                        $(this).html(body);
+
+                        $(this).fadeIn();
+
+                    });
+
+                    //If there's a previous schedule. If not, disable the button
+                    previousattribute = $('#schedulesTab').find('tr[data-schedule-id="' + previousattributeid + '"]');
+                    previousattribute = previousattribute[0].previousElementSibling;
+
+                    if (previousattributeid === $('table#' + tableid).children('tbody:first').find('tr:first').attr('data-schedule-id')) {
+                        $('.modal#' + modalid).find('a#moreScheduleCardPrevious').addClass('disabled');
+
+                    }
+
+                    //If the next button was disabled, enable it.
+                    if ($('.modal#' + modalid).find('a#moreScheduleCardNext').hasClass('disabled')) {
+                        $('.modal#' + modalid).find('a#moreScheduleCardNext').removeClass('disabled');
+                    }
+
+                    //Update the modal id
+                    $('.modal#' + modalid).attr('id', 'viewScheduleInfo_' + previousattributeid);
+
+                }, 'json');
+
+            } else {
+
+                if (scheduleid !== $('table#' + tableid).children('tbody:first').find('tr:first').attr('data-schedule-id')) {
+                    //Get the previous schedule id in the previous tbody
+
+                    previoustbody = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]').parent('tbody');
+
+                    previoustbody = previoustbody[0].previousElementSibling;
+
+                    previousattributeid = previoustbody.lastElementChild.attributes[0].nodeValue;
+
+                    console.log(previousattributeid);
+
+                    //Ajax get previous
+                    $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : previousattributeid }, function (data) {
+
+                        console.log(data);
+
+                        data.due_date_formatted = moment(data.due_date).fromNow();
+
+                        var body = Lists_Templates.scheduleInfo(data);
+
+                        //append the body to the modal
+                        $('.modal#' + modalid).find('.scheduledata').fadeOut(300, function() {
+                            $(this).html(body);
+
+                            $(this).fadeIn();
+
+                        });
+
+                        //If there's a previous schedule. If not, disable the button
+                        previousattribute = $('#schedulesTab').find('tr[data-schedule-id="' + previousattributeid + '"]');
+                        previousattribute = previousattribute[0].previousElementSibling;
+
+                        if (previousattributeid === $('table#' + tableid).children('tbody:first').find('tr:first').attr('data-schedule-id')) {
+                            $('.modal#' + modalid).find('a#moreScheduleCardPrevious').addClass('disabled');
+                            $('.modal#' + modalid).find('a#moreScheduleCardPrevious').addClass('transparent');
+
+                        }
+
+                        //If the next button was disabled, enable it.
+                        if ($('.modal#' + modalid).find('a#moreScheduleCardNext').hasClass('disabled')) {
+                            $('.modal#' + modalid).find('a#moreScheduleCardNext').removeClass('disabled');
+                            $('.modal#' + modalid).find('a#moreScheduleCardNext').removeClass('transparent');
+                        }
+
+                        //Update the modal id
+                        $('.modal#' + modalid).attr('id', 'viewScheduleInfo_' + previousattributeid);
+
+                    }, 'json');
+
+                } else {
+
+                    $('#' + modalid).closeModal();
+
+                    cleanOutModals();
+
+                    console.log(previousattributeid);
+                }
+            }
+        });
+
+        $('main').on('click', 'a#moreScheduleCardNext:not(.disabled)', function(e) {
+            e.preventDefault();
+
+            console.log('fetching next schedule...');
+
+            modalid = $(this).parents('.modal').attr('id');
+            tableid = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]').parents('table').attr('id');
+            scheduleid = modalid.split('_').pop();
+
+            console.log('current schedule id: ' + scheduleid);
+
+            nextattribute = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]');
+
+            // $( "tr" ).index( listItems );
+
+            nextattribute = nextattribute[0].nextElementSibling;
+
+            if (nextattribute !== null) {
+
+                nextattributeid = nextattribute.attributes[0].nodeValue;
+
+                console.log('next schedule id: ' + nextattributeid);
+
+                //Ajax get next
+                $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : nextattributeid }, function (data) {
+
+                    console.log(data);
+
+                    data.due_date_formatted = moment(data.due_date).fromNow();
+
+                    var body = Lists_Templates.scheduleInfo(data);
+
+                    //append the body to the modal
+                    $('.modal#' + modalid).find('.scheduledata').fadeOut(300, function() {
+                        $(this).html(body);
+
+                        $(this).fadeIn();
+
+                    });
+
+                    //If there's a next schedule. If not, disable the button
+                    nextattribute = $('#schedulesTab').find('tr[data-schedule-id="' + nextattributeid + '"]');
+                    nextattribute = nextattribute[0].nextElementSibling;
+
+                    if (nextattributeid === $('table#' + tableid).children('tbody:last').find('tr:last').attr('data-schedule-id')) {
+                        $('.modal#' + modalid).find('a#moreScheduleCardNext').addClass('disabled');
+                        $('.modal#' + modalid).find('a#moreScheduleCardNext').addClass('transparent');
+
+                    }
+
+                    //If the previous button was disabled, enable it.
+                    if ($('.modal#' + modalid).find('a#moreScheduleCardPrevious').hasClass('disabled')) {
+                        $('.modal#' + modalid).find('a#moreScheduleCardPrevious').removeClass('disabled');
+                        $('.modal#' + modalid).find('a#moreScheduleCardPrevious').removeClass('transparent');
+                    }
+
+                    //Update the modal id
+                    $('.modal#' + modalid).attr('id', 'viewScheduleInfo_' + nextattributeid);
+
+                }, 'json');
+
+            } else {
+
+                //Find if its the last tr in the table
+                if (scheduleid !== $('table#' + tableid).children('tbody:last').find('tr:last').attr('data-schedule-id')) {
+                    //Get next schedule id in the next tbody;
+
+                    nexttbody = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]').parent('tbody');
+
+                    nexttbody = nexttbody[0].nextElementSibling;
+
+                    nextattributeid = nexttbody.firstElementChild.attributes[0].nodeValue;
+
+                    console.log(nextattributeid);
+
+                    //Ajax get next
+                    $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : nextattributeid }, function (data) {
+
+                        console.log(data);
+
+                        data.due_date_formatted = moment(data.due_date).fromNow();
+
+                        var body = Lists_Templates.scheduleInfo(data);
+
+                        //append the body to the modal
+                        $('.modal#' + modalid).find('.scheduledata').fadeOut(300, function() {
+                            $(this).html(body);
+
+                            $(this).fadeIn();
+
+                        });
+
+                        //If there's a next schedule. If not, disable the button
+                        nextattribute = $('#schedulesTab').find('tr[data-schedule-id="' + nextattributeid + '"]');
+                        nextattribute = nextattribute[0].nextElementSibling;
+
+                        if (nextattributeid === $('table#' + tableid).children('tbody:last').find('tr:last').attr('data-schedule-id')) {
+                            $('.modal#' + modalid).find('a#moreScheduleCardNext').addClass('disabled');
+                            $('.modal#' + modalid).find('a#moreScheduleCardNext').addClass('transparent');
+
+                        }
+
+                        //If the previous button was disabled, enable it.
+                        if ($('.modal#' + modalid).find('a#moreScheduleCardPrevious').hasClass('disabled')) {
+                            $('.modal#' + modalid).find('a#moreScheduleCardPrevious').removeClass('disabled');
+                            $('.modal#' + modalid).find('a#moreScheduleCardPrevious').removeClass('transparent');
+                        }
+
+                        //Update the modal id
+                        $('.modal#' + modalid).attr('id', 'viewScheduleInfo_' + nextattributeid);
+
+                    }, 'json');
+
+                } else {
+
+                    $('#' + modalid).closeModal();
+
+                    console.log(nextattributeid);
+
+                    cleanOutModals();
+                }
+            }
+        });
+    };
+
     var markAllDone = function () {
         
     };
@@ -710,7 +1106,7 @@ var ScheduleEvents = function () {
 
         };
 
-    var esomoModal = Lists_Templates.esomoModalTemplate(args);
+        var esomoModal = Lists_Templates.esomoModalTemplate(args);
 
         $('main').append(esomoModal);
 
