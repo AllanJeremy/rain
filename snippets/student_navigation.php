@@ -15,10 +15,10 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="active">
-                        <a id="r_Assignments_link" data-activates="recievedAssignments" class="" href="">received assignments</a>
+                        <a id="recievedAssignments" data-activates="recievedAssignmentsTab" class="active-bar " href="">received assignments</a>
                     </li>
                     <li>
-                        <a hidden="" id="s_Assignments_link" data-activates="sentAssignments" class="" href="">sent assignments</a>
+                        <a hidden="" id="sentAssignments" data-activates="sentAssignmentsTab" class="" href="">sent assignments</a>
                     </li>
                 </ul>
             </div>
@@ -28,10 +28,10 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a class="" id="" data-activates="takeATest" href="">Take a test</a>
+                        <a class="" id="takeATest" data-activates="takeATestTab" href="">Take a test</a>
                     </li>
                     <li>
-                        <a href="" id="" data-activates="testResults" class="">Test results</a>
+                        <a href="" id="testResults" data-activates="testResultsTab" class="">Test results</a>
                     </li>
                 </ul>
             </div>
@@ -41,20 +41,20 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a href="" id="" data-activates="myGrades" class="">My grades</a>
+                        <a href="" id="myGrades" data-activates="myGradesTab" class="">My grades</a>
                     </li>
                     <li>
-                        <a href="" id="" data-activates="gradeBook" class="">Gradebook</a>
+                        <a href="" id="gradeBook" data-activates="gradeBookTab" class="">Gradebook</a>
                     </li>
                 </ul>
             </div>
         </li>
     </ul>
     <li>
-        <a href="#!" class="hide" data-activates="chat">Chat</a>
+        <a href="#!" class="hide" id="chat" data-activates="chatTab">Chat</a>
     </li>
     <li>
-        <a href="#!" class="hide" data-activates="groups">Groups</a>
+        <a href="#!" class="hide" id="groups" data-activates="groupsTab">Groups</a>
     </li>
     <li>
         <div class="divider"></div>

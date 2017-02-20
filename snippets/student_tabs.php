@@ -15,7 +15,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     $assignments = DbInfo::GetAllStudentAssignments($loggedInStudentId);
                     // var_dump($assignments);
                 ?>  
-                <div class="row main-tab active-bar" id="recievedAssignments">
+                <div class="row main-tab" id="recievedAssignmentsTab">
 
                 <?php
                     if($assignments):
@@ -105,7 +105,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 </div>
 
                 <!--Sent assignments-->
-                <div class="row main-tab" id="sentAssignments">
+                <div class="row main-tab" id="sentAssignmentsTab">
                     <div class="col card-col" data-assignment-id="">
                         <div class="card white">
                             <div class="assignment-info right-align"><a href="#" class="deep-orange-text text-accent-3" onclick="")><i class="material-icons">message</i> 12</a></div>
@@ -138,7 +138,7 @@ about how you came to achieve this.</p>
                         </div>
                     </div>
                 </div>
-                <div class="row main-tab" id="takeATest">
+                <div class="row main-tab" id="takeATestTab">
                     <div class="row" id="tests">
                         <!-- LOAD TEST CARDS HERE -->
                         <div class="col card-col">
@@ -226,20 +226,20 @@ about how you came to achieve this.</p>
                 </div>
 
                 <!--Test results-->
-                <div class="row main-tab" id="testResults">
+                <div class="row main-tab" id="testResultsTab">
                     <p>Test results will be displayed here</p>
                 </div>
 
                 <!--Grades-->
-                <div class="row main-tab" id="myGrades">
+                <div class="row main-tab" id="myGradesTab">
                     <p>Your grades will be displayed here</p>
                 </div>
 
                 <!--Gradebooks-->
-                <div class="row main-tab" id="gradeBook">
+                <div class="row main-tab" id="gradeBookTab">
                     <p>Your Grade books will be displayed here</p>
                 </div>
-                <div class="row main-tab" id="chat">
+                <div class="row main-tab" id="chatTab">
                     <p>Chat will be displayed here</p>
                 </div>
                 <!--<p class="grey-text">Tests</p>

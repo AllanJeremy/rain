@@ -2,7 +2,7 @@
                 <!--<p class="grey-text">Assignments (overview headers)</p>
                 <div class="divider"></div>
                 <br>-->
-                <div class="row main-tab active-bar" id="statsOverviewTab">
+                <div class="row main-tab" id="statsOverviewTab">
                     
                     <div class="col card-col">
                         <div class="card blue-grey lighten-2">

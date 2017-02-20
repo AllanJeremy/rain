@@ -3,7 +3,7 @@
 ?>
 
 <div class="container">
-    <div class="row main-tab active-bar" id="dashboardTab">
+    <div class="row main-tab" id="dashboardTab">
         <p class="grey-text">Account Information</p>
         <div class="divider"></div>
         <br>

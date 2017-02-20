@@ -7,7 +7,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
  ?>           
             <div class="container">
                 <!--CLASSROOMS SECTION-->
-                <div class="row main-tab active-bar" id="classroomTab">
+                <div class="row main-tab" id="classroomTab">
                     
                     <div class="row no-bottom-margin">
                         <div class="col s5">
