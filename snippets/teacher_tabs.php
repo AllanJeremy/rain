@@ -803,12 +803,10 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                 </div>
 
                 <!--Take a test-->
-                <div class="container row main-tab" id="takeTestTab">
+                <div class="row main-tab" id="takeTestTab">
                     <?php
                         $tests = DbInfo::GetSpecificTeacherTests($loggedInTeacherId);
                         if($tests):
-                            $redirect_url = "";#url the test redirects to
-                            $test_id = 0;
                     ?>
                     <div class="row">
                         <div class="input-field col s8">
@@ -823,34 +821,60 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 
                     <h4 class="grey-text text-darken-1">YOUR TESTS</h4>
 
+                    <div class="row">
                     <?php
-                            foreach($tests as $test):
-                                $test_id = $test["test_id"];
-                                $redirect_url = "tests.php?tid=".$test_id;
+                        $redirect_url = "";#url the test redirects to
+                        $test_id = 0; #init test_id
+                        $no_of_takers = 0;#init number of takers
+                        $subject = null;#init subject 
+                        $pass_mark = 0;
+                        
+                        foreach($tests as $test):
+                            $test_id = &$test["test_id"];
+                            $redirect_url = "tests.php?tid=".$test_id;
+                            $subject = DbInfo::GetSubjectById($test["subject_id"]);
+                            if(!$subject)
+                            {
+                                $subject = "Unknown";
+                            }
+                            $pass_mark = GradeHandler::GetGradeInfo($test["passing_grade"],$test["max_grade"]);
+                            $pass_mark["percentage"] = floor($pass_mark["percentage"]);
 
+                            //Get the number of takers for this specific test
+                            $test_results = DbInfo::GetSpecificTestResults($test_id);
+                            if($test_results)
+                            {
+                                $no_of_takers = $test_results->num_rows;
+                            }
+                            else
+                            {
+                                $no_of_takers = 0;#init number of takers
+                            }
                     ?>
-                        <div class="card test_container col s12 m6 l4" id="<?php echo $test_id;?>" >
-                            <div class="card-header">
-                                <div class="container">
-                                    <h5><a href="<?php echo $redirect_url?>"><?php echo $test["test_title"];?></a><span></span></h5>
+                        <div class="col s12 m6 l4 take_test_container" data-test-id="<?php echo $test_id;?>">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text">
+                                    <span class="card-title truncate"><?php echo $test["test_title"];?></span>
+                                    <p>Subject: <span class="php-data"><?php echo $subject["subject_name"];?></span></p>
+                                    <p>Questions: <span class="php-data"><?php echo $test["number_of_questions"]?></span></p>
+                                    <p>Time: <span class="php-data"><?php echo $test["time_to_complete"]?> min</span></p>
+                                    <p>Difficulty: <span class="php-data"><?php echo $test["difficulty"]?></span></p>
+                                    <p>Pass mark: <span class="php-data"><?php echo $pass_mark["percentage"]."%";?></span></p>
+                                    <p class="students-taken php-data"><i>This test has been taken <?php echo $no_of_takers;?> time(s)</i></p>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="container">
-                                    <p>Subject: | Difficulty: <?php echo $test["difficulty"];?></p>
+                                <div class="card-action ">
+                                    <a class="btn btn-flat blue-grey-text text-lighten-4 EditTest" id="<?php echo $test_id?>">Edit</a>
+                                    <a href="tests.php" class="right-align">Take Test</a>
                                 </div>
-                            </div>
-                            <div class="card-footer">
-                                <div class="container">
-                                    <a class="btn btn-flat" class="EditTest" id="<?php echo $test_id?>">Edit</a>
-                                    <a class="btn" href="<?php echo $redirect_url?>">TAKE</a>
-                                </div>
-                                <br>
                             </div>
                         </div>
                     <?php
                             endforeach;
-                        else:
+                            //Close the row container
+                    ?>
+                    </div>
+                    <?php
+                        else: # Could not find the tests
                     ?>
                         <p>Could not retrieve your tests</p>
                     <?php

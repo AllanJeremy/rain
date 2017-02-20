@@ -34,7 +34,7 @@ class GradeHandler
     //Returns the grade info ~ Grade text as well as the percentage
     public static function GetGradeInfo($grade_input,$max_grade)
     {
-        $percentage = $grade_input/$max_grade;
+        $percentage = ($grade_input/$max_grade)*100;
         $grade_text = "";
 
 
