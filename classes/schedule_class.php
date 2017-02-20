@@ -100,7 +100,7 @@ if(isset($_POST['action'])) {
                 'guid_id' => $_POST['guidid']
             );
              
-            $result = Schedule::CreateSchedule($args['schedule_title'], $args['schedule_description'], $args['teacher_id'], $args['class_id'], $args['due_date'], $args['guid_id']);
+            $result = Schedule::CreateSchedule($args['schedule_title'], $args['schedule_description'], $_POST['scheduleobjectives'], $args['teacher_id'], $args['class_id'], $args['due_date'], $args['guid_id']);
             
             echo $result;
             

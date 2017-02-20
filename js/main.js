@@ -23,10 +23,18 @@ $(function (z) {
     //make the current #? bar active on page load
     console.log(location.hash);
     
+    $.get('handlers/session_handler.php', {"action": 'GetLoggedUserInfo'}, function(user) {
+        console.log(user);
+    }, 'json');
+
     var currTag = location.hash;//current hash on init
     
     if(!currTag || currTag === '#!name' || currTag === '#!') {//if currTag is undefined or has '#!name' or '#!' value, make it #classroom
+
         currTag = '#classroom';
+
+        currTag = localStorage.setItem("currentSection", '#classroom');
+
         location.hash = currTag;
     }
     

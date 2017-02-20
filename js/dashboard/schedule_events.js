@@ -658,8 +658,8 @@ var ScheduleEvents = function () {
             e.preventDefault();
 
             var parentEl, scheduleid,
-                anchor = $(this),
-                attendedScheduleHook = $('#schedulesTab table#attendedScheduleTable').children('tbody:first').find('tr:first');
+                anchor = $(this), modalid,
+                attendedScheduleHook = $('#schedulesTab table#attendedScheduleTable').children('tbody:first');
 
             if (anchor.attr('id') === 'attendedSchedule') {
                 parentEl = anchor.parents('tr');
@@ -668,7 +668,8 @@ var ScheduleEvents = function () {
                 console.log('marking done...');
 
             } else {
-                scheduleid = anchor.parents('.modal').attr('id').split('_').pop();
+                modalid = anchor.parents('.modal').attr('id');
+                scheduleid = modalid.split('_').pop();
                 parentEl = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]');
 
                 console.log('marking done from modal...');
@@ -690,12 +691,19 @@ var ScheduleEvents = function () {
 
                     console.log(attendedScheduleHook);
                     console.log(parentEl[0].outerHTML);
-                    parentEl.html('');
+                    parentEl.addClass('new-class');
 
-                    attendedScheduleHook.before(parentEl[0].outerHTML);
+                    attendedScheduleHook.prepend(parentEl[0].outerHTML);
 
-                    cleanOutModals();
+                    parentEl.remove();
 
+                    if (modalid !== '') {
+
+                        $('#' + modalid).closeModal();
+
+                        cleanOutModals();
+
+                    }
                     updatePagination('#schedulesTab table#attendedScheduleTable', 'tbody', '#attendedScheduleTable', 6, 'forward');
 
                 }

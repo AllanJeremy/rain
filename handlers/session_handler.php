@@ -216,4 +216,29 @@ class MySessionHandler
         }
         return $user_info;
     }
+}#END OF CLASS
+
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_GET['action'])) {
+
+    sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
+    switch($_GET['action']) {
+        case 'GetLoggedUserInfo':
+
+            $result = MySessionHandler::GetLoggedUserInfo();
+
+            echo json_encode($result);
+
+            break;
+        default:
+
+            break;
+
+    }
 }
+
