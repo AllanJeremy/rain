@@ -1227,10 +1227,13 @@ class DbInfo
     {
         $result_array = array();
         #foreach result item found
-        foreach($mysqli_result as $result)
-        {
-            array_push($result_array,$result);            
-        }
+        if(isset($mysqli_result) && $mysqli_result)
+        {   
+            foreach($mysqli_result as $result)
+            {
+                array_push($result_array,$result);            
+            }
+        }        
 
         $array_length = count($result_array);
 
