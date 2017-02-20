@@ -9,6 +9,7 @@ There are 3 major types of accounts :
 **Superuser account**
 - Superuser can create teacher,principal and student accounts
 - (Superuser) Import students database and create automatic accounts for each student
+- Assigning class representative priviledges to student accounts
 
 **Teacher account**
 - Teacher can create classrooms and remove classrooms as well
@@ -22,7 +23,9 @@ There are 3 major types of accounts :
   - Teacher can mark tests and send them back to students
 
 - Teachers can plan classes and schedule classes
+ 
 - Teachers can mark classes as attended or not attended by the end of the class
+ - Teacher can mark student attendance for attended schedules
 
 **Student account**
 - Students can join classroom

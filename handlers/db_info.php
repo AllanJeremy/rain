@@ -1038,6 +1038,12 @@ class DbInfo
         }
     }
 
+    //Get test results for a specific test
+    public static function GetSpecificTestResults($test_id)
+    {
+        return self::SinglePropertyExists("test_results","test_id",$test_id,"i");
+    }
+
     //Get the test retake information for a given taker
     public static function GetTestRetake($test_id,$user_info)
     {
@@ -1221,10 +1227,13 @@ class DbInfo
     {
         $result_array = array();
         #foreach result item found
-        foreach($mysqli_result as $result)
-        {
-            array_push($result_array,$result);            
-        }
+        if(isset($mysqli_result) && $mysqli_result)
+        {   
+            foreach($mysqli_result as $result)
+            {
+                array_push($result_array,$result);            
+            }
+        }        
 
         $array_length = count($result_array);
 
