@@ -679,12 +679,6 @@ class DbInfo
     {
         return self::GetAllRecordsFromTable("schedules");
     }
-    
-    #Get all tests - returns tests on success | false if no records found | null if query couldn't execute
-    public static function GetAllTests()
-    {
-        return self::GetAllRecordsFromTable("tests");        
-    }
 
     //Get all the students in a given classroom
     public static function GetAllStudentsInClass($class_id)
@@ -875,8 +869,19 @@ class DbInfo
 /*----------------------------------------------------------------------------------------------------------
                     TESTS AND ANSWERS
 ----------------------------------------------------------------------------------------------------------*/
+    #Get all tests - returns tests on success | false if no records found | null if query couldn't execute
+    public static function GetAllTests()
+    {
+        return self::GetAllRecordsFromTable("tests");        
+    }
 
-    //Get all questions in a Test
+    #Get tests by subject ids
+    public static function GetTestsBySubjectId($subject_id)
+    {
+        return self::SinglePropertyExists("tests","subject_id",$subject_id,"i");
+    }
+
+    #Get all questions in a Test
     public static function GetTestQuestions($test_id)
     {
         return self::SinglePropertyExists("test_questions","test_id",$test_id,"i");

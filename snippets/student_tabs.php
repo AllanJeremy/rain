@@ -140,52 +140,52 @@ about how you came to achieve this.</p>
                     </div>
                 </div>
                 <div class="row main-tab" id="takeATestTab">
-                    <?php
-                        $tests = DbInfo::GetAllTests();
-                        if($tests):
-                    ?>
                     <div class="row">
-                        <div class="input-field col s8">
-                            <label for="search_take_test">Search Tests</label>
-                            <input type="search" id="search_take_test" class="validate" placeholder="Search Here"/>
-                        </div>
-                        <div class="col s4">
-                            <a class="btn btn_search_take_test" href="javascript:void(0)">Search</a>
-                        </div>
+                        <h5 class="grey-text text-darken-1">TESTS AVAILABLE</h5>
+                        <p>These are the tests available to you, they are grouped by subject to help you find tests easier.</p>
                     </div>
+                    
                     <div class="divider"></div>
-
-                    <h5 class="grey-text text-darken-1">YOUR TESTS</h5>
-
-                    <div class="row">
+                    
                     <?php
                         $redirect_url = "";#url the test redirects to
                         $test_id = 0; #init test_id
                         $no_of_takers = 0;#init number of takers
                         $subject = null;#init subject 
                         $pass_mark = 0;
-                        
-                        foreach($tests as $test):
-                            $test_id = &$test["test_id"];
-                            $redirect_url = "tests.php?tid=".$test_id;
-                            $subject = DbInfo::GetSubjectById($test["subject_id"]);
-                            if(!$subject)
-                            {
-                                $subject = "Unknown";
-                            }
-                            $pass_mark = GradeHandler::GetGradeInfo($test["passing_grade"],$test["max_grade"]);
-                            $pass_mark["percentage"] = floor($pass_mark["percentage"]);
 
-                            //Get the number of takers for this specific test
-                            $test_results = DbInfo::GetSpecificTestResults($test_id);
-                            if($test_results)
-                            {
-                                $no_of_takers = $test_results->num_rows;
-                            }
-                            else
-                            {
-                                $no_of_takers = 0;#init number of takers
-                            }
+                        #Get all subjects
+                        $subjects = DbInfo::GetAllSubjects();
+                    if($subjects):
+                        foreach($subjects as $subject):
+                            $tests = DbInfo::GetTestsBySubjectId($subject["subject_id"]);
+                            if($tests):
+                    ?>
+
+                    <div class="row">
+                        <h5 class="php-data" style="text-transform:uppercase;"><?php echo $subject["subject_name"]?> TESTS</h5>
+                    <?php       
+                            foreach($tests as $test):
+                                $test_id = &$test["test_id"];
+                                $redirect_url = "tests.php?tid=".$test_id;
+                                $subject = DbInfo::GetSubjectById($test["subject_id"]);
+                                if(!$subject)
+                                {
+                                    $subject = "Unknown";
+                                }
+                                $pass_mark = GradeHandler::GetGradeInfo($test["passing_grade"],$test["max_grade"]);
+                                $pass_mark["percentage"] = floor($pass_mark["percentage"]);
+
+                                //Get the number of takers for this specific test
+                                $test_results = DbInfo::GetSpecificTestResults($test_id);
+                                if($test_results)
+                                {
+                                    $no_of_takers = $test_results->num_rows;
+                                }
+                                else
+                                {
+                                    $no_of_takers = 0;#init number of takers
+                                }
                     ?>
                         <div class="col s12 m6 l4 take_test_container" data-test-id="<?php echo $test_id;?>">
                             <div class="card blue-grey darken-1">
@@ -205,15 +205,19 @@ about how you came to achieve this.</p>
                         </div>
                     <?php
                             endforeach;
-                            //Close the row container
+                            //Close the row container and add a divider after every subject's tests
                     ?>
                     </div>
+                    <div class="divider"></div>
                     <?php
-                        else: # Could not find the tests
+                            endif;#if tests found
+                        endforeach;
+                        
+                    else:#if subjects were not found
                     ?>
-                        <p>Could not find any tests</p>
+                        <p>Could not retrieve subjects</p>
                     <?php
-                        endif;
+                    endif;#if subjects found
                     ?>
                 </div>
 
