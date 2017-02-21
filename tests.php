@@ -105,7 +105,7 @@
             <?php
                     endif;
                     else:#question number not set
-                        Test::DisplayTestInstructions($test);//Display test creator's instructions
+                        Test::DisplayEditTestInstructions($test);//Display test creator's instructions
             ?>
 
             <?php
@@ -131,7 +131,7 @@
                         Test::DisplayTest($test,$current_question);#Display the current question
                     }else
                     {
-                        Test::DisplayTestInstructions($test,true);//Display test taker's instructions
+                        Test::DisplayTestInstructions($test);//Display test taker's instructions
                     }
 
 

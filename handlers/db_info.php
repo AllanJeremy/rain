@@ -1071,13 +1071,13 @@ class DbInfo
                 }
                 else
                 {
-                    echo "<p>Test retake info query ran.<br>Could not find any test retake info based on the parameter values provided</p>";
+                    // echo "<p>Test retake info query ran.<br>Could not find any test retake info based on the parameter values provided</p>";
                     return false;
                 }
             }
             else
             {
-                echo "<p>Failed to execute query to retrieve test retake info</p>";
+                // echo "<p>Failed to execute query to retrieve test retake info</p>";
                 return false;
             }
         }
