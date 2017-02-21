@@ -638,7 +638,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         $is_insert_op = false;#true if it is an insert operation
 
         //Question Exists in the database
-        if($question = DbInfo::TestQuestionExists(1,$q_data["question_index"]))
+        if($question = DbInfo::TestQuestionExists($q_data["test_id"],$q_data["question_index"]))
         {
             $result_question_id = $question["question_id"];
             $update_query = "UPDATE test_questions SET test_id=?,question_text=?,question_type=?,number_of_options=?,marks_attainable=?,question_index=? WHERE question_id=".$question["question_id"];
