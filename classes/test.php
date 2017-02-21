@@ -48,7 +48,7 @@ class Test
 
         <div class="col s12 m6 right-align">
             <br>
-            <a class="btn btn-large btn-flat editTest" id="<?php echo $test['test_id']?>">EDIT TEST DEFAULTS</a>
+            <a class="btn btn-large btn-flat editTest" data-test-id="<?php echo $test['test_id']?>">EDIT TEST DEFAULTS</a>
         </div>
         <div class="col s12 m6">
             <br>
