@@ -850,10 +850,26 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                             {
                                 $no_of_takers = 0;#init number of takers
                             }
+
+                            //Tooltip variables tt is shorthand for tooltip
+                            $tt_edit_test = "Edit the default general test settings";
+                            $tt_delete_test= "Delete the test";
+                            $tt_take_test= "Take the test. Opens a new page";
+                            $tt_edit_questions = "Edit the test questions. Opens a new page";
                     ?>
                         <div class="col s12 m6 l4 take_test_container" data-test-id="<?php echo $test_id;?>">
                             <div class="card blue-grey darken-1">
                                 <div class="card-content white-text">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <span class="card-title"><a href="javascript:void(0)" class="btn-floating EditTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">settings</i></a></span>
+                                        </div>
+                                        <div class="col s6 right-align">
+                                            <span class="card-title">
+                                                <a href="javascript:void(0)" class="btn-floating red DeleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">delete</i></a>
+                                            </span>
+                                        </div>
+                                    </div>
                                     <span class="card-title truncate"><?php echo $test["test_title"];?></span>
                                     <p>Subject: <span class="php-data"><?php echo $subject["subject_name"];?></span></p>
                                     <p>Questions: <span class="php-data"><?php echo $test["number_of_questions"]?></span></p>
@@ -863,8 +879,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <p class="students-taken php-data"><i>This test has been taken <?php echo $no_of_takers;?> time(s)</i></p>
                                 </div>
                                 <div class="card-action ">
-                                    <a class="btn btn-flat blue-grey-text text-lighten-4 EditTest" id="<?php echo $test_id?>">Edit</a>
-                                    <a href="<?php echo 'tests.php?tid='.$test_id?>" class="right-align">Take Test</a>
+                                    <a class="btn btn-flat blue-grey-text text-lighten-4 EditTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_questions?>" href="<?php echo 'tests.php?tid='.$test_id.'&edit=1'?>">EDIT TEST</a>
+                                    <a href="<?php echo 'tests.php?tid='.$test_id?>" class="tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_take_test?>">Take Test</a>
                                 </div>
                             </div>
                         </div>
