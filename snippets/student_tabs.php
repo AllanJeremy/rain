@@ -1,6 +1,7 @@
 <?php 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
+require_once(realpath(dirname(__FILE__) . "/../handlers/grade_handler.php")); #Grade handler. Handles all grade operations
 ?>
             <div class="container">
                 <!--<p class="grey-text">Assignments (overview headers)</p>
@@ -139,90 +140,81 @@ about how you came to achieve this.</p>
                     </div>
                 </div>
                 <div class="row main-tab" id="takeATestTab">
-                    <div class="row" id="tests">
-                        <!-- LOAD TEST CARDS HERE -->
-                        <div class="col card-col">
-                            <div class="card blue-grey darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>Questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
+                    <?php
+                        $tests = DbInfo::GetAllTests();
+                        if($tests):
+                    ?>
+                    <div class="row">
+                        <div class="input-field col s8">
+                            <label for="search_take_test">Search Tests</label>
+                            <input type="search" id="search_take_test" class="validate" placeholder="Search Here"/>
                         </div>
-                        <div class="col card-col">
-                            <div class="card indigo darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card green darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card pink darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col card-col">
-                            <div class="card brown darken-1">
-                                <div class="card-content white-text">
-                                    <span class="card-title">Test Title</span>
-                                    <p>Subject: <span class="php-data">History</span></p>
-                                    <p>questions: <span class="php-data">30</span></p>
-                                    <p>Time: <span class="php-data">2 hrs 40 min</span></p>
-                                    <p>Difficulty: <span class="php-data">Average</span></p>
-                                    <p>Pass mark: <span class="php-data">78%</span></p>
-                                    <p class="students-taken php-data"><i>30 students in your class have taken this test</i></p>
-                                </div>
-                                <div class="card-action right-align">
-                                    <a href="tests.php">Take test</a>
-                                </div>
-                            </div>
+                        <div class="col s4">
+                            <a class="btn btn_search_take_test" href="javascript:void(0)">Search</a>
                         </div>
                     </div>
+                    <div class="divider"></div>
 
+                    <h5 class="grey-text text-darken-1">YOUR TESTS</h5>
+
+                    <div class="row">
+                    <?php
+                        $redirect_url = "";#url the test redirects to
+                        $test_id = 0; #init test_id
+                        $no_of_takers = 0;#init number of takers
+                        $subject = null;#init subject 
+                        $pass_mark = 0;
+                        
+                        foreach($tests as $test):
+                            $test_id = &$test["test_id"];
+                            $redirect_url = "tests.php?tid=".$test_id;
+                            $subject = DbInfo::GetSubjectById($test["subject_id"]);
+                            if(!$subject)
+                            {
+                                $subject = "Unknown";
+                            }
+                            $pass_mark = GradeHandler::GetGradeInfo($test["passing_grade"],$test["max_grade"]);
+                            $pass_mark["percentage"] = floor($pass_mark["percentage"]);
+
+                            //Get the number of takers for this specific test
+                            $test_results = DbInfo::GetSpecificTestResults($test_id);
+                            if($test_results)
+                            {
+                                $no_of_takers = $test_results->num_rows;
+                            }
+                            else
+                            {
+                                $no_of_takers = 0;#init number of takers
+                            }
+                    ?>
+                        <div class="col s12 m6 l4 take_test_container" data-test-id="<?php echo $test_id;?>">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text">
+                                    <span class="card-title truncate"><?php echo $test["test_title"];?></span>
+                                    <p>Subject: <span class="php-data"><?php echo $subject["subject_name"];?></span></p>
+                                    <p>Questions: <span class="php-data"><?php echo $test["number_of_questions"]?></span></p>
+                                    <p>Time: <span class="php-data"><?php echo $test["time_to_complete"]?> min</span></p>
+                                    <p>Difficulty: <span class="php-data"><?php echo $test["difficulty"]?></span></p>
+                                    <p>Pass mark: <span class="php-data"><?php echo $pass_mark["percentage"]."%";?></span></p>
+                                    <p class="students-taken php-data"><i>This test has been taken <?php echo $no_of_takers;?> time(s)</i></p>
+                                </div>
+                                <div class="card-action right-align">
+                                    <a href="<?php echo 'tests.php?tid='.$test_id?>" class="btn btn-flat blue-grey-text text-lighten-4">Take Test</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                            endforeach;
+                            //Close the row container
+                    ?>
+                    </div>
+                    <?php
+                        else: # Could not find the tests
+                    ?>
+                        <p>Could not find any tests</p>
+                    <?php
+                        endif;
+                    ?>
                 </div>
 
                 <!--Test results-->
