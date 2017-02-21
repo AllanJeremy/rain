@@ -864,7 +864,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 </div>
                                 <div class="card-action ">
                                     <a class="btn btn-flat blue-grey-text text-lighten-4 EditTest" id="<?php echo $test_id?>">Edit</a>
-                                    <a href="tests.php" class="right-align">Take Test</a>
+                                    <a href="<?php echo 'tests.php?tid='.$test_id?>" class="right-align">Take Test</a>
                                 </div>
                             </div>
                         </div>
