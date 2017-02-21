@@ -15,13 +15,13 @@
         </div>
     </li>
     <li class="active">
-        <a href="#" id="s_statsOverview_link" data-activates="statsOverviewTab">Stats overview</a>
+        <a href="#" id="statsOverview" data-activates="statsOverviewTab">Stats overview</a>
     </li>
     <li class="">
-        <a href="#" id="s_schedules_link" data-activates="principalSchedulesTab">Schedules</a>
+        <a href="#" id="schedules" data-activates="principalSchedulesTab">Schedules</a>
     </li>
     <li class="">
-        <a href="#" id="s_Assignments_link" data-activates="principalAssignmentsTab">Assignments</a>
+        <a href="#" id="assignments" data-activates="principalAssignmentsTab">Assignments</a>
     </li>
     <ul class="collapsible collapsible-accordion">
         <li class="">
@@ -29,23 +29,23 @@
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a href=""  id="s_StudentGrades_link" data-activates="principalStudentGradesTab" class="">Student grades</a>
+                        <a href=""  id="studentGrades" data-activates="principalStudentGradesTab" class="">Student grades</a>
                     </li>
                     <li>
-                        <a href=""  id="s_Gradebook_link" data-activates="principalGradebookTab" class="">Gradebook</a>
+                        <a href=""  id="gradeBook" data-activates="principalGradebookTab" class="">Gradebook</a>
                     </li>
                 </ul>
             </div>
         </li>
     </ul>
     <li>
-        <a href="#!" class="" id="s_Students_link" data-activates="principalStudentsTab">Students</a>
+        <a href="#!" class="" id="students" data-activates="principalStudentsTab">Students</a>
     </li>
     <li>
-        <a href="#!" class="" id="s_Teachers_link" data-activates="principalTeachersTab">Teachers</a>
+        <a href="#!" class="" id="teachers" data-activates="principalTeachersTab">Teachers</a>
     </li>
     <li>
-        <a href="#!" class="hide" id="s_Groups_link" data-activates="principalGroupsTab">Groups</a>
+        <a href="#!" class="hide" id="groups" data-activates="principalGroupsTab">Groups</a>
     </li>
     <li>
         <div class="divider"></div>

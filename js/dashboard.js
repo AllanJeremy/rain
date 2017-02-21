@@ -63,11 +63,11 @@ var Dashboard = function () {
                         activates = $('.side-nav a:not(.collapsible-header)' + currTag).attr('data-activates');//get the 'data-activates' attr of the current hash
                         break;
                     case 'principal' :
-                        currTag = '#classroom';
+                        currTag = '#statsOverview';
                         activates = $('.side-nav a:not(.collapsible-header)' + currTag).attr('data-activates');//get the 'data-activates' attr of the current hash
                         break;
                     case 'superuser' :
-                        currTag = '#classroom';
+                        currTag = '#dashboard';
                         activates = $('.side-nav a:not(.collapsible-header)' + currTag).attr('data-activates');//get the 'data-activates' attr of the current hash
                         break;
 

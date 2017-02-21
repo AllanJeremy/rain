@@ -11,19 +11,19 @@
         </div>
     </li>
     <li class="active">
-        <a href="#!" id="d_Dashboard_link" data-activates="dashboardTab" class="">Dashboard</a>
+        <a href="#!" id="dashboard" data-activates="dashboardTab" class="">Dashboard</a>
     </li>
     <li class="">
-        <a href="#!" id="d_Students_link" data-activates="studentsTab" class="">Students</a>
+        <a href="#!" id="students" data-activates="studentsTab" class="">Students</a>
     </li>
     <li class="">
-        <a href="#!" id="d_Teachers_link" data-activates="teachersTab" class="">Teachers</a>
+        <a href="#!" id="teachers" data-activates="teachersTab" class="">Teachers</a>
     </li>
     <li class="">
-        <a href="#!" id="d_Principal_link" data-activates="principalTab" class="">Principal</a>
+        <a href="#!" id="principal" data-activates="principalTab" class="">Principal</a>
     </li>
     <li class="">
-        <a href="#!" id="d_Superuser_link" data-activates="superuserTab" class="">Superuser</a>
+        <a href="#!" id="superuser" data-activates="superuserTab" class="">Superuser</a>
     </li>
     <li>
         <div class="divider"></div>
