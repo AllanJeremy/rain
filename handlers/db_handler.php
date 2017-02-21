@@ -978,7 +978,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             //Update some result values
             $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
             $results["grade"] = $total_marks;
-            $results["percentage"] = ($grade_info["percentage"]*100)."% ";
+            $results["percentage"] = $grade_info["percentage"]."% ";
             $results["grade_text"] = $grade_info["grade_text"];
             $results["answers_right"] = $answers_right;
             $results["answers_wrong"] = $answers_wrong;
