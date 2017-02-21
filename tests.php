@@ -52,8 +52,7 @@
                         $test_in_waiting_state = !(EsomoDate::DateTimeHasElapsed($retake_date));
                     }
 
-                    //If the test is not in waiting state, show it
-                    if(!$test_in_waiting_state):
+
 ?>
         <header>
             <nav class="top-nav">
@@ -61,7 +60,7 @@
                     <div class="nav-wrapper ">
                         <div class="row no-margin">
                             <div class="col s2">
-                                <a href="<?php echo 'tests.php?tid='.htmlspecialchars($_GET['tid'])?>" class="">
+                                <a href="./#takeATest" class="">
                                     <i class="material-icons">arrow_back</i>
                                 </a>
                             </div>
@@ -105,7 +104,7 @@
             <?php
                     endif;
                     else:#question number not set
-                        Test::DisplayTestInstructions($test);//Display test creator's instructions
+                        Test::DisplayEditTestInstructions($test);//Display test creator's instructions
             ?>
 
             <?php
@@ -121,27 +120,25 @@
 
                 //If we are taking the test
                 if($taking_test):
-                        
-                    $current_question = 0;
-                    if(isset($_GET["q"]))#if question number is set
-                    {
-                        $current_question = htmlspecialchars($_GET["q"]);
-                        if($current_question<1 || $current_question>$test["number_of_questions"])
-                        {header("Location:404.html");}
-                        Test::DisplayTest($test,$current_question);#Display the current question
-                    }else
-                    {
-                        Test::DisplayTestInstructions($test,true);//Display test taker's instructions
-                    }
-
-
+                    //If the test is not in waiting state, show it
+                    if(!$test_in_waiting_state):
+                        $current_question = 0;
+                        if(isset($_GET["q"]))#if question number is set
+                        {
+                            $current_question = htmlspecialchars($_GET["q"]);
+                            if($current_question<1 || $current_question>$test["number_of_questions"])
+                            {header("Location:404.html");}
+                            Test::DisplayTest($test,$current_question);#Display the current question
+                        }else
+                        {
+                            Test::DisplayTestInstructions($test);//Display test taker's instructions
+                        }
             ?>
             <?php
+                    else:#if we need to wait to take the test ~ Test is in waiting state
+                        Test::DisplayWaitRetakeMessage($retake_info,$user_info);
+                    endif;
                 endif;#if taking test
-
-                else:#if we need to wait to take the test ~ Test is in waiting state
-                    Test::DisplayWaitRetakeMessage($retake_info,$user_info);
-                endif;
 
                 else:#testid is set and is not a valid test
                     header("Location:./404.html");

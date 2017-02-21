@@ -17,6 +17,48 @@ class Test
         
     }
 
+    //Display Edit test instructions
+    public static function DisplayEditTestInstructions($test)   
+    {
+?>
+<br>
+    <div class="container row">
+
+        <!--Test details-->
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo (DbInfo::GetSubjectById($test["subject_id"]))["subject_name"];?></small></h5></div>
+
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
+
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Max Grade : <small class="grey-text text-darken-2"><?php echo $test["max_grade"];?></small></h5></div>
+
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Passing Grade : <small class="grey-text text-darken-2"><?php echo $test["passing_grade"];?></small></h5></div>
+
+        <div class="col s12 divider"></div>
+
+        <!--Test Description-->
+        <div class="col s12">
+            <br><h4>Instructions</h4>
+            <p><?php echo $test["test_description"];?></p>
+        </div>
+
+        <div class="col s12">
+            <br><h4>Tips</h4>
+            <p>Tips for editing the test here.</p>
+        </div>
+
+        <div class="col s12 m6 right-align">
+            <br>
+            <a class="btn btn-large btn-flat editTest" data-test-id="<?php echo $test['test_id']?>">EDIT TEST DEFAULTS</a>
+        </div>
+        <div class="col s12 m6">
+            <br>
+            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=1&q=";?>
+            <a data-redirect-url="<?php echo $url_extension.'1'; ?>" class="btn btn-large" id="start_test">EDIT TEST QUESTIONS</a>
+        </div>
+    </div>
+<?php
+    }
+
     //Display test instructions. Instructions seen just before opening the Test
     public static function DisplayTestInstructions($test)
     {

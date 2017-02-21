@@ -2,7 +2,7 @@
 
 <html lang="en" class="login-bg">
     <head>
-        <title>Esomo2</title>
+        <title>Staff Account Request</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
