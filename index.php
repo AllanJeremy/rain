@@ -371,8 +371,8 @@
             $(".mobile-button-collapse").sideNav('hide');
             //console.log('already open');
         }
-
         
         </script>
+        <script type="text/javascript" src="js/tests-functions.js"></script>
     </body>
 </html>

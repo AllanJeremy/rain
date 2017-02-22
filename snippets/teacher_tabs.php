@@ -703,6 +703,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
 
                 <!--TESTS SECTION-->
                 <?php
+                    include_once("classes/test.php");#Include the test class
                     $subjects_found = DbInfo::GetAllSubjects();
                 ?>
                 <!--Create a test-->
@@ -862,7 +863,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 <div class="card-content white-text">
                                     <div class="row">
                                         <div class="col s6">
-                                            <span class="card-title"><a href="javascript:void(0)" class="btn-floating EditTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">settings</i></a></span>
+                                            <span class="card-title"><a href="javascript:void(0)" class="btn-floating editTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">settings</i></a></span>
                                         </div>
                                         <div class="col s6 right-align">
                                             <span class="card-title">
@@ -879,7 +880,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <p class="students-taken php-data"><i>This test has been taken <?php echo $no_of_takers;?> time(s)</i></p>
                                 </div>
                                 <div class="card-action ">
-                                    <a class="btn btn-flat blue-grey-text text-lighten-4 EditTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_questions?>" href="<?php echo 'tests.php?tid='.$test_id.'&edit=1'?>">EDIT TEST</a>
+                                    <a class="btn btn-flat blue-grey-text text-lighten-4 editTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_questions?>" href="<?php echo 'tests.php?tid='.$test_id.'&edit=1'?>">EDIT TEST</a>
                                     <a href="<?php echo 'tests.php?tid='.$test_id?>" class="tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_take_test?>">Take Test</a>
                                 </div>
                             </div>
@@ -895,6 +896,9 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                         <p>Could not retrieve your tests</p>
                     <?php
                         endif;
+
+                        #Add the edit test modal to the DOM
+                        Test::DisplayEditTestModal();
                     ?>
                 </div>
 

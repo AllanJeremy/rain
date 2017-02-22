@@ -1,9 +1,7 @@
 /*jslint browser: true*/
 /*global $, jQuery, alert, console*/
 
-$(function () {
-    'use strict';
-    
+ $(document).ready(function(){
     //Toggles fullscreen
     function toggleFullScreen() {
         console.log('going fullscreen');
@@ -27,8 +25,11 @@ $(function () {
             }
         }
     }
-    
+    var $editTest = $("a.editTest");
+    $editTest.addClass("modal-trigger");//Add the class modal trigger to all edit test buttons
 
+    $editTest.click(function(){
+        $("#modal_edit_test").openModal();
+    });
+ });
 
-
-}, jQuery); // end of document ready

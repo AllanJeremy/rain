@@ -46,7 +46,7 @@ class Test
             <p>Tips for editing the test here.</p>
         </div>
 
-        <div class="col s12 m6 right-align">
+        <div class="col s12 m6">
             <br>
             <a class="btn btn-large btn-flat editTest" data-test-id="<?php echo $test['test_id']?>">EDIT TEST DEFAULTS</a>
         </div>
@@ -556,4 +556,97 @@ class Test
     </div>
 <?php
     }
-};?>
+
+    
+    //Modal template for for the edit test modal
+    public static function DisplayEditTestModal()
+    {
+        $subjects_found  = DbInfo::GetAllSubjects();
+?>
+    <div class="modal modal-fixed-footer" id="modal_edit_test">
+        <div class="modal-content">
+            <h2>Edit Test</h2>
+            <div class="container" id="editTestForm">
+                <div class=" input-field col s12 m6">
+                    <input type="text" id="editTestTitle" name="edit_test_title" placeholder="Test Title" class="validate" required>
+                    <label for="editTestTitle">Title</label>
+                </div>
+                <div class=" input-field col s12 m6">
+                    <select id="editTestSubject">
+                        <?php
+                            foreach($subjects_found as $subject):
+                        ?>
+                        <option value="<?php echo $subject['subject_id']?>"><?php echo $subject["subject_name"] ?></option>
+                        <?php
+                            endforeach;
+                        ?>
+                    </select>
+                    <label for="editTestSubject">Subject</label>
+                </div>
+                <div class=" input-field col s12 m6">
+                    <input type="number" id="editTestQuestionCount" name="edit_test_question_count" min="1" max="50" value="10" class="validate" required>
+                    <label for="editTestQuestionCount">No. of questions</label>
+                </div>
+
+
+                <div class=" input-field col s12 m6">
+                    <select id="editTestDifficulty" name="edit_test_difficulty" class="validate" required>
+                        <option value="1">Very Easy</option>
+                        <option value="2">Easy</option>
+                        <option value="3">Moderate</option>
+                        <option value="4">Difficult</option>
+                        <option value="5">Very Difficult</option>
+                    </select>
+                    <label for="editTestDifficulty">Difficulty</label>
+                </div>
+
+                <div class=" input-field col s12 m4">
+                    <input type="number" id="editTestMaxGrade" name="edit_test_max_grade" min="10" max="100" value="100" class="validate" required>
+                    <label for="editTestMaxGrade">Max grade</label>
+                </div>
+
+                <div class=" input-field col s12 m4">
+                    <input type="number" id="editTestPassGrade" name="edit_test_pass_grade" min="10" max="100" value="50" class="validate" required>
+                    <label for="editTestPassGrade">Passing grade</label>
+                </div>
+
+
+                <div class=" input-field col s12 m4">
+                    <input type="number" id="editTestCompletionTime" step="5" name="edit_test_completion_time" class="validate" min="10" max="45" value="30" required>
+                    <label for="editTestCompletionTime">Time (Minutes)</label>
+                </div>
+
+                <!--Retake delays-->
+            <!--
+                <div class=" input-field col s12 m4">
+                    <input type="number" id="editTestRetakeDelay_days" name="edit_test_rDelay_days" min="0" max="100" value="0" class="validate" required>
+                    <label for="editTestRetakeDelay_days">Retake Delay (Days)</label>
+                </div>
+
+                <div class=" input-field col s12 m4">
+                    <input type="number" id="editTestRetakeDelay_hours" name="edit_test_rDelay_hours" min="0" max="100" value="0" class="validate" required>
+                    <label for="editTestRetakeDelay_hours">Retake Delay (Hours)</label>
+                </div>
+
+                <div class=" input-field col s12 m4">
+                    <input type="number" id="editTestRetakeDelay_min" name="edit_test_rDelay_min" min="10" max="100" value="30" class="validate" required>
+                    <label for="editTestRetakeDelay_min">Retake Delay (Minutes)</label>
+                </div>
+            -->
+
+                <div class=" input-field col s12 ">
+                    <textarea id="editTestInstructions" class="materialize-textarea" placeholder="Instructions students will get for the test"></textarea>
+                    <label for="editTestInstructions">Test instructions</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:void(0)" class="btn btn-flat">CLOSE</a>
+        </div>
+    </div>
+<?php
+    }
+
+}; #END OF CLASS
+
+?>
