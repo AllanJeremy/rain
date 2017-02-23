@@ -48,7 +48,6 @@
             $("#UpdateEditTest").click(function(){
                 var edit_data = GetEditTestModalData($test_id);
                 $.post("handlers/db_handler.php",{"action":"UpdateEditTest","data":edit_data},function(data,status){
-                    console.log("Edit test modal data status : ",status);
                     $editTestModal.closeModal();
                 });
             }); 
@@ -69,6 +68,7 @@
         DATA FIELDS IN THE MODAL
             editTestTitle ~ input(text)
             editTestSubject ~ select
+            editTestQuestionCount ~ input(number)
             editTestMaxGrade ~ input(number)
             editTestDifficulty ~ selectr
             editTestPassGrade ~ input(number)
@@ -84,6 +84,7 @@
         
         //Set all input values
         $("#editTestTitle").val(data["test_title"]);
+        $("#editTestQuestionCount").val(data["number_of_questions"]);//Number of questions in this test
         $("#editTestMaxGrade").val(data["max_grade"]);        
         $("#editTestPassGrade").val(data["passing_grade"]);
         $("#editTestCompletionTime").val(data["time_to_complete"]);
@@ -99,6 +100,7 @@
         data["test_title"] = $("#editTestTitle").val();
         data["subject_id"] = $("#editTestSubject").val();
         data["max_grade"] = $("#editTestMaxGrade").val();
+        data["number_of_questions"] = $("#editTestQuestionCount").val();//Number of questions in this test
         data["difficulty"] = $("#editTestDifficulty").val();
         data["passing_grade"] = $("#editTestPassGrade").val();
         data["time_to_complete"] = $("#editTestCompletionTime").val();
