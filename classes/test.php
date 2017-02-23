@@ -644,7 +644,7 @@ class Test
             </div>
         </div>
         <div class="modal-footer">
-            <a href="javascript:void(0)" class="btn btn-flat">CLOSE</a>
+            <a href="javascript:void(0)" class="btn btn-flat modal-close">CLOSE</a>
             <a href="javascript:void(0)" class="btn" id="UpdateEditTest">DONE</a>
         </div>
     </div>

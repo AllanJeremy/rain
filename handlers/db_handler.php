@@ -591,17 +591,48 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
     //Update Test information
     //TODO Add parameters for UpdateTestInfo based on what kind of information will be updated - refer to UpdateClassroomInfo() function for example parameters
-    public static function UpdateTest()
+    public static function UpdateTest($update_data,$user_info)
     {
         global $dbCon;#Connection string mysqli object
+        $test = DbInfo::TestExists($update_data["test_id"]);
+        
 
-        if(DbInfo::TestExists($test_id))#if the test exists - safety check
+        if($test)#if the test exists - safety check
         {
+            $test_id = &$test["test_id"];#test_id
 
+            #query for updating the test
+            $update_query = "UPDATE tests SET test_title=?, test_description=?, number_of_questions=?, teacher_id=?,time_to_complete=?, subject_id=?,difficulty=?,max_grade=?,passing_grade=?  WHERE test_id=".$test["test_id"];
+
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("ssiiiisii",
+                                        $update_data["test_title"],
+                                        $update_data["test_description"],
+                                        $update_data["number_of_questions"],
+                                        $user_info["user_id"],
+                                        $update_data["time_to_complete"],
+                                        $update_data["subject_id"],
+                                        $update_data["difficulty"],
+                                        $update_data["max_grade"],
+                                        $update_data["passing_grade"]
+                );
+
+                if($update_stmt->execute())
+                {
+                    // echo "<p>Successfully updated the test</p>";
+                    return true;                    
+                }
+                else
+                {
+                    // echo "<p>Error executing update test query</p>";
+                    return false;
+                }
+            }
         }
         else
         {
-            return false;
+            return $test;
         }
     }
 
@@ -1119,6 +1150,7 @@ if(isset($_POST['action'])) {
             $test_data = $_POST["test_data"];
             echo DbHandler::CreateTest($test_data);
         break;
+        
         //Delete question answer
         case 'DeleteQuestionAnswer':
             $answers_data = $_POST["answers_data"];
@@ -1127,6 +1159,13 @@ if(isset($_POST['action'])) {
                 DbHandler::DeleteQuestionAnswer($ans_data["question_index"],$ans_data["answer_index"]);
             }
         
+        break;
+        
+        //Update the test
+        case 'UpdateEditTest':
+            $edit_data = ($_POST["data"]);
+            $update_test = DbHandler::UpdateTest($edit_data,$user_info);
+            echo $update_test;
         break;
 
         //Update a question in the test

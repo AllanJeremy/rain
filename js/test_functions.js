@@ -46,10 +46,11 @@
             
             //When the Done editing button is clicked, update the test
             $("#UpdateEditTest").click(function(){
-                var edit_data = GetEditTestModalData();
-                console.log("edit data");
-                console.log(edit_data);
-                $.post("handlers/db_handler.php",{"action":"UpdateEditTest","data":edit_data});
+                var edit_data = GetEditTestModalData($test_id);
+                $.post("handlers/db_handler.php",{"action":"UpdateEditTest","data":edit_data},function(data,status){
+                    console.log("Edit test modal data status : ",status);
+                    $editTestModal.closeModal();
+                });
             }); 
         });
 
@@ -90,10 +91,11 @@
 
     }
 
-    //Get the data from the edit test modal
-    function GetEditTestModalData()
+    //Get the data from the edit test modal ~ takes test_id as a parameter, this will be used to set the value of test_id in data
+    function GetEditTestModalData($test_id)
     {
         var data = {};
+        data["test_id"] = $test_id;
         data["test_title"] = $("#editTestTitle").val();
         data["subject_id"] = $("#editTestSubject").val();
         data["max_grade"] = $("#editTestMaxGrade").val();
