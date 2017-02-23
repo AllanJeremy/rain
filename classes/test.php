@@ -594,11 +594,11 @@ class Test
 
                 <div class=" input-field col s12 m6">
                     <select id="editTestDifficulty" name="edit_test_difficulty" class="validate" required>
-                        <option value="1">Very Easy</option>
-                        <option value="2">Easy</option>
-                        <option value="3">Moderate</option>
-                        <option value="4">Difficult</option>
-                        <option value="5">Very Difficult</option>
+                        <option value="Very Easy">Very Easy</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Difficult">Difficult</option>
+                        <option value="Very Difficult">Very Difficult</option>
                     </select>
                     <label for="editTestDifficulty">Difficulty</label>
                 </div>
@@ -645,6 +645,7 @@ class Test
         </div>
         <div class="modal-footer">
             <a href="javascript:void(0)" class="btn btn-flat">CLOSE</a>
+            <a href="javascript:void(0)" class="btn" id="UpdateEditTest">DONE</a>
         </div>
     </div>
 <?php
