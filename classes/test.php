@@ -20,12 +20,13 @@ class Test
     //Display Edit test instructions
     public static function DisplayEditTestInstructions($test)   
     {
+        $subject = DbInfo::GetSubjectById($test["subject_id"]);
 ?>
 <br>
     <div class="container row">
 
         <!--Test details-->
-        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo (DbInfo::GetSubjectById($test["subject_id"]))["subject_name"];?></small></h5></div>
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></small></h5></div>
 
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
 
@@ -62,12 +63,13 @@ class Test
     //Display test instructions. Instructions seen just before opening the Test
     public static function DisplayTestInstructions($test)
     {
+        $subject = DbInfo::GetSubjectById($test["subject_id"]);
 ?>
     <br>
     <div class="container row">
 
         <!--Test details-->
-        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo (DbInfo::GetSubjectById($test["subject_id"]))["subject_name"];?></small></h5></div>
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></small></h5></div>
 
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
 
