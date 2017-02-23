@@ -149,8 +149,9 @@
             else:#if no test id is provided
                 header("Location:./"); #redirect to the home page
             endif;
+            Test::DisplayEditTestModal();
             ?>
-
+            
         </main>
         <footer>
         </footer>
@@ -158,6 +159,9 @@
         <script>
 
         $(document).ready(function(){
+            //Select initializing
+            $('select').material_select();
+
             //Get URL params script
             jQuery.fn.extend({getUrlParam:function(a){a=escape(unescape(a));var b=new Array,c=null;if("#document"==$(this).attr("nodeName"))window.location.search.search(a)>-1&&(c=window.location.search.substr(1,window.location.search.length).split("&"));else if("undefined"!=$(this).attr("src")){var d=$(this).attr("src");if(d.indexOf("?")>-1){var e=d.substr(d.indexOf("?")+1);c=e.split("&")}}else{if("undefined"==$(this).attr("href"))return null;var d=$(this).attr("href");if(d.indexOf("?")>-1){var e=d.substr(d.indexOf("?")+1);c=e.split("&")}}if(null==c)return null;for(var f=0;f<c.length;f++)escape(unescape(c[f].split("=")[0]))==a&&b.push(c[f].split("=")[1]);return 0==b.length?null:1==b.length?b[0]:b}});
 
@@ -681,7 +685,7 @@
 
         </script>
 
-        <script type="text/javascript" src="js/tests-functions.js"></script>
+        <script type="text/javascript" src="js/test_functions.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
 
         <!--Fullscreen functionality-->

@@ -208,7 +208,7 @@ else{Materialize.toast(missing_answer_message,5000)}});$("#complete_test").click
 {qData.answers_provided.push($(this).attr("id"))});$.post("handlers/db_handler.php",{"action":"CompleteTakingTest",qData},function(data,status){console.log("Completed test")})}});$(".question_marks").change(function(){var cur_val=$(this).val();marks_alloc=parseInt($("#txt_marks_allocated").text());marks_alloc+=(cur_val-init_marks_val);init_marks_val=cur_val;$("#txt_marks_allocated").text(marks_alloc);UpdateMarksClasses(marks_alloc,max_grade)})});
         </script>
 
-        <script type="text/javascript" src="js/tests-functions.js"></script>
+        <script type="text/javascript" src="js/test_functions.js"></script>
 
         <script type="text/javascript" src="js/materialize.js"></script>
 

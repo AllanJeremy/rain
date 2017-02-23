@@ -567,13 +567,14 @@ class Test
 ?>
     <div class="modal modal-fixed-footer" id="modal_edit_test">
         <div class="modal-content">
-            <h2>Edit Test</h2>
-            <div class="container" id="editTestForm">
+            <h4 class="grey-text">EDIT TEST</h4>
+            <div class="divider"></div><br>
+            <div class="row" id="editTestForm">
                 <div class=" input-field col s12 m6">
                     <input type="text" id="editTestTitle" name="edit_test_title" placeholder="Test Title" class="validate" required>
                     <label for="editTestTitle">Title</label>
                 </div>
-                <div class=" input-field col s12 m6">
+                <div class="input-field col s12 m6">
                     <select id="editTestSubject">
                         <?php
                             foreach($subjects_found as $subject):
@@ -648,7 +649,7 @@ class Test
     </div>
 <?php
     }
-
+    
 }; #END OF CLASS
 
 ?>

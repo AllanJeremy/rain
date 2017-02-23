@@ -373,6 +373,6 @@
         }
         
         </script>
-        <script type="text/javascript" src="js/tests-functions.js"></script>
+        <script type="text/javascript" src="js/test_functions.js"></script>
     </body>
 </html>
