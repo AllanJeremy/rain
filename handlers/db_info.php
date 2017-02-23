@@ -601,7 +601,8 @@ class DbInfo
     //Checks if the test with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function TestExists($test_id)
     {
-        if($tests = self::SinglePropertyExists("tests","test_id",$test_id,"i"))
+        $tests = self::SinglePropertyExists("tests","test_id",$test_id,"i");
+        if($tests)
         {
             if($tests->num_rows>0)
             {
@@ -617,7 +618,8 @@ class DbInfo
         }
         else
         {
-            return self::SinglePropertyExists("tests","test_id",$test_id,"i");
+
+            return $tests;
         }
     }
 
@@ -1741,6 +1743,13 @@ if(isset($_GET['action'])) {
             }
 
             break;
+
+        case "GetTestById":
+            $test_id = &$_GET["test_id"];
+            $test_found = DbInfo::TestExists($test_id);
+            
+            echo json_encode($test_found);
+        break;
         default:
             return null;
             break;
