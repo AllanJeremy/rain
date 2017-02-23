@@ -650,10 +650,61 @@ var ScheduleEvents = function () {
     
     var deleteSchedule = function () {
         
+        $('main').on('click', '.modal a#moreScheduleCardDelete', function (e) {
+            e.preventDefault();
+
+            var self = $(this), re,
+                scheduleid = self.parents('.modal').attr('id').split('_').pop(),
+                toastMessage = '<p class="white-text" data-ref-schedule-id="' + scheduleid + '">Preparing to delete schedule  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
+
+            self.parents('.modal').find('a#attendedScheduleFromModal').length === 0 ? re = 'attendedScheduleTable' : re = 'pendingScheduleTable';
+
+            console.log('schedule id ' + scheduleid + ' to be deleted.');
+
+            //close modal
+            $('.modal#' + self.parents('.modal').attr('id') ).closeModal();
+            //remove modal from dom
+            cleanOutModals();
+
+            $('table#' + re).find('tr[data-schedule-id="' + scheduleid + '"]').addClass('to-remove');
+
+            //3
+            var toastCall = Materialize.toast(toastMessage, 7200, '', function (s) {
+                //4
+                $.post("handlers/db_handler.php", {"action" : "DeleteSchedule", "scheduleid" : scheduleid}, function (result) {
+
+                    //5
+                    if(result === '1') {
+
+                        $('table#' + re).find('tr[data-schedule-id="' + scheduleid + '"]').remove();
+
+                        console.log(result);
+
+                    }
+
+                    //6
+                    //cleanOutModals();
+
+                }, 'text');
+
+            });
+
+        });
+
     };
         
     var markAttendedSchedule = function () {
         
+        /*
+        *   1. Finds out if it's marked from the modal or the table list
+        *   2. Ajax post to mark the schedule as attended
+        *   3. If true, replace the done icon with undo
+        *   4. prepend the list to attended table
+        *   5. Remove the list from the pending table
+        *   6. Clean out modal
+        *   7. Update pagination
+        */
+
         $('main').on('click', 'a#attendedSchedule, a#attendedScheduleFromModal', function(e) {
             e.preventDefault();
 
@@ -703,6 +754,14 @@ var ScheduleEvents = function () {
 
                     parentEl.remove();
 
+                    if ($('#schedulesTab table#pendingScheduleTable').children('tbody').length === 1 && $('#schedulesTab table#pendingScheduleTable').children('tbody:first').find('tr').length === 0) {
+                        //If there're no schedules, append a dummy;
+                        $('#schedulesTab table#pendingScheduleTable').children('tbody:first').prepend("<tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr>");
+                        $('#schedulesTab table#pendingScheduleTable').children('tbody:first').attr('data-tbody-number', 'noData');
+
+                    }
+
+
                     if (modalid !== '') {
 
                         $('#' + modalid).closeModal();
@@ -731,7 +790,7 @@ var ScheduleEvents = function () {
             console.log('unmarking done...');
 
             $.post("classes/schedule_class.php", {
-                    "action" : "unmarkAttendedSchedule",
+                    "action" : "UnmarkAttendedSchedule",
                     "scheduleid" : scheduleid
                 }, function (result) {
 
@@ -739,11 +798,15 @@ var ScheduleEvents = function () {
                     console.log(typeof result);
                 if (result === true) {
 
-                    console.log(attendedScheduleHook);
+                    console.log(pendingScheduleHook);
                     console.log(parentEl);
-                    parentEl.html('');
 
-                    attendedScheduleHook.before(parentEl[0].outerHTML);
+                    parentEl.addClass('new-class');
+                    parentEl.find('a#unmarkdoneSchedule').replaceWith('<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>');
+
+                    pendingScheduleHook.before(parentEl[0].outerHTML);
+
+                    parentEl.remove();
 
                     updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', 6, 'forward');
 
@@ -760,49 +823,51 @@ var ScheduleEvents = function () {
             console.log('opening...');
             var scheduleid = $(this).parents('tr').attr('data-schedule-id'),
                 hook = $(this),
-                tableid = hook.parents('table').attr('id');
+                tableid = hook.parents('table').attr('id'),
+                prev = true, next  = true;
 
             //variables for the modal
+
             $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : scheduleid }, function (data) {
 
                 console.log(data);
 
                 data.due_date_formatted = moment(data.due_date).fromNow();
 
-                var body = Lists_Templates.scheduleInfo(data),
-                    prev = true,
-                    next = true;
+                var body = Lists_Templates.scheduleInfo(data);
 
                 console.log(scheduleid);
                 console.log(hook.parents('table').children('tbody:first').find('tr:first').attr('data-schedule-id'));
 
-                if (scheduleid === hook.parents('table#' + tableid).children('tbody:first').find('tr:first').attr('data-schedule-id')) {
-                    prev = false;
-                }
-                if (scheduleid === hook.parents('table#' + tableid).children('tbody:last').find('tr:last').attr('data-schedule-id')) {
-                    next = false;
-                }
-
-                var template = {
-
-                    modalId: 'viewScheduleInfo_' + data.schedule_id,
-                    templateHeader: 'Schedule Info',
-                    templateBody: body,
-                    extraActions: Lists_Templates.infoExtraFooterActions({
-                        "Delete" : true,
-                        "Previous" : prev,
-                        "Next" : next,
-                    })
-                };
-    //            Ajax
-    //            load the modal in the DOM
-                $('main').append(Lists_Templates.modalTemplate(template));
-
-                $(this).attr('data-target', template.modalId);
-
-                $('#' + template.modalId).openModal({dismissible:false});
+                $('.modal#viewScheduleInfo_' + data.schedule_id + ' .modal-content').append(body);
 
             }, 'json');
+
+            if (scheduleid === hook.parents('table#' + tableid).children('tbody:first').find('tr:first').attr('data-schedule-id')) {
+                prev = false;
+            }
+            if (scheduleid === hook.parents('table#' + tableid).children('tbody:last').find('tr:last').attr('data-schedule-id')) {
+                next = false;
+            }
+
+            var template = {
+
+                modalId: 'viewScheduleInfo_' + scheduleid,
+                templateHeader: 'Schedule Info',
+                templateBody: '',
+                extraActions: Lists_Templates.infoExtraFooterActions({
+                    "Delete" : true,
+                    "Previous" : prev,
+                    "Next" : next,
+                })
+            };
+//            Ajax
+//            load the modal in the DOM
+            $('main').append(Lists_Templates.modalTemplate(template));
+
+            $(this).attr('data-target', template.modalId);
+
+            $('#' + template.modalId).openModal({dismissible:false});
 
         });
     };

@@ -1114,6 +1114,19 @@ if(isset($_POST['action'])) {
             }
 
             break;
+        case 'DeleteSchedule':
+
+            $schedule_id = $_POST['scheduleid'];
+
+            if(isset($schedule_id)) {
+
+                $result = DbHandler::DeleteSchedule($schedule_id);
+
+                echo $result;
+
+            }
+
+            break;
         //Create a Test
         case 'CreateTest':
             $test_data = $_POST["test_data"];

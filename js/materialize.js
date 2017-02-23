@@ -2005,6 +2005,8 @@ $(document).ready(function(){
     }, 20);
 
     $('a#toastUndoAction').bind('click', function (u) {
+        u.preventDefault();
+
         //should kill the callback
         window.clearInterval(counterInterval);
         // Animate toast out
@@ -2018,12 +2020,24 @@ $(document).ready(function(){
             }
           });
         
-        var cardId = $(this).parent('p').attr('data-ref-class-id');
-        var cardColor = localStorage.getItem("cardColor");
-        $('.card-col[data-classroom-id=' + cardId + ']').removeClass('to-remove');
-        $('.card-col[data-classroom-id=' + cardId + '] .to-edit').removeClass('grey z-depth-4');
-        $('.card-col[data-classroom-id=' + cardId + '] .to-edit').addClass(cardColor)
-        $('.card-col[data-classroom-id=' + cardId + '] .card').removeClass('to-edit');
+        var attribute = $(this).parent('p')[0].attributes[1];
+
+        switch (attribute.name) {
+            case 'data-ref-schedule-id':
+
+                $('main').find('tr[data-schedule-id="' + attribute.value + '"]').removeClass('to-remove');
+
+                break;
+            case 'data-ref-class-id':
+
+                var cardColor = localStorage.getItem("cardColor");
+                $('.card-col[data-classroom-id="' + attribute.value + '"]').removeClass('to-remove');
+                $('.card-col[data-classroom-id="' + attribute.value + '"] .to-edit').removeClass('grey z-depth-4');
+                $('.card-col[data-classroom-id="' + attribute.value + '"] .to-edit').addClass(cardColor)
+                $('.card-col[data-classroom-id="' + attribute.value + '"] .card').removeClass('to-edit');
+
+                break;
+        }
 
     });
 
