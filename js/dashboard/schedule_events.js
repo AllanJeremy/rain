@@ -690,8 +690,14 @@ var ScheduleEvents = function () {
                 if (result === true) {
 
                     console.log(attendedScheduleHook);
-                    console.log(parentEl[0].outerHTML);
+
+                    //Add .new-class for the animation
+                    //replace the done link with udone
+                    //Prepend to attended schedule
+                    //Remove the schedule from the pending schedules' table.
                     parentEl.addClass('new-class');
+                    parentEl.find('a#attendedSchedule').replaceWith('<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>');
+                    console.log(parentEl[0].outerHTML);
 
                     attendedScheduleHook.prepend(parentEl[0].outerHTML);
 

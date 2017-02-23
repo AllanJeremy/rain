@@ -50,7 +50,7 @@ var Lists_Templates = function () {
         templateOutput += '</div>';
         templateOutput += '<div class="card-action">';
         templateOutput += '<a href="#" data-target="modal1" class="modal-trigger" id="editClassroom">Edit</a>';
-        templateOutput += '<a href="#"  class="right">View</a>';
+        templateOutput += '<a href="#"  class="">View</a>';
         templateOutput += '</div>';
         
         return templateOutput;

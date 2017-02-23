@@ -1751,7 +1751,7 @@ var ClassroomEvents = function () {
             console.log(hookType);
             
             if(hookType === 'student-list') {//classroom form
-                if ($('.modal#editClassRoom .students').length > 0) {
+                if ($('.modal#editClassRoom').find('.students').length > 0) {
 
                     var previousTotal = $('.modal#editClassRoom .students').attr('data-total-students');
 
@@ -1783,7 +1783,7 @@ var ClassroomEvents = function () {
                             console.log(selectedStringFormat);
                             console.log(selectedStringFormat.split(',').length);
 
-                            $('.modal#editClassRoom .students').remove();
+                            $('.modal#editClassRoom .student-list').find('.students').remove();
                             
                             hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="'
                                         + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 

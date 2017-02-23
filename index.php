@@ -339,6 +339,7 @@
                         "test_completion_time" : $("#createTestCompletionTime").val(),
                         "test_instructions" : $("#createTestInstructions").val(),
                     }
+
                     console.log(testJson);
 
                     $.post("handlers/db_handler.php",{"action":"CreateTest","test_data":testJson},function(data,status){
