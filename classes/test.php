@@ -529,19 +529,65 @@ class Test
                         else:#if the last question
                     ?>
                         <div class="col s4 right" id="completeTest">
-                            <a class="btn right" href="javascript:void(0)" id="complete_test" data-redirect-url="tests.php?complete=1">
-                                COMPLETE<span class="hide-on-med-and-down"> TEST</span>
+                            <a class="btn right" href="javascript:void(0)" id="done_editing" data-redirect-url="tests.php?complete=1">
+                                DONE<span class="hide-on-med-and-down"> EDITING</span>
                             </a>
                         </div>
                     <?php
                         endif;
                     ?>
                     </div>
+
+                    <?php
+                        /*PAGINATION FOR EDITING THE QUESTION*/
+                        $t_id = &$_GET["tid"];#current test_id
+                        $t_question_count = $test["number_of_questions"];
+                        $q_id = &$_GET["q"];#question_index
+                        if(isset($q_id) && isset($t_id)):
+                        /*
+                            max number of pagination per page
+                            
+                        */
+
+                        //Pagination variables
+                        $max_page_count = 5;
+                        $page_section = 0;#init page section to be 0
+                        if($q_id<=$max_page_count)
+                        {
+                            $page_section = 1;
+                        }
+                        else
+                        {
+                            $page_section = (floor($q_id/$max_page_count));
+                            
+                            #if the question_id is not divisible by the maximum page count
+                            if(($q_id%$max_page_count) != 0)
+                            {
+                                $page_section += 1;
+                            }
+                        }
+                        var_dump($page_section);
+                    ?>
+                    <!--PAGINATION-->
+                    <div class="container col s12 center">
+                        <ul class="pagination">
+                            <li class="disabled"><a href="<?php $prev_que_url?>"><i class="material-icons">chevron_left</i></a></li>
+                            <li class="active"><a href="#!">1</a></li>
+                            <li class="waves-effect"><a href="#!">2</a></li>
+                            <li class="waves-effect"><a href="#!">3</a></li>
+                            <li class="waves-effect"><a href="#!">4</a></li>
+                            <li class="waves-effect"><a href="#!">5</a></li>
+                            <li class="waves-effect"><a href="<?php $next_que_url?>"><i class="material-icons">chevron_right</i></a></li>
+                        </ul>
+                    </div>
+                    <?php
+                        endif;
+                    ?>
                 </div>
             </div>
         <?php
     }#end of  DisplayEditQuestion
-
+    
     //Display wait until you can retake Test
     public static function DisplayWaitRetakeMessage($retake_info)
     {
