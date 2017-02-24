@@ -27,11 +27,11 @@
     }
 
     /*EDIT TEST*/
-    var $editTest = $("a.editTest");
-    $editTest.addClass("modal-trigger");//Add the class modal trigger to all edit test buttons
+    var $editTestBtn = $("a.editTest");
+    $editTestBtn.addClass("modal-trigger");//Add the class modal trigger to all edit test buttons
 
     //Edit test button clicked
-    $editTest.click(function(){
+    $editTestBtn.click(function(){
         //Modal
         var $editTestModal = $("#modal_edit_test");
         //Open Modal after it has been populated
@@ -109,5 +109,13 @@
         return data;
     }
 
+    /*DELETE TEST*/
+    var $deleteTestBtn = $("a.deleteTest");//Cache the delete test button for easier future reference
+
+    //When the delete test button is clicked
+    $deleteTestBtn.click(function(){
+        var $test_id = $(this).attr("data-test-id");
+        //Deleting test here
+    });
  });
 

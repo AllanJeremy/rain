@@ -867,7 +867,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                         </div>
                                         <div class="col s6 right-align">
                                             <span class="card-title">
-                                                <a href="javascript:void(0)" class="btn-floating red DeleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">delete</i></a>
+                                                <a href="javascript:void(0)" class="btn-floating red deleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">delete</i></a>
                                             </span>
                                         </div>
                                     </div>
