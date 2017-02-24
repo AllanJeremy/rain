@@ -239,26 +239,22 @@ var ScheduleEvents = function () {
             direction = str5,
             toMove = '';
 
-        if (direction === 'forward') {
+        if (direction === 'forward') {//Excess list is carried to the next tbody
 
-            for (var k = 0; k < $(tablehook).children(child).length; k++) {
+            //Loops through tbodies, checking if there are excess
+            for (var k = 1; k <= $(tablehook).children(child).length; k++) {
 
                 var next = k + 1;
-
+                //Loop on each tbody, checking number of <tr> per tbody
                 $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr').each( function (i,el) {
-
+                    //i  is the array index.
+                    //If i is greater than the list limit, means they are excess
                     if (i > (listlimit - 1)) {
-
+                        //Add the excess <tr> elements in a variable
                         toMove += el.outerHTML;
-
-                        if ($(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[i] !== undefined) {
-
-                            $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[i].outerHTML = '';
-
-                        } else {
-
-                            $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[(listlimit - 1)].outerHTML = '';
-                        }
+                        //The array index number of the next <tr> always reduces by one every time, a <tr> is removed,
+                        //thus always having a constant number in ...ren('tr')[listlimit]
+                        $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[listlimit].outerHTML = '';
 
                     } else {
 
@@ -267,16 +263,27 @@ var ScheduleEvents = function () {
                     }
 
                 });
-                console.log('data for tbody number : ' + k + ' is => ' + toMove);
+                console.log('data FROM tbody number : ' + k + ' TO APPEND TO tbody number : ' + next + ' is => ' + toMove);
                 console.log(next + ' : ' + $(tablehook).children(child).length);
-
+                //After the <tr> loop on a tbody is done,
+                //And var toMove has elements/data/is not empty,
                 if (toMove !== '') {
 
                     if(next <= $(tablehook).children(child).length) {
-
+                        console.log('less');
                         $(tablehook + ' ' + child + '[data-tbody-number=' + next + ']').prepend(toMove);
 
                         toMove = '';
+
+                    } else if (next > $(tablehook).children(child).length) {
+
+                        console.log('more');
+                        console.log('TO APPEND THIS => ' + '<' + child + '[data-' + child + '-number=' + next + '] class="hide">' + toMove + '</' + child + '>');
+                        $(tablehook).children(child + ':last').after('<' + child + '[data-' + child + '-number=' + next + '] class="hide">' + toMove + '</' + child + '>');
+
+                        toMove = '';
+
+                        $('ul[data-table-target=' + tableid.slice(0,1) + ']').children('li:last').before('<li class="waves-effect"><a href="#!">' + next + '</a></li>');
 
                     }
                 }
@@ -284,7 +291,7 @@ var ScheduleEvents = function () {
 
         } else if (direction === 'backward') {
 
-            for(var k = 0; k < $(tablehook).children(child).length; k++) {
+            for(var k = 1; k < $(tablehook).children(child).length; k++) {
 
                 var next = k + 1,
                     needed = listlimit - $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr').length;
@@ -680,6 +687,8 @@ var ScheduleEvents = function () {
 
                         console.log(result);
 
+                        updatePagination('#schedulesTab table#' + re, 'tbody', '#' + re, paginationthrough, 'forward');
+
                     }
 
                     //6
@@ -828,6 +837,7 @@ var ScheduleEvents = function () {
 
             //variables for the modal
 
+//            Ajax
             $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : scheduleid }, function (data) {
 
                 console.log(data);
@@ -861,7 +871,7 @@ var ScheduleEvents = function () {
                     "Next" : next,
                 })
             };
-//            Ajax
+
 //            load the modal in the DOM
             $('main').append(Lists_Templates.modalTemplate(template));
 

@@ -150,11 +150,59 @@ var Forms_Templates = function () {
     
     //--------------------------
     
-    this.createTestForm = function () {
+    this.editTestForm = function (obj) {
         
         var templateOutput = '';
         
-        
+        templateOutput += '<div class="row" id="editTestForm">';
+        templateOutput += '<div class=" input-field col s12 m6">';
+        templateOutput += '<input type="text" id="editTestTitle" name="edit_test_title" placeholder="Test Title" class="validate" required>';
+        templateOutput += '<label for="editTestTitle">Title</label></div>';
+        templateOutput += '<div class="input-field col s12 m6">';
+        templateOutput += '<select id="editTestSubject">';
+        templateOutput += obj.subjectoptions;//Will have done the loop by calling Forms_Templates.formSelectTemplate function from the events function
+        templateOutput += '</select><label for="editTestSubject">Subject</label></div>';
+        templateOutput += '<div class=" input-field col s12 m6">';
+        templateOutput += '<input type="number" id="editTestQuestionCount" name="edit_test_question_count" min="1" max="50" value="10" class="validate" required>';
+        templateOutput += '<label for="editTestQuestionCount">No. of questions</label></div>';
+        templateOutput += '<div class=" input-field col s12 m6">';
+        templateOutput += '<select id="editTestDifficulty" name="edit_test_difficulty" class="validate" required>';
+        templateOutput += '<option value="Very Easy">Very Easy</option>';
+        templateOutput += '<option value="Easy">Easy</option>';
+        templateOutput += '<option value="Moderate">Moderate</option>';
+        templateOutput += '<option value="Difficult">Difficult</option>';
+        templateOutput += '<option value="Very Difficult">Very Difficult</option>';
+        templateOutput += '</select><label for="editTestDifficulty">Difficulty</label>';
+        templateOutput += '</div><div class=" input-field col s12 m4">';
+        templateOutput += '<input type="number" id="editTestMaxGrade" name="edit_test_max_grade" min="10" max="100" value="100" class="validate" required>';
+        templateOutput += '<label for="editTestMaxGrade">Max grade</label></div>';
+        templateOutput += '<div class=" input-field col s12 m4">';
+        templateOutput += '<input type="number" id="editTestPassGrade" name="edit_test_pass_grade" min="10" max="100" value="50" class="validate" required>';
+        templateOutput += '<label for="editTestPassGrade">Passing grade</label></div>';
+        templateOutput += '<div class=" input-field col s12 m4">';
+        templateOutput += '<input type="number" id="editTestCompletionTime" step="5" name="edit_test_completion_time" class="validate" min="10" max="45" value="30" required>';
+        templateOutput += '<label for="editTestCompletionTime">Time (Minutes)</label></div>';
+        /*Retake delays*/
+        /*
+        templateOutput += '<div class=" input-field col s12 m4">';
+        templateOutput += '<input type="number" id="editTestRetakeDelay_days" name="edit_test_rDelay_days" min="0" max="100" value="0" class="validate" required>';
+        templateOutput += '<label for="editTestRetakeDelay_days">Retake Delay (Days)</label>';
+        templateOutput += '</div><div class=" input-field col s12 m4">';
+        templateOutput += '<input type="number" id="editTestRetakeDelay_hours" name="edit_test_rDelay_hours" min="0" max="100" value="0" class="validate" required>';
+        templateOutput += '<label for="editTestRetakeDelay_hours">Retake Delay (Hours)</label>';
+        templateOutput += '</div><div class=" input-field col s12 m4">';
+        templateOutput += '<input type="number" id="editTestRetakeDelay_min" name="edit_test_rDelay_min" min="10" max="100" value="30" class="validate" required>';
+        templateOutput += '<label for="editTestRetakeDelay_min">Retake Delay (Minutes)</label>';
+        templateOutput += '</div>';
+        */
+        templateOutput += '<div class=" input-field col s12 ">';
+        templateOutput += '<textarea id="editTestInstructions" class="materialize-textarea" placeholder="Instructions students will get for the test"></textarea>';
+        templateOutput += '<label for="editTestInstructions">Test instructions</label>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="row"><div class=" input-field col s12 ">';
+        templateOutput += '<a href="javascript:void(0)" class="btn" id="UpdateEditTest">DONE</a>';
+        templateOutput += '</div></div></div>';
+
         return templateOutput;
     };
     
@@ -212,7 +260,7 @@ var Forms_Templates = function () {
         
         return templateOutput;
         
-    }
+    };
     
     //--------------------------
     
@@ -224,7 +272,7 @@ var Forms_Templates = function () {
         
         return templateOutput;
         
-    }
+    };
     
     //--------------------------
     

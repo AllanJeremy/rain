@@ -24,7 +24,7 @@
         <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
         <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
-        <script type="text/javascript" src="js/dashboard/tests.js"></script>
+        <script type="text/javascript" src="js/dashboard/test_events.js"></script>
         <script type="text/javascript" src="js/dashboard.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/pace.js"></script>
