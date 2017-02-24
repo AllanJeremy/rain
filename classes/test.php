@@ -541,47 +541,108 @@ class Test
                     <?php
                         /*PAGINATION FOR EDITING THE QUESTION*/
                         $t_id = &$_GET["tid"];#current test_id
-                        $t_question_count = $test["number_of_questions"];
+                        $t_question_count = $test["number_of_questions"];#number of questions in the exam
                         $q_id = &$_GET["q"];#question_index
                         if(isset($q_id) && isset($t_id)):
-                        /*
-                            max number of pagination per page
-                            
-                        */
-
+                        
                         //Pagination variables
-                        $max_page_count = 5;
+                        # ~ CHANGE THIS TO CHANGE THE NUMBER OF PAGINATION ITEMS
+                        $max_page_count = 5;#maximum number of pagination <li>s
+
                         $page_section = 0;#init page section to be 0
-                        if($q_id<=$max_page_count)
+                        
+                        //Page sections ~ Ensures we are only viewing one page section at a time
+                        $page_section = (floor($q_id/$max_page_count));
+                        
+                        #if the question_id is not divisible by the maximum page count
+                        if(($q_id%$max_page_count) != 0)
                         {
-                            $page_section = 1;
+                            $page_section += 1;
                         }
-                        else
+
+                /*
+                HOW IT WORKS
+                assuming the max number pages to be displayed in pagination is 5, here's how the different sections will be displayed
+                    section 1 = 1-5
+                    section 2 = 6-10
+                    section 3 = 11-15
+                    etc.
+                */
+                        //Page start and page end
+                        #this match calculates for the starting point of the paginator
+                        $page_start = (($page_section*$max_page_count)-$max_page_count)+1;#the page number to start looping from
+
+                        $page_end = ($page_section*$max_page_count);#the page number to end looping at
+
+                        //If the page_end is greater than the number of questions, set the page end to the question count
+                        if($page_end>$t_question_count)
                         {
-                            $page_section = (floor($q_id/$max_page_count));
-                            
-                            #if the question_id is not divisible by the maximum page count
-                            if(($q_id%$max_page_count) != 0)
-                            {
-                                $page_section += 1;
-                            }
+                            $page_end = $t_question_count;
                         }
-                        var_dump($page_section);
+                        
                     ?>
                     <!--PAGINATION-->
                     <div class="container col s12 center">
                         <ul class="pagination">
-                            <li class="disabled"><a href="<?php $prev_que_url?>"><i class="material-icons">chevron_left</i></a></li>
-                            <li class="active"><a href="#!">1</a></li>
-                            <li class="waves-effect"><a href="#!">2</a></li>
-                            <li class="waves-effect"><a href="#!">3</a></li>
-                            <li class="waves-effect"><a href="#!">4</a></li>
-                            <li class="waves-effect"><a href="#!">5</a></li>
-                            <li class="waves-effect"><a href="<?php $next_que_url?>"><i class="material-icons">chevron_right</i></a></li>
+                            <?php
+                                //Classes and hrefs for the left and right arrows in the pagination
+                                $left_arrow_class = "";
+                                $left_arrow_href = "";
+                                $right_arrow_class = "";
+                                $right_arrow_href = "";
+                                //If it is the first question, the left arrow should be disabled
+                                if($is_first_question)
+                                {
+                                    $left_arrow_class = "disabled";
+                                    $left_arrow_href = "javascript:void(0)";
+                                }
+                                else
+                                {
+                                    $left_arrow_class = "waves-effect";
+                                    $left_arrow_href = "$prev_que_url";
+                                }   
+
+                                //if it is the last question, the right arrow should be disabled and redirect nowhere
+                                if($is_last_question)
+                                {
+                                    $right_arrow_class = "disabled";
+                                    $right_arrow_href = "javascript:void(0)";
+                                }
+                                else
+                                {
+                                    $right_arrow_class = "waves-effect";
+                                    $right_arrow_href = "$next_que_url";
+                                }
+                                
+                            ?>
+                            <li class="<?php echo $left_arrow_class;?>"><a href="<?php echo $left_arrow_href;?>"><i class="material-icons">chevron_left</i></a></li>
+
+                            <?php
+                                #current class
+                                $cur_page_class = "";
+                                
+                                //Start counting pages
+                                for($i=$page_start;$i<=$page_end;$i++):
+                                    if($i == $q_id)
+                                    {
+                                        $cur_page_class = "active";
+                                    }
+                                    else
+                                    {
+                                        $cur_page_class = "waves-effect";
+                                    }
+
+                                    $page_url = $url_extension.$i;#url to the the page represented by this pagination
+                            ?>
+                            <li class="<?php echo $cur_page_class;?>"><a href="<?php echo $page_url;?>"><?php echo $i;?></a></li>
+                            <?php
+                                endfor;
+                            ?>
+                            <li class="<?php echo $right_arrow_class;?>"><a href="<?php echo $right_arrow_href;?>"><i class="material-icons">chevron_right</i></a></li>
                         </ul>
                     </div>
                     <?php
-                        endif;
+                        endif;#end if for displaying pagination
                     ?>
                 </div>
             </div>
