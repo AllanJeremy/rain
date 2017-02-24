@@ -246,7 +246,7 @@ var ScheduleEvents = function () {
 
                 var next = k + 1;
                 //Loop on each tbody, checking number of <tr> per tbody
-                $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr').each( function (i,el) {
+                $(tablehook + ' ' + child + '[data-' + child + '-number=' + k + ']').children('tr').each( function (i,el) {
                     //i  is the array index.
                     //If i is greater than the list limit, means they are excess
                     if (i > (listlimit - 1)) {
@@ -254,7 +254,7 @@ var ScheduleEvents = function () {
                         toMove += el.outerHTML;
                         //The array index number of the next <tr> always reduces by one every time, a <tr> is removed,
                         //thus always having a constant number in ...ren('tr')[listlimit]
-                        $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[listlimit].outerHTML = '';
+                        $(tablehook + ' ' + child + '[data-' + child + '-number=' + k + ']').children('tr')[listlimit].outerHTML = '';
 
                     } else {
 
@@ -263,7 +263,7 @@ var ScheduleEvents = function () {
                     }
 
                 });
-                console.log('data FROM tbody number : ' + k + ' TO APPEND TO tbody number : ' + next + ' is => ' + toMove);
+                console.log('data FROM ' + child + ' number : ' + k + ' TO APPEND TO ' + child + ' number : ' + next + ' is => ' + toMove);
                 console.log(next + ' : ' + $(tablehook).children(child).length);
                 //After the <tr> loop on a tbody is done,
                 //And var toMove has elements/data/is not empty,
@@ -271,7 +271,7 @@ var ScheduleEvents = function () {
 
                     if(next <= $(tablehook).children(child).length) {
                         console.log('less');
-                        $(tablehook + ' ' + child + '[data-tbody-number=' + next + ']').prepend(toMove);
+                        $(tablehook + ' ' + child + '[data-' + child + '-number=' + next + ']').prepend(toMove);
 
                         toMove = '';
 
@@ -279,32 +279,36 @@ var ScheduleEvents = function () {
 
                         console.log('more');
                         console.log('TO APPEND THIS => ' + '<' + child + '[data-' + child + '-number=' + next + '] class="hide">' + toMove + '</' + child + '>');
-                        $(tablehook).children(child + ':last').after('<' + child + '[data-' + child + '-number=' + next + '] class="hide">' + toMove + '</' + child + '>');
+                        $(tablehook).children(child + ':last').after('<' + child + ' data-' + child + '-number="' + next + '" class="hide">' + toMove + '</' + child + '>');
 
                         toMove = '';
 
-                        $('ul[data-table-target=' + tableid.slice(0,1) + ']').children('li:last').before('<li class="waves-effect"><a href="#!">' + next + '</a></li>');
+                        $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last').before('<li class="waves-effect"><a href="#!">' + next + '</a></li>');
 
                     }
                 }
             };
 
-        } else if (direction === 'backward') {
+        } else if (direction === 'backward') {//If list is less, data from the next tbody is pushed to the current
 
-            for(var k = 1; k < $(tablehook).children(child).length; k++) {
+            for(var k = 1; k <= $(tablehook).children(child).length; k++) {
 
                 var next = k + 1,
-                    needed = listlimit - $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr').length;
+                    needed = listlimit - $(tablehook + ' ' + child + '[data-' + child + '-number=' + k + ']').children('tr').length;
+
+                console.log(child + ' number ' + k + ' is less ' + needed + ' rows!');
+
 
                 if(next <= $(tablehook).children(child).length) {
 
-                    $(tablehook + ' ' + child + '[data-tbody-number=' + next + ']').children('tr').each( function (i,el) {
+                    $(tablehook + ' ' + child + '[data-' + child + '-number=' + next + ']').children('tr').each( function (i,el) {
 
                         if (i <= (needed - 1)) {
+                            //Get the first tr elements as long as i is less than the needed number of tr rows
 
                             toMove += el.outerHTML;
 
-                            $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').children('tr')[0].outerHTML = '';
+                            $(tablehook + ' ' + child + '[data-' + child + '-number=' + next + ']').children('tr')[0].outerHTML = '';
 
                         } else {
 
@@ -314,15 +318,50 @@ var ScheduleEvents = function () {
 
                     });
 
-                    console.log('data for tbody number : ' + k + ' is => ' + toMove);
+                    console.log('data for ' + child + ' number : ' + k + ' from ' + child + ' number : ' + next + ' is => ' + toMove);
                     console.log(next + ' : ' + $(tablehook).children(child).length);
+                    console.log($('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling);
+                    console.log($('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.rowIndex);
+                    console.log($('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.classList);
 
                     if (toMove !== '') {
 
-                        $(tablehook + ' ' + child + '[data-tbody-number=' + k + ']').append(toMove);
+                        $(tablehook + ' ' + child + '[data-' + child + '-number=' + k + ']').append(toMove);
 
                         toMove = '';
 
+
+                    }
+                    //If we moved all the tr of the last tbody to the previous tbody, delete the last tbody and its pagination controller
+                    //Set the previous tbody/pagination controller active
+                    if (next === $(tablehook).children(child).length && $(tablehook + ' ' + child + ':last').children('tr').length === 0 ) {
+
+                        console.log('TUKO NDANI');
+
+                        $(tablehook).children(child + ':last').remove();
+
+
+
+                        if($('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.classList[0] === 'active' || $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.classList[1] === 'active') {
+
+                            console.log('is active');
+                            var $this = $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.previousElementSibling.firstElementChild.text;
+
+                            console.log($this);
+
+                            $this = $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.childNodes[0].text;
+
+                            console.log($this);
+
+                            $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:nth-child(' + $this + ')').addClass('active');
+                            $(tablehook + ' ' + child + ':last').removeClass('active');
+                            $(tablehook + ' ' + child + ':last').addClass('hide');
+                            $(tablehook + ' ' + child + ':last').addClass('hide');
+                            $(tablehook + ' ' + child + '[data-' + child + '-number=' + $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.previousElementSibling.firstElementChild.text + ']').removeClass('hide');
+                            $(tablehook + ' ' + child + '[data-' + child + '-number=' + $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.previousElementSibling.firstElementChild.text + ']').addClass('active');
+                        }
+
+                        $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last')[0].previousElementSibling.remove();
                     }
                 }
             };
@@ -778,7 +817,11 @@ var ScheduleEvents = function () {
                         cleanOutModals();
 
                     }
+
+                    //Forward update for attended table
+                    //Backward update for pending table
                     updatePagination('#schedulesTab table#attendedScheduleTable', 'tbody', '#attendedScheduleTable', 6, 'forward');
+                    updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', 6, 'backward');
 
                 }
             }, 'json');
@@ -817,6 +860,9 @@ var ScheduleEvents = function () {
 
                     parentEl.remove();
 
+                    //Forward update for pending table
+                    //Backward update for attended table
+                    updatePagination('#schedulesTab table#attendedScheduleTable', 'tbody', '#attendedScheduleTable', 6, 'backward');
                     updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', 6, 'forward');
 
                 }
