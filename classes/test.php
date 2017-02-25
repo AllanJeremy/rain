@@ -249,6 +249,12 @@ class Test
                             <?php
                                 //Marks for everything except the current question
                                 $marks_allocated =  DbHandler::GetMarksUsed($test,$question_index);
+                                
+                                #if no marks have been allocated, then set the marks allocated to 0
+                                if(!$marks_allocated)
+                                {
+                                    $marks_allocated = 0;
+                                }
                             ?>
                             <p class="white-text">Marks Allocated : <span id="txt_marks_allocated"><?php echo $marks_allocated;?></span>  / <span id="test_max_grade"><?php echo $test["max_grade"]; ?></span></p>
                         </div>
