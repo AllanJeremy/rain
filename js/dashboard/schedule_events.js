@@ -15,15 +15,17 @@ var ScheduleEvents = function () {
         openScheduleForm();     //done
         closeScheduleForm();    //done
         submitSchedule();       //done
-        editSchedule();         //Beta - version
-        deleteSchedule();
-        markAttendedSchedule();             //60%
-        unmarkAttendedSchedule();             //60%
+        editSchedule();         //50%
+        updateSchedule();       //0%
+        deleteSchedule();       //done
+        markAttendedSchedule();             //done
+        unmarkAttendedSchedule();           //done
+        markStudentAttendancePerSchedule(); // - - -
         markAllDone();          //Beta - version
         openSchedule();         //done
-        overdueScheduleReminder();
-        getPendingSchedules();
-        archiveSchedule();
+        overdueScheduleReminder();          //Beta - version
+        getPendingSchedules();  //Beta - version
+        archiveSchedule();      //Beta - version
         addObjective();         //done
         removeObjective();      //done
         updateClassroomDropdownExtraInfo();     //done
@@ -67,7 +69,7 @@ var ScheduleEvents = function () {
 
         $('main').on('click', 'a#closeScheduleForm', function (e) {
             e.preventDefault();
-        
+
             $('#scheduleCreateFormContainer').slideUp('600', function () {
                 
                 $('#createScheduleCont').removeClass('z-depth-1');
@@ -78,6 +80,12 @@ var ScheduleEvents = function () {
                 $('a#openScheduleForm').removeClass('hide');
 
             });
+
+            if($('a#submitNewSchedule').hasClass('hide')) {
+
+                $('a#submitNewSchedule').removeClass('hide');
+                $('a#updateSchedule').addClass('hide');
+            }
 
         });
         
@@ -157,6 +165,9 @@ var ScheduleEvents = function () {
 
                             //close the form
 
+                            $('a#closeScheduleForm').trigger('click');
+
+                            /*
                             $('#scheduleCreateFormContainer').slideUp('600', function () {
 
                                 $('#createScheduleCont').removeClass('z-depth-1');
@@ -167,6 +178,7 @@ var ScheduleEvents = function () {
                                 $('a#openScheduleForm').removeClass('hide');
 
                             });
+                            */
                             
                             //Prepend the new schedule to Pending schedule list
                             
@@ -228,6 +240,104 @@ var ScheduleEvents = function () {
 
         });
         
+    };
+
+    var updateSchedule = function () {
+
+        console.log('updating schedule form');
+
+        $('main').on('click', '#scheduleCreateFormContainer a#updateSchedule', function (e) {
+            e.preventDefault();
+
+            console.log('clicked');
+
+            var scheduletitle = $('#scheduleCreateFormContainer input#schedule_title').val();
+            var scheduleclassroom = $('#scheduleCreateFormContainer select#schedule_classroom').val();
+            var scheduledescription = $('#scheduleCreateFormContainer #descriptionTextarea').val();
+
+            $('#scheduleCreateFormContainer ul#objectivesList').children('li').children('span').remove();
+            var scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li');
+            var scheduleobjectivesformatted = '';
+            var scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val();
+            var scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val();
+            var scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val();
+
+            scheduleobjectives.each(function (i, e) {
+
+                console.log(e.innerHTML);
+
+                scheduleobjectivesformatted += e.innerHTML;
+                scheduleobjectivesformatted += ',';
+
+            });
+
+            console.log(scheduletitle);
+            console.log(scheduleobjectivesformatted);
+            console.log(scheduleclassroom);
+            console.log(scheduledescription);
+            console.log(scheduledate);
+            console.log(scheduletime);
+
+            var scheduleformatteddatetime = scheduledate + ' ' + scheduletime,
+                scheduleid = localStorage.getItem('editing_schedule_id'),
+                newdata = '';
+
+            if (scheduletitle !== '' && scheduleclassroom !== null && scheduledescription !== '' && scheduleobjectivesformatted !== '' && scheduledate !== '' && scheduletime !== '') {
+
+                console.log('set. Doing ajax now');
+
+                $.post("handlers/db_handler.php", {
+                    "action" : "UpdateScheduleInfo",
+                    "scheduleid" : scheduleid,
+                    "scheduletitle" : scheduletitle,
+                    "scheduledescription" : scheduledescription,
+                    "scheduleobjectives" : scheduleobjectivesformatted,
+                    "scheduleclassroom" : scheduleclassroom,
+                    "duedate" : scheduleformatteddatetime
+                }, function (result) {
+
+                    console.log(result);
+                    console.log(typeof result);
+
+                    if(result === 'true') {
+
+                        console.log('true');
+                        newdata += '<td>';
+
+                        //First td : title
+                        $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]')[0].cells[0].innerHTML = scheduletitle;
+                        //Second td : description
+                        $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]')[0].cells[1].innerHTML = scheduledescription;
+                        //Third td : due
+                        $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]')[0].cells[2].innerHTML = moment(scheduledate).fromNow();
+
+                        //clear the form inputs
+
+                        $('#scheduleCreateFormContainer input#schedule_title').val('');
+                        $('#scheduleCreateFormContainer select#schedule_classroom').val('');
+                        $('#scheduleCreateFormContainer #descriptionTextarea').val('');
+                        $('#scheduleCreateFormContainer ul#objectivesList').children('li').remove();
+                        $('#scheduleCreateFormContainer input#scheduleDate').val('');
+                        $('#scheduleCreateFormContainer input#scheduleTime').val('');
+                        $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val('');
+                        $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val('');
+
+                        //close the form
+
+                        $('a#closeScheduleForm').trigger('click');
+
+                    } else {
+
+                        console.log(typeof result);
+
+                    }
+
+                }, 'text');
+
+            }
+
+        });
+
     };
 
     var updatePagination = function (str1, str2, str3, str4, str5) {
@@ -692,6 +802,79 @@ var ScheduleEvents = function () {
     
     var editSchedule = function () {
 
+        /*
+        *
+        *   1. GET schedule id
+        *   2. CLOSE modal
+        *   3. CHANGE button to update schedule
+        *   4. GET schedule data
+        *   5. FORMAT date
+        *   6. FORMAT objective list
+        *   7. POPULATE form with the data
+        *
+        */
+
+        $('main').on('click', '.modal a#moreScheduleCardEdit', function (e) {
+            e.preventDefault();
+
+            var scheduleid = $(this).parents('.modal').attr('id'),
+                scheduledata,
+                scheduleobjectives = '';
+
+            $('.modal#' + scheduleid ).closeModal();
+
+            scheduleid = scheduleid.split('_').pop();
+
+            localStorage.setItem('editing_schedule_id', scheduleid);
+
+            //            Ajax
+            $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : scheduleid }, function (data) {
+
+                console.log(data);
+
+                //Format date
+                data.due_date_only = data.due_date.split(' ')[0];
+                data.due_date_only_formatted = moment(data.due_date_only).format('MMMM Do YYYY');
+                data.due_time_only = data.due_date.split(' ')[1];
+                data.due_time_only_formatted = moment(data.due_date).format('h:mm A');
+
+                //Format objective list
+                data.schedule_objectives = data.schedule_objectives.split(',').forEach(function (i) {
+                    if (i !== '') {
+
+                        scheduleobjectives += '<li>' + i + '<span class="right "><a class="mini-link btn-icon no-padding" href="#!">remove</a></span></li>';
+                    }
+
+                });
+
+                console.log(scheduleobjectives);
+
+                data.schedule_objectives = scheduleobjectives;
+
+                $('#scheduleCreateFormContainer input#schedule_title').val(data.schedule_title);
+                $('#scheduleCreateFormContainer select#schedule_classroom').val(data.class_id);
+                $('#scheduleCreateFormContainer #descriptionTextarea').val(data.schedule_description);
+                $('#scheduleCreateFormContainer ul#objectivesList').html('');
+                $('#scheduleCreateFormContainer ul#objectivesList').append(scheduleobjectives);
+                $('#scheduleCreateFormContainer input#scheduleDate').val(data.due_date_only_formatted);
+                $('#scheduleCreateFormContainer input#scheduleTime').val(data.due_time_only_formatted);
+                $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val(data.due_date_only);
+                $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val(data.due_time_only);
+
+                console.log(data);
+
+                Materialize.updateTextFields();
+
+            }, 'json');
+
+            cleanOutModals();
+
+            $('a#submitNewSchedule').addClass('hide');
+            $('a#updateSchedule').removeClass('hide');
+
+            $('a#openScheduleForm').trigger('click');
+
+        });
     };
     
     var deleteSchedule = function () {
@@ -726,7 +909,7 @@ var ScheduleEvents = function () {
 
                         console.log(result);
 
-                        updatePagination('#schedulesTab table#' + re, 'tbody', '#' + re, paginationthrough, 'forward');
+                        updatePagination('#schedulesTab table#' + re, 'tbody', '#' + re, 6, 'backward');
 
                     }
 
@@ -913,6 +1096,7 @@ var ScheduleEvents = function () {
                 templateBody: '',
                 extraActions: Lists_Templates.infoExtraFooterActions({
                     "Delete" : true,
+                    "Edit" : true,
                     "Previous" : prev,
                     "Next" : next,
                 })
@@ -1205,20 +1389,24 @@ var ScheduleEvents = function () {
         });
     };
 
+    var markStudentAttendancePerSchedule = function () {
+
+    };
+
     var markAllDone = function () {
-        
+
     };
         
     var overdueScheduleReminder = function () {
         
     };
-        
+
     var getPendingSchedules = function () {
-        
+
     };
-        
+
     var archiveSchedule = function () {
-        
+
     };
     
     //--------------------------------

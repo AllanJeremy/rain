@@ -477,34 +477,34 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 */
 
     //Update Schedule information
-    public static function UpdateScheduleInfo($schedule_id,$schedule_title,$schedule_description,$teacher_id,$class_id,$schedule_date,$schedule_time)
+    public static function UpdateScheduleInfo($schedule_id,$schedule_title,$schedule_description,$schedule_objectives,$class_id,$teacher_id,$due_date)
     {
         global $dbCon;#Connection string mysqli object
 
         if(DbInfo::ScheduleExists($schedule_id))#if the schedule exists - safety check
         {
-                $update_query = "UPDATE schedules SET schedule_title=? schedule_description=? class_id=? schedule_date=? schedule_time=? WHERE teacher_id=? AND schedule_id=?";
+                $update_query = "UPDATE schedules SET schedule_title=?, schedule_description=?, schedule_objectives=?, class_id=?, due_date=? WHERE teacher_id=? AND schedule_id=?";
                 if($update_stmt = $dbCon->prepare($update_query))
                 {
-                    $update_stmt->bind_param("ssissii",$schedule_title,$schedule_description,$class_id,$schedule_date,$schedule_time,$teacher_id,$schedule_id);
+                    $update_stmt->bind_param("sssisii",$schedule_title,$schedule_description,$schedule_objectives,$class_id,$due_date,$teacher_id,$schedule_id);
 
                     if($update_stmt->execute())
                     {
-                        return true;#successfully updated the schedule
+                        return 'true';#successfully updated the schedule
                     }
                     else
                     {
-                        return false;;
+                        return 'false';
                     }
                 }
                 else
                 {
-                    return null;
+                    return $dbCon->error;
                 } 
         }
         else
         {
-            return false;
+            return 'false - null';
         }
     }
 
@@ -1143,6 +1143,23 @@ if(isset($_POST['action'])) {
             
             echo $result;
             
+            break;
+        case 'UpdateScheduleInfo':
+
+            $args = array(
+                'schedule_id' => $_POST['scheduleid'],
+                'schedule_title' => $_POST['scheduletitle'],
+                'schedule_description' => $_POST['scheduledescription'],
+                'schedule_objectives' => $_POST['scheduleobjectives'],
+                'class_id' => $_POST['scheduleclassroom'],
+                'teacher_id' => $_SESSION['admin_acc_id'],
+                'due_date' => $_POST['duedate']
+            );
+
+            $result = DbHandler::UpdateScheduleInfo($args['schedule_id'],$args['schedule_title'],$args['schedule_description'],$args['schedule_objectives'],$args['class_id'],$args['teacher_id'],$args['due_date']);
+
+            echo $result;
+
             break;
         case 'RemoveStudent':
             

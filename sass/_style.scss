@@ -68,6 +68,11 @@ tr {
     
     td.schedule-action {
         opacity: 0;
+
+        @media #{$medium-and-down} {
+            opacity: 1;
+        }
+
     }
     
     &:hover {

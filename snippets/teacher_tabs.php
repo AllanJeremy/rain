@@ -541,8 +541,10 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                     <div class="row">
                                         <div class="input-field col s12 center-align">
                                             <a class="btn " type="submit" id="submitNewSchedule">Create Schedule</a>
+                                            <a class="btn hide" type="submit" id="updateSchedule">Update Schedule</a>
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
                         </div>

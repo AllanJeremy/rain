@@ -59,6 +59,60 @@ var Forms_Templates = function () {
     
     //--------------------------
     
+    this.createScheduleForm = function () {
+        var templateOutput = '';
+
+        templateOutput += '<form class="col s12"><div class="row">';
+        templateOutput += '<div class="input-field col m5 s10 push-s1 push-m1">';
+        templateOutput += '<input placeholder="Schedule title" id="schedule_title" type="text" class="validate" length="20">';
+        templateOutput += '<label for="first_name">Schedule title</label>';
+        templateOutput += '</div><div class="input-field col m5 s10 push-s1 push-m1">';
+        templateOutput += '<select id="schedule_classroom">';
+        templateOutput += '<option value="null" disabled selected>Classroom</option>';
+        templateOutput += obj.classroomsoptions;
+        templateOutput += '</select><label>Choose classroom for the schedule</label>';
+        templateOutput += '<div id="extraClassroomInfo" class="row no-margin">';
+        templateOutput += '<p class="col s6 php-data left"  id="ClassroomSubject">Subject: <span></span></p>';
+        templateOutput += '<p class="col s6 php-data right-align" id="ClassroomStream">Stream: <span></span></p>';
+        templateOutput += '</div></div>';
+        templateOutput += '<div class="input-field col m5 s10 push-s1 push-m1 " id="descriptionFormPanel">';
+        templateOutput += '<textarea id="descriptionTextarea" class="materialize-textarea"></textarea>';
+        templateOutput += '<label for="descriptionTextarea">Description</label>';
+        templateOutput += '</div><div class="input-field col m5 push-m1 s10 push-s1 z-depth-1" id="objectivesFormPanel">';
+        templateOutput += '<h6>Objectives</h6>';
+        templateOutput += '<ul id="objectivesList"></ul>';
+        templateOutput += '<input id="objectivesInput" class="materialize-textarea">';
+        templateOutput += '<div class="row no-margin">';
+        templateOutput += '<div class="col s4">';
+        templateOutput += '<a class="btn-flat mini-link" id="addNewScheduleObjective" href="#!">Add</a>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="col s8 input-field" id="selectContainerHook">';
+        templateOutput += obj.subtopicsoptgroups;
+        templateOutput += '<select id="schedule_classroom_default">';
+        templateOutput += '<option value="" disabled selected>Sub-topics</option>';
+        templateOutput += '<option value="" disabled >Choose a classroom first</option>';
+        templateOutput += '</select>';
+        templateOutput += '<label>Add sub-topics as objectives</label>';
+        templateOutput += '</div></div></div>';
+        templateOutput += '<div class="input-field col s10 push-s1">';
+        templateOutput += '<div class="row no-margin">';
+        templateOutput += '<div class="input-field col s6 date-picker-container">';
+        templateOutput += '<input type="date" class="datepicker" id="scheduleDate">';
+        templateOutput += '<label for="scheduleDate">Schedule a date</label>';
+        templateOutput += '</div><div class="input-field col s6 time-picker-container">';
+        templateOutput += '<input type="time" class="timepicker" id="scheduleTime">';
+        templateOutput += '<label for="scheduleTime">Schedule the time</label>';
+        templateOutput += '</div></div></div></div>';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div class="input-field col s12 center-align">';
+        templateOutput += '<a class="btn " type="submit" id="submitNewSchedule">' + obj.actiontype + 'Schedule</a>';
+        templateOutput += '</div></div></form>';
+
+        return templateOutput;
+    };
+
+    //--------------------------
+
     this.createAssignmentForm = function () {
         var templateOutput = '';
         
