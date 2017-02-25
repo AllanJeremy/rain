@@ -642,13 +642,30 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         #if the schedule exists - safety check
         if(DbInfo::TestExists($test_id))
         {
-            return
-            (
-                self::DeleteBasedOnSingleProperty("tests","test_id",$test_id,"i") && #delete the test
-                self::DeleteBasedOnSingleProperty("test_questions","test_id",$test_id,"i") #delete the test questions
+                //Delete the test
+                $delete_test = self::DeleteBasedOnSingleProperty("tests","test_id",$test_id,"i"); #delete the test
+                $delete_questions = true;
+                $delete_answers = true;
+
+                #Get all the questions for this test
+                $questions = DbInfo::GetTestQuestions($test_id);
+                if($questions)#if questions were found
+                {
+                    #Check each question and delete the answers belonging to it
+                    foreach($questions as $question)
+                    {
+                        //Delete all the answers to the currently looped question in the database
+                        $delete_answers = self::DeleteBasedOnSingleProperty("test_answers","question_id",$question["question_id"],"i"); 
+                    }       
+                        //Delete the questions
+                    $delete_questions = self::DeleteBasedOnSingleProperty("test_questions","test_id",$test_id,"i"); #delete the test questions
+                }
                 
-                //TODO Delete the test questions, answers and submissions as well, consider inner join for the test answers 
-            );
+                /*  Note : 
+                    The test submissions will be retained as reference for test performance even after the test has been deleted.
+                    Students and teachers can still view their results even if the test is deleted
+                */
+                return ($delete_test && $delete_questions && $delete_answers);
         }
         else
         {
@@ -1160,18 +1177,36 @@ if(isset($_POST['action'])) {
             break;
         //Create a Test
         case 'CreateTest':
-            $test_data = $_POST["test_data"];
+            $test_data = &$_POST["test_data"];
             echo DbHandler::CreateTest($test_data);
         break;
         
+        //Delete a test
+        case 'DeleteTest':
+            $test_id = &$_POST["test_id"];
+            $delete_test = DbHandler::DeleteTest($test_id);
+            if($delete_test)
+            {
+                echo "Deleted the test";
+            }
+            else
+            {
+                echo "<p>Failed to fully delete the test. <br><b>View Debug</b> for more info</p>";
+            }
+            
+
         //Delete question answer
         case 'DeleteQuestionAnswer':
-            $answers_data = $_POST["answers_data"];
-            foreach($answers_data as $ans_data)
+            $answers_data = @$_POST["answers_data"];
+
+            #If the answers data is set and is not false
+            if(isset($answers_data) && $answers_data)
             {
-                DbHandler::DeleteQuestionAnswer($ans_data["question_index"],$ans_data["answer_index"]);
+                foreach($answers_data as $ans_data)
+                {
+                    DbHandler::DeleteQuestionAnswer($ans_data["question_index"],$ans_data["answer_index"]);
+                }
             }
-        
         break;
         
         //Update the test

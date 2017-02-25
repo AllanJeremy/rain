@@ -111,11 +111,33 @@
 
     /*DELETE TEST*/
     var $deleteTestBtn = $("a.deleteTest");//Cache the delete test button for easier future reference
-
+    
     //When the delete test button is clicked
     $deleteTestBtn.click(function(){
+        var delay_time = 6400;//Time to delay before deleting the test
+        
+        //Test variables
         var $test_id = $(this).attr("data-test-id");
+        var $test_container = $(this).parents(".take_test_container");
+        var $test_title = $(".take_test_container").attr("data-test-id",$test_id).children(".takeTestTitle").text();
+        
         //Deleting test here
+        var toastMessage = '<p class="white-text" data-test-id="' + $test_id + '">Preparing to delete the test <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
+        
+        
+        var toastCall = Materialize.toast(toastMessage, delay_time, '', function (s) {
+                //4
+                $.post("handlers/db_handler.php", {"action" : "DeleteTest", "test_id" : $test_id}, function (result) {
+                   
+                    //5
+                    $test_container.remove();
+                    
+                    console.log(result);
+                    
+                }, 'text');
+                
+            });
+            
     });
  });
 

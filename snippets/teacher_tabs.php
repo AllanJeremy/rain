@@ -871,7 +871,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                             </span>
                                         </div>
                                     </div>
-                                    <span class="card-title truncate"><?php echo $test["test_title"];?></span>
+                                    <span class="card-title truncate takeTestTitle"><?php echo $test["test_title"];?></span>
                                     <p>Subject: <span class="php-data"><?php echo $subject["subject_name"];?></span></p>
                                     <p>Questions: <span class="php-data"><?php echo $test["number_of_questions"]?></span></p>
                                     <p>Time: <span class="php-data"><?php echo $test["time_to_complete"]?> min</span></p>
