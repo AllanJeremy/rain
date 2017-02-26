@@ -44,17 +44,30 @@ class Test
 
         <div class="col s12">
             <br><h4>Tips</h4>
-            <p>Tips for editing the test here.</p>
+            <p>We have prepared some tips for your test creation experience that will hopefully make your work easier.</p>
+            <ul class="grey-text test_tips">
+                <li>> A question can either be single choice or multiple choice</li>
+                <li>> You can save the question without refreshing the page by clicking the save button on the submenu</li>
+                <li>> You can dynamically change the number of answers for your question without refreshing the page</li>
+            </ul>
         </div>
+        <div class="divider col s12"></div>
 
-        <div class="col s12 m6">
-            <br>
-            <a class="btn btn-large btn-flat editTest" data-test-id="<?php echo $test['test_id']?>">EDIT TEST DEFAULTS</a>
-        </div>
-        <div class="col s12 m6">
-            <br>
-            <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=1&q=";?>
-            <a data-redirect-url="<?php echo $url_extension.'1'; ?>" class="btn btn-large" id="start_test">EDIT TEST QUESTIONS</a>
+        
+        <div class="container row center">
+            <div class="col s12 m4">
+                <br>
+                <a class="btn btn-large btn-flat editTest" data-test-id="<?php echo $test['test_id']?>">EDIT TEST DEFAULTS</a>
+            </div>
+            <div class="col s12 m4">
+                <br>
+                <?php $url_extension = "tests.php?tid=".$test["test_id"]."&edit=1&q=";?>
+                <a data-redirect-url="<?php echo $url_extension.'1'; ?>" class="btn btn-large simple_redirect_btn" id="start_edit_test">EDIT TEST QUESTIONS</a>
+            </div>
+            <div class="col s12 m4">
+                <br>
+                <a data-redirect-url="./#takeATest" class="btn btn-large btn-flat simple_redirect_btn" id="back_to_tests">BACK TO TESTS</a>
+            </div>
         </div>
     </div>
 <?php
@@ -516,7 +529,7 @@ class Test
                             $prev_que_url = $url_extension . ($question_index-1);
                     ?>
                         <div class="col s4 left">
-                            <a class="btn" id="prev_question" data-redirect-url="<?php echo $prev_que_url;?>">
+                            <a class="btn redirect_save_btn" id="prev_question" data-redirect-url="<?php echo $prev_que_url;?>">
                                 <i class="material-icons hide-on-large-only">arrow_back</i>
                                 <span class="hide-on-med-and-down">PREVIOUS QUESTION</span>
                                 </a>
@@ -527,7 +540,7 @@ class Test
                             $next_que_url = $url_extension . ($question_index+1);
                     ?>
                         <div class="col s4 right">
-                            <a class="btn right" id="next_question"  data-redirect-url="<?php echo $next_que_url;?>">
+                            <a class="btn right redirect_save_btn" id="next_question"  data-redirect-url="<?php echo $next_que_url;?>">
                                 <i class="material-icons hide-on-large-only">arrow_forward
 </i>
                                 <span class="hide-on-med-and-down">NEXT QUESTION</span>

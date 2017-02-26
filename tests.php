@@ -571,28 +571,22 @@
             }
 
             var question_data;//Question data ~ Json
+            var successful_save_message = "Successfully saved the question";
+
             //When the save button is clicked
             $("#save_question").click(function(){
                 question_data = GetQuestionData("#!");
 
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
-                  //  alert("Data :"+ question_data+" Status:"+status);
+                   console.log("status :", status);
+                   if(status )
+                   Materialize.toast(successful_save_message,5000);
                 });
-            });
-
-            //When the previous button is clicked
-            $("#prev_question").click(function(){
-                var redirect_url = $(this).attr("data-redirect-url");
-                //Do everything that needs to be done first here
-                question_data =  GetQuestionData(redirect_url);
-
-                $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
-                    window.location= (redirect_url);
-                });
+                
             });
 
             //When the next question button is clicked
-            $("#next_question").click(function(){
+            $(".redirect_save_btn").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 //Do everything that needs to be done first here
                 question_data = GetQuestionData(redirect_url);
@@ -600,7 +594,6 @@
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
                    window.location= (redirect_url);
                 });
-                //Redirect to the next page
 
             });
 
@@ -703,7 +696,13 @@
                 UpdateMarksClasses(marks_alloc,max_grade);//Update the classes showing the different colors
             });
 
-                        //Start test clicked
+            //Start editing test clicked
+            $(".simple_redirect_btn").click(function(){
+                var redirect_url = $(this).attr("data-redirect-url");
+                window.location=(redirect_url);
+            });
+            
+            //Start test clicked
             $("#start_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
