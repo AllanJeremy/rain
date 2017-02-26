@@ -59,17 +59,49 @@
                 <div class="container ">
                     <div class="nav-wrapper ">
                         <div class="row no-margin">
+                            <?php
+                                $logged_acc_type = $user_info["account_type"];#account type of the logged in user
+                                
+                                $test_id = &$_GET["tid"];#test_id
+                                $edit_flag = &$_GET["edit"];#edit flag. If 1, means we are in editing mode
+
+                                //If the test id is set and edit status is set ~ editing test
+                                if(isset($test_id) && isset($edit_flag) && (htmlspecialchars($edit_flag)=="1") && $logged_acc_type=="teacher"):
+                                    $url_take_test = "tests.php?tid=".$test_id;#url for taking test
+                            ?>  
                             <div class="col s2">
-                                <a href="./#takeATest" class="">
+                                <a class="tooltipped" data-position="right" data-delay="50" data-tooltip="Back to test initialization" href="<?php echo ($url_take_test.'&edit=1');?>">
                                     <i class="material-icons">arrow_back</i>
+                                </a>
+                            </div>
+                            <div class="col s8">
+                                <a class="page-title center-align"><?php echo $test["test_title"]." [EDIT MODE]";?></a>
+                            </div>
+                            <div class="col s2" id="previewTestBtn">
+                                <a class="right tooltipped" id="previewTestBtn" target="_blank" href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Preview the test">
+                                    <i class="material-icons">fullscreen</i>
+                                </a>
+                            </div>
+                            <?php
+                                #means we are taking the test
+                                elseif(isset($test_id)&& (!isset($edit_flag) || (htmlspecialchars($edit_flag)!="1"))):
+                            ?>
+                            <div class="col s2">
+                                <a class="tooltipped" data-position="right" data-delay="50" data-tooltip="Back to take tests">
+                                    <i class="material-icons" href="./#takeATest">arrow_back</i>
                                 </a>
                             </div>
                             <div class="col s8">
                                 <a class="page-title center-align"><?php echo $test["test_title"];?></a>
                             </div>
-                            <div class="col s2" id="fullScreenDiv">
-                                <a class="right" id="fullScreenToggle" href="#!FullScreenTestPage"><i class="material-icons">fullscreen</i></a>
+                            <div class="col s2" id="skippedQuestionsBtn">
+                                <a class="right tooltipped" id="skippedQuestionsBtn" target="_blank" href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Skipped questions">
+                                    <i class="material-icons">library_books</i>
+                                </a>
                             </div>
+                            <?php
+                                endif;
+                            ?>
                         </div>
                     </div>
                 </div>

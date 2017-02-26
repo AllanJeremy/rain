@@ -242,7 +242,9 @@ class Test
                         </div>
 
                         <div class="col s2 m2 right pull-s1">
-                            <span><a class="btn" id="save_question" href="javascript:void(0)" style="margin-top:0.45em"><i class="material-icons">save</i></a></span>
+                            <span><a class="btn tooltipped" id="save_question" href="javascript:void(0)" style="margin-top:0.45em" data-position="bottom" data-delay="50" data-tooltip="Save current question">
+                                <i class="material-icons">save</i></a>
+                            </span>
                         </div>
 
                         <div class="col s12 m4 center-align">
