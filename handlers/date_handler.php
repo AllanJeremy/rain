@@ -110,13 +110,31 @@ class EsomoDate implements EsomoDateFunctions
         return $date_time_output;
     }
 
-    //returns the difference between the sent date and the due date
-    public static function GetDateDiff($date_sent,$date_due)
-    {
-        $sent = new DateTime($date_sent);
-        $due = new DateTime($date_due);
+    //returns the difference between the start date and the end date
+    public static function GetDateDiff($date_start,$date_end)
+    {   
+        //Initialization ~ so that the variables are accessible in the entire scope of the function
+        $start = null;
+        $end = null;
+        if(!is_a($date_start,"DateTime"))
+        {
+            $start = new DateTime($date_start);
+        }
+        else
+        {
+            $start = $date_start;
+        }
 
-        return date_diff($sent,$due);
+        if(!is_a($date_end,"DateTime"))
+        {
+            $end = new DateTime($date_end);
+        }
+        else
+        {
+            $end = $date_end;
+        }
+
+        return date_diff($start,$end);
     } 
 
     //Returns the sum of a date and an interval - #date_interval is an array that contains days hours minutes

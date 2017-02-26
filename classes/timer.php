@@ -38,6 +38,25 @@ class EsomoTimer
         }
     }
 
+
+    //Get the amount of time elapsed
+    public static function GetTimeElapsed($test,$user_info)
+    {
+        $test_timer = &$_SESSION[self::TEST_TIMER_ARRAY_NAME];
+        $timer_exists = self::SpecificTestTimerExists($test,$user_info);
+
+        if($timer_exists)
+        {
+            $timer_found = $test_timer[$timer_exists["index"]];
+            $date_diff = EsomoDate::GetDateDiff($timer_found["time_started"],EsomoDate::GetCurrentDate());
+            return($date_diff);
+        }
+        else#failed to find the timer
+        {
+            return null;
+        }
+    }
+
     //Check if a certain entry exists in the test timer
     public static function SpecificTestTimerExists($test,$user_info)
     {

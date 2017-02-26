@@ -6,6 +6,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); 
 require_once(realpath(dirname(__FILE__). "/../handlers/grade_handler.php")); #Handles grade related functions
 require_once(realpath(dirname(__FILE__). "/../handlers/date_handler.php")); #Handles date related functions
 
+require_once(realpath(dirname(__FILE__). "/../classes/timer.php")); #Handles date related functions
+
 
 #HANDLES DATABASE FUNCTIONS THAT INVOLVE UPDATING/DELETING RECORDS IN THE DATABASE
 class DbHandler extends DbInfo
@@ -1022,7 +1024,10 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
             }#end of foreach $submissions
 
-
+            #get the DateInterval representing the amount of time elapsed
+            $time_elapsed = EsomoTimer::GetTimeElapsed($test,$user_info);
+            $time_elapsed = (int)($time_elapsed->format("%s"));#get the number of minutes elapsed
+            
             //Update some result values
             $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
             $results["grade"] = $total_marks;
@@ -1031,8 +1036,9 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $results["answers_right"] = $answers_right;
             $results["answers_wrong"] = $answers_wrong;
             $results["date_generated"] = "";
-            $results["completion_time"] = 0;
+            $results["completion_time"] = $time_elapsed;
 
+            var_dump($results["completion_time"]);
             //Determine the verdict of test results
             if($pass_grade = $test["passing_grade"])
             {
