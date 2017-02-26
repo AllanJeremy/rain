@@ -185,8 +185,10 @@
             ?>
             
         </main>
-        <footer>
-        </footer>
+        <?php
+            /*Include the footer at the bottom of the page*/
+            include_once("./snippets/site_footer.php");
+        ?>
 
         <script>
 

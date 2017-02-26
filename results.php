@@ -16,5 +16,12 @@
     </head>
 
     <body>
-
+        <main>
+        
+        </main>
     </body>
+    <?php
+        /*Include the footer at the bottom of the page*/
+        include_once("./snippets/site_footer.php");
+    ?>
+</html>

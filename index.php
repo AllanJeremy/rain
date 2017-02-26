@@ -207,32 +207,9 @@
                     </div>
                 </div>
         </main>
-        <br>
-        <br>
-        <br>
-        <div class="divider"></div>
-        
-        <footer class="page-footer transparent">
-            <div class="container">
-
-                <div class="row">
-                
-                    <div class="col s12 l4">
-                        <p class="grey-text text-darken-1">Brookhurst International School</p>
-                    </div>
-                    
-                    <div class="col s12 l4">
-                        <p class="grey-text text-darken-1">© <?php echo date("Y")?> <a href="http://www.deflix.co.ke">Deflix Enterprises</a></p>
-                    </div>
-                    
-                    <div class="col s12 l4">
-                        <a class="right btn btn-flat" href="report.php" id="reportLink">Report a problem</a>
-                    </div>
-
-                </div>
-                
-            </div>
-        </footer>
+        <?php
+            include_once("./snippets/site_footer.php");
+        ?>
         
         <?php
             else:#redirect user to the login page
