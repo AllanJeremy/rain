@@ -205,7 +205,7 @@ class Test
                             else:
                         ?>
                         <div class="col s6 input-field">
-                            <a class="btn-flat btn-skip-question center" type="submit">skipped questions</a>
+                            <a class="btn-flat btn-skip-question center truncate" type="submit">skipped questions</a>
                         </div>
                         <div class="col s6 input-field">
                             <a class="btn right" id="t_complete_test" data-redirect-url="tests.php?complete_test=1"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>

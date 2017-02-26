@@ -139,5 +139,10 @@
             });
             
     });
+    
+    /*SKIPPED QUESTIONS*/
+    $(".skipped_questions_btn").click(function(){
+        alert("Show skipped questions");
+    });
  });
 

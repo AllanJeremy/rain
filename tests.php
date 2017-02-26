@@ -87,7 +87,7 @@
                                 elseif(isset($test_id)&& (!isset($edit_flag) || (htmlspecialchars($edit_flag)!="1"))):
                             ?>
                             <div class="col s2">
-                                <a class="tooltipped" data-position="right" data-delay="50" data-tooltip="Back to take tests">
+                                <a class="tooltipped" data-position="right" data-delay="50" data-tooltip="Back to take tests" href="./#takeATest">
                                     <i class="material-icons" href="./#takeATest">arrow_back</i>
                                 </a>
                             </div>
@@ -95,7 +95,7 @@
                                 <a class="page-title center-align"><?php echo $test["test_title"];?></a>
                             </div>
                             <div class="col s2">
-                                <a class="right tooltipped skipped_questions_btn"  href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Skipped questions">
+                                <a class="right tooltipped skipped_questions_btn"  href="javascript:void(0)" data-position="bottom" data-delay="50" data-tooltip="Skipped questions">
                                     <i class="material-icons">library_books</i>
                                 </a>
                             </div>
@@ -580,7 +580,7 @@
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
                    console.log("status :", status);
                    if(status )
-                   Materialize.toast(successful_save_message,5000);
+                   Materialize.toast(successful_save_message,2000);
                 });
                 
             });
@@ -710,6 +710,12 @@
                 $.post("handlers/timer_handler.php",{"action":"StartTestTimer","test_id":test_id},function(){
                     window.location=(redirect_url);
                 });
+
+            });
+
+            /*SKIPPED QUESTIONS*/
+            $(".skipped_questions_btn").click(function(){
+                //Show skipped questions modal
 
             });
         });//End of document ready
