@@ -77,8 +77,8 @@
                             <div class="col s8">
                                 <a class="page-title center-align"><?php echo $test["test_title"]." [EDIT MODE]";?></a>
                             </div>
-                            <div class="col s2" id="previewTestBtn">
-                                <a class="right tooltipped" id="previewTestBtn" target="_blank" href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Preview the test">
+                            <div class="col s2">
+                                <a class="right tooltipped preview_test_btn" target="_blank" href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Preview the test" id="previewTestBtn">
                                     <i class="material-icons">fullscreen</i>
                                 </a>
                             </div>
@@ -94,8 +94,8 @@
                             <div class="col s8">
                                 <a class="page-title center-align"><?php echo $test["test_title"];?></a>
                             </div>
-                            <div class="col s2" id="skippedQuestionsBtn">
-                                <a class="right tooltipped" id="skippedQuestionsBtn" target="_blank" href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Skipped questions">
+                            <div class="col s2">
+                                <a class="right tooltipped skipped_questions_btn"  href="<?php echo $url_take_test;?>" data-position="bottom" data-delay="50" data-tooltip="Skipped questions">
                                     <i class="material-icons">library_books</i>
                                 </a>
                             </div>
