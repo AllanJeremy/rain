@@ -624,7 +624,7 @@
                     console.log(qData);
 
                     //Send the information to the handler
-                    $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission",qData},function(data,status){
+                    $.post("handlers/db_handler.php",{"action":"UpdateTestSubmission","q_data":qData},function(data,status){
                         console.log("Successfully updated the test submission");
                         window.location= (redirect_url);
                     });
@@ -675,7 +675,7 @@
                     {
                         qData["answers_provided"].push($(this).attr("id"));
                     });
-                    $.post("handlers/db_handler.php",{"action":"CompleteTakingTest",qData},function(data,status){
+                    $.post("handlers/db_handler.php",{"action":"CompleteTakingTest","q_data":qData},function(data,status){
                         console.log("Completed test");
                     });
                 }
