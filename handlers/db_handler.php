@@ -1243,7 +1243,7 @@ if(isset($_POST['action'])) {
         case 'UpdateTestQuestion':
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);
-            $q_data = $_POST["q_data"];
+            $q_data = &$_POST["q_data"];
             DbHandler::UpdateQuestion($q_data);
 
             #once this is done redirect the user to the redirect page as soon as the data is updated
@@ -1253,13 +1253,13 @@ if(isset($_POST['action'])) {
         case 'UpdateTestSubmission':
             //~Computational delay to prevent bots from spamming and DDOS
             //sleep(200);
-            $q_data = $_POST["qData"];
+            $q_data = &$_POST["q_data"];
             DbHandler::UpdateTestQuestionSubmission($q_data);
         break;
 
         //Complete a test ~ Mark the test and return results
         case 'CompleteTakingTest':
-            $q_data = $_POST["qData"]; #question data
+            $q_data = &$_POST["q_data"]; #question data
             $test_id = htmlspecialchars($q_data["test_id"]); #current test id
 
             DbHandler::UpdateTestQuestionSubmission($q_data);//Add the current question submission

@@ -1045,6 +1045,39 @@ class DbInfo
         }
     }
 
+    //Get skipped questions for a test
+    public static function GetSkippedQuestions($test_id,$user_info)
+    {
+        global $dbCon;
+        
+        $select_query = "SELECT * FROM test_submissions WHERE test_id=? AND taker_id=? AND taker_type=? AND skipped=1";
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("iis",$test_id,$user_info["user_id"],$user_info["account_type"]);
+            if($select_stmt->execute())
+            {
+                $results = $select_stmt->get_result();
+                if($results->num_rows >0)
+                {
+                    return $results;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            else #failed to execute query
+            {
+                return false;
+            }
+        }
+        else #failed to prepare query
+        {
+            return null;
+        }
+    }
+
     //Get test results for a specific test
     public static function GetSpecificTestResults($test_id)
     {
@@ -1406,6 +1439,8 @@ class DbInfo
             return false;
         }
     }
+
+    
 };#END OF CLASS
 
 /*
@@ -1415,8 +1450,9 @@ class DbInfo
 */
 
 if(isset($_GET['action'])) {
-    
+    $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
     sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
+    
     switch($_GET['action']) {
         case 'StudentIdExists':
             
@@ -1750,6 +1786,26 @@ if(isset($_GET['action'])) {
             
             echo json_encode($test_found);
         break;
+        
+        case "GetSkippedQuestions":
+            $test_id = &$_GET["test_id"];
+            $skipped_questions = DbInfo::GetSkippedQuestions($test_id,$user_info);
+
+            #if we could retrieve the skipped questions
+            if($skipped_questions)
+            {
+                $skipped_array = array();
+                $array_result = $skipped_questions->fetch_all(MYSQLI_ASSOC);
+                $json = json_encode($array_result);
+                echo $json;
+            }
+            else
+            {
+                echo "0";
+            }
+            
+        break;
+
         default:
             return null;
             break;

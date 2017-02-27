@@ -607,15 +607,24 @@
                 //Message displayed when no answer is provided
                 var missing_answer_message = "Please provide at least one answer. Note : Unless you skip this question, you will not be able to come back to it. ";
 
-                //Ensure that at least one answer is provided in order to submit data
-                if(answers_provided)
-                {
+                var $is_skipped = $(this).is("#t_skip_que");
+                //Ensure that at least one answer is provided in order to submit data unless we skip the question (we can leave blank if skipping the question)
+                if(answers_provided || $is_skipped)
+                {   
+                    var skipped = 0;//Skipped variable ~ by default false (0)
+
+                    //Set numerical value for skipped here ~ if true, value=1 and if false 0
+                    if($is_skipped)
+                    {skipped = 1;}
+                    else
+                    {skipped = 0;}
+
                     //Save question data input as json
                     var qData = {
                         "test_id":parseInt($(document).getUrlParam("tid")),
                         "question_index":parseInt($(document).getUrlParam("q")),
                         "answers_provided":[],
-                        "skipped":($(this).is("#t_skip_que"))
+                        "skipped":skipped
                     };
 
                     //Add all provided answers to an array and update the qData
@@ -632,8 +641,12 @@
                     });
                 }
                 else//No answer was provided for the question
-                {
-                    Materialize.toast(missing_answer_message,5000);
+                {   
+                    //Only toast if the question has not been skipped. If skipping , allow empty values
+                    if(!$is_skipped)
+                    {
+                        Materialize.toast(missing_answer_message,5000);
+                    }
                 }
 
 
@@ -715,9 +728,28 @@
 
             });
 
-            /*SKIPPED QUESTIONS*/
+        /*TEST TAKER SKIPPING QUESTIONS functionality*/
+            //Skipping questions
+            $(".skip_question_btn").click(function(){
+
+            });
+
+            //Skipped questions
             $(".skipped_questions_btn").click(function(){
+                var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test ~ consider making this a global variable
+                console.log("Test id = ",test_id);
+                var skipped_questions = null;//initialization
+
                 //Show skipped questions modal
+
+                //Get the skipped questions
+                $.get("handlers/db_info.php",{"action":"GetSkippedQuestions","test_id":test_id},function(data){
+                    
+                    //TODO : Add error handler for this
+                    skipped_questions = JSON.parse(data);
+
+                    //Populate skipped questions modal
+                });      
 
             });
         });//End of document ready
