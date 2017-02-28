@@ -1,3 +1,4 @@
 /webpack-demo/*
 !/webpack-demo/package.json
 /.sass-cache/*
+new.css
