@@ -45,7 +45,20 @@
         <a href="#!" class="" id="teachers" data-activates="principalTeachersTab">Teachers</a>
     </li>
     <li>
-        <a href="#!" class="hide" id="groups" data-activates="principalGroupsTab">Groups</a>
+        <a href="#!" class="" id="resources" data-activates="principalResourcesTab">Resources</a>
+    </li>
+
+    <!--Chat and groups ~ Future feature-->
+    <li>
+        <a href="#!" class="hide">Chat</a>
+    </li>
+    <li>
+        <a href="#!" class="hide">Groups</a>
+    </li>
+
+    <!--Account nav-->
+    <li>
+        <a href="#!" class="" id="account" data-activates="principalAccountTab">Account</a>
     </li>
     <li>
         <div class="divider"></div>

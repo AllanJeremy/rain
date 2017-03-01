@@ -904,17 +904,42 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     ?>
                 </div>
 
+                <!--RESOURCES SECTION-->
+                <div class="row main-tab" id="teacherResourcesTab">
+                    <div class="col s12">
+                        <p>Resources section</p>
+                    </div>
+                </div>
+
                 <!--GRADES SECTION-->
                 <div class="row main-tab" id="mySubjectGradesTab">
                     myGrades tab
                 </div>
+
+                <!--GRADEBOOK SECTION-->
                 <div class="row main-tab" id="gradeBookTab">
                     gradeBook tab
                 </div>
 
-                <!--MY ACCOUNT SECTION-->
-                <div class="row main-tab" id="myAccountTab">
-                    myAccount tab
+                <!--CHAT SECTION-->
+                <div class="row main-tab" id="teacherChatTab">
+                    <div class="col s12">
+                        <p>Chat section</p>
+                    </div>
                 </div>
-                
+
+                <!--GROUPS SECTION-->
+                <div class="row main-tab" id="teacherGroupsTab">
+                    <div class="col s12">
+                        <p>Groups section</p>
+                    </div>
+                </div>
+
+                <!--ACCOUNT SECTION-->
+                <div class="row main-tab" id="teacherAccountTab">
+                    <div class="col s12">
+                        <p>Account section</p>
+                    </div>
+                </div>
+                                
             </div>

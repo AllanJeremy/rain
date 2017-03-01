@@ -66,15 +66,24 @@
             </div>
         </li>
     </ul>
+
     <li>
-        <a href="#!" id="myAccount" data-activates="myAccountTab" class="">My account</a>
+        <a href="#!" class="" id="resources" data-activates="teacherResourcesTab">Resources</a>
     </li>
+
+    <!--Chat and groups ~ Future feature-->
     <li>
         <a href="#!" class="hide">Chat</a>
     </li>
     <li>
         <a href="#!" class="hide">Groups</a>
     </li>
+
+    <!--Account nav-->
+    <li>
+        <a href="#!" class="" id="account" data-activates="teacherAccountTab">Account</a>
+    </li>
+    
     <li>
         <div class="divider"></div>
     </li>

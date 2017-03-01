@@ -2,6 +2,7 @@
                 <!--<p class="grey-text">Assignments (overview headers)</p>
                 <div class="divider"></div>
                 <br>-->
+                <!--Principal stats overview tab-->
                 <div class="row main-tab" id="statsOverviewTab">
                     
                     <div class="col card-col">
@@ -27,34 +28,57 @@
                     
                 </div>
                 
+                <!--Principal schedules tab-->
                 <div class="row main-tab" id="principalSchedulesTab">
                     Principal Schedules tab
                 </div>
                 
+                <!--Principal assignments tab-->
                 <div class="row main-tab" id="principalAssignmentsTab">
                     Principal Assignments tab
                 </div>
                 
+                <!--Principal student grades tab-->
                 <div class="row main-tab" id="principalStudentGradesTab">
                     Principal Student Grades tab
                 </div>
                 
+                <!--Principal gradebook tab-->
                 <div class="row main-tab" id="principalGradebookTab">
                     Principal Gradebook tab
                 </div>
                 
+                <!--Principal students tab-->
                 <div class="row main-tab" id="principalStudentsTab">
                     Principal Students tab
                 </div>
                 
+                <!--Principal teachers tab-->
                 <div class="row main-tab" id="principalTeachersTab">
                     Principal Teachers tab
                 </div>
-                
-                <div class="row main-tab" id="principalGroupsTab">
-                    Principal Groups tab
+                <!--Principal resources tab-->
+                <div class="row main-tab" id="principalResourcesTab">
+                    <div class="col s12">
+                        <p>Resources section</p>
+                    </div>
                 </div>
                 
-                <br>
+                <!--Principal chat tab-->
+                <!--<div class="row main-tab" id="principalChatTab">
+                    Principal Chat tab
+                </div>-->
+
+                <!--Principal groups tab-->
+                <!--<div class="row main-tab" id="principalGroupsTab">
+                    Principal Groups tab
+                </div>-->
+                
+                <!--Principal account tab-->
+                <div class="row main-tab" id="principalAccountTab">
+                    <div class="col s12">
+                        <p>Account section</p>
+                    </div>
+                </div>
                 
             </div>

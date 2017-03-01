@@ -235,9 +235,26 @@ about how you came to achieve this.</p>
                 <div class="row main-tab" id="gradeBookTab">
                     <p>Your Grade books will be displayed here</p>
                 </div>
-                <div class="row main-tab" id="chatTab">
-                    <p>Chat will be displayed here</p>
+               
+                <!--Resources-->
+                <div class="row main-tab" id="studentResourcesTab">
+                    <p>Your Resources will be displayed here</p>
                 </div>
+
+                <!--Chat-->
+                <!--<div class="row main-tab" id="studentChatTab">
+                    <p>Chat will be displayed here</p>
+                </div>-->
+                
+                <!--Groups-->
+                <!--<div class="row main-tab" id="studentChatTab">
+                    <p>Groups will be displayed here</p>
+                </div>-->
+
+                <!--Account-->
+                <div class="row main-tab" id="studentAccountTab">
+                    <p>Account section</p>
+                </div>              
                 <!--<p class="grey-text">Tests</p>
                 <div class="divider"></div>-->
                 <br>

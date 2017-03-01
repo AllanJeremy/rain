@@ -50,12 +50,24 @@
             </div>
         </li>
     </ul>
+    
     <li>
-        <a href="#!" class="hide" id="chat" data-activates="chatTab">Chat</a>
+        <a href="#!" class="" id="resources" data-activates="studentResourcesTab">Resources</a>
+    </li>
+
+    <!--Chat and groups ~ Future feature-->
+    <li>
+        <a href="#!" class="hide" id="chat" data-activates="studentChatTab">Chat</a>
     </li>
     <li>
-        <a href="#!" class="hide" id="groups" data-activates="groupsTab">Groups</a>
+        <a href="#!" class="hide" id="groups" data-activates="studentGroupsTab">Groups</a>
     </li>
+
+    <!--Account nav-->
+    <li>
+        <a href="#!" class="" id="account" data-activates="studentAccountTab">Account</a>
+    </li>
+
     <li>
         <div class="divider"></div>
     </li>

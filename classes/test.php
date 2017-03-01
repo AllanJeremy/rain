@@ -549,9 +549,9 @@ class Test
                     <?php
                         else:#if the last question
                     ?>
-                        <div class="col s4 right" id="completeTest">
+                        <div class="col s4 right" id="completeEditTest">
                             <a class="btn right" href="javascript:void(0)" id="done_editing" data-redirect-url="tests.php?complete=1">
-                                DONE<span class="hide-on-med-and-down"> EDITING</span>
+                                PREVIEW <span class="hide-on-med-and-down"> TEST</span>
                             </a>
                         </div>
                     <?php

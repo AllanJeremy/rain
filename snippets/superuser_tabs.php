@@ -456,7 +456,8 @@
             </div>
         </div>
     </div>
-    <!---->
+    
+    <!--Superuser principal tab-->
     <div class="row main-tab" id="principalTab">
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
@@ -611,6 +612,7 @@
         </div>
     </div>
 
+    <!--Superuser superuser tab-->
     <div class="row main-tab" id="superuserTab">
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
@@ -778,5 +780,25 @@
             </div>
         </div>
     </div>
-    
+
+    <!--Superuser chat tab-->
+    <!--<div class="row main-tab" id="superuserChatTab">
+        <div class="col s12">
+            <p>Chat section</p>
+        </div>
+    </div>-->
+
+    <!--Superuser group tab-->
+    <!--<div class="row main-tab" id="superuserGroupsTab">
+        <div class="col s12">
+            <p>Group section</p>
+        </div>
+    </div> -->
+
+    <!--Superuser account tab-->
+    <div class="row main-tab" id="superuserAccountTab">
+        <div class="col s12">
+            <p>Account section</p>
+        </div>
+    </div>
 </div>

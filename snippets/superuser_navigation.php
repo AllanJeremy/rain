@@ -25,6 +25,19 @@
     <li class="">
         <a href="#!" id="superuser" data-activates="superuserTab" class="">Superuser</a>
     </li>
+
+    <!--Chat and groups ~ Future feature-->
+    <li>
+        <a href="#!" class="hide" id="chat" data-activates="superuserChatTab">Chat</a>
+    </li>
+    <li>
+        <a href="#!" class="hide" id="groups" data-activates="superuserGroupsTab">Groups</a>
+    </li>
+
+    <!--Account nav-->
+    <li>
+        <a href="#!" class="" id="account" data-activates="superuserAccountTab">Account</a>
+    </li>
     <li>
         <div class="divider"></div>
     </li>
