@@ -437,7 +437,7 @@ var AssignmentEvents = function () {
 
                 $('#' + str1).closeModal();
                 
-                var errorMessage = '<span class="red-text name text-lighten-5">Error in creating the classroom. Kindly see if you have filled all inputs.</span>';
+                var errorMessage = '<span class="red-text name text-lighten-5">Error in creating the assignment. Kindly see if you have filled all inputs.</span>';
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(errorMessage, 5000, '', function () {
