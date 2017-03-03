@@ -326,9 +326,30 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
                 return null;#failed to prepare query
             }
         }
-        else
+        else#assignment does not exist ~ create it
         {
-            return false;
+            $update_query = "INSERT INTO assignments(ass_title,ass_description,class_id,due_date,attachments,file_option,max_grade,comments_enabled,teacher_id) VALUES(?,?,?,?,?,?,?,?,?)";
+
+            //Prepare query for creating assignment
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                 $update_stmt->bind_param("ssissssii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"])   ;
+
+                 #if the create query ran successfully
+                 if($update_stmt->execute())
+                 {
+                     return true;
+                 }
+                 else #create query failed to run
+                 {
+                    return false;
+                 }
+            }
+            else
+            {
+                return null;
+            }
+            
         }
     }
 
@@ -384,9 +405,30 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
                 return null;#failed to prepare query
             }
         }
-        else
+        else#assignment submission does not exist ~ Create it
         {
-            return false;
+            $update_query = "INSERT INTO ass_submissions(attachments, submitted, submission_text, student_id) VALUES(?,?,?,?)";
+
+            //Prepare query to create assignment submission
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("sisi",$attachments,$submitted,$submission_text,$student_id);
+                
+                #create assignment submission query ran successfully
+                if($update_stmt->execute())
+                {
+                    return true;
+                }
+                else #failed to run create ass_submission query
+                {
+                    return false;
+                }
+            }
+            else #failed to prepare query to create assignment submission
+            {
+                return null;
+            }
+            
         }   
     }    
 
