@@ -1,10 +1,12 @@
 <?php 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
+require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Uploader class
 ?>
- <?php 
+
+<?php 
     $loggedInTeacherId = $_SESSION["admin_acc_id"];
- ?>           
+?>           
             <div class="container">
                 <!--CLASSROOMS SECTION-->
                 <div class="row main-tab" id="classroomTab">
@@ -125,7 +127,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                     <br>
                     <div class="container assignment-doc">
                         <br>
-                        <form action="" id="createAssignmentForm" class="row">
+                        <form action="" id="createAssignmentForm" class="row" enctype="multipart/form-data" method="POST">
                             <div class=" input-field col s12 ">
                                 <input required class="validate" type="text" name="new_assignment_name" id="newAssignmentName">
                                 <label for="new_assignment_name">Assignment name</label>
@@ -151,7 +153,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                             <div class="col s12 classroom-list input-field"></div>
                             <div class=" input-field col s12 ">
                                 
-                                <input type="date" class="datepicker" id="assDueDate">
+                                <input type="date" class="datepicker" id="assDueDate" name="ass_due_date">
                                 <label for="assDueDate">Due date</label>
                             </div>
                             
@@ -159,7 +161,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                                 
                                 <div class="btn">
                                     <span>resources</span>
-                                    <input type="file" multiple>
+                                    <input type="file" multiple name="ass_resources">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text" placeholder="Upload one or more files">
@@ -167,10 +169,20 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Da
                             </div>
                             <div class="input-field col s12">
                             <br>
-                                <a type="submit" class="btn right" id="createNewAssignment">Create assignment</a>
+                                <button type="submit" class="btn right" id="createNewAssignment">Create assignment</button>
                             </div>
                         </form>
-                        <br>
+                        <script>
+                            $(document).ready(function(){
+                                $("#createAssignmentForm").submit(function(e){
+                                    
+                                    e.preventDefault();//Prevent page from reloading
+                                    alert("Form submitted.\nFile data is ",$("#assDueDate").val());
+                                    
+                                });
+                            });
+                        </script>
+                            <br>
                     </div>
                 </div>
 
