@@ -15,19 +15,22 @@ class EsomoUploader
     const DEFAULT_ACCEPTED_FILE_TYPES = "pdf,jpeg,jpg,png,word,docx,";
 
     /*VARIABLES*/
-    public $file_info;
+    // public $files_found;
     public $max_file_size;
     public $accepted_file_types;
     public $can_upload;
+    public $file_exists;#boolean ~ true if the file exists and false if the file does not exist
 
     //Constructor
-    function __construct__($file_path)
+    function __construct__($file_name)
     {   
         //Variable Initialization
-        $this->file_info = array("file_path"=>$file_path);#file info
         $this->max_file_size = self::DEFAULT_MAX_UPLOAD_SIZE;#default maximum upload size in megabytes
         $this->accepted_file_types = self::DEFAULT_ACCEPTED_FILE_TYPES; #default accepted file types
         $this->can_upload = false;#can upload file, default is false
+
+        
+        $this->file_exists = (isset($the_file) && (!empty($the_file)));#Check if the file name is set in the files section
     }
 
     //Determine Upload directory based on what upload type it is ~ returns it | TODO: add error handling
@@ -54,6 +57,7 @@ class EsomoUploader
         return $upload_folder;
     }
     
+    //Checks if 
     //Checks if a file is within the valid size range ~ returns true if it is, and false if not
     private static function FileSizeIsValid($source_path)
     {
