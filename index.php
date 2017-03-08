@@ -23,6 +23,7 @@
         <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
         <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
         <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/resources_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
         <script type="text/javascript" src="js/dashboard/test_events.js"></script>
         <script type="text/javascript" src="js/dashboard.js"></script>

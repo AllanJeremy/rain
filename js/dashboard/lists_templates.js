@@ -317,6 +317,79 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.resourcesModalTemplate = function (obj) {
+
+        var templateOutput = '';
+
+        templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
+        templateOutput += '<div class="modal-content"><div id="dragDropArea">';
+        templateOutput += '<h4 class="white-text">' + obj.templateHeader + '</h4>';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div id="resourcesTotalInfo" class="col m6 s12">';
+        templateOutput += '<h6 class=" op-4">To upload</h6>';
+        templateOutput += '<h4 class="white-text"><span id="totalResources">0</span> files</h4>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="col m6 s12">';
+        templateOutput += '<form id="createResourcesForm">';
+        templateOutput += '<div class=" input-field col s12 file-field ">';
+        templateOutput += '<div class="btn">';
+        templateOutput += '<span>add resources</span>';
+        templateOutput += '<input type="file" multiple name="resources">';
+        templateOutput += '</div>';
+/*
+        templateOutput += '<div class="file-path-wrapper">';
+        templateOutput += '<input class="file-path validate" type="text" placeholder="Upload one or more files">';
+        templateOutput += '</div>';
+*/
+        templateOutput += '</div>';
+        templateOutput += '</form>';
+        templateOutput += '<div style="padding-top:20px;margin-top:20px;" class="hide-on-med-and-down"><br><h6 class="right-align op-4">or drag and drop on the colored area.</h6>';
+        templateOutput += '</div></div></div></div>';
+        templateOutput += '<div class="row" id="resourcesList"><div class="container" >';
+        templateOutput += obj.templateBody;
+        templateOutput += '</div></div>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="modal-footer">';
+        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-red btn-flat">close</a>';
+        templateOutput += '<a href="#!" id="uploadResource" class=" modal-action waves-effect waves-green btn disabled"><i class="material-icons left">&#xE2C6;</i>upload</a>';
+        templateOutput += '</div>';
+        templateOutput += '</div>';
+
+        return templateOutput;
+
+    };
+
+    //--------------------------------------
+
+    this.resourcesListTemplate = function (obj) {
+
+        var templateOutput = '';
+
+        templateOutput += '<div class="row no-margin"><div class="col s4">';
+        templateOutput += '<div class="card resource-view">';
+        templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
+        templateOutput += '</div></div>';
+        templateOutput += '<div class="col s8">';
+        templateOutput += '<div class="info row no-margin">';
+        templateOutput += '<div class="col s9"><p class="title">';
+        templateOutput += obj.name;
+        templateOutput += '</p></div>';
+        templateOutput += '<div class="col s3"><p class="size right-align">';
+        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
+        templateOutput += '</p></div></div>';
+        templateOutput += '<div class="row no-margin">';
+        templateOutput += '<div class="input-field no-margin col s12">';
+        templateOutput += '<textarea id="resourceDescription" class="materialize-textarea"></textarea>';
+        templateOutput += '<label for="resourceDescription">Description</label></div>';
+        templateOutput += '</div></div></div>';
+        //templateOutput += '<div class="divider"></div>';
+
+        return templateOutput;
+
+    };
+
+    //--------------------------------------
+
     this.listModalTemplate = function (obj) {
         
         var templateOutput = '';

@@ -919,7 +919,33 @@ require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Uploade
                 <!--RESOURCES SECTION-->
                 <div class="row main-tab" id="teacherResourcesTab">
                     <div class="col s12">
-                        <p>Resources section</p>
+                    <div class="row no-bottom-margin">
+                        <div class="col s5">
+                            <p class="grey-text">Resources</p>
+                        </div>
+                        <div class="col s7">
+                            <a class="btn right" id="addResource">Add<span class="hide-on-small-only"> resources</span>
+                            <span class="hide-on-med-and-up">
+                                <i class="material-icons"><i class="material-icons">&#xE226;</i></i>
+                            </span>
+                            </a>
+                        </div>
+<!--
+                        <div class="col s1">
+                            <a class="btn-flat transparent btn center dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>
+                        </div>
+
+                        <ul id="moreHoriz1" class="dropdown-content">
+                            <li class="waves-effect waves-green"><a class="more-card-options black-text" id="moreCardDelete"><i class="material-icons red-text">delete</i> delete</a></li>
+                        </ul>
+-->
+
+                    </div>
+
+
+                    <div class="divider"></div>
+                    <br>
+
                     </div>
                 </div>
 

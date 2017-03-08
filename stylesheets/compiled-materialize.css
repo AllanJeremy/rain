@@ -10255,3 +10255,34 @@ a.btn-skip-question {
   border: 1px rgba(80, 80, 80, 0.08) solid;
   padding: 8px;
 }
+
+/* line 662, ../sass/_style.scss */
+.modal #dragDropArea {
+  margin: -24px;
+  margin-bottom: 20px;
+  padding: 24px;
+  background-color: #781822;
+}
+
+/* line 669, ../sass/_style.scss */
+.op-4 {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* line 673, ../sass/_style.scss */
+#uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large, #uploadResource form#createResourcesForm .file-field .btn-large {
+  float: right !Important;
+}
+
+/* line 677, ../sass/_style.scss */
+.resource-view {
+  height: 100px;
+  background-color: rgba(185, 145, 145, 0.24);
+}
+
+/* line 682, ../sass/_style.scss */
+.resource-view > i.material-icons {
+  width: 100%;
+  line-height: 100px;
+  text-align: center;
+}

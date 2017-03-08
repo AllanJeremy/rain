@@ -10,6 +10,7 @@ var Events = function () {
         ClassroomEvents = new ClassroomEvents();
         AssignmentEvents = new AssignmentEvents();
         ScheduleEvents = new ScheduleEvents();
+        ResourcesEvents = new ResourcesEvents();
         
         //global inits
         cleanOutModals();
