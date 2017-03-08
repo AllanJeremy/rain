@@ -41,10 +41,12 @@ class EsomoResource
 
         #Variable declaration
         $res_name = $res_file_type = $res_file_link = $res_description = "";
-        
+        $res_id = 0;#resource id;
+
         #Loop through each resource item
         foreach($resources as $res_found):
             #Variable init
+            $res_id = $res_found["resource_id"];
             $res_name = $res_found['resource_name'];
             $res_file_type = $res_found['file_type'];
             $res_file_link = $res_found["file_link"];
@@ -53,7 +55,7 @@ class EsomoResource
         //Loop through each resource and add the html below
 ?>
         <div class="col s12 m6 l4">
-            <div class="card white">
+            <div class="card white res_container" data-res-id="<?php echo $res_id?>">
                 <div class="card-content">
                     <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                     <div class="section white">
@@ -62,9 +64,9 @@ class EsomoResource
                 </div>
                 <div class="card-action">
                     <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">VIEW</a>
+                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
 
-                    <a class="btn btn-flat right" href="javascript:void(0)" target="_blank">DETAILS</a>
+                    <a class="btn btn-flat right viewResourceDetails" href="javascript:void(0)">DETAILS</a>
                 </div>
             </div>
         </div>  
@@ -119,7 +121,7 @@ class EsomoResource
         $account_type = &$user_info["account_type"];
         
         #Resource related Variable declaration
-        $res_edit_btn_class ="btn btn-flat";#classes applied to all edit buttons
+        $res_edit_btn_class ="btn btn-flat right editResource";#classes applied to all edit buttons
         $res_edit_btn_properties = "";#Properties of the edit button
         $res_name = $res_file_type = $res_file_link = $res_description = "";
         $res_id = $res_teacher_id = 0;#resource teacher id
@@ -153,11 +155,15 @@ class EsomoResource
                         <div class="section white">
                             <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
                         </div>
+
+                        <div class="container">
+                            <a class="btn btn-flat viewResourceDetails right" href="javascript:void(0)">RESOURCE DETAILS</a>
+                        </div>
                     </div>
                     <div class="card-action">
                         <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank"><i class="material-icons hide-on-med-and-up">visibility</i> VIEW</a>
-                    <a class="btn btn-flat right" <?php echo $res_edit_btn_properties?> href="javascript:void(0)"><i class="material-icons hide-on-med-and-up" >edit</i> EDIT</a>
+                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
+                    <a <?php echo $res_edit_btn_properties?> href="javascript:void(0)">EDIT</a>
                     </div>
 
                 </div>
@@ -242,7 +248,7 @@ class EsomoResource
             }
             catch(Exception $error){
                 $error_message = "Could not display resources normally either.<br>If the problem persists, feel free to <a href='./report.php' target='_blank'>report the problem</a> ";
-                ErrorHandler::PrintError($error_message);
+                ErrorHandler::PrintError($error_message."<br><b>Error Caught : </b>$error");
             }
             
         endif;
