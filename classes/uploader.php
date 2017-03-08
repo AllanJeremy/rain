@@ -15,22 +15,27 @@ class EsomoUploader
     const DEFAULT_ACCEPTED_FILE_TYPES = "pdf,jpeg,jpg,png,word,docx,";
 
     /*VARIABLES*/
-    // public $files_found;
+    public $files_found;
     public $max_file_size;
     public $accepted_file_types;
     public $can_upload;
     public $file_exists;#boolean ~ true if the file exists and false if the file does not exist
 
     //Constructor
-    function __construct__($file_name)
+    function __construct__()
     {   
         //Variable Initialization
         $this->max_file_size = self::DEFAULT_MAX_UPLOAD_SIZE;#default maximum upload size in megabytes
         $this->accepted_file_types = self::DEFAULT_ACCEPTED_FILE_TYPES; #default accepted file types
         $this->can_upload = false;#can upload file, default is false
 
-        
+        $the_file = &$_FILES;
+        $this->files_found = null;
         $this->file_exists = (isset($the_file) && (!empty($the_file)));#Check if the file name is set in the files section
+        if($this->file_exists)
+        {
+            $this->files_found = $the_file;
+        }
     }
 
     //Determine Upload directory based on what upload type it is ~ returns it | TODO: add error handling
@@ -93,7 +98,25 @@ class EsomoUploader
         //Upload file here
         if($this->can_upload)
         {
-
+            $files_found = &$this->files_found;
+            foreach($files_found as $file)
+            {
+                $file_name = &$file["name"];
+                $tmp_name = &$file["tmp_name"];
+                
+                $file_size = &$file["size"];
+                
+                $upload_destination = $upload_path . $file_name ;
+                if(move_uploaded_file($tmp_name,$upload_destination))
+                {
+                    echo "Succeeded uploading <b>".$file_size." bytes</b> of the file <b>".$file_name."</b>";
+                }
+                else
+                {
+                    echo "Failed to upload <b> the file : ".$file_name."</b>";
+                }
+            }
+            unset($_FILES);
         }
         else #cannot upload file
         {
@@ -102,3 +125,4 @@ class EsomoUploader
     }
 
 };
+

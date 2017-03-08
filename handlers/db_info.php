@@ -1439,8 +1439,17 @@ class DbInfo
             return false;
         }
     }
+/*----------------------------------------------------------------------------------------------------------
+                    RESOURCES FUNCTIONS
+----------------------------------------------------------------------------------------------------------*/
+     //Get all resources
+     public static function GetAllResources()
+     {
+        $resources = &self::GetAllRecordsFromTable("resources");
+        return $resources;
+     }
+        
 
-    
 };#END OF CLASS
 
 /*

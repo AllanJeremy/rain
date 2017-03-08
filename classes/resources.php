@@ -19,6 +19,12 @@ class EsomoResource
     #Display Resources 
     public static function DisplayResources()
     {
+        
+    }
+
+    #Display Teacher Resources 
+    public static function DisplayEditResources()
+    {
 
     }
 };
