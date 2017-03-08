@@ -16,7 +16,7 @@ class EsomoResource
 {   
 
     #Constants
-    const RESOURCES_NOT_FOUND_MESSAGE = "No resources were found.<br>Once resources are uploaded they will appear here";
+    const RESOURCES_NOT_FOUND_MESSAGE = "No resources were found.<br><br>Once resources are uploaded they will appear here";
 
     #Constructor
     public function __construct__()
@@ -25,11 +25,11 @@ class EsomoResource
     }
     
     #Display Message incase resources could not be found
-    protected static function DisplayMissingDataMessage($message)
+    public static function DisplayMissingDataMessage()
     {
 ?>
     <div class="section grey lighten-2 center">
-        <h3 class="center grey-text text-darken-2"><?php echo $message;?></h3>
+        <h5 class="center grey-text text-darken-1"><?php echo self::RESOURCES_NOT_FOUND_MESSAGE;?></h5>
     </div>
 <?php
     }
@@ -37,9 +37,8 @@ class EsomoResource
     #Base display resources function ~ Displays the cards for the resources. For internal use
     private static function DisplayResourceBase($resources)
     {
-?>  
-    <div class="row">
-<?php
+        echo "<div class='row'>";
+
         #Variable declaration
         $res_name = $res_file_type = $res_file_link = $res_description = "";
         
@@ -53,24 +52,25 @@ class EsomoResource
 
         //Loop through each resource and add the html below
 ?>
-        <div col s6 m4 l3>
+        <div class="col s12 m6 l4">
             <div class="card white">
                 <div class="card-content">
                     <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                     <div class="section white">
-                        <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h3>
+                        <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
                     </div>
                 </div>
                 <div class="card-action">
                     <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank"><i class="material-icons">visible</i> VIEW</a>
+                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">VIEW</a>
+
+                    <a class="btn btn-flat right" href="javascript:void(0)" target="_blank">DETAILS</a>
                 </div>
-                <a class="btn btn-flat" href="<?php echo $res_file_link; ?>" target="_blank"><i class="material-icons">info_outline</i> DETAILS</a>
             </div>
         </div>  
-    </div>
 <?php          
         endforeach; #end foreach($resources as $resource_found)
+        echo "</div>";#close row
     }#End of DisplayResourceBase()
 
     #Display Resources 
@@ -78,9 +78,6 @@ class EsomoResource
     {
         global $subject_list;
         $subject_id = $resources = null;
-?>
-<div class="container"> 
-<?php
 
         //check if subjects are available
         if( isset($subject_list) && (!empty($subject_list)) ):   
@@ -93,36 +90,30 @@ class EsomoResource
 
                 if($resources):
      ?>
-    <h3><?php echo $subject["subject_name"];?></h3>
+    <h4 class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></h4>
      <?php
                     self::DisplayResourceBase($resources);
-                else:#resources could not be found
-                    self::DisplayMissingDataMessage(self::RESOURCES_NOT_FOUND_MESSAGE);
+                    echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
                 endif;
-
+                
             endforeach;
         else:
-                $resources = DbInfo::GetAllResources();
-                if($resources)
-                {
-                    self::DisplayResourceBase($resources);
-                }
-                else
-                {
-                    self::DisplayMissingDataMessage(self::RESOURCES_NOT_FOUND_MESSAGE);
-                }
-        endif;
-?>
-</div>
-<?php    
+            $resources = DbInfo::GetAllResources();
+            if($resources)
+            {
+                self::DisplayResourceBase($resources);
+            }
+            else
+            {
+                self::DisplayMissingDataMessage();
+            }
+        endif;  
     }#end of DisplayResources function
 
     #Base display edit resources function ~ Displays the cards for the resources. For internal use
     private static function DisplayEditResourceBase($user_info,$resources)
     {   
-?>
-    <div class="container">
-<?php
+        echo "<div class='row'>";
         #Account related variable declaration
         $user_id = &$user_info["user_id"];
         $account_type = &$user_info["account_type"];
@@ -155,25 +146,26 @@ class EsomoResource
             }
                 /*Note : assumption is that only teachers will be using the resource_id, for editing*/
         ?>      
-            <div col s6 m4 l3>
+            <div class="col s12 m6 l4">
                 <div class="card white tr_res_container" data-res-id="<?php echo $res_id?>">
                     <div class="card-content">
                         <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                         <div class="section white">
-                            <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h3>
+                            <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
                         </div>
                     </div>
                     <div class="card-action">
                         <!--TODO: Make this display the file regardless of type in a new tab-->
-                        <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank"><i class="material-icons">visible</i> VIEW</a>
+                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank"><i class="material-icons hide-on-med-and-up">visibility</i> VIEW</a>
+                    <a class="btn btn-flat right" <?php echo $res_edit_btn_properties?> href="javascript:void(0)"><i class="material-icons hide-on-med-and-up" >edit</i> EDIT</a>
                     </div>
-                    <a <?php echo $res_edit_btn_properties?> href="javascript:void(0)"><i class="material-icons" >info_outline</i> EDIT</a>
+
                 </div>
             </div>
-        </div>
 <?php         
-        //^closes div row
-            endforeach;
+        endforeach;#end foreach($resources as $res_found)
+        
+        echo "</div>";#close wrapping row
     }#End of DisplayEditResourceBase
     
     #Display Teacher Resources 
@@ -203,13 +195,12 @@ class EsomoResource
     ?>
     
         <div class="divider"></div>
-        <h3><?php echo $subject["subject_name"];?></h3>
+        <h4 class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></h4>
     <?php
                         self::DisplayEditResourceBase($user_info,$resources);
-
-                    else:#resources not found in the database
-                        self::DisplayMissingDataMessage(self::RESOURCES_NOT_FOUND_MESSAGE);
+                        echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
                     endif;
+                    
                 endforeach;   
         //Close row div
     ?>
@@ -223,7 +214,7 @@ class EsomoResource
                 }
                 else
                 {
-                    self::DisplayMissingDataMessage(self::RESOURCES_NOT_FOUND_MESSAGE);
+                    self::DisplayMissingDataMessage();
                 }
             endif;
         else: #teacher account requested could not be found
@@ -246,7 +237,7 @@ class EsomoResource
                 }
                 else #if resources could not be found in the database
                 {
-                    self::DisplayMissingDataMessage(self::RESOURCES_NOT_FOUND_MESSAGE);
+                    self::DisplayMissingDataMessage();
                 }
             }
             catch(Exception $error){
