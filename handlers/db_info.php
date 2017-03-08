@@ -1445,10 +1445,16 @@ class DbInfo
      //Get all resources
      public static function GetAllResources()
      {
-        $resources = &self::GetAllRecordsFromTable("resources");
+        $resources = self::GetAllRecordsFromTable("resources");
         return $resources;
      }
         
+     //Get all resources that have a certain subject_id
+     public static function GetResourcesBySubject($subject_id)
+     {
+         $resources= self::SinglePropertyExists("resources","subject_id",$subject_id,"i");
+         return $resources;
+     }
 
 };#END OF CLASS
 

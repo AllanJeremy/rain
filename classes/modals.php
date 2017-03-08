@@ -22,6 +22,7 @@ interface EsomoModalFunctions
 
     //Statistics modals
 };
+//TODO : Add global variables for getting the subjects and streams array
 
 // A class for handling adding of modals to the dom
 class EsomoModal implements EsomoModalFunctions

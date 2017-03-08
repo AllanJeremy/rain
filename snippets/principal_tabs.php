@@ -1,3 +1,8 @@
+<?php 
+require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
+require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resources class. Handles all resource related operations
+?>            
+            
             <div class="container">
                 <!--<p class="grey-text">Assignments (overview headers)</p>
                 <div class="divider"></div>
@@ -59,9 +64,18 @@
                 </div>
                 <!--Principal resources tab-->
                 <div class="row main-tab" id="principalResourcesTab">
-                    <div class="col s12">
-                        <p>Resources section</p>
-                    </div>
+                    <?php
+                        // TODO: [OPTIMIZATION] Could Create a function for quick retrieval of resources (use 1 column in database and limit selection length. Or check for whether values exist or not and return true or false)
+                        //If there are resources available 
+                        if($resources = DbInfo::GetAllResources())
+                        {
+                            EsomoResource::DisplayResources();
+                        }
+                        else#Resources not found
+                        {
+                            EsomoResource::DisplayMissingDataMessage();
+                        }     
+                    ?>
                 </div>
                 
                 <!--Principal chat tab-->
