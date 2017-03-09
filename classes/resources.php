@@ -59,7 +59,7 @@ class EsomoResource
                 <div class="card-content">
                     <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                     <div class="section white">
-                        <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
+                        <h3 class="red-text uppercase text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
                     </div>
                 </div>
                 <div class="card-action">
@@ -153,11 +153,10 @@ class EsomoResource
                     <div class="card-content">
                         <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                         <div class="section white">
-                            <h3 class="red-text text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
-                        </div>
-
-                        <div class="container">
-                            <a class="btn btn-flat viewResourceDetails right" href="javascript:void(0)">RESOURCE DETAILS</a>
+                            <h3 class="red-text uppercase text-darken-3 name center"><?php echo $res_found['file_type'];?></h4>
+                            <div class="container center">
+                                <a class="btn btn-flat viewResourceDetails " href="javascript:void(0)">RESOURCE DETAILS</a>
+                            </div>
                         </div>
                     </div>
                     <div class="card-action">

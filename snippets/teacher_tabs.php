@@ -2,10 +2,12 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Uploader class
+require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Uploader class
 ?>
 
 <?php 
-    $loggedInTeacherId = $_SESSION["admin_acc_id"];
+    $user_info = MySessionHandler::GetLoggedUserInfo();
+    $loggedInTeacherId = $user_info["user_id"];
 ?>           
             <div class="container">
                 <!--CLASSROOMS SECTION-->
@@ -919,33 +921,44 @@ require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Uploade
                 <!--RESOURCES SECTION-->
                 <div class="row main-tab" id="teacherResourcesTab">
                     <div class="col s12">
-                    <div class="row no-bottom-margin">
-                        <div class="col s5">
-                            <p class="grey-text">Resources</p>
-                        </div>
-                        <div class="col s7">
-                            <a class="btn right" id="addResource">Add<span class="hide-on-small-only"> resources</span>
-                            <span class="hide-on-med-and-up">
-                                <i class="material-icons"><i class="material-icons">&#xE226;</i></i>
-                            </span>
-                            </a>
-                        </div>
-<!--
-                        <div class="col s1">
-                            <a class="btn-flat transparent btn center dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>
-                        </div>
+                        <div class="row no-bottom-margin">
+                            <div class="col s5">
+                                <p class="grey-text">Resources</p>
+                            </div>
+                            <div class="col s7">
+                                <a class="btn right" id="addResource">Add<span class="hide-on-small-only"> resources</span>
+                                <span class="hide-on-med-and-up">
+                                    <i class="material-icons"><i class="material-icons">&#xE226;</i></i>
+                                </span>
+                                </a>
+                            </div>
+    <!--
+                            <div class="col s1">
+                                <a class="btn-flat transparent btn center dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>
+                            </div>
 
-                        <ul id="moreHoriz1" class="dropdown-content">
-                            <li class="waves-effect waves-green"><a class="more-card-options black-text" id="moreCardDelete"><i class="material-icons red-text">delete</i> delete</a></li>
-                        </ul>
--->
-
+                            <ul id="moreHoriz1" class="dropdown-content">
+                                <li class="waves-effect waves-green"><a class="more-card-options black-text" id="moreCardDelete"><i class="material-icons red-text">delete</i> delete</a></li>
+                            </ul>
+    -->
+                        </div>
+                        <div class="divider"></div>
+                        <br>
                     </div>
-
-
-                    <div class="divider"></div>
-                    <br>
-
+                    
+                    <div class="col s12">
+                    <?php
+                        // TODO: [OPTIMIZATION] Could Create a function for quick retrieval of resources (use 1 column in database and limit selection length. Or check for whether values exist or not and return true or false)
+                        //If there are resources available 
+                        if($resources = DbInfo::GetAllResources())
+                        {
+                            EsomoResource::DisplayEditResources($user_info);
+                        }
+                        else#Resources not found
+                        {
+                            EsomoResource::DisplayMissingDataMessage();
+                        }
+                    ?>
                     </div>
                 </div>
 
