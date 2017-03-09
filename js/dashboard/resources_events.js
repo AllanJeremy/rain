@@ -67,6 +67,8 @@ var ResourcesEvents = function () {
 //            load the modal in the DOM
             $('main').append(Lists_Templates.resourcesModalTemplate(template));
 
+            $('select').material_select();
+
             $('#' + template.modalId).openModal({dismissible: false});
 
         });
@@ -83,7 +85,7 @@ var ResourcesEvents = function () {
             }
 
             var files = document.forms['createResourcesForm']['resources'].files,
-                filesdescription = '',
+                filesdescription = '', subjectid,
                 DATA = [];
             console.log(files);
 
@@ -94,8 +96,16 @@ var ResourcesEvents = function () {
             for (var g = 0; g < files.length; g++) {
                 //Hoping the indexes will match
                 formData.append('file-'+g, files[g]);
-                DATA.push($('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('textarea#resourceDescription').val())
+                var d = {
+                    'description' : $('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('textarea#resourceDescription').val(),
+                    'subjectid' : parseInt($('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('select#resourceSubjectType option:selected').val())
+                }
+                DATA.push(d);
             }
+
+            console.log(DATA);
+
+            //return;
 
             //Append the data and the action name
             formData.append('data', JSON.stringify(DATA));
@@ -108,7 +118,7 @@ var ResourcesEvents = function () {
                 contentType: false,
                 processData: false,
                 type: 'POST',
-                success: function () {
+                success: function (returndata) {
                     console.log("Cool");
                 },
                 error: function (e) {

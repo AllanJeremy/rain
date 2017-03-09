@@ -348,7 +348,6 @@ var Lists_Templates = function () {
         templateOutput += '<div style="padding-top:20px;margin-top:20px;" class="hide-on-med-and-down"><br><h6 class="right-align op-4">or drag and drop on the colored area.</h6>';
         templateOutput += '</div></div></div></div>';
         templateOutput += '<div class="row" id="resourcesList"><div class="container" >';
-        templateOutput += obj.templateBody;
         templateOutput += '</div></div>';
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
@@ -370,16 +369,27 @@ var Lists_Templates = function () {
         templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s4">';
         templateOutput += '<div class="card resource-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
+        //info row ---
+        templateOutput += '<div class="info row no-margin">';
+        templateOutput += '<div class="col s12"><p class="title">';
+        templateOutput += obj.name;
+        templateOutput += '</p>';
+        templateOutput += '<p class="size">';
+        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
+//        templateOutput += '<div class="col s3"><p class="size right-align">';
+//        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
+        templateOutput += '</p></div></div>';
+        //end of info row ---
         templateOutput += '</div></div>';
         templateOutput += '<div class="col s8">';
-        templateOutput += '<div class="info row no-margin">';
-        templateOutput += '<div class="col s9"><p class="title">';
-        templateOutput += obj.name;
-        templateOutput += '</p></div>';
-        templateOutput += '<div class="col s3"><p class="size right-align">';
-        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
-        templateOutput += '</p></div></div>';
         templateOutput += '<div class="row no-margin">';
+        templateOutput += '<div class="input-field col s12">';
+        templateOutput += '<select id="resourceSubjectType" name="resource_subject" required class="browser-default">';
+        templateOutput += '<optgroup label="sciences"><option value="1">Mathematics</option><option value="5">Physics</option><option value="6">Biology</option><option value="7">Chemistry</option></optgroup><optgroup label="languages"><option value="3">Kiswahili</option><option value="4">French</option><option value="9">Literature</option></optgroup><optgroup label="humanities"><option value="8">Religion</option><option value="13">History</option></optgroup><optgroup label="extras"><option value="14">Art and Design</option><option value="15">ICT</option><option value="16">Physical Education</option><option value="17">Music</option><option value="18">Business studies</option></optgroup>';
+        //templateOutput += obj.subjectoptions;
+        templateOutput += '</select>';
+//        templateOutput += '<label>Subject</label>';
+        templateOutput += '</div>';
         templateOutput += '<div class="input-field no-margin col s12">';
         templateOutput += '<textarea id="resourceDescription" class="materialize-textarea"></textarea>';
         templateOutput += '<label for="resourceDescription">Description</label></div>';

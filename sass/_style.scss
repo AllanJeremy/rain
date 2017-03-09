@@ -682,12 +682,13 @@ a.btn-skip-question {
 }
 
 .resource-view {
-    height: 100px;
+    height: auto;
     background-color: rgba(185, 145, 145, 0.24);
+    word-wrap: break-word;
 }
 
 .resource-view > i.material-icons {
     width: 100%;
-    line-height: 100px;
+    line-height: 50px;
     text-align: center;
 }

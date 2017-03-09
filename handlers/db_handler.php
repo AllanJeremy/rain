@@ -5,7 +5,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Us
 require_once(realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Session related functions ~ eg. login info
 require_once(realpath(dirname(__FILE__). "/../handlers/grade_handler.php")); #Handles grade related functions
 require_once(realpath(dirname(__FILE__). "/../handlers/date_handler.php")); #Handles date related functions
-
+require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Handles upload related functions
 require_once(realpath(dirname(__FILE__). "/../classes/timer.php")); #Handles date related functions
 
 
@@ -1158,7 +1158,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     -----------------------------------------------------------------------------------------
     */
 
-    public static function resourcesDBUpload($resource_name,$subject_id,$description,$file_type,$file_link,$teacher_id)//TO TEST
+    public static function resourcesDbUpload($resource_name,$subject_id,$description,$file_type,$file_link,$teacher_id)//TO TEST
     {
         global $dbCon;
 
@@ -1375,28 +1375,29 @@ if(isset($_POST['action'])) {
             for($f = 0; $f < count($data); $f++) {
 
                 //var_dump($_FILES['file-0']);
+
                 $args = array(
                     'resource_name' => $_FILES['file-'.$f]['name'],
-                    'subject_id' => 2,//$data[$f]['subject_id'],
-                    'description' => $data[$f],
+                    'subject_id' => $data[$f]->subjectid,
+                    'description' => $data[$f]->description,
                     'file_type' => $_FILES['file-'.$f]['type'],
-                    'file_link' => 'fake link',//$_FILES['file-'.$f]['link'],//I don't know how to do this
+                    'file_link' => './uploads/resource',
                     'teacher_id' => $_SESSION['admin_acc_id']
                 );
 
                 var_dump($args);
 
-                $result = DbHandler::resourcesDBUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
+                $result = DbHandler::resourcesDbUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
 
-                if(!$result) {
+                if(!$result) {//If inserting the data to the database is true, upload file
                     echo 'false for data '.$f;
                 } else {
                     echo 'true for data '.$f;
                 }
 
             }
-
-            require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Handles upload related functions
+            $Uploader = new EsomoUploader();
+            $Uploader->UploadFile('resource');
 
         break;
 

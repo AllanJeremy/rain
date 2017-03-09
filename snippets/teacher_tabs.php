@@ -928,7 +928,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <div class="col s7">
                                 <a class="btn right" id="addResource">Add<span class="hide-on-small-only"> resources</span>
                                 <span class="hide-on-med-and-up">
-                                    <i class="material-icons"><i class="material-icons">&#xE226;</i></i>
+                                    <i class="material-icons right">&#xE226;</i>
                                 </span>
                                 </a>
                             </div>

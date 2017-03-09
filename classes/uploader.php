@@ -5,11 +5,11 @@ class EsomoUploader
 {
     /*CONSTANTS*/
     //Upload Constants
-    const BASE_UPLOAD_DIR = "./uploads";#Root upload folder, every upload will be in here
-    const RESOURCE_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/resources";#Upload folder for resources
-    const ASS_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/assignments";#Upload folder for assignments
-    const ASS_SUBMISSION_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/ass_submissions";#Upload folder for assignment submissions
-    const OTHER_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/other";#Upload folder for uncategorized files (other files)
+    $BASE_UPLOAD_DIR = "./uploads";#Root upload folder, every upload will be in here
+    $RESOURCE_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/resources/";#Upload folder for resources
+    $ASS_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/assignments/";#Upload folder for assignments
+    $ASS_SUBMISSION_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/ass_submissions/";#Upload folder for assignment submissions
+    $OTHER_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/other/";#Upload folder for uncategorized files (other files)
     
     const DEFAULT_MAX_UPLOAD_SIZE = 50;#Default upload size in megabytes
     const DEFAULT_ACCEPTED_FILE_TYPES = "pdf,jpeg,jpg,png,word,docx,";
@@ -22,7 +22,7 @@ class EsomoUploader
     public $file_exists;#boolean ~ true if the file exists and false if the file does not exist
 
     //Constructor
-    function __construct__()
+    function __construct()
     {   
         //Variable Initialization
         $this->max_file_size = self::DEFAULT_MAX_UPLOAD_SIZE;#default maximum upload size in megabytes
@@ -31,6 +31,7 @@ class EsomoUploader
 
         $the_file = &$_FILES;
         $this->files_found = null;
+        echo 'A dump from the constructor';
         $this->file_exists = (isset($the_file) && (!empty($the_file)));#Check if the file name is set in the files section
         if($this->file_exists)
         {
@@ -89,16 +90,17 @@ class EsomoUploader
     {   
         $source_path = &$this->file_info["file_path"]; #Path to the local source file to be uploaded
         $upload_path = self::GetUploadFolder($upload_type); #Path the file will be uploaded to
-        $file_size_valid = &self::FileSizeIsValid($source_path); #Boolean indicating if the file(to be uploaded) size is valid
-        $file_type_valid = &self::FileTypeIsValid($source_path); #Boolean indicating if the file(to be uploaded) type is valid
-        $file_name_valid = &self::FileNameIsValid($source_path); #Boolean indicating if the file(to be uploaded) name is valid
+        $file_size_valid = self::FileSizeIsValid($source_path); #Boolean indicating if the file(to be uploaded) size is valid
+        $file_type_valid = self::FileTypeIsValid($source_path); #Boolean indicating if the file(to be uploaded) type is valid
+        $file_name_valid = self::FileNameIsValid($source_path); #Boolean indicating if the file(to be uploaded) name is valid
 
         $this->can_upload = ($file_size_valid && $file_type_valid && $file_name_valid);
 
         //Upload file here
         if($this->can_upload)
         {
-            $files_found = &$this->files_found;
+            $files_found = $this->files_found;
+
             foreach($files_found as $file)
             {
                 echo 'this far';
