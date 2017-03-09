@@ -10295,3 +10295,8 @@ a.btn-skip-question {
   line-height: 50px;
   text-align: center;
 }
+
+/* line 696, ../sass/_style.scss */
+.uppercase {
+  text-transform: uppercase !Important;
+}
