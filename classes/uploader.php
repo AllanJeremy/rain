@@ -25,7 +25,7 @@ class EsomoUploader
     function __construct()
     {   
         //Directory init
-        self::$base_upload_dir = "./uploads";
+        self::$base_upload_dir = realpath(dirname(__FILE__)."/../uploads");
         self::$resource_upload_dir = self::$base_upload_dir ."/resources/";
         self::$ass_upload_dir = self::$base_upload_dir ."/assignments/";
         self::$ass_submission_upload_dir = self::$base_upload_dir ."/ass_submissions/";
