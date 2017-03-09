@@ -1152,6 +1152,41 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         echo "</ul>";
     }
 
+    /*
+    -----------------------------------------------------------------------------------------
+                               RESOURCES FUNCTIONS
+    -----------------------------------------------------------------------------------------
+    */
+
+    public static function resourcesDBUpload($resource_name,$subject_id,$description,$file_type,$file_link,$teacher_id)//TO TEST
+    {
+        global $dbCon;
+
+        #if the assignment exists - safety check
+        $insert_query = "INSERT INTO resources(resource_name, subject_id, description, file_type, file_link, teacher_id) VALUES(?,?,?,?,?,?)";
+
+            //Prepare query to create assignment submission
+            if($insert_stmt = $dbCon->prepare($insert_query))
+            {
+                $insert_stmt->bind_param("sisssi",$resource_name,$subject_id,$description,$file_type,$file_link,$teacher_id);
+
+                #create assignment submission query ran successfully
+                if($insert_stmt->execute())
+                {
+                    return true;
+                }
+                else #failed to run create ass_submission query
+                {
+                    return false;
+                }
+            }
+            else #failed to prepare query to create assignment submission
+            {
+                return null;
+            }
+
+        }
+
 };#END OF CLASS
 
 /*
@@ -1330,6 +1365,38 @@ if(isset($_POST['action'])) {
                 $test_results = DbHandler::MarkTest($test_id,$user_info);
                 DbHandler::GenerateTestResultsReport($test_results);
             }
+
+        break;
+
+        case 'resourcesUpload':
+
+            $data = json_decode($_POST['data']);
+
+            for($f = 0; $f < count($data); $f++) {
+
+                //var_dump($_FILES['file-0']);
+                $args = array(
+                    'resource_name' => $_FILES['file-'.$f]['name'],
+                    'subject_id' => 2,//$data[$f]['subject_id'],
+                    'description' => $data[$f],
+                    'file_type' => $_FILES['file-'.$f]['type'],
+                    'file_link' => 'fake link',//$_FILES['file-'.$f]['link'],//I don't know how to do this
+                    'teacher_id' => $_SESSION['admin_acc_id']
+                );
+
+                var_dump($args);
+
+                $result = DbHandler::resourcesDBUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
+
+                if(!$result) {
+                    echo 'false for data '.$f;
+                } else {
+                    echo 'true for data '.$f;
+                }
+
+            }
+
+            require("uploader.php"); #Handles upload related functions
 
         break;
 

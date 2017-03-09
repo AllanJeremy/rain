@@ -10262,25 +10262,33 @@ a.btn-skip-question {
   margin-bottom: 20px;
   padding: 24px;
   background-color: #781822;
+  position: relative;
 }
 
-/* line 669, ../sass/_style.scss */
+/* line 670, ../sass/_style.scss */
 .op-4 {
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* line 673, ../sass/_style.scss */
+/* line 674, ../sass/_style.scss */
 #uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large, #uploadResource form#createResourcesForm .file-field .btn-large {
   float: right !Important;
 }
 
-/* line 677, ../sass/_style.scss */
+/* line 678, ../sass/_style.scss */
+#uploadResource form#createResourcesForm input.upload-btn.btn-floating {
+  position: absolute;
+  right: 24px;
+  bottom: -27.5px;
+}
+
+/* line 684, ../sass/_style.scss */
 .resource-view {
   height: 100px;
   background-color: rgba(185, 145, 145, 0.24);
 }
 
-/* line 682, ../sass/_style.scss */
+/* line 689, ../sass/_style.scss */
 .resource-view > i.material-icons {
   width: 100%;
   line-height: 100px;

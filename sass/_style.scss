@@ -664,6 +664,7 @@ a.btn-skip-question {
     margin-bottom: 20px;
     padding: 24px;
     background-color: $primary-color;
+    position: relative;
 }
 
 .op-4 {
@@ -672,6 +673,12 @@ a.btn-skip-question {
 
 #uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large {
     float: right !Important;
+}
+
+#uploadResource form#createResourcesForm input.upload-btn.btn-floating {
+    position: absolute;
+    right: 24px;
+    bottom: -27.5px;
 }
 
 .resource-view {

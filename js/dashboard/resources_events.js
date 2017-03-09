@@ -22,13 +22,13 @@ var ResourcesEvents = function () {
         var filesinfo, files, totalfiles, resourceslisthook;
 
         //Checks on file input change, updates, the modal infos
-        $('main').on('change', "form#createResourcesForm input:file", function (e){
+        $('main').on('change', "form#createResourcesForm input:file", function (e) {
             e.preventDefault();
 
             files = document.forms['createResourcesForm']['resources'].files;
             totalfiles = files.length;
 
-            if(files.length > 0){
+            if (files.length > 0) {
                 $('.modal#uploadResource').find('a#uploadResource').removeClass('disabled');
             } else {
                 $('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
@@ -67,7 +67,7 @@ var ResourcesEvents = function () {
 //            load the modal in the DOM
             $('main').append(Lists_Templates.resourcesModalTemplate(template));
 
-            $('#' + template.modalId).openModal({dismissible:false});
+            $('#' + template.modalId).openModal({dismissible: false});
 
         });
     };
@@ -78,17 +78,43 @@ var ResourcesEvents = function () {
         $('main').on('click', 'a#uploadResource', function (e) {
             e.preventDefault();
 
-            if($(this).hasClass('disabled')) {
+            if ($(this).hasClass('disabled')) {
                 return;
             }
 
-            var files = document.forms['createResourcesForm']['resources'].files;
-
+            var files = document.forms['createResourcesForm']['resources'].files,
+                filesdescription = '',
+                DATA = [];
             console.log(files);
-            //Do upload for each file, with its Description
-            for(var g = 0; g < files.length; g++) {
 
+            //ajax
+            // Create a new FormData object.
+            var formData = new FormData();
+
+            for (var g = 0; g < files.length; g++) {
+                //Hoping the indexes will match
+                formData.append('file-'+g, files[g]);
+                DATA.push($('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('textarea#resourceDescription').val())
             }
+
+            //Append the data and the action name
+            formData.append('data', JSON.stringify(DATA));
+            formData.append('action', 'resourcesUpload');
+
+            $.ajax({
+                url: "handlers/db_handler.php",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function () {
+                    console.log("Cool");
+                },
+                error: function (e) {
+                    console.log("Not Cool");
+                }
+            });
 
         });
     };
@@ -99,7 +125,7 @@ var ResourcesEvents = function () {
 
         for(var a = 0; a < obj.length; a++) {
 
-            str += Lists_Templates.resourcesListTemplate(obj[a]);
+            str += Lists_Templates.resourcesListTemplate(obj[a], a);
         }
 
         return str;

@@ -330,7 +330,7 @@ var Lists_Templates = function () {
         templateOutput += '<h4 class="white-text"><span id="totalResources">0</span> files</h4>';
         templateOutput += '</div>';
         templateOutput += '<div class="col m6 s12">';
-        templateOutput += '<form id="createResourcesForm">';
+        templateOutput += '<form action="upload.php" method="post" enctype="multipart/form-data" target="upload_target" id="createResourcesForm">';
         templateOutput += '<div class=" input-field col s12 file-field ">';
         templateOutput += '<div class="btn">';
         templateOutput += '<span>add resources</span>';
@@ -342,6 +342,8 @@ var Lists_Templates = function () {
         templateOutput += '</div>';
 */
         templateOutput += '</div>';
+        templateOutput += '<input type="submit" name="submitBtn" class="hide btn material-icons btn-floating btn-large upload-btn" value="&#xE2C6;" />';
+        templateOutput += '<iframe id="upload_target" name="upload_target" src="#" style="width:0;height:0;border:0px solid transparent;"></iframe>';
         templateOutput += '</form>';
         templateOutput += '<div style="padding-top:20px;margin-top:20px;" class="hide-on-med-and-down"><br><h6 class="right-align op-4">or drag and drop on the colored area.</h6>';
         templateOutput += '</div></div></div></div>';
@@ -361,11 +363,11 @@ var Lists_Templates = function () {
 
     //--------------------------------------
 
-    this.resourcesListTemplate = function (obj) {
+    this.resourcesListTemplate = function (obj, i) {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="row no-margin"><div class="col s4">';
+        templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s4">';
         templateOutput += '<div class="card resource-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         templateOutput += '</div></div>';

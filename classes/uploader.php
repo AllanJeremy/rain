@@ -101,6 +101,7 @@ class EsomoUploader
             $files_found = &$this->files_found;
             foreach($files_found as $file)
             {
+                echo 'this far';
                 $file_name = &$file["name"];
                 $tmp_name = &$file["tmp_name"];
                 
