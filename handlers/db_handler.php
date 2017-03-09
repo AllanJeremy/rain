@@ -1396,7 +1396,7 @@ if(isset($_POST['action'])) {
 
             }
 
-            require("uploader.php"); #Handles upload related functions
+            require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Handles upload related functions
 
         break;
 
