@@ -5,11 +5,11 @@ class EsomoUploader
 {
     /*CONSTANTS*/
     //Upload Constants
-    $BASE_UPLOAD_DIR = "./uploads";#Root upload folder, every upload will be in here
-    $RESOURCE_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/resources/";#Upload folder for resources
-    $ASS_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/assignments/";#Upload folder for assignments
-    $ASS_SUBMISSION_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/ass_submissions/";#Upload folder for assignment submissions
-    $OTHER_UPLOAD_DIR = self::BASE_UPLOAD_DIR ."/other/";#Upload folder for uncategorized files (other files)
+    public $base_upload_dir;#Root upload folder, every upload will be in here
+    public $resource_upload_dir;
+    public $ass_upload_dir;
+    public $ass_submission_upload_dir;
+    public $other_upload_dir;
     
     const DEFAULT_MAX_UPLOAD_SIZE = 50;#Default upload size in megabytes
     const DEFAULT_ACCEPTED_FILE_TYPES = "pdf,jpeg,jpg,png,word,docx,";
@@ -24,6 +24,13 @@ class EsomoUploader
     //Constructor
     function __construct()
     {   
+        //Directory init
+        $this->base_upload_dir = "./uploads";
+        $this->resource_upload_dir = $this->base_upload_dir ."/resources/";#Upload folder for resources
+        $this->ass_upload_dir = $this->base_upload_dir ."/assignments/";#Upload folder for assignments
+        $this->ass_submission_upload_dir = $this->base_upload_dir ."/ass_submissions/";#Upload folder for assignment submissions
+        $this->other_upload_dir = $this->base_upload_dir ."/other/";#Upload folder for uncategorized files (other files)
+
         //Variable Initialization
         $this->max_file_size = self::DEFAULT_MAX_UPLOAD_SIZE;#default maximum upload size in megabytes
         $this->accepted_file_types = self::DEFAULT_ACCEPTED_FILE_TYPES; #default accepted file types
@@ -46,19 +53,19 @@ class EsomoUploader
         switch($upload_type)
         {
             case "resource": #resource upload
-                $upload_folder = self::RESOURCE_UPLOAD_DIR;
+                $upload_folder = $this->resource_upload_dir;
             break;
             
             case "assignment": #assignment upload
-                $upload_folder = self::ASS_UPLOAD_DIR;
+                $upload_folder = $this->ass_upload_dir;
             break;
             
             case "ass_submission": #assignment submission upload
-                $upload_folder = self::ASS_SUBMISSION_UPLOAD_DIR;
+                $upload_folder = $this->ass_submission_upload_dir;
             break;
 
             default: #uncategorized item upload
-                $upload_folder = self::OTHER_UPLOAD_DIR;
+                $upload_folder = $this->other_upload_dir;
         }
         return $upload_folder;
     }
