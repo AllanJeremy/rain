@@ -107,8 +107,11 @@ class EsomoUploader
         $file_size_valid = self::FileSizeIsValid($source_path); #Boolean indicating if the file(to be uploaded) size is valid
         $file_type_valid = self::FileTypeIsValid($source_path); #Boolean indicating if the file(to be uploaded) type is valid
         $file_name_valid = self::FileNameIsValid($source_path); #Boolean indicating if the file(to be uploaded) name is valid
-
-        $this->can_upload = ($file_size_valid && $file_type_valid && $file_name_valid);
+        $folder_exists = is_dir($upload_path);
+        
+        echo "<br><br><br>";
+        
+        $this->can_upload = ($file_size_valid && $file_type_valid && $file_name_valid && $folder_exists);
 
         //Upload file here
         if($this->can_upload)
