@@ -1196,7 +1196,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             //Prepare query to update resource submission
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                $update_stmt->bind_param("siii",$resource_id,$description,$subject_id,$teacher_id);
+                $update_stmt->bind_param("siii",$description,$subject_id,$teacher_id,$resource_id);
 
                 #update resource query ran successfully
                 if($update_stmt->execute())
