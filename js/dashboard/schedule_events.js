@@ -1099,7 +1099,7 @@ var ScheduleEvents = function () {
                     "Edit" : true,
                     "Previous" : prev,
                     "Next" : next,
-                })
+                }, 'moreSchedule')
             };
 
 //            load the modal in the DOM
