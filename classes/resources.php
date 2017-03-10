@@ -159,7 +159,7 @@ class EsomoResource
                                 <p>Description: <span class="js-res-description"><?php echo empty($res_description) ? '--' : $res_description; ?></span></p>
 <!--                                <a class="btn btn-flat viewResourceDetails " href="javascript:void(0)">RESOURCE DETAILS</a>-->
                             </div>
-                            <h5 class="grey-text uppercase text-lighten-1"><?php echo $res_found['file_type'];?></h5>
+                            <h6 class="grey-text uppercase text-lighten-1"><?php echo $res_found['file_type'];?></h6>
                         </div>
                     </div>
                     <div class="card-action">

@@ -1421,16 +1421,18 @@ if(isset($_POST['action'])) {
 
             $data = json_decode($_POST['data']);
 
+            $file_name = "";
+
             for($f = 0; $f < count($data); $f++) {
 
                 //var_dump($_FILES['file-0']);
-
+                $file_name = $_FILES['file-'.$f]['name'];
                 $args = array(
-                    'resource_name' => $_FILES['file-'.$f]['name'],
+                    'resource_name' => $file_name,
                     'subject_id' => $data[$f]->subjectid,
                     'description' => $data[$f]->description,
                     'file_type' => $_FILES['file-'.$f]['type'],
-                    'file_link' => './uploads/resource',
+                    'file_link' => ('./uploads/resources/'.$file_name),
                     'teacher_id' => $_SESSION['admin_acc_id']
                 );
 
