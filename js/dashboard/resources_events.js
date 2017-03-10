@@ -4,12 +4,16 @@ var ResourcesEvents = function () {
     'use strict';
     //--------------
 
+    var res_on_edit;
+
     this.__construct = function () {
         console.log('Resources events created');
 
         //Resources inits
         addResources();
         UploadResources();
+        editResource();
+        uploadEditedResource();
     };
 
     //------------------------------
@@ -139,6 +143,80 @@ var ResourcesEvents = function () {
         }
 
         return str;
+    };
+
+    //-----------
+
+    var editResource = function () {
+
+        $('main').on('click', 'a.js-edit-resource', function (e) {
+            e.preventDefault();
+            var resourceid = $(this).parents('.tr_res_container').attr('data-res-id'),
+                subjectid = $(this).parents('.tr_res_container').attr('data-subject-id'),
+                description = $(this).parents('.tr_res_container').find('span.js-res-description')[0].innerText;
+            console.log(resourceid, subjectid);
+            console.log(description);
+
+            res_on_edit = Array(resourceid, subjectid);
+
+            var template = {
+                modalId: 'editResource',
+                templateHeader: 'Edit Resource',
+                templateBody: Forms_Templates.editResourceForm(resourceid),
+                extraActions: Lists_Templates.infoExtraFooterActions({
+                    "Delete" : true,
+                    "Archive" : false
+                })
+            };
+
+//            load the modal in the DOM
+            $('main').append(Lists_Templates.modalTemplate(template));
+
+            $('select').material_select();
+
+            $('#' + template.modalId).openModal({dismissible: false});
+
+            $('.modal#' + template.modalId + ' form#editResourceForm')[0][1].value = description;
+            $('.modal#' + template.modalId + ' form#editResourceForm')[0][0].value = subjectid;
+
+            Materialize.updateTextFields();
+
+        });
+    }
+
+    //-----------
+
+    var uploadEditedResource = function () {
+
+        $('main').on('click', 'a#updateResource', function (e) {
+            e.preventDefault();
+            var res_id = $(this).attr('data-res-id'),
+                description = $('.modal#editResource form#editResourceForm')[0][1].value,
+                subjectid = $('.modal#editResource form#editResourceForm')[0][0].value,
+                data = {
+                    'action' : 'updateResource',
+                    'resource_id' : res_id,
+                    'description' : description,
+                    'subject_id' : subjectid
+                };
+
+            console.log(res_id, description, subjectid);
+            console.log(res_on_edit);
+
+
+            //ajax
+            $.post('handlers/db_handler.php', data, function(returndata) {
+                console.log(returndata);
+            }, 'json');
+            //Change only the current card data if the subject id has not been changed
+            //otherwise append eithe to a row uunder the chosen subject id
+            //or create a row if not exist
+
+            if(res_on_edit[1] === subjectid) {
+
+            }
+
+        });
     };
 
     this.__construct();

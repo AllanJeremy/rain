@@ -193,6 +193,33 @@ var Forms_Templates = function () {
     
     //--------------------------
     
+    this.editResourceForm = function (id) {
+        var templateOutput = '';
+
+        templateOutput += '<div class="row"><form id="editResourceForm" class="col s12 m10 offset-m1" method="post" action="">';
+        templateOutput += '<div class="row no-margin">';
+        templateOutput += '<div class="input-field col s12">';
+        templateOutput += '<select id="resourceSubjectType" name="resource_subject" required class="browser-default">';
+        templateOutput += '<optgroup label="sciences"><option value="1">Mathematics</option><option value="5">Physics</option><option value="6">Biology</option><option value="7">Chemistry</option></optgroup><optgroup label="languages"><option value="3">Kiswahili</option><option value="4">French</option><option value="9">Literature</option></optgroup><optgroup label="humanities"><option value="8">Religion</option><option value="13">History</option></optgroup><optgroup label="extras"><option value="14">Art and Design</option><option value="15">ICT</option><option value="16">Physical Education</option><option value="17">Music</option><option value="18">Business studies</option></optgroup>';
+        //templateOutput += obj.subjectoptions;
+        templateOutput += '</select>';
+//        templateOutput += '<label>Subject</label>';
+        templateOutput += '<br></div>';
+        templateOutput += '<br><div class="input-field no-margin col s12">';
+        templateOutput += '<textarea id="resourceDescription" class="materialize-textarea"></textarea>';
+        templateOutput += '<label for="resourceDescription">Description</label></div>';
+        templateOutput += '</div>';
+        templateOutput += '</form></div>';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div class="col s12 m10 offset-m1">';
+        templateOutput += '<a class="btn" id="updateResource" data-res-id="'+ id +'">Update</a>';
+        templateOutput += '</div></div>';
+
+        return templateOutput;
+    };
+
+    //--------------------------
+
     this.createTestForm = function () {
         
         

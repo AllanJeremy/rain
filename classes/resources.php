@@ -58,15 +58,16 @@ class EsomoResource
             <div class="card white res_container" data-res-id="<?php echo $res_id?>">
                 <div class="card-content">
                     <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
-                    <div class="section white">
-                        <h3 class="red-text uppercase text-darken-3 center"><?php echo $res_found['file_type'];?></h4>
-                    </div>
+                        <div class="resource-details-container">
+                            <p>Description: <?php echo empty($res_description) ? '<span class="grey-text">Not written</span>' : $res_description; ?></p>
+                        </div>
+                    <h6 class="grey-text uppercase text-lighten-2 "><?php echo $res_found['file_type'];?></h4>
                 </div>
                 <div class="card-action">
                     <!--TODO: Make this display the file regardless of type in a new tab-->
                     <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
 
-                    <a class="btn btn-flat right viewResourceDetails" href="javascript:void(0)">DETAILS</a>
+<!--                    <a class="btn btn-flat right viewResourceDetails" href="javascript:void(0)">DETAILS</a>-->
                 </div>
             </div>
         </div>  
@@ -121,7 +122,7 @@ class EsomoResource
         $account_type = &$user_info["account_type"];
         
         #Resource related Variable declaration
-        $res_edit_btn_class ="btn btn-flat right editResource";#classes applied to all edit buttons
+        $res_edit_btn_class ="btn btn-flat right js-edit-resource";#classes applied to all edit buttons
         $res_edit_btn_properties = "";#Properties of the edit button
         $res_name = $res_file_type = $res_file_link = $res_description = "";
         $res_id = $res_teacher_id = 0;#resource teacher id
@@ -136,6 +137,7 @@ class EsomoResource
             $res_file_link = $res_found["file_link"];
             $res_description = $res_found['description'];
             $res_teacher_id = $res_found["teacher_id"];
+            $res_subject_id = $res_found["subject_id"];
             $res_belongs_to_teacher = ($res_teacher_id == $user_id);
             
             if($res_belongs_to_teacher)
@@ -149,14 +151,15 @@ class EsomoResource
                 /*Note : assumption is that only teachers will be using the resource_id, for editing*/
         ?>      
             <div class="col s12 m6 l4">
-                <div class="card white tr_res_container" data-res-id="<?php echo $res_id?>">
+                <div class="card white tr_res_container" data-res-id="<?php echo $res_id?>" data-subject-id="<?php echo $res_subject_id?>">
                     <div class="card-content">
                         <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
-                        <div class="section white">
-                            <h3 class="red-text uppercase text-darken-3 name center"><?php echo $res_found['file_type'];?></h4>
-                            <div class="container center">
-                                <a class="btn btn-flat viewResourceDetails " href="javascript:void(0)">RESOURCE DETAILS</a>
+                        <div class="">
+                            <div class="resource-details-container">
+                                <p>Description: <span class="js-res-description"><?php echo empty($res_description) ? '--' : $res_description; ?></span></p>
+<!--                                <a class="btn btn-flat viewResourceDetails " href="javascript:void(0)">RESOURCE DETAILS</a>-->
                             </div>
+                            <h5 class="grey-text uppercase text-lighten-1"><?php echo $res_found['file_type'];?></h5>
                         </div>
                     </div>
                     <div class="card-action">

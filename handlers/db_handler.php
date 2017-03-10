@@ -1187,6 +1187,34 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
         }
 
+    public static function updateResource($resource_id,$description,$subject_id,$teacher_id)//TO TEST
+    {
+        global $dbCon;
+
+        $update_query = "UPDATE resources SET resource_id=?, description=?, subject_id=? WHERE teacher_id=?";
+
+            //Prepare query to update resource submission
+            if($update_stmt = $dbCon->prepare($update_query))
+            {
+                $update_stmt->bind_param("isii",$resource_id,$description,$subject_id,$teacher_id);
+
+                #update resource query ran successfully
+                if($update_stmt->execute())
+                {
+                    return true;
+                }
+                else #failed to run update resource query
+                {
+                    echo $dbCon->error;
+                }
+            }
+            else #failed to prepare query to create resource submission
+            {
+                return null;
+            }
+
+        }
+
 };#END OF CLASS
 
 /*
@@ -1401,6 +1429,23 @@ if(isset($_POST['action'])) {
 
         break;
 
+        case 'updateResource':
+            $args = array(
+                'resource_id' => $_POST['resource_id'],
+                'description' => $_POST['description'],
+                'subject_id' => $_POST['subject_id'],
+                'teacher_id' => $_SESSION['admin_acc_id']
+            );
+
+            $result = DbHandler::updateResource($args['resource_id'], $args['description'], $args['subject_id'], $args['teacher_id']);
+
+            if($result) {
+                echo json_encode($args);
+            } else {
+                echo json_encode(['error_message' => $result]);
+            }
+
+            break;
         default:
             return null;
             break;
