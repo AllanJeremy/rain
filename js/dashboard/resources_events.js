@@ -195,13 +195,14 @@ var ResourcesEvents = function () {
                 subjectid = $('.modal#editResource form#editResourceForm')[0][0].value,
                 data = {
                     'action' : 'updateResource',
-                    'resource_id' : res_id,
+                    'resource_id' : Number(res_id),
                     'description' : description,
-                    'subject_id' : subjectid
+                    'subject_id' : Number(subjectid)
                 };
 
             console.log(res_id, description, subjectid);
-            console.log(res_on_edit);
+            console.log(data);
+            console.log(typeof data['resource_id']);
 
 
             //ajax
