@@ -1456,6 +1456,22 @@ class DbInfo
          return $resources;
      }
 
+     //Get resource by id
+     public static function ResourceExists($resource_id)
+     {
+          $resources= self::SinglePropertyExists("resources","resource_id",$resource_id,"i");
+          if($resources && ($resources->num_rows>0))
+          {
+              foreach($resources as $resource_found)
+              {
+                 return $resources;
+              }
+          }
+          else #Resource does not exist, or could not be retrieved
+          {
+              return $resources;
+          }
+     }
 };#END OF CLASS
 
 /*
