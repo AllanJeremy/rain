@@ -69,7 +69,7 @@ class EsomoUploader
         }
         // $upload_folder = realpath($upload_folder);
         //Check if the directory exists, if it does not exist, create it
-        if(!file_exists($upload_folder))
+        if(!is_dir($upload_folder))
         {
             #Create the folder
             mkdir($upload_folder);
@@ -129,11 +129,11 @@ class EsomoUploader
                 $upload_destination = $upload_path . $file_name ;
                 if(move_uploaded_file($tmp_name,$upload_destination))
                 {
-                    echo "Succeeded uploading <b>".$file_size." bytes</b> of the file <b>".$file_name."</b>";
+                    echo "<p>Succeeded uploading <b>".$file_size." bytes</b> of the file <b>".$file_name."</b></p>";
                 }
                 else
                 {
-                    echo "Failed to upload <b> the file : ".$file_name."</b>";
+                    echo "<p>Failed to upload <b> the file : ".$file_name."</b></p>";
                 }
             }
             unset($_FILES);
@@ -143,6 +143,55 @@ class EsomoUploader
             return false;
         }
     }
+    
+    /*DELETING FILES*/
+    //[HELPER FUNCTION] Generic Delete file function ~ returns true on success and false on fail
+    private static function DeleteFile($file_name,$upload_type)
+    {
+        $upload_folder = self::GetUploadFolder($upload_type); #Path the file was uploaded to
+        $file_path = $upload_folder.$file_name;
 
+        #If the file exists
+        if($file_exists($file_path))
+        {
+            #Attempt to delete the file
+            if(@unlink($file_path))
+            {
+                return true;
+            }
+            else#failed to delete file
+            {
+                return false;
+            }
+        }
+        else #file does not exist
+        {
+            return false;
+        }
+    }
+
+    //Delete a resource file
+    public function DeleteResourceFile($file_name)
+    {
+        return self::DeleteFile($file_name,"resource");
+    }
+
+    //Delete an assignment file
+    public function DeleteAssignmentFile($file_name)
+    {
+        return self::DeleteFile($file_name,"assignment");
+    }
+
+    //Delete an assignment submission file
+    public function DeleteAssSubmissionFile($file_name)
+    {
+        return self::DeleteFile($file_name,"ass_submission");
+    }
+
+    //Delete 'other' file
+    public function DeleteOtherFile($file_name)
+    {
+        return self::DeleteFile($file_name,"other");
+    }
 };
 
