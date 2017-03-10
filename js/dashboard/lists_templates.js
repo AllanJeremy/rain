@@ -783,7 +783,7 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
-    this.infoExtraFooterActions = function (obj) {
+    this.infoExtraFooterActions = function (obj, id) {
 
         var templateOutput = '',
             classes = '';
@@ -795,16 +795,16 @@ var Lists_Templates = function () {
 
                     if (i === 'Previous') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the previous schedule in the list" id="' + id + 'Card' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
                     } else if (i === 'Next') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the next schedule in the list" id="' + id + 'Card' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
                     } else if (i === 'Delete') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px;" class="red-text text-lighten-1 modal-action left btn btn-flat transparent" title="delete the schedule" href="#!" id="moreScheduleCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px;" class="red-text text-lighten-1 modal-action left btn btn-flat transparent" title="delete the schedule" href="#!" id="' + id + 'Card' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
                     } else if (i === 'Edit') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; margin-right:24px;" class="grey-text text-lighten-1 modal-action left btn btn-flat transparent" title="edit the schedule" href="#!" id="moreScheduleCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; margin-right:24px;" class="grey-text text-lighten-1 modal-action left btn btn-flat transparent" title="edit the schedule" href="#!" id="' + id + 'Card' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
                     }
 
                     break;

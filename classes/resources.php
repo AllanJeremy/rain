@@ -116,7 +116,7 @@ class EsomoResource
     #Base display edit resources function ~ Displays the cards for the resources. For internal use
     private static function DisplayEditResourceBase($user_info,$resources)
     {   
-        echo "<div class='row'>";
+
         #Account related variable declaration
         $user_id = &$user_info["user_id"];
         $account_type = &$user_info["account_type"];
@@ -201,16 +201,18 @@ class EsomoResource
                     #if the resources were found for the specific subject
                     if($resources):
     ?>
-    
-        <div class="divider"></div>
-        <h4 class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></h4>
+        <div class='row subject-group' data-subject-group="<?php echo $subject_id; ?>">
+        <h4 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h4>
     <?php
+                        echo "<div class='row subject-group-body'>";
                         self::DisplayEditResourceBase($user_info,$resources);
                         echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
+                        echo "</div>";#Only display <br> if the subject was found
                     endif;
                     
                 endforeach;   
         //Close row div
+
     ?>
         
     <?php

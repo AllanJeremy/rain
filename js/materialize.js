@@ -2028,6 +2028,11 @@ $(document).ready(function(){
                 $('main').find('tr[data-schedule-id="' + attribute.value + '"]').removeClass('to-remove');
 
                 break;
+            case 'data-ref-resource-id':
+
+                $('main').find('.tr_res_container[data-res-id="' + attribute.value + '"]').removeClass('to-remove');
+
+                break;
             case 'data-ref-class-id':
 
                 var cardColor = localStorage.getItem("cardColor");

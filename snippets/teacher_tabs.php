@@ -920,7 +920,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                 <!--RESOURCES SECTION-->
                 <div class="row main-tab" id="teacherResourcesTab">
-                    <div class="col s12">
+                    <div class="col s12 tab-header">
                         <div class="row no-bottom-margin">
                             <div class="col s5">
                                 <p class="grey-text">Resources</p>
@@ -946,7 +946,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <br>
                     </div>
                     
-                    <div class="col s12">
+                    <div class="col s12 tab-content">
                     <?php
                         // TODO: [OPTIMIZATION] Could Create a function for quick retrieval of resources (use 1 column in database and limit selection length. Or check for whether values exist or not and return true or false)
                         //If there are resources available 

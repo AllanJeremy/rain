@@ -14,6 +14,8 @@ var ResourcesEvents = function () {
         UploadResources();
         editResource();
         uploadEditedResource();
+        deleteResource();
+
     };
 
     //------------------------------
@@ -160,13 +162,13 @@ var ResourcesEvents = function () {
             res_on_edit = Array(resourceid, subjectid);
 
             var template = {
-                modalId: 'editResource',
+                modalId: 'editResource_' + resourceid,
                 templateHeader: 'Edit Resource',
                 templateBody: Forms_Templates.editResourceForm(resourceid),
                 extraActions: Lists_Templates.infoExtraFooterActions({
                     "Delete" : true,
                     "Archive" : false
-                })
+                }, 'moreResources')
             };
 
 //            load the modal in the DOM
@@ -191,30 +193,111 @@ var ResourcesEvents = function () {
         $('main').on('click', 'a#updateResource', function (e) {
             e.preventDefault();
             var res_id = $(this).attr('data-res-id'),
-                description = $('.modal#editResource form#editResourceForm')[0][1].value,
-                subjectid = $('.modal#editResource form#editResourceForm')[0][0].value,
+                self = $(this),
+                description = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][1].value,
+                subjectid = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][0].value,
                 data = {
                     'action' : 'updateResource',
-                    'resource_id' : res_id,
+                    'resource_id' : Number(res_id),
                     'description' : description,
-                    'subject_id' : subjectid
-                };
+                    'subject_id' : Number(subjectid)
+                }, res_el;
 
-            console.log(res_id, description, subjectid);
-            console.log(res_on_edit);
-
+            console.log(data);
 
             //ajax
             $.post('handlers/db_handler.php', data, function(returndata) {
-                console.log(returndata);
+                console.log(returndata.description);
+
+                //close modal
+                $('.modal#editResource_'+ res_id).closeModal();
+//                return;
+                //Change only the current card data if the subject id has not been changed
+                //otherwise append eithe to a row uunder the chosen subject id
+                //or create a row if not exist
+                if(Number(res_on_edit[1]) === data['subject_id']) {
+                    //Subject id was not changed, so no need for appending card
+                    $('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
+                } else {
+                    //subject id was updated.
+                    $('.tr_res_container[data-res-id=' + res_id + ']').attr('data-subject-id', returndata.subject_id);
+                    $('.tr_res_container[data-res-id=' + res_id + ']').addClass('new-class');
+                    $('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
+
+                    res_el = $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col')[0].outerHTML;
+
+                    $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col').remove();
+
+                    //If there are no cards left in the subject group, delete the subject group
+                    if($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').children('.subject-group-body').children('.col').length === 0) {
+                        console.log('skr skr');
+                        $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').remove();
+                        //console.log($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']'));
+                    }
+
+                    //If there exist a subject group, simply append the card; else append the whole subject group element
+                    if ($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').length > 0) {
+                        $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').children('.subject-group-body').prepend(res_el);
+                    } else {
+                        var str = '<div class="subject-group row" data-subject-group="' + data.subject_id + '">';
+                        str += '<h4 class="grey-text text-darken-2 subject-group-header">' + data.subject_id + '</h4>';
+                        str += '<div class="subject-group-body row">';
+                        str += res_el;
+                        str += '</div><br><div class="divider"></div><br></div>';
+
+                        $('#teacherResourcesTab').children('.tab-content').children('.row').append(str);
+
+                    }
+                    setTimeout(function(t) {
+                        $('.tr_res_container[data-res-id=' + res_id + ']').removeClass('new-class');
+
+                    }, 500);
+                }
             }, 'json');
-            //Change only the current card data if the subject id has not been changed
-            //otherwise append eithe to a row uunder the chosen subject id
-            //or create a row if not exist
+        });
+    };
 
-            if(res_on_edit[1] === subjectid) {
+    var deleteResource = function () {
+        $('main').on('click', ' a#moreResourcesCardDelete', function (e) {
+            e.preventDefault();
+            console.log('will delete');
 
-            }
+
+            var self = $(this), re,
+                res_id = self.parents('.modal').attr('id').split('_').pop(),
+                toastMessage = '<p class="white-text" data-ref-resource-id="' + res_id + '">Preparing to delete a resource file  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
+
+            console.log('resource id ' + res_id + ' to be deleted.');
+
+            //close modal
+            $('.modal#' + self.parents('.modal').attr('id') ).closeModal();
+            //remove modal from dom
+            cleanOutModals();
+
+            $('.tr_res_container[data-res-id=' + res_id + ']').addClass('to-remove');
+            //3
+            var toastCall = Materialize.toast(toastMessage, 7200, '', function (s) {
+                //4
+                $.post("handlers/db_handler.php", {"action" : "DeleteResource", "resourceid" : res_id}, function (result) {
+
+                    //5
+                    if(result === '1') {
+                        $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col').remove();
+
+                        //If there are no cards left in the subject group, delete the subject group
+                        if($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').children('.subject-group-body').children('.col').length === 0) {
+                            console.log('skr skr');
+                            $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').remove();
+                            //console.log($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']'));
+                        }
+                    }
+
+                    //6
+                    //cleanOutModals();
+
+                }, 'text');
+
+            });
 
         });
     };
