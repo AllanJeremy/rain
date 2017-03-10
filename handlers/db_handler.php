@@ -1158,7 +1158,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     -----------------------------------------------------------------------------------------
     */
 
-    public static function resourcesDbUpload($resource_name,$subject_id,$description,$file_type,$file_link,$teacher_id)//TO TEST
+    public static function ResourcesDbUpload($resource_name,$subject_id,$description,$file_type,$file_link,$teacher_id)//TO TEST
     {
         global $dbCon;
 
@@ -1187,16 +1187,16 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
         }
 
-    public static function updateResource($resource_id,$description,$subject_id,$teacher_id)//TO TEST
+    public static function UpdateResource($resource_id,$description,$subject_id,$teacher_id)//TO TEST
     {
         global $dbCon;
 
-        $update_query = "UPDATE resources SET resource_id=?, description=?, subject_id=? WHERE teacher_id=?";
+        $update_query = "UPDATE resources SET description=?, subject_id=? WHERE teacher_id=? AND resource_id=?";
 
             //Prepare query to update resource submission
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                $update_stmt->bind_param("isii",$resource_id,$description,$subject_id,$teacher_id);
+                $update_stmt->bind_param("siii",$resource_id,$description,$subject_id,$teacher_id);
 
                 #update resource query ran successfully
                 if($update_stmt->execute())
@@ -1205,7 +1205,8 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 }
                 else #failed to run update resource query
                 {
-                    echo $dbCon->error;
+                    echo $dbCon->error;//TODO: REMOVE THIS LATER #DEBUG ONLY
+                    return false;
                 }
             }
             else #failed to prepare query to create resource submission
@@ -1415,7 +1416,7 @@ if(isset($_POST['action'])) {
 
                 var_dump($args);
 
-                $result = DbHandler::resourcesDbUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
+                $result = DbHandler::ResourcesDbUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
 
                 if(!$result) {//If inserting the data to the database is true, upload file
                     echo 'false for data '.$f;
@@ -1437,7 +1438,7 @@ if(isset($_POST['action'])) {
                 'teacher_id' => $_SESSION['admin_acc_id']
             );
 
-            $result = DbHandler::updateResource($args['resource_id'], $args['description'], $args['subject_id'], $args['teacher_id']);
+            $result = DbHandler::UpdateResource($args['resource_id'], $args['description'], $args['subject_id'], $args['teacher_id']);
 
             if($result) {
                 echo json_encode($args);
