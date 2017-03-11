@@ -152,7 +152,7 @@ class EsomoUploader
         $file_path = $upload_folder.$file_name;
 
         #If the file exists
-        if($file_exists($file_path))
+        if(file_exists($file_path))
         {
             #Attempt to delete the file
             if(@unlink($file_path))

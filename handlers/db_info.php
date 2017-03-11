@@ -1464,7 +1464,7 @@ class DbInfo
           {
               foreach($resources as $resource_found)
               {
-                 return $resources;
+                 return $resource_found;
               }
           }
           else #Resource does not exist, or could not be retrieved

@@ -1220,14 +1220,16 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     //Delete resource from database
     public static function DeleteResource($resource_id)
     {
+        
         $resource = DbInfo::ResourceExists($resource_id);
+        
         if($resource)
         {
             $uploader = new EsomoUploader();
-            
             $del_resource = self::DeleteBasedOnSingleProperty("resources","resource_id",$resource_id,"i");
-            $del_resource_file = $uploader->DeleteResourceFile($resource["file_name"]);
-
+            
+            $del_resource_file = $uploader->DeleteResourceFile($resource["resource_name"]);
+            
             return ($del_resource && $del_resource_file);#return the status based on whether or not it could delete the resource or not.
         }
         else #failed to find the resource
