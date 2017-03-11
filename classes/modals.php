@@ -60,11 +60,11 @@ class EsomoModal implements EsomoModalFunctions
     }
 
     //Begins a generic modal 
-    private static function T_BeginGenericModal($modal_id,$modal_title=null,$extra_classes="",$title_tag="h4",$title_classes="grey-text")
+    private static function T_BeginGenericModal($modal_id,$modal_title=null,$extra_attributes="",$extra_classes="",$title_tag="h4",$title_classes="grey-text")
     {
         $title_tag = self::GetValidTitleTag($title_tag);#Get the valid title tag
 ?>
-        <div class="modal <?php echo $extra_classes;?>" id="<?php echo $modal_id;?>">
+        <div class="modal <?php echo $extra_classes;?>" id="<?php echo $modal_id;?>" <?php echo $extra_attributes;?>>
             <div class="modal-content">
         <?php
             //If the modal title has been provided, add the title to the DOM
@@ -80,11 +80,14 @@ class EsomoModal implements EsomoModalFunctions
     }
 
     //Closes a generic modal's divs
-    private static function T_EndGenericModal()
+    private static function T_CloseDiv($footer_content)
     {
         //Close the content div, then close the entire modal div
 ?>
         </div>
+<?php
+    echo $footer_content;
+?>
     </div>
 <?php
     }
@@ -149,6 +152,7 @@ class EsomoModal implements EsomoModalFunctions
                             "classes"=>"",
                             "name"=>"" # this is the name for the icon that will be used
                         )
+
         */
         #NOTE: $extra_classes paramater refers to the entire footer's extra classes
 ?>
@@ -190,13 +194,19 @@ class EsomoModal implements EsomoModalFunctions
     //Add a Create Classroom modal to the dom
     public static function DisplayCreateClassroomModal()
     {
+        self::T_BeginGenericModal("");
+        //Other modal content goes here
+?>
 
+<?php
+        self::T_AddBasicFooter();
+        self::T_EndGenericModal($footer_content);
     }
 
     //Add an Edit Classroom modal to the dom
     public static function DisplayEditClassroomModal()
     {
-
+        
     }
 
     //Add an Add Classroom Students modal to the dom
@@ -214,7 +224,14 @@ class EsomoModal implements EsomoModalFunctions
     //Add a View Classroom Students modal to the dom
     public static function DisplayViewClassroomStudentsModal()
     {
+        self::T_BeginGenericModal("myModal","","data-schedule-id='12'");  
+?>
 
+<?php
+            self::T_CloseDiv();
+            $footer_btn = array("name"=>"DONE","id"=>"submitScheduleData","extra_classes"=>"");
+            self::T_AddSingleOptionFooter($footer_btn);
+        self::T_CloseDiv();
     }
 
     //Add a View Classroom Assignments sent modal to the dom
