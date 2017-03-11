@@ -126,6 +126,9 @@ var ResourcesEvents = function () {
                 type: 'POST',
                 success: function (returndata) {
                     console.log("Cool");
+                    $('#uploadResource').closeModal();
+
+
                 },
                 error: function (e) {
                     console.log("Not Cool");

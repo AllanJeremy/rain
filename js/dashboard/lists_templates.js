@@ -882,6 +882,20 @@ var Lists_Templates = function () {
     
     //-------------------------
     
+    this.noResourceMessage = function () {
+        var templateOutput = '';
+
+        templateOutput += '<div class="section grey lighten-2 center">';
+        templateOutput += '<h5 class="center grey-text text-darken-1">No resources were found.<br><br>Once resources are uploaded they will appear here</h5>';
+        templateOutput += '</div>';
+
+        return templateOutput;
+
+    };
+
+    //-------------------------
+
     this.construct();
     
 };
+
