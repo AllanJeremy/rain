@@ -1417,7 +1417,7 @@ if(isset($_POST['action'])) {
 
         break;
 
-        case 'resourcesUpload':
+        case 'ResourcesUpload':
 
             $data = json_decode($_POST['data']);
 
@@ -1452,7 +1452,7 @@ if(isset($_POST['action'])) {
 
         break;
 
-        case 'updateResource':
+        case 'UpdateResource':
             $args = array(
                 'resource_id' => $_POST['resource_id'],
                 'description' => $_POST['description'],
@@ -1466,6 +1466,17 @@ if(isset($_POST['action'])) {
                 echo json_encode($args);
             } else {
                 echo json_encode(['error_message' => $result]);
+            }
+
+            break;
+        case 'DeleteResource':
+
+            $result = DbHandler::DeleteResource($_POST['resourceid']);
+
+            if($result) {
+                echo '1';
+            } else {
+                echo '0';
             }
 
             break;

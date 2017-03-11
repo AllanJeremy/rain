@@ -115,7 +115,7 @@ var ResourcesEvents = function () {
 
             //Append the data and the action name
             formData.append('data', JSON.stringify(DATA));
-            formData.append('action', 'resourcesUpload');
+            formData.append('action', 'ResourcesUpload');
 
             $.ajax({
                 url: "handlers/db_handler.php",
@@ -197,7 +197,7 @@ var ResourcesEvents = function () {
                 description = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][1].value,
                 subjectid = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][0].value,
                 data = {
-                    'action' : 'updateResource',
+                    'action' : 'UpdateResource',
                     'resource_id' : Number(res_id),
                     'description' : description,
                     'subject_id' : Number(subjectid)
