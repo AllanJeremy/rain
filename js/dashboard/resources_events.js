@@ -300,6 +300,32 @@ var ResourcesEvents = function () {
             });
 
         });
+
+
+    };
+
+    //--------------------------------
+
+    var cleanOutModal = function (str) {
+
+        console.log('cleaning out modal' + str);
+
+        $('.modal' + str).remove();
+
+        console.log($('main').find('.modal' + str).length);
+
+    };
+
+    //----------------------------
+
+    var cleanOutModals = function () {
+
+        console.log('cleaning out classrooms dialogs');
+
+        //$('a#createClassroom').attr('data-target', '');
+
+        $('.modal ').remove();
+
     };
 
     this.__construct();
