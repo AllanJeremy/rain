@@ -1220,14 +1220,16 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     //Delete resource from database
     public static function DeleteResource($resource_id)
     {
+        
         $resource = DbInfo::ResourceExists($resource_id);
+        
         if($resource)
         {
             $uploader = new EsomoUploader();
-            
             $del_resource = self::DeleteBasedOnSingleProperty("resources","resource_id",$resource_id,"i");
-            $del_resource_file = $uploader->DeleteResourceFile($resource["file_name"]);
-
+            
+            $del_resource_file = $uploader->DeleteResourceFile($resource["resource_name"]);
+            
             return ($del_resource && $del_resource_file);#return the status based on whether or not it could delete the resource or not.
         }
         else #failed to find the resource
@@ -1421,24 +1423,31 @@ if(isset($_POST['action'])) {
 
             $data = json_decode($_POST['data']);
 
+            //Attempt uploading the files first
+            $uploader = new EsomoUploader();
+            $failed_files = $uploader->UploadFile('resource');     
+            
             $file_name = "";
+            var_dump($failed_files);
+            for($f = 0; $f < count($data); $f++) 
+            {
+                $is_failed_file = in_array($f,$failed_files);
+                $result = false;
+                //If the file did not fail to upload, add it to the database
+                if(!$is_failed_file)
+                {
+                    $file_name = $_FILES['file-'.$f]['name'];
+                    $args = array(
+                        'resource_name' => $file_name,
+                        'subject_id' => $data[$f]->subjectid,
+                        'description' => $data[$f]->description,
+                        'file_type' => $_FILES['file-'.$f]['type'],
+                        'file_link' => ('./uploads/resources/'.$file_name),
+                        'teacher_id' => $_SESSION['admin_acc_id']
+                    );
 
-            for($f = 0; $f < count($data); $f++) {
-
-                //var_dump($_FILES['file-0']);
-                $file_name = $_FILES['file-'.$f]['name'];
-                $args = array(
-                    'resource_name' => $file_name,
-                    'subject_id' => $data[$f]->subjectid,
-                    'description' => $data[$f]->description,
-                    'file_type' => $_FILES['file-'.$f]['type'],
-                    'file_link' => ('./uploads/resources/'.$file_name),
-                    'teacher_id' => $_SESSION['admin_acc_id']
-                );
-
-                var_dump($args);
-
-                $result = DbHandler::ResourcesDbUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
+                    $result = DbHandler::ResourcesDbUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
+                }
 
                 if(!$result) {//If inserting the data to the database is true, upload file
                     echo 'false for data '.$f;
@@ -1447,8 +1456,7 @@ if(isset($_POST['action'])) {
                 }
 
             }
-            $Uploader = new EsomoUploader();
-            $Uploader->UploadFile('resource');
+            unset($_FILES);
 
         break;
 
