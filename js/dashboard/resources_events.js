@@ -126,14 +126,18 @@ var ResourcesEvents = function () {
                 type: 'POST',
                 success: function (returndata) {
                     console.log("Cool");
+                    console.log(returndata);
                     $('#uploadResource').closeModal();
 
+                    var failedfiles = jQuery.parseJSON(returndata);
+
+                    console.log(failedfiles);
 
                 },
                 error: function (e) {
                     console.log("Not Cool");
                 }
-            });
+            }, 'json');
 
         });
     };

@@ -15,7 +15,7 @@ class EsomoUploader
     const MAX_FILE_SIZE = self::DEFAULT_MAX_UPLOAD_SIZE * 1024 * 1024;
     
     //Accepted file types
-    const DEFAULT_ACCEPTED_FILE_TYPES = "application/pdf,image/jpeg,image/jpg,image/png,word,docx";
+    const DEFAULT_ACCEPTED_FILE_TYPES = "application/pdf,image/jpeg,image/jpg,image/png,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation";
     /*
         pdf,word,excel,images,videos
          application/pdf
@@ -170,11 +170,11 @@ class EsomoUploader
                 $upload_destination = $upload_path . $file_name ;
                 if(move_uploaded_file($tmp_name,$upload_destination))
                 {
-                    echo "<p>Succeeded uploading <b>".(round($file_size_in_mb,2))."MB</b> of the file <b>".$file_name."</b></p>";
+                    //echo "<p>Succeeded uploading <b>".(round($file_size_in_mb,2))."MB</b> of the file <b>".$file_name."</b></p>";
                 }
                 else
                 {
-                    echo "<p>Failed to upload  the file : <b>".$file_name."</b></p>";
+                    //echo "<p>Failed to upload  the file : <b>".$file_name."</b></p>";
                     array_push($failed_files,$file_index);#Add the file index of the failed file to the failed files array
                 }
             }
@@ -185,19 +185,19 @@ class EsomoUploader
                 #if the file size is invalid
                 if(!$file_size_valid)
                 {
-                    echo "<p>Upload Failed : <b>$file_name</b> (".(round($file_size_in_mb,2))."MB) is larger than the maximum accepted size of ".self::DEFAULT_MAX_UPLOAD_SIZE."MB</p>";
+                    //echo "<p>Upload Failed : <b>$file_name</b> (".(round($file_size_in_mb,2))."MB) is larger than the maximum accepted size of ".self::DEFAULT_MAX_UPLOAD_SIZE."MB</p>";
                 }
                 
                 #if the file name is invalid
                 if(!$file_name_valid)
                 {
-                    echo "<p>Upload Failed : <b>$file_name</b> has an invalid file name.</p>";
+                    //echo "<p>Upload Failed : <b>$file_name</b> has an invalid file name.</p>";
                 }
 
                 #if the file type is invalid
                 if(!$file_type_valid)
                 {
-                    echo "<p>Upload Failed : <b>$file_name</b> has a file format that is not accepted.</p>";
+                    //echo "<p>Upload Failed : <b>$file_name</b> has a file format that is not accepted.</p>";
                 }
             }
             $file_index++;

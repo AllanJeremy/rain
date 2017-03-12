@@ -1428,7 +1428,8 @@ if(isset($_POST['action'])) {
             $failed_files = $uploader->UploadFile('resource');     
             
             $file_name = "";
-            var_dump($failed_files);
+            //var_dump($failed_files);
+
             for($f = 0; $f < count($data); $f++) 
             {
                 $is_failed_file = in_array($f,$failed_files);
@@ -1449,13 +1450,15 @@ if(isset($_POST['action'])) {
                     $result = DbHandler::ResourcesDbUpload($args['resource_name'],$args['subject_id'],$args['description'],$args['file_type'],$args['file_link'],$args['teacher_id']);
                 }
 
-                if(!$result) {//If inserting the data to the database is true, upload file
-                    echo 'false for data '.$f;
-                } else {
-                    echo 'true for data '.$f;
-                }
 
             }
+
+            if(!$result) {//If inserting the data to the database is true, upload file
+                echo json_encode($failed_files);
+            } else {
+                echo json_encode($failed_files);
+            }
+
             unset($_FILES);
 
         break;
