@@ -324,10 +324,11 @@ var Lists_Templates = function () {
         templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content"><div id="dragDropArea">';
         templateOutput += '<h4 class="white-text">' + obj.templateHeader + '</h4>';
-        templateOutput += '<div class="row">';
+        templateOutput += '<div class="row no-margin">';
         templateOutput += '<div id="resourcesTotalInfo" class="col m6 s12">';
         templateOutput += '<h6 class=" op-4">To upload</h6>';
         templateOutput += '<h4 class="white-text"><span id="totalResources">0</span> files</h4>';
+        templateOutput += '<br><div class="progress hide" style="width:50%;"><div class="indeterminate"></div></div>';
         templateOutput += '</div>';
         templateOutput += '<div class="col m6 s12">';
         templateOutput += '<form id="createResourcesForm">';
@@ -347,6 +348,7 @@ var Lists_Templates = function () {
         templateOutput += '</form>';
         templateOutput += '<div style="padding-top:20px;margin-top:20px;" class="hide-on-med-and-down"><br><h6 class="right-align op-4">or drag and drop on the colored area.</h6>';
         templateOutput += '</div></div></div></div>';
+        templateOutput += '<div class="row no-margin" id="errorContainer"></div>';
         templateOutput += '<div class="row" id="resourcesList"><div class="container" >';
         templateOutput += '</div></div>';
         templateOutput += '</div>';
@@ -355,6 +357,36 @@ var Lists_Templates = function () {
         templateOutput += '<a href="#!" id="uploadResource" class=" modal-action waves-effect waves-green btn disabled"><i class="material-icons left">&#xE2C6;</i>upload</a>';
         templateOutput += '</div>';
         templateOutput += '</div>';
+
+        return templateOutput;
+
+    };
+
+    //--------------------------------------
+
+    this.resourcesErrorListTemplate = function (obj, obj2) {
+
+        var templateOutput = '';
+
+        templateOutput += '<li class="red-text text-lighten-1">';
+
+        for (var v = 0; v < obj2.length; obj2++) {
+            if (obj2[v] === 0) {
+                templateOutput += '<u>' + obj.name + '</u> is not a supported file format.';
+                templateOutput += '</li>';
+
+                return templateOutput;
+
+            } else if (obj2[v] === 1) {
+                templateOutput += '<u>' + obj.name + '</u> is too large (' + (obj.size / (1024*1024)).toFixed(2) + ' mbs). Allowed maximum of 50mbs per file.';
+
+            } else {
+                templateOutput += '<u>' + obj.name + '</u> cannot be uploaded.';
+
+            }
+        }
+
+        templateOutput += '</li>';
 
         return templateOutput;
 

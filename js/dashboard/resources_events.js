@@ -25,7 +25,7 @@ var ResourcesEvents = function () {
     //Resources modal
     //temporary
     var addResources = function () {
-        var filesinfo, files, totalfiles, resourceslisthook;
+        var filesinfo, files, totalfiles, resourceslisthook, resources_errorshook, errorlist = '';
 
         //Checks on file input change, updates, the modal infos
         $('main').on('change', "form#createResourcesForm input:file", function (e) {
@@ -47,11 +47,8 @@ var ResourcesEvents = function () {
 
             filesinfo = generateResourcesFormList(files);
 
-            console.log(filesinfo);
 
             resourceslisthook = $('.modal#uploadResource .modal-content').children('#resourcesList');
-            console.log($('.modal#uploadResource .modal-content').find('span#totalResources'));
-            console.log(resourceslisthook);
 
             resourceslisthook.fadeOut(300, function () {
 
@@ -59,6 +56,32 @@ var ResourcesEvents = function () {
 
                 $(this).fadeIn();
             });
+
+            var validateresult = validateFiles(files);
+            resources_errorshook = $('.modal#uploadResource .modal-content').children('#errorContainer');
+            resources_errorshook.find('ul').remove();//WTF JAVASCRIPT?? SHOW THERE ARE UL BUT DOESN'T REMOVE
+
+            console.log(validateresult);
+
+            if(validateresult.length > 0) {
+                //disable the upload button
+                //show errors
+                errorlist += '<ul>';
+                $('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
+
+                $.each(validateresult, function(b,x) {
+                    errorlist += Lists_Templates.resourcesErrorListTemplate(files[x.index], x.errortype);
+
+                });
+                errorlist += '</ul>';
+
+                $('.modal#uploadResource .modal-content').children('#errorContainer ul').remove();
+                resources_errorshook.html(errorlist);
+                console.log(resources_errorshook.find('ul'));
+                return;
+            }
+
+
         });
 
         $('main').on('click', 'a#addResource', function (e) {
@@ -124,10 +147,16 @@ var ResourcesEvents = function () {
                 contentType: false,
                 processData: false,
                 type: 'POST',
+                beforeSend : function () {
+                    //Make the loader visible
+                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').removeClass('hide');
+
+                },
                 success: function (returndata) {
+                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').addClass('hide');
                     console.log("Cool");
                     console.log(returndata);
-                    $('#uploadResource').closeModal();
+                    //$('#uploadResource').closeModal();
 
                     var failedfiles = jQuery.parseJSON(returndata);
 
@@ -140,6 +169,30 @@ var ResourcesEvents = function () {
             }, 'json');
 
         });
+    };
+
+    var validateFiles = function (files) {
+        var mimetypes = Array("application/pdf","image/jpeg","image/jpg","image/png","application/msword","application/vnd.ms-excel","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+            maxsize = 52428800,
+            reportdata = [];
+
+        for(var i = 0;  i < files.length; i++) {
+            var errordata = {
+                'index' : '',
+                'errortype' : []//0 for mimetype, 1 for file exceeding its size
+            };
+            //console.log(jQuery.inArray(files[i].type, mimetypes));
+            if(jQuery.inArray(files[i].type, mimetypes) < 0) {//if it is -1, then it's not part of the mimetype
+                errordata.index = i;
+                errordata.errortype.push(0);
+
+                if (files[i].size > maxsize ) {
+                    errordata.errortype.push(1);
+                }
+                reportdata.push(errordata);
+            }
+        }
+        return reportdata;
     };
 
     //Generates the resources list, each with textareas.
