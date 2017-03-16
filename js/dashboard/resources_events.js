@@ -47,7 +47,6 @@ var ResourcesEvents = function () {
 
             filesinfo = generateResourcesFormList(files);
 
-
             resourceslisthook = $('.modal#uploadResource .modal-content').children('#resourcesList');
 
             resourceslisthook.fadeOut(300, function () {
@@ -59,28 +58,28 @@ var ResourcesEvents = function () {
 
             var validateresult = validateFiles(files);
             resources_errorshook = $('.modal#uploadResource .modal-content').children('#errorContainer');
-            resources_errorshook.find('ul').remove();//WTF JAVASCRIPT?? SHOW THERE ARE UL BUT DOESN'T REMOVE
 
             console.log(validateresult);
 
             if(validateresult.length > 0) {
                 //disable the upload button
                 //show errors
-                errorlist += '<ul>';
                 $('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
 
                 $.each(validateresult, function(b,x) {
                     errorlist += Lists_Templates.resourcesErrorListTemplate(files[x.index], x.errortype);
 
                 });
-                errorlist += '</ul>';
 
-                $('.modal#uploadResource .modal-content').children('#errorContainer ul').remove();
-                resources_errorshook.html(errorlist);
-                console.log(resources_errorshook.find('ul'));
+                resources_errorshook.find('ul:first').html(errorlist);
+
+                errorlist = '';
+
                 return;
             }
 
+            resources_errorshook.find('ul:first').html('');
+            errorlist = '';
 
         });
 

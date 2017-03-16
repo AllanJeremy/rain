@@ -51,8 +51,6 @@ var AssignmentEvents = function () {
                 console.log('adding list');
                 
                 if( $(checkboxEl).val() === "GetSpecificTeacherClassrooms" ) {
-                    
-
 
                     $.get('handlers/db_info.php', {"action" : action}, function (result) {
                         console.log('get results:- ');
@@ -104,28 +102,22 @@ var AssignmentEvents = function () {
 
                             console.log(autocompletedata);
 
-
                             autocompletedata = jQuery.parseJSON(autocompletedata);
 
                             console.log(autocompletedata);
 
-
                             var list = {
                                 
                                 "listData" : output
-                            
-                            };
-
-                            var List = Lists_Templates.classroomTable(list);
+                            },
+                                List = Lists_Templates.classroomTable(list),
 
                             //open the esomo modal Template
                             //append the list to esomo modal
 
-                            var modal_header = 'Send assignment to classrooms';
-
-                            var modal_body = List;
-
-                            var classroomListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+                                modal_header = 'Send assignment to classrooms',
+                                modal_body = List,
+                                classroomListModal = loadEsomoModal(modal_id, modal_header, modal_body, 'add classrooms');
                             
                             $('input#searchStudentFormList').autocomplete({
                                 data: autocompletedata
@@ -143,7 +135,6 @@ var AssignmentEvents = function () {
 
                             }); //when add students is clicked//
 
-
                         }
 
                     })
@@ -154,9 +145,6 @@ var AssignmentEvents = function () {
                     }, 'json');
                 
                 } else if ( $(checkboxEl).val() === "GetAllStudents" ) {
-                    
-                    
-
 
                     $.get('handlers/db_info.php', { "action" : action/*, "class_id" : localStorage.getItem("cardId")*/ }, function (result) {
                         console.log('get results:- ');
@@ -196,7 +184,6 @@ var AssignmentEvents = function () {
                                     count++;
 
                                 }
-
                             }
 
                             output += '';
@@ -222,7 +209,7 @@ var AssignmentEvents = function () {
 
                             var modal_body = formList;
 
-                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body);
+                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, 'add students');
                             
                             $('input#searchStudentFormList').autocomplete({
                                 data: autocompletedata
@@ -242,7 +229,6 @@ var AssignmentEvents = function () {
                                 addToForm(action2, hook, modal_id); //when add students is clicked//
 
                             }); //when add students is clicked//
-
 
                         }
 
@@ -286,182 +272,120 @@ var AssignmentEvents = function () {
         //initialize classroom events
         //close modal
         
-        $('main').on('click', '.main-tab#createAssignmentsTab a#createNewAssignment', function (e) {
+        $('main').on('click', '.main-tab#createAssignmentsTab button#createNewAssignment', function (e) {
             e.preventDefault();
-            
-            
+
             console.log('new assignment submit event handler ready');
             
-            if ($('#assignmentCardList .card-col').first().attr('data-classroom-id')) {
-                var str2 = $('#assignmentCardList .card-col').first().attr('data-classroom-id');
-            } else {
-                var str2 = (0-1);
+            var newAssignmentTitle = document.forms['createAssignmentForm']['newAssignmentName'].value,
+                newAssignmentDescription = document.forms['createAssignmentForm']['assignmentInstructions'].value,
+                newAssignmentCanComment = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').find('input#canComment').value,
+                newAssignmentDueDate = document.forms['createAssignmentForm']['ass_due_date'].value,
+                newAssignmentDueDateFormatted = document.forms['createAssignmentForm']['assDueDate'].value,
+                newAssignmentMaxGrade = document.forms['createAssignmentForm']['assMaxGrade'].value,
+                newAssignmentResources = document.forms['createAssignmentForm']['ass_resources'].files,
+                newAssignmentClassIds = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms'),
+                totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms'),
+                // Create a new FormData object.
+                formData = new FormData();
+            
+            for (var g = 0; g < newAssignmentResources.length; g++) {
+                //Hoping the indexes will match
+                formData.append('file-'+g, newAssignmentResources[g]);
             }
-            
-            var newAssignmentTitle = $('#createAssignmentsTab form#createAssignmentForm input#newAssignmentName').val();
-            var newAssignmentDescription = $('#createAssignmentsTab form#createAssignmentForm textarea#assignmentInstructions').val();
-            var newAssignmentCanComment = $('#createAssignmentsTab form#createAssignmentForm  .classroom-list .classrooms input[type="checkbox"]:checked#canComment').val();
-            var newAssignmentDueDate = $('#createAssignmentsTab form#createAssignmentForm input#assDueDate').val();
-            var newAssignmentResources = $('#createAssignmentsTab form#createAssignmentForm .file-field input[type="file"]').val();
-
-            
-            console.log(newAssignmentTitle);
-            console.log(newAssignmentDescription);
-            console.log(newAssignmentCanComment);
-            console.log(newAssignmentDueDate);
-            console.log(newAssignmentResources);
-            
             if (newAssignmentCanComment === 'on') {
                 
                 newAssignmentCanComment = 1;
-                
             } else {
                 
                 newAssignmentCanComment = 0;
-                
             }
+            if (typeof newAssignmentClassIds === 'undefined') {
             
-            console.log($('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms'));
-         
-            if (typeof $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms') === 'undefined') {
-            
-                var newAssignmentClassIds = 0;
+                newAssignmentClassIds = 0;
+            }
+            if (typeof totalClassrooms === 'undefined') {
 
-            } else {
-
-                var newAssignmentClassIds = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms');
-
+                totalClassrooms = 0;
             }
 
-            if (typeof $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms') === 'undefined') {
-
-                var totalClassrooms = 0;
-
-            } else {
-
-                var totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms');
-
-            }
-            
-            console.log('ass title: ' + newAssignmentTitle);
-            console.log('adding classrooms : ' + newAssignmentClassIds);
-            console.log('total classrooms to add : ' + totalClassrooms);
-            console.log('cancomment : ' + newAssignmentCanComment);
-            console.log('ass description : ' + newAssignmentDescription);
-            console.log('resources : ' + newAssignmentResources);
-            
             //validate first
+//            return;
+
             if (newAssignmentTitle !== '' && newAssignmentDescription !== '' && newAssignmentDueDate !== '') {
-                    
+
+                //Append the data and the action name
                 var formResults = {
-                    action : 'CreateAssignment',
                     totalClassrooms: totalClassrooms,
                     assignmenttitle : newAssignmentTitle,
                     assignmentdescription : newAssignmentDescription,
                     classids : newAssignmentClassIds,
                     duedate : newAssignmentDueDate,
-                    attachments : newAssignmentResources,
-                    maxgrade : '',
-                    cancomment : newAssignmentCanComment,
-
+                    maxgrade : newAssignmentMaxGrade,
+                    cancomment : newAssignmentCanComment
                 };
+
+                console.log(formResults);
+
+                formData.append('data', JSON.stringify(formResults));
+                formData.append('action', 'UpdateAssignmentInfo');
                     
-                //ajax post
-                var request = $.post("classes/teacher.php", formResults, function (result) {
-
-                    console.log(result);
-
-                    if (result === 'true') {
-
-                        var assignmentTab = $('#assignmentTab #assignmentCardList');
+                $.ajax({
+                    url: "handlers/db_handler.php",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function (returndata) {
+                        console.log(returndata);
                         
-                        var Result = Lists_Templates.teacherAssignmentCard(formResults);
+                        var returndata = jQuery.parseJSON(returndata),
+                            message = '';
 
-                        if ( $('.no-data-message').length > 0 ) {
-                            
-                            $('.no-data-message').remove();
-                            
-                            $('#assignmentTab').append(Lists_Templates.assignmentCardListContainer);
-                            
-                            //recall classroomTab after appending
-                            assignmentTab = $('#assignmentTab #assignmentCardList');
+                        if (returndata.failedFiles === '' && returndata.result) {
+                            message = '<span class="green-text name text-lighten-4">Success in creating the assignment.</span>';
+                        } else if (returndata.result === false || returndata.result === null) {
+                            message = '<span class="red-text name text-lighten-5">Error in creating the assignment. Kindly try again later.</span>';
+                        }
 
-                            /*
-
-                            var $main = $("main"),  
-                            
-                            ajaxLoad = function(html) {
+                        if (returndata.failedFiles !== '') {
+                            $.each(returndata.failedFiles, function (b,k) {
                                 
-                                document.title = html
-                                    .match(/<div>(.*?)<\/div>/)[0]
-                                    .trim()
-                                    .decodeHTML();
+                                message = '<span class="red-text name text-lighten-5">Error in uploading ' + newAssignmentResources[k].name + '</span>';
+                                // Materialize.toast(message, displayLength, className, completeCallback);
+                                Materialize.toast(message, 5000, '', function () {
+                                    console.log('toast on file upload error');
+                                });
 
-                                init();
-                            },
-
-                            loadPage = function(href) {
-                                $main.load(href + " main>*", ajaxLoad);
-                            };
+                            });
                             
-                            var href = '#classroomCardList';
-                            
-                            loadPage(href);
-                            
-                            */
-
-                            classroomTab.prepend(Result);
-                            
-                        } else {
-                            
-                            classroomTab.prepend(Result);
-                            
+                            return;
                         }
                         
-
-                        $('.tooltipped').tooltip({delay: 50});
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast(message, 5000, '', function () {
+                            console.log('toast on mysql error');
+                        });
                         
-                        //masonryGridInit();
-                    
-                    } else {
-                        
-                        console.log('waiting');
-                    
+                    },
+                    error: function (e) {
+                        console.log("Not Cool");
                     }
-                    
-                }, 'text');
+                }, 'json');
 
             } else {
             
-                console.log('empty form. Unable to create the class');
+                console.log('empty form. Unable to create the assignment');
 
-                $('#' + str1).closeModal();
-                
                 var errorMessage = '<span class="red-text name text-lighten-5">Error in creating the assignment. Kindly see if you have filled all inputs.</span>';
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(errorMessage, 5000, '', function () {
                     cleanOutModals();
                 });
-                
             }
-            
-            //var validationResult = validateInputs('createNewClassroomForm');
 
-            //if (validationResult) {
-             
-            //this.createClassroomCard();
-        
-            $('#' + str1).closeModal();
-           
-            cleanOutModals();
-
-            //} else {
-
-              //  console.log('empty somewhere')
-           
-            //}
-    
         });
 
     };
@@ -624,7 +548,7 @@ var AssignmentEvents = function () {
     
     //----------------------------      FUNCTIONS
     
-    var loadEsomoModal = function (modal_id, modal_header, modal_body) {
+    var loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
         
         var args = {
             modalId: modal_id,
@@ -633,8 +557,8 @@ var AssignmentEvents = function () {
                 actionAdd: 'add-hivi'
             },
             templateHeader: modal_header,
-            templateBody: modal_body
-            
+            templateBody: modal_body,
+            modal_action: modal_action
         };
         
         var esomoModal = Lists_Templates.esomoModalTemplate(args);

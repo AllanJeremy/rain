@@ -305,7 +305,7 @@ var Lists_Templates = function () {
         } else {
         
             templateOutput += obj.extraActions;
-            
+
         }
         
         templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
@@ -348,7 +348,7 @@ var Lists_Templates = function () {
         templateOutput += '</form>';
         templateOutput += '<div style="padding-top:20px;margin-top:20px;" class="hide-on-med-and-down"><br><h6 class="right-align op-4">or drag and drop on the colored area.</h6>';
         templateOutput += '</div></div></div></div>';
-        templateOutput += '<div class="row no-margin" id="errorContainer"></div>';
+        templateOutput += '<div class="row no-margin" id="errorContainer"><ul></ul></div>';
         templateOutput += '<div class="row" id="resourcesList"><div class="container" >';
         templateOutput += '</div></div>';
         templateOutput += '</div>';
@@ -366,11 +366,11 @@ var Lists_Templates = function () {
 
     this.resourcesErrorListTemplate = function (obj, obj2) {
 
-        var templateOutput = '';
+        var templateOutput = '', v;
 
         templateOutput += '<li class="red-text text-lighten-1">';
 
-        for (var v = 0; v < obj2.length; obj2++) {
+        for (v = 0; v < obj2.length; obj2++) {
             if (obj2[v] === 0) {
                 templateOutput += '<u>' + obj.name + '</u> is not a supported file format.';
                 templateOutput += '</li>';
@@ -378,7 +378,7 @@ var Lists_Templates = function () {
                 return templateOutput;
 
             } else if (obj2[v] === 1) {
-                templateOutput += '<u>' + obj.name + '</u> is too large (' + (obj.size / (1024*1024)).toFixed(2) + ' mbs). Allowed maximum of 50mbs per file.';
+                templateOutput += '<u>' + obj.name + '</u> is too large (' + (obj.size / (1024 * 1024)).toFixed(2) + ' mbs). Allowed maximum of 50mbs per file.';
 
             } else {
                 templateOutput += '<u>' + obj.name + '</u> cannot be uploaded.';
@@ -407,7 +407,7 @@ var Lists_Templates = function () {
         templateOutput += obj.name;
         templateOutput += '</p>';
         templateOutput += '<p class="size">';
-        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
+        templateOutput += (obj.size / (1024 * 1024)).toFixed(2) + ' mbs';
 //        templateOutput += '<div class="col s3"><p class="size right-align">';
 //        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
         templateOutput += '</p></div></div>';
@@ -711,7 +711,7 @@ var Lists_Templates = function () {
         templateOutput += '<td class="right-align">' + obj.scheduledatetime + '</td>';
         templateOutput += '<td class="right-align schedule-action" width="120">';
         templateOutput += '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-        templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide': '') + '" id="openSchedule">';
+        templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide' : '') + '" id="openSchedule">';
         templateOutput += '<i class="material-icons">expand_more</i></a>';
         templateOutput += '</td>';
         
@@ -805,8 +805,8 @@ var Lists_Templates = function () {
         
         templateOutput += '<li>';
         templateOutput += obj.text;
-        templateOutput += ( (obj.isSubtopic === false) ? '' : '<span class="tiny-info">ST</span>');
-        templateOutput += ( (obj.removable === false) ? '' : '<span class="right "><a class="mini-link btn-icon no-padding" href="#!">remove</a></span>');
+        templateOutput += ((obj.isSubtopic === false) ? '' : '<span class="tiny-info">ST</span>');
+        templateOutput += ((obj.removable === false) ? '' : '<span class="right "><a class="mini-link btn-icon no-padding" href="#!">remove</a></span>');
         templateOutput += '</li>';
 
         return templateOutput;
@@ -823,42 +823,42 @@ var Lists_Templates = function () {
         $.each(obj, function (i, el) {
 
             switch (el) {
-                case true:
+            case true:
 
-                    if (i === 'Previous') {
+                if (i === 'Previous') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the previous schedule in the list" id="' + id + 'Card' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
-                    } else if (i === 'Next') {
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the previous schedule in the list" id="' + id + 'Card' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
+                } else if (i === 'Next') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the next schedule in the list" id="' + id + 'Card' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
-                    } else if (i === 'Delete') {
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="text-lighten-1 modal-action left btn btn-flat " href="#!" title="read the next schedule in the list" id="' + id + 'Card' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
+                } else if (i === 'Delete') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px;" class="red-text text-lighten-1 modal-action left btn btn-flat transparent" title="delete the schedule" href="#!" id="' + id + 'Card' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
-                    } else if (i === 'Edit') {
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px;" class="red-text text-lighten-1 modal-action left btn btn-flat transparent" title="delete the schedule" href="#!" id="' + id + 'Card' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                } else if (i === 'Edit') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; margin-right:24px;" class="grey-text text-lighten-1 modal-action left btn btn-flat transparent" title="edit the schedule" href="#!" id="' + id + 'Card' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
-                    }
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; margin-right:24px;" class="grey-text text-lighten-1 modal-action left btn btn-flat transparent" title="edit the schedule" href="#!" id="' + id + 'Card' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                }
 
-                    break;
-                case false:
+                break;
+            case false:
 
-                    if (i === 'Previous') {
+                if (i === 'Previous') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
-                    } else if (i === 'Next') {
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
+                } else if (i === 'Next') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
 
-                    } else if (i === 'Delete') {
+                } else if (i === 'Delete') {
 
-                        templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="red-text disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!"  title="delete the schedule" id="moreScheduleCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
-                    }
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class="red-text disabled text-lighten-1 modal-action left btn btn-flat transparent" href="#!"  title="delete the schedule" id="moreScheduleCard' + i + '"><i class="material-icons">' + i.toLowerCase() + '</i></a>';
+                }
 
-                    break;
+                break;
 
-                default:
+            default:
 
-                    return false;
+                return false;
 
             }
 

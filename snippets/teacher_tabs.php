@@ -153,10 +153,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 </p>
                             </div>
                             <div class="col s12 classroom-list input-field"></div>
-                            <div class=" input-field col s12 ">
+                            <div class=" input-field col s6 ">
                                 
                                 <input type="date" class="datepicker" id="assDueDate" name="ass_due_date">
                                 <label for="assDueDate">Due date</label>
+                            </div>
+                            <div class=" input-field col s6 ">
+
+                                <input type="number" id="assMaxGrade" value="100" name="ass_max_grade">
+                                <label for="assMaxGrade">Max grade</label>
                             </div>
                             
                             <div class=" input-field col s12 file-field ">
