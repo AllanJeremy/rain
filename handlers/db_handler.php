@@ -310,7 +310,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 
             if($update_stmt = $dbCon->prepare())
             {
-                $update_stmt->bind_param("ssisssiiii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"],$args["ass_id"]);
+                $update_stmt->bind_param("ssssssiiii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"],$args["ass_id"]);
 
                 if($update_stmt->execute())
                 {
@@ -342,7 +342,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
                  }
                  else #create query failed to run
                  {
-                    return false;
+                    return $dbCon->error;
                  }
             }
             else
@@ -1520,9 +1520,11 @@ if(isset($_POST['action'])) {
             $uploader = new EsomoUploader();
             $failed_files = $uploader->UploadFile('assignment');
 
-            //var_dump($args);
 
             $result = DbHandler::UpdateAssignmentInfo($args);
+            echo $result;
+
+            return;
 
             if($result) {#true
                 $returnresult = array (
