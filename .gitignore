@@ -2,3 +2,4 @@
 !/webpack-demo/package.json
 /.sass-cache/*
 new.css
+uploads/*
