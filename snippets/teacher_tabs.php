@@ -307,104 +307,136 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                 <!--Submitted assignments-->
                 <div class="row main-tab" id="submittedAssignmentsTab">  
-                    <?php
-                        if($assignments): 
-                            foreach($assignments as $assignment):
-                                if($ass_submissions=DbInfo::GetAssSubmissionsByAssId($assignment["ass_id"])):
-                                    foreach ($ass_submissions as $ass_submission):
+                    <div class="row" id="classroomCardsContainer">
 
-                                        //If the assignment has been submitted and not been returned to the student
-                                        if($ass_submission["submitted"] && !$ass_submission["returned"]):
-                                            $ass_title = $assignment["ass_title"];
-
-                                            $std_name = "Unknown Student";#Name of student the submission belongs to
-
-                                            if($student = DbInfo::StudentIdExists($ass_submission["student_id"]))
-                                            {
-                                                $std_name = $student["full_name"];
-                                            }
-                                            
-                                            $submission_title = $std_name . "'s ". $ass_title . " Submission";
-                                            $submission_attachments = "None";
-                                            $submission_description = "No description";
-
-                                            //If the submission has a title, use it, otherwise use the generated assignment one
-                                            if(!empty($ass_submission["submission_title"]) && isset($ass_submission["submission_title"]))
-                                            {
-                                                $submission_title = $ass_submission["submission_title"];
-                                            }
-
-                                            //If there are attachments, then set submission_attachments to the attachments
-                                            if (!empty($ass_submission["attachments"]) && isset($ass_submission["attachments"]))
-                                            {
-                                                $submission_attachments = $ass_submission["attachments"];
-                                            }
-
-                                            //If there is a description set the description variable
-                                            if (!empty($ass_submission["submission_text"]) && isset($ass_submission["submission_text"]))
-                                            {
-                                                $submission_description = $ass_submission["submission_text"];
-                                            }
-
-                    ?>
-                    <div class="col s12">
-                        <div class="card teal">
-                            <div class="card-content white-text">
-                                <span class="card-title"><?php echo $submission_title; ?></span>
-                                <p>Assignment:
-                                    <span class="php-data">
-                                        <?php echo $ass_title; ?>  
-                                    </span> 
-                                </p>
-                                <p>Student:
-                                    <span class="php-data"><?php echo $std_name;?>
-                                        <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Student that submitted the assignment" href="#!" >
-                                            <i class="material-icons">info</i>
-                                        </a>
-                                    </span> 
-                                </p>
-                                <p>Description: <span class="php-data"><?php echo $submission_description; ?></span></p>
-                                <p>Attachments:  <span class="php-data"><?php echo $submission_attachments; ?></span> </p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#!" id="editClassroom">Comment</a>
-                                <a href="#!" class="right">Return</a>
-    <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
+                        <!--CARD_TEMPLATE_START-->
+                        <div class="col s6 m3  card-col selected">
+                            <div class=" card tiny cyan darken-4 hoverable selected">
+                                <div class="card-content">
+                                <span class="card-title white-text">Maths 3</span>
+                                <span class="new badge">4</span>
+                                </div>
                             </div>
                         </div>
+                        <!--CARD_TEMPLATE_END-->
+                        
+                        <div class="col s6 m3  card-col">
+                            <div class=" card tiny orange darken-4 hoverable">
+                                <div class="card-content">
+                                <span class="card-title white-text">Maths 3</span>
+                                <span class="new badge">4</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s6 m3  card-col">
+                            <div class="card tiny blue-grey darken-4 hoverable">
+                                <div class="card-content">
+                                <span class="card-title white-text">Maths 3</span>
+                                <span class="new badge">4</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s6 m3  card-col">
+                            <div class=" card tiny cyan darken-4 hoverable">
+                                <div class="card-content">
+                                <span class="card-title white-text">Maths 3</span>
+                                <span class="new badge">4</span>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
+                    <div class="divider"></div>
+                    <div class="row" id="classroomAss_Container">
+                        <div class="col s12" id="header">
+                            <p class="title">Assignments for maths 3</p>
+                        </div>
+                        <div id="body" class="col s12">
+                            <!--PERMISSION-->
+<ul class="collapsible popout" data-collapsible="accordion">
+    <!--TEMPLATE_START-->
+    <li data-assignment-id="--">
+        <div class="collapsible-header ">
+            Cos, SiN and Tangents for form three
+            <div class="right">
+                <span class="margin-horiz-8 badge new">4</span>
+                <p class="margin-horiz-8 right">
+                    <span class="js-submitted">10</span> submitted
+                </p>
+                <p class="margin-horiz-8 right">
+                    <span class="js-not-submitted">5</span> not submitted
+                </p>
+            </div>
+        </div>
 
-                    <?php 
-                        else:
-                    ?>
-                    
-                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                        <h5 class="center-align valign grey-text " id="noReceivedAssSubmissionsMessage">No assignment submissions found.<br><br> When students submit assignments they will appear here</h5>
-                    </div>  
-                    
-                    <?php
-                        endif;
-                        break;
-                        endforeach;#ass_submissions
-                        else:#if there are no assignment submissions
-                    ?>
-                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                        <h5 class="center-align valign grey-text " id="noReceivedAssSubmissionsMessage">No assignment submissions found.<br><br> When students submit assignments they will appear here</h5>
-                    </div>               
-                    <?php
-                        endif;#ass_submissions
-                        break;
-                        
-                        endforeach;#assignments
-                        
-                        else:#if no assignments were found
-                    ?>
-                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                        <h5 class="center-align valign grey-text " id="noReceivedAssSubmissionsMessage">No assignment submissions found.<br><br> When students submit assignments they will appear here</h5>
-                    </div>     
-                    <?php 
-                        endif;#assignments
-                    ?>
+        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span>
+        </div>
+    </li>
+    <!--TEMPLATE_END-->
+    <li data-assignment-id="--">
+        <div class="collapsible-header active">
+            Algebra 103
+            <div class="right">
+                <span class="margin-horiz-8 badge new">4</span>
+                <p class="margin-horiz-8 right">
+                    <span class="js-submitted">10</span> submitted
+                </p>
+                <p class="margin-horiz-8 right">
+                    <span class="js-not-submitted">5</span> not submitted
+                </p>
+            </div>
+        </div>
+
+        <div class="collapsible-body">
+            <div class="filter-bar pad-8">
+                <a class="btn btn-small btn-flat">Submitted</a>
+            </div>
+            <div class="row submitted-assignment-list padding-horiz-16">
+                <div class="new-submissions col s12 padding-horiz-8">
+                    <div class="header ">
+                        <p class="pad-8">New submissions</p>
+                        <div class="divider margin-horiz-16"></div>
+                    </div>
+                    <ul class="row">
+                        <li class="col s12 m6 pad-8">
+                            <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
+                            <a class="btn-inline">View</a>
+                            <span class="right">
+                                <span class="margin-horiz-16 secondary-text-color">
+                                    <a class="js-marks-given">--</a>/100
+                                </span>
+                                <a class="btn-inline right">Return</a>
+                            </span>
+                        </li>
+                        <li class="col s12 m6 pad-8">
+                            <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
+                            <a class="btn-inline">View</a>
+                            <span class="right">
+                                <span class="margin-horiz-16 secondary-text-color">
+                                    <a class="js-marks-given">--</a>/100
+                                </span>
+                                <a class="btn-inline right">Return</a>
+                            </span>
+                        </li>
+                        <li class="col s12 m6 pad-8">
+                            <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
+                            <a class="btn-inline">View</a>
+                            <span class="right">
+                                <span class="margin-horiz-16 secondary-text-color">
+                                    <a class="js-marks-given">--</a>/100
+                                </span>
+                                <a class="btn-inline right disabled">Return</a>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
+                            <!--END PERMISSION-->
+                        </div>
+                    </div>
                 </div>
 
                 <!--SCHEDULE SECTION-->
