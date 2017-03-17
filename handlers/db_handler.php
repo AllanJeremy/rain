@@ -1522,9 +1522,6 @@ if(isset($_POST['action'])) {
 
 
             $result = DbHandler::UpdateAssignmentInfo($args);
-            echo $result;
-
-            return;
 
             if($result) {#true
                 $returnresult = array (
