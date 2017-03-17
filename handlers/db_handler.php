@@ -1492,7 +1492,7 @@ if(isset($_POST['action'])) {
             }
 
             break;
-        default:
+
         case 'UpdateAssignmentInfo':
 
             $postData = json_decode($_POST['data']);
