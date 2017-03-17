@@ -5374,90 +5374,94 @@ small {
   cursor: pointer;
 }
 /* line 30, ../sass/components/_cards.scss */
-.card.small, .card.medium, .card.large {
+.card.tiny, .card.small, .card.medium, .card.large {
   position: relative;
 }
 /* line 33, ../sass/components/_cards.scss */
-.card.small .card-image, .card.medium .card-image, .card.large .card-image {
+.card.tiny .card-image, .card.small .card-image, .card.medium .card-image, .card.large .card-image {
   max-height: 60%;
   overflow: hidden;
 }
 /* line 37, ../sass/components/_cards.scss */
-.card.small .card-image + .card-content, .card.medium .card-image + .card-content, .card.large .card-image + .card-content {
+.card.tiny .card-image + .card-content, .card.small .card-image + .card-content, .card.medium .card-image + .card-content, .card.large .card-image + .card-content {
   max-height: 40%;
 }
 /* line 40, ../sass/components/_cards.scss */
-.card.small .card-content, .card.medium .card-content, .card.large .card-content {
+.card.tiny .card-content, .card.small .card-content, .card.medium .card-content, .card.large .card-content {
   max-height: 100%;
   overflow: hidden;
 }
 /* line 44, ../sass/components/_cards.scss */
-.card.small .card-action, .card.medium .card-action, .card.large .card-action {
+.card.tiny .card-action, .card.small .card-action, .card.medium .card-action, .card.large .card-action {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
 }
-/* line 52, ../sass/components/_cards.scss */
+/* line 53, ../sass/components/_cards.scss */
+.card.tiny {
+  height: auto;
+}
+/* line 57, ../sass/components/_cards.scss */
 .card.small {
   height: 300px;
 }
-/* line 56, ../sass/components/_cards.scss */
+/* line 61, ../sass/components/_cards.scss */
 .card.medium {
   height: 400px;
 }
-/* line 60, ../sass/components/_cards.scss */
+/* line 65, ../sass/components/_cards.scss */
 .card.large {
   height: 500px;
 }
-/* line 65, ../sass/components/_cards.scss */
+/* line 70, ../sass/components/_cards.scss */
 .card.horizontal {
   display: flex;
 }
-/* line 67, ../sass/components/_cards.scss */
-.card.horizontal.small .card-image, .card.horizontal.medium .card-image, .card.horizontal.large .card-image {
+/* line 72, ../sass/components/_cards.scss */
+.card.horizontal.tiny .card-image, .card.horizontal.small .card-image, .card.horizontal.medium .card-image, .card.horizontal.large .card-image {
   height: 100%;
   max-height: none;
   overflow: visible;
 }
-/* line 72, ../sass/components/_cards.scss */
-.card.horizontal.small .card-image img, .card.horizontal.medium .card-image img, .card.horizontal.large .card-image img {
+/* line 77, ../sass/components/_cards.scss */
+.card.horizontal.tiny .card-image img, .card.horizontal.small .card-image img, .card.horizontal.medium .card-image img, .card.horizontal.large .card-image img {
   height: 100%;
 }
-/* line 80, ../sass/components/_cards.scss */
+/* line 85, ../sass/components/_cards.scss */
 .card.horizontal .card-image {
   max-width: 50%;
 }
-/* line 82, ../sass/components/_cards.scss */
+/* line 87, ../sass/components/_cards.scss */
 .card.horizontal .card-image img {
   max-width: 100%;
   width: auto;
 }
-/* line 88, ../sass/components/_cards.scss */
+/* line 93, ../sass/components/_cards.scss */
 .card.horizontal .card-stacked {
   display: flex;
   flex-direction: column;
   flex: 1;
   position: relative;
 }
-/* line 94, ../sass/components/_cards.scss */
+/* line 99, ../sass/components/_cards.scss */
 .card.horizontal .card-stacked .card-content {
   flex-grow: 1;
 }
-/* line 102, ../sass/components/_cards.scss */
+/* line 107, ../sass/components/_cards.scss */
 .card.sticky-action .card-action {
   z-index: 2;
 }
-/* line 106, ../sass/components/_cards.scss */
+/* line 111, ../sass/components/_cards.scss */
 .card.sticky-action .card-reveal {
   z-index: 1;
   padding-bottom: 64px;
 }
-/* line 115, ../sass/components/_cards.scss */
+/* line 118, ../sass/components/_cards.scss */
 .card .card-image {
   position: relative;
 }
-/* line 119, ../sass/components/_cards.scss */
+/* line 122, ../sass/components/_cards.scss */
 .card .card-image img {
   display: block;
   border-radius: 2px 2px 0 0;
@@ -5468,7 +5472,7 @@ small {
   bottom: 0;
   width: 100%;
 }
-/* line 130, ../sass/components/_cards.scss */
+/* line 133, ../sass/components/_cards.scss */
 .card .card-image .card-title {
   color: #fff;
   position: absolute;
@@ -5476,39 +5480,60 @@ small {
   left: 0;
   padding: 20px;
 }
-/* line 140, ../sass/components/_cards.scss */
+/* line 145, ../sass/components/_cards.scss */
+.card.tiny .card-content {
+  padding: 14px;
+  border-radius: 0 0 2px 2px;
+  cursor: pointer;
+}
+/* line 150, ../sass/components/_cards.scss */
+.card.tiny .card-content p {
+  margin: 0;
+  color: inherit;
+}
+/* line 154, ../sass/components/_cards.scss */
+.card.tiny .card-content .card-title {
+  line-height: 1.6;
+  font-size: 18px;
+}
+/* line 159, ../sass/components/_cards.scss */
+.card.tiny .card-content .badge {
+  margin-top: .2rem;
+  font-size: 1rem;
+}
+/* line 166, ../sass/components/_cards.scss */
 .card .card-content {
   padding: 20px;
   border-radius: 0 0 2px 2px;
 }
-/* line 144, ../sass/components/_cards.scss */
+/* line 170, ../sass/components/_cards.scss */
 .card .card-content p {
   margin: 0;
   color: inherit;
 }
-/* line 148, ../sass/components/_cards.scss */
+/* line 174, ../sass/components/_cards.scss */
 .card .card-content .card-title {
   line-height: 48px;
 }
-/* line 153, ../sass/components/_cards.scss */
+/* line 179, ../sass/components/_cards.scss */
 .card .card-action {
   position: relative;
   background-color: inherit;
   border-top: 1px solid rgba(160, 160, 160, 0.2);
   padding: 20px;
 }
-/* line 159, ../sass/components/_cards.scss */
+/* line 185, ../sass/components/_cards.scss */
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
   color: #ffab40;
   margin-right: 20px;
   transition: color .3s ease;
   text-transform: uppercase;
 }
-/* line 165, ../sass/components/_cards.scss */
+/* line 191, ../sass/components/_cards.scss */
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating):hover {
   color: #ffd8a6;
 }
-/* line 169, ../sass/components/_cards.scss */
+/* line 195, ../sass/components/_cards.scss */
 .card .card-reveal {
   padding: 20px;
   position: absolute;
@@ -5520,7 +5545,7 @@ small {
   z-index: 3;
   display: none;
 }
-/* line 180, ../sass/components/_cards.scss */
+/* line 206, ../sass/components/_cards.scss */
 .card .card-reveal .card-title {
   cursor: pointer;
   display: block;

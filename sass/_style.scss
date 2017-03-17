@@ -28,6 +28,56 @@ html {
 body {
   background-color: #fcfcfc;
 }
+.margin-horiz-8 {
+    margin-bottom: 0 !Important;
+    margin-top: 0 !Important;
+    margin-left: 8px !Important;
+    margin-right: 8px !Important;
+}
+.margin-horiz-16 {
+    margin-bottom: 0 !Important;
+    margin-top: 0 !Important;
+    margin-left: 16px !Important;
+    margin-right: 16px !Important;
+}
+.margin-vert-8 {
+    margin-right: 0 !Important;
+    margin-left: 0 !Important;
+    margin-top: 8px !Important;
+    margin-bottom: 8px !Important;
+}
+.margin-vert-16 {
+    margin-right: 0 !Important;
+    margin-left: 0 !Important;
+    margin-top: 16px !Important;
+    margin-bottom: 16px !Important;
+}
+.padding-horiz-8 {
+    padding-bottom: 0 !Important;
+    padding-top: 0 !Important;
+    padding-left: 8px !Important;
+    padding-right: 8px !Important;
+}
+.padding-horiz-16 {
+    padding-bottom: 0 !Important;
+    padding-top: 0 !Important;
+    padding-left: 16px !Important;
+    padding-right: 16px !Important;
+}
+.pad-8 {
+    padding: 8px !Important;
+}
+.pad-16 {
+    padding: 16px !Important;
+}
+
+.marg-8 {
+    margin: 8px !Important;
+}
+.marg-16 {
+    margin: 16px !Important;
+}
+
 .no-margin {
 	margin: 0 !Important;
 }
@@ -98,10 +148,11 @@ h5 > span {
 }
 
 .name, .card-title {
-    text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
     text-transform: capitalize;//Always capitalize this class
 }
-
+.name {
+    text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
+}
 a.btn-icon {
     padding: 14px;
     padding-left: 16px;
@@ -566,6 +617,10 @@ a.btn-skip-question {
 .card-col {
     width: 310px;
     
+    &.selected {
+        background-color: rgba(0, 0, 0, 0.08);
+    }
+
     @media #{$small-and-down} {
         width: 100%;
         max-width: 100%;
@@ -696,3 +751,43 @@ a.btn-skip-question {
 .uppercase {
     text-transform: uppercase !Important;
 }
+
+.card {
+
+    &.selected {
+        @extend .z-depth-4;
+    }
+
+    &.tiny {
+
+    }
+}
+
+#classroomAss_Container .collapsible-header span.badge {
+    position: inherit !Important;
+}
+
+.collapsible-header .right .badge {
+	padding: 4px 8px;
+}
+a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
+    color: $card-link-color;
+    margin-right: $card-padding;
+    transition: color .3s ease;
+    text-transform: uppercase;
+
+    &:hover { color: $card-link-color-light; }
+}
+
+.primary-text-color {
+    color: $primary-color !Important;
+}
+.secondary-text-color, .action-text-color {
+    color: $secondary-color !Important;
+}
+
+
+
+
+
+

@@ -27,7 +27,7 @@
   }
 
   // Card Sizes
-  &.small, &.medium, &.large {
+  &.tiny, &.small, &.medium, &.large {
     position: relative;
 
     .card-image {
@@ -49,6 +49,11 @@
     }
   }
 
+
+  &.tiny {
+    height: auto;
+  }
+
   &.small {
     height: 300px;
   }
@@ -63,7 +68,7 @@
 
   // Horizontal Cards
   &.horizontal {
-    &.small, &.medium, &.large {
+    &.tiny, &.small, &.medium, &.large {
       .card-image {
         height: 100%;
         max-height: none;
@@ -110,8 +115,6 @@
   }
 
 
-
-
   .card-image {
     position: relative;
 
@@ -135,6 +138,29 @@
       padding: $card-padding;
     }
 
+  }
+
+  &.tiny {
+
+      .card-content {
+        padding: $tiny-card-padding;
+        border-radius: 0 0 2px 2px;
+        cursor: pointer;
+
+        p {
+          margin: 0;
+          color: inherit;
+        }
+        .card-title {
+          line-height: 1.6;
+          font-size: 18px;
+        }
+
+        .badge {
+          margin-top: .2rem;
+          font-size: 1rem;
+        }
+      }
   }
 
   .card-content {
