@@ -263,6 +263,7 @@ class DbInfo
     //Get single student account by ID
     public static function GetStudentByAccId($acc_id)
     {
+        global $dbCon;
         $select_query = "SELECT * FROM student_accounts WHERE acc_id=?";
 
         $prepare_error = "Couldn't prepare query to retrieve student account information by id. <br><br> Technical information : ";
