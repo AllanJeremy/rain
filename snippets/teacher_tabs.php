@@ -179,17 +179,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 <button type="submit" class="btn right" id="createNewAssignment">Create assignment</button>
                             </div>
                         </form>
-                        <script>
-                            $(document).ready(function(){
-                                $("#createAssignmentForm").submit(function(e){
-                                    
-                                    e.preventDefault();//Prevent page from reloading
-                                    alert("Form submitted.\nFile data is ",$("#assDueDate").val());
-                                    
-                                });
-                            });
-                        </script>
-                            <br>
+                        <br>
                     </div>
                 </div>
 
@@ -1031,3 +1021,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 </div>
                                 
             </div>
+
+            <script>
+                $(document).ready(function(){
+                    
+                    //Create assignment form submitted
+                    $("#createAssignmentForm").submit(function(e){
+                        
+                        e.preventDefault();//Prevent page from reloading
+                        alert("Form submitted.\nFile data is ",$("#assDueDate").val());
+                        
+                    });
+                });
+            </script>
