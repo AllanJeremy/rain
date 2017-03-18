@@ -360,11 +360,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <!--PERMISSION-->
                             <ul class="collapsible popout" data-collapsible="accordion">
                                 <?php
-                                    // var_dump($ass_in_classroom);
+                                    //Returned assignments
+                                    $returned_ass = DbInfo::GetReturnedAssignments($loggedInTeacherId);
+                                    
+                                    //Unreturned assignments
+                                    $unreturned_ass = DbInfo::GetUnreturnedAssignments($loggedInTeacherId);
+                                        
                                     //Loop through all assignments and display them
                                     foreach($ass_in_classroom as $ass):
                                         $ass_title = $ass["ass_title"];
-                                        $ass_id = $ass["ass_id"]
+                                        $ass_id = $ass["ass_id"];
                                 ?>
                                 <!--TEMPLATE_START-->
                                 <li data-assignment-id="--">
@@ -389,10 +394,20 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                         
                                         //Check if assignment submission exist for this specific assignment
                                         if($ass_submissions): #if assignment submissions were found
+
+                                            //Check if there are any returned assignments ~ if there are, show the return button
+                                            $returned_btn_disabled = "disabled";
+
+                                            //If there are any returned assignments ~ enable the returned button
+                                            if($returned_ass && $returned_ass->num_rows>0)
+                                            {
+                                                $returned_btn_disabled = "";
+                                            }
                                     ?>
                                         <div class="filter-bar pad-8">
-                                            <a class="btn btn-small btn-flat">Submitted</a>
+                                            <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
                                         </div>
+
                                         <div class="row submitted-assignment-list padding-horiz-16">
                                             <div class="new-submissions col s12 padding-horiz-8">
                                                 <div class="header ">
@@ -400,28 +415,55 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                     <div class="divider margin-horiz-16"></div>
                                                 </div>
                                                 <ul class="row">
-                                    <?php
+                                    <?php                                            
+                                        //If there are any unreturned assignment submissions
+                                        if($unreturned_ass && $unreturned_ass->num_rows>0):
+                                            //Loop through each assignment submission for this assignment
                                             foreach($ass_submissions as $ass_sub):
-                                                $student = DbInfo::GetStudentByAccId($ass_sub["student_id"]);
+                                                $student_id = $ass_sub["student_id"];
+                                                $student = DbInfo::GetStudentByAccId($student_id);
+
                                                 $student_name = "Unknown student";
+                                                $student_adm_no = "---";
+                                                
+                                                //If the student was found
                                                 if($student)
                                                 {
+                                                    $student_adm_no = $student["adm_no"];
                                                     $student_name = $student["full_name"];
                                                 }
+                                                
+
+                                                //If the submission is submitted and not returned yet ~ display it
+                                                if($ass_sub["submitted"] && (!$ass_sub["returned"])):
                                     ?>
-                                                     <!--Assignment submissions-->
+                                                     <!--Assignment submissions 
+                                                        TODO: consider making this full width
+                                                     -->
                                                     <li class="col s12 m6 pad-8">
-                                                        <p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?><span class="js-student-id primary-text-color">7082</span></p>
-                                                        <a class="btn-inline" href="javascript:void(0)">View</a>
+                                                        <div class="section">
+                                                            <p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></p>
+                                                        </div>
+
+                                                        <a class="btn btn-flat" href="javascript:void(0)">View</a>
+                                                        
                                                         <span class="right">
-                                                            <span class="margin-horiz-16 secondary-text-color">
-                                                                <a class="js-marks-given" href="javascript:void(0)">--</a>/100
+                                                            <span class="margin-horiz-16 primary-text-color">
+                                                                <a type="number" class="js-marks-given btn btn-flat" href="javascript:void(0)">--</a> <span class="grey-text">out of</span> <big><?php echo $ass['max_grade']?></big>
                                                             </span>
-                                                            <a class="btn-inline right" href="javascript:void(0)">Return</a>
+                                                            <a class="btn right" href="javascript:void(0)">Return</a>
                                                         </span>
+                                                       
                                                     </li>
                                     <?php
+                                                endif;#end if assignment submission is not returned
                                             endforeach;
+                                        
+                                        else: #No unreturned assignments found ~ display appropriate message
+                                    ?>
+                                        <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
+                                    <?php
+                                        endif;#end if there are any unreturned assignments
                                     ?>
                                                 </ul>
                                             </div>
@@ -429,7 +471,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <?php
                                         else: #assignment submissions not found for this assignment submission
                                     ?>
-                                        <p>No assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
+                                        <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
                                     <?php
                                         endif;
                                     ?>
@@ -439,7 +481,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     endforeach;#end assignment loop
                                 ?>
                                 <!--TEMPLATE_END-->
-                                <li data-assignment-id="--">
+                                
+                                <!--ORIGINAL TEMPLATE-->
+                                <!--<li data-assignment-id="--">
                                     <div class="collapsible-header active">
                                         Algebra 103
                                         <div class="right">
@@ -499,7 +543,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                         </div>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul>-->
+                            <!--END OF ORIGINAL TEMPLATE-->
                             <!--END PERMISSION-->
                         </div>
                     </div>

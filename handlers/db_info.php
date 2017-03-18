@@ -263,36 +263,19 @@ class DbInfo
     //Get single student account by ID
     public static function GetStudentByAccId($acc_id)
     {
-        global $dbCon;
-        $select_query = "SELECT * FROM student_accounts WHERE acc_id=?";
+        $students =  self::SinglePropertyExists("student_accounts","acc_id",$acc_id,"i");
 
-        $prepare_error = "Couldn't prepare query to retrieve student account information by id. <br><br> Technical information : ";
-
-        if($select_stmt = $dbCon->prepare($select_query))
-        {
-            $select_stmt->bind_param("i",$acc_id);
-            $select_stmt->execute();
-
-            $select_result = $select_stmt->get_result();
-
-            #if records could be found
-            if($select_result->num_rows == 0)
+       if(!empty($students) && isset($students))
+       {
+            foreach($students as $student)
             {
-                foreach($select_result as $result)
-                {
-                    return $select_result;#return the records
-                }
-            }   
-            else #if no records were found
-            {
-                return false;
+                return $student;
             }
-        }
-        else #failed to prepare the query for data retrieval
-        {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
-            return null;
-        }
+       } 
+       else
+       {
+           return $students;
+       }
     }
 /*----------------------------------------------------------------------------------------------------------
                     STUDENT  AND OTHER SINGLE PROPERTY VALIDATION QUERIES
@@ -569,6 +552,45 @@ class DbInfo
         }
     }
 
+    //Get the returned assignments ~ returns the returned assignments
+    public static function GetReturnedAssignments($teacher_id)
+    {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM ass_submissions  
+        INNER JOIN assignments
+        ON ass_submissions.ass_id = assignments.ass_id 
+        WHERE ass_submissions.returned=1 AND assignments.teacher_id = $teacher_id";
+
+        if($select_result = $dbCon->query($select_query))
+        {
+            return $select_result;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    //Get the returned assignments ~ returns the returned assignments
+    public static function GetUnreturnedAssignments($teacher_id)
+    {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM ass_submissions  
+        INNER JOIN assignments
+        ON ass_submissions.ass_id = assignments.ass_id 
+        WHERE ass_submissions.returned=0 AND assignments.teacher_id = $teacher_id";
+
+        if($select_result = $dbCon->query($select_query))
+        {
+            return $select_result;
+        }
+        else
+        {
+            return false;
+        }
+    }
     //Checks if the schedule with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function ScheduleExists($schedule_id)
     {
