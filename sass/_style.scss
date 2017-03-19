@@ -769,6 +769,7 @@ a.btn-skip-question {
 
 .collapsible-header .right .badge {
 	padding: 4px 8px;
+    position: relative;
 }
 a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
     color: $card-link-color;

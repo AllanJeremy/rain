@@ -446,7 +446,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                     <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
                                                                     <span class="right">
                                                                         <span class="margin-horiz-16 primary-text-color">
-                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>
+                                                                            <input type="number" maxlength="<?php echo $ass['max_grade']?>" data-max-grade="<?php echo $ass['max_grade']?>"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
                                                                             <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
                                                                         </span>
                                                                         <a class="btn btn-small right" href="javascript:void(0)">Return</a>

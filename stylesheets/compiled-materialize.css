@@ -10410,26 +10410,27 @@ a.btn-skip-question {
 /* line 770, ../sass/_style.scss */
 .collapsible-header .right .badge {
   padding: 4px 8px;
+  position: relative;
 }
 
-/* line 773, ../sass/_style.scss */
+/* line 774, ../sass/_style.scss */
 a.btn-inline:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
   color: #ffab40;
   margin-right: 20px;
   transition: color .3s ease;
   text-transform: uppercase;
 }
-/* line 779, ../sass/_style.scss */
+/* line 780, ../sass/_style.scss */
 a.btn-inline:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating):hover {
   color: #ffd8a6;
 }
 
-/* line 782, ../sass/_style.scss */
+/* line 783, ../sass/_style.scss */
 .primary-text-color {
   color: #781822 !important;
 }
 
-/* line 785, ../sass/_style.scss */
+/* line 786, ../sass/_style.scss */
 .secondary-text-color, .action-text-color {
   color: #d8b759 !important;
 }
