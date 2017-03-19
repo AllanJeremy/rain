@@ -21,6 +21,21 @@
 
 /* Text inputs */
 
+
+input.browser-default {
+    height: auto;
+    width: auto;
+    max-width: 50px;
+    line-height: 2rem;
+    text-align: right;
+    margin: 0 !Important;
+    background-color: rgba(0, 0, 0, 0.06);
+    
+    .inline-input {
+        
+    }
+}
+
 input:not([type]),
 input[type=text],
 input[type=password],
