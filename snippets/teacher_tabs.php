@@ -319,7 +319,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 $count++;#increment the iterator named $count
                         ?>
                         <!--CARD_TEMPLATE_START-->
-                        <div class="col s6 m3  card-col <?php echo $selected_class;?>">
+                        <div class="col s12 m6 l4 card-col <?php echo $selected_class;?>">
                             <div class=" card tiny <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" data-content-trigger="<?php echo $container_id;?>">
                                 <div class="card-content row">
                                     <span class="card-title white-text truncate col s8">
@@ -440,20 +440,18 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                      <!--Assignment submissions 
                                                         TODO: consider making this full width
                                                      -->
-                                                    <li class="col s12 m6 pad-8">
-                                                        <div class="section">
-                                                            <p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></p>
+                                                    <li class="col s12 pad-8">
+                                                        <div class="section container">
+                                                            <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
+                                                            <span class="right">
+                                                                <span class="margin-horiz-16 primary-text-color">
+                                                                    <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>
+                                                                    <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
+                                                                </span>
+                                                                <a class="btn btn-small right" href="javascript:void(0)">Return</a>
+                                                            </span>
                                                         </div>
 
-                                                        <a class="btn btn-flat" href="javascript:void(0)">View</a>
-                                                        
-                                                        <span class="right">
-                                                            <span class="margin-horiz-16 primary-text-color">
-                                                                <a type="number" class="js-marks-given btn btn-flat" href="javascript:void(0)">--</a> <span class="grey-text">out of</span> <big><?php echo $ass['max_grade']?></big>
-                                                            </span>
-                                                            <a class="btn right" href="javascript:void(0)">Return</a>
-                                                        </span>
-                                                       
                                                     </li>
                                     <?php
                                                 endif;#end if assignment submission is not returned
@@ -1165,13 +1163,66 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
             <script>
                 $(document).ready(function(){
+                    /*Validate an input to check if it is a number. WORKING*/
+                    function ValidateNumberInput(input,max,min)
+                    {
+                        input = parseInt(input,10);//parse the input as a decimal (base 10) number
+                        
+                        min = (typeof min !== 'undefined' ? min : 0);//set the value of min to 0 if it is not already set
+
+                        //If the input is a number ~ run this
+                        if(!isNaN(input))
+                        {
+                            //If input is greater than max, make it equal to max
+                            if(input>max)
+                                input=max;
+                            elseif(input<min)//If input is less than min, make it equal to min
+                                input=min;
+                        }
+                        else //Input is not a number
+                        {
+                            input=min;
+                        }
+
+                        return input;
+                    }
                     
-                    //Create assignment form submitted
+                    /*Create assignment form submitted*/
                     $("#createAssignmentForm").submit(function(e){
                         
-                        e.preventDefault();//Prevent page from reloading
-                        alert("Form submitted.\nFile data is ",$("#assDueDate").val());
+                        e.preventDefault();/*Prevent page from reloading*/
+                        console.log("Form submitted.\nFile data is ",$("#assDueDate").val());
                         
                     });
+                    
+                    /*DOM cache for selector for the editable items*/
+                    var $editable = $(".editable");
+
+                    /*Bind contentchange event to the editable items ~ this event will be triggered when content changes*/
+                    $editable.bind( "contentchange", function(){
+                        alert("Changed");
+                    });
+                    
+                    /*Change state to editable for editable inputs on click*/
+                    $editable.click(function(){
+                        $(this).attr("contenteditable","true");
+                        $(this).keydown(function(e) {
+                            if (e.keyCode == 13) {
+                                e.preventDefault();
+                                $(this).val('');
+                                return false;
+                            }
+                        });
+                    });
+                    /*Anytime the editable input changes, ensure it is not more than 3 characters(max input is 999 at its most extreme)*/
+
+                    /*When the editable loses focus*/
+                    $editable.on("DOMSubtreeModified",function(){
+                        var $max_grade = $(this).attr("data-max-grade");
+
+                        $input = ValidateNumberInput($input,$max_grade);//Update the input to be a validated input
+                        $(this).text($input);
+                    });
+                    
                 });
             </script>
