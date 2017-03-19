@@ -446,11 +446,11 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                     <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
                                                                     <span class="right">
                                                                         <span class="margin-horiz-16 primary-text-color">
-                                                                            <input type="number" maxlength="<?php echo $ass['max_grade']?>" data-max-grade="<?php echo $ass['max_grade']?>"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+                                                                            <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
 <!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
                                                                             <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
                                                                         </span>
-                                                                        <a class="btn btn-small right" href="javascript:void(0)">Return</a>
+                                                                        <a class="btn btn-small right" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student">Return</a>
                                                                     </span>
                                                                 </div>
 
@@ -1175,6 +1175,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     var selected_class = "selected"; //css class used for selected class
                     var $ass_classroom_card = ".ass-classroom-card"; //css selector for an assignment submission classroom card ~ cards that appear at the top
                     var $class_ass_container = ".classroom-ass-container"; //css selector for class_assignment container
+                    var $ass_grade_achieved = ".ass-grade-achieved";//css selector for grade achieved for an assignment submission
 
                     //Hide all assignment containers
                     function HideAllAssContainers()
@@ -1214,27 +1215,19 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     ShowActiveAssContainer();
 
                     /*Validate an input to check if it is a number. WORKING*/
-                    function ValidateNumberInput(input,max,min)
+                    function ValidateAssGradeInput($ass_grade_input)
                     {
-                        input = parseInt(input,10);//parse the input as a decimal (base 10) number
-                        
-                        min = (typeof min !== 'undefined' ? min : 0);//set the value of min to 0 if it is not already set
+                        var min = parseInt($ass_grade_input.attr("min"));//Minimum valid input
+                        var max = parseInt($ass_grade_input.attr("max"));//Maximum valid input
+                        var curr_val = $ass_grade_input.val();
 
-                        //If the input is a number ~ run this
-                        if(!isNaN(input))
-                        {
-                            //If input is greater than max, make it equal to max
-                            if(input>max)
-                                input=max;
-                            elseif(input<min)//If input is less than min, make it equal to min
-                                input=min;
-                        }
-                        else //Input is not a number
-                        {
-                            input=min;
-                        }
+                        //Regulate the current value
+                        if(curr_val>max)
+                            curr_val=max;
+                        else if(curr_val<min)//If input is less than min, make it equal to min
+                            curr_val=min;
 
-                        return input;
+                        return curr_val;
                     }
                     
                     /*Create assignment form submitted*/
@@ -1245,34 +1238,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         
                     });
                     
-                    /*DOM cache for selector for the editable items*/
-                    var $editable = $(".editable");
-
-                    /*Bind contentchange event to the editable items ~ this event will be triggered when content changes*/
-                    $editable.bind( "contentchange", function(){
-                        alert("Changed");
+                    /*When the value of the assignment grade changes*/
+                    $($ass_grade_achieved).change(function(){
+                        var curr_val = ValidateAssGradeInput($(this));//Current value
+                        $(this).val(curr_val);
                     });
                     
-                    /*Change state to editable for editable inputs on click*/
-                    $editable.click(function(){
-                        $(this).attr("contenteditable","true");
-                        $(this).keydown(function(e) {
-                            if (e.keyCode == 13) {
-                                e.preventDefault();
-                                $(this).val('');
-                                return false;
-                            }
-                        });
-                    });
-                    /*Anytime the editable input changes, ensure it is not more than 3 characters(max input is 999 at its most extreme)*/
-
-                    /*When the editable loses focus*/
-                    $editable.on("DOMSubtreeModified",function(){
-                        var $max_grade = $(this).attr("data-max-grade");
-
-                        $input = ValidateNumberInput($input,$max_grade);//Update the input to be a validated input
-                        $(this).text($input);
-                    });
+                    /*Returning assignments to students*/
                     
                 });
             </script>
