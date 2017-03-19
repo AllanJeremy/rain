@@ -319,8 +319,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 $count++;#increment the iterator named $count
                         ?>
                         <!--CARD_TEMPLATE_START-->
-                        <div class="col s12 m6 l4 card-col <?php echo $selected_class;?>">
-                            <div class=" card tiny <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" data-content-trigger="<?php echo $container_id;?>">
+                        <div class="col s12 m6 l4 card-col ass-classroom-card <?php echo $selected_class;?>" data-content-trigger="<?php echo $container_id;?>">
+                            <div class=" card tiny <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" >
                                 <div class="card-content row">
                                     <span class="card-title white-text truncate col s8">
                                         <?php echo $classroom['class_name']?>
@@ -348,213 +348,220 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             
                             #assignments in this classroom
                             $ass_in_classroom = DbInfo::GetTeacherAssInClass($class_id,$loggedInTeacherId);
-
+                    ?>
+                        <div class="row classroom-ass-container hide" id="<?php echo $container_id;?>">
+                    <?php
                             //If there are any assignments in the classroom, display them, if not display appropriate message
                             if($ass_in_classroom):
                     ?>
-                    <div class="row classroom-ass-container" id="<?php echo $container_id;?>">
-                        <div class="col s12" id="header">
-                            <p class="title">Assignments for <i><?php echo $class_name;?></i></p>
-                        </div>
-                        <div class="col s12 body">
-                            <!--PERMISSION-->
-                            <ul class="collapsible popout" data-collapsible="accordion">
-                                <?php
-                                    //Returned assignments
-                                    $returned_ass = DbInfo::GetReturnedAssignments($loggedInTeacherId);
-                                    
-                                    //Unreturned assignments
-                                    $unreturned_ass = DbInfo::GetUnreturnedAssignments($loggedInTeacherId);
-                                        
-                                    //Loop through all assignments and display them
-                                    foreach($ass_in_classroom as $ass):
-                                        $ass_title = $ass["ass_title"];
-                                        $ass_id = $ass["ass_id"];
-                                ?>
-                                <!--TEMPLATE_START-->
-                                <li data-assignment-id="--">
-                                    <div class="collapsible-header ">
-                                        <span><?php echo $ass_title;?></span>
-                                        <div class="right">
-                                            <span class="margin-horiz-8 badge new">4</span>
-                                            <p class="margin-horiz-8 right">
-                                                <span class="js-submitted">10</span> submitted
-                                            </p>
-                                            <p class="margin-horiz-8 right">
-                                                <span class="js-not-submitted">5</span> not submitted
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <!--Assignment submissions-->
-                                    <div class="collapsible-body">
-
-                                    <?php
-                                        $ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id);
-                                        
-                                        //Check if assignment submission exist for this specific assignment
-                                        if($ass_submissions): #if assignment submissions were found
-
-                                            //Check if there are any returned assignments ~ if there are, show the return button
-                                            $returned_btn_disabled = "disabled";
-
-                                            //If there are any returned assignments ~ enable the returned button
-                                            if($returned_ass && $returned_ass->num_rows>0)
-                                            {
-                                                $returned_btn_disabled = "";
-                                            }
-                                    ?>
-                                        <div class="filter-bar pad-8">
-                                            <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
-                                        </div>
-
-                                        <div class="row submitted-assignment-list padding-horiz-16">
-                                            <div class="new-submissions col s12 padding-horiz-8">
-                                                <div class="header ">
-                                                    <p class="pad-8">New submissions</p>
-                                                    <div class="divider margin-horiz-16"></div>
+                                <div class="col s12" id="header">
+                                    <p class="title">Assignments for <i><?php echo $class_name;?></i></p>
+                                </div>
+                                <div class="col s12 body">
+                                    <!--PERMISSION-->
+                                    <ul class="collapsible popout" data-collapsible="accordion">
+                                        <?php
+                                            //Returned assignments
+                                            $returned_ass = DbInfo::GetReturnedAssignments($loggedInTeacherId);
+                                            
+                                            //Unreturned assignments
+                                            $unreturned_ass = DbInfo::GetUnreturnedAssignments($loggedInTeacherId);
+                                                
+                                            //Loop through all assignments and display them
+                                            foreach($ass_in_classroom as $ass):
+                                                $ass_title = $ass["ass_title"];
+                                                $ass_id = $ass["ass_id"];
+                                        ?>
+                                        <!--TEMPLATE_START-->
+                                        <li data-assignment-id="--">
+                                            <div class="collapsible-header ">
+                                                <span><?php echo $ass_title;?></span>
+                                                <div class="right">
+                                                    <span class="margin-horiz-8 badge new">4</span>
+                                                    <p class="margin-horiz-8 right">
+                                                        <span class="js-submitted">10</span> submitted
+                                                    </p>
+                                                    <p class="margin-horiz-8 right">
+                                                        <span class="js-not-submitted">5</span> not submitted
+                                                    </p>
                                                 </div>
-                                                <ul class="row">
-                                    <?php                                            
-                                        //If there are any unreturned assignment submissions
-                                        if($unreturned_ass && $unreturned_ass->num_rows>0):
-                                            //Loop through each assignment submission for this assignment
-                                            foreach($ass_submissions as $ass_sub):
-                                                $student_id = $ass_sub["student_id"];
-                                                $student = DbInfo::GetStudentByAccId($student_id);
+                                            </div>
 
-                                                $student_name = "Unknown student";
-                                                $student_adm_no = "---";
-                                                
-                                                //If the student was found
-                                                if($student)
-                                                {
-                                                    $student_adm_no = $student["adm_no"];
-                                                    $student_name = $student["full_name"];
-                                                }
-                                                
+                                            <!--Assignment submissions-->
+                                            <div class="collapsible-body">
 
-                                                //If the submission is submitted and not returned yet ~ display it
-                                                if($ass_sub["submitted"] && (!$ass_sub["returned"])):
-                                    ?>
-                                                     <!--Assignment submissions 
-                                                        TODO: consider making this full width
-                                                     -->
-                                                    <li class="col s12 pad-8">
-                                                        <div class="section container">
-                                                            <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
-                                                            <span class="right">
-                                                                <span class="margin-horiz-16 primary-text-color">
-                                                                    <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>
-                                                                    <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
-                                                                </span>
-                                                                <a class="btn btn-small right" href="javascript:void(0)">Return</a>
-                                                            </span>
+                                            <?php
+                                                $ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id);
+                                                
+                                                //Check if assignment submission exist for this specific assignment
+                                                if($ass_submissions): #if assignment submissions were found
+
+                                                    //Check if there are any returned assignments ~ if there are, show the return button
+                                                    $returned_btn_disabled = "disabled";
+
+                                                    //If there are any returned assignments ~ enable the returned button
+                                                    if($returned_ass && $returned_ass->num_rows>0)
+                                                    {
+                                                        $returned_btn_disabled = "";
+                                                    }
+                                            ?>
+                                                <div class="filter-bar pad-8">
+                                                    <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
+                                                </div>
+
+                                                <div class="row submitted-assignment-list padding-horiz-16">
+                                                    <div class="new-submissions col s12 padding-horiz-8">
+                                                        <div class="header ">
+                                                            <p class="pad-8">New submissions</p>
+                                                            <div class="divider margin-horiz-16"></div>
                                                         </div>
+                                                        <ul class="row">
+                                            <?php                                            
+                                                //If there are any unreturned assignment submissions
+                                                if($unreturned_ass && $unreturned_ass->num_rows>0):
+                                                    //Loop through each assignment submission for this assignment
+                                                    foreach($ass_submissions as $ass_sub):
+                                                        $student_id = $ass_sub["student_id"];
+                                                        $student = DbInfo::GetStudentByAccId($student_id);
 
-                                                    </li>
-                                    <?php
-                                                endif;#end if assignment submission is not returned
-                                            endforeach;
-                                        
-                                        else: #No unreturned assignments found ~ display appropriate message
-                                    ?>
-                                        <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
-                                    <?php
-                                        endif;#end if there are any unreturned assignments
-                                    ?>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    <?php
-                                        else: #assignment submissions not found for this assignment submission
-                                    ?>
-                                        <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
-                                    <?php
-                                        endif;
-                                    ?>
-                                    </div>
-                                </li>
-                                <?php
-                                    endforeach;#end assignment loop
-                                ?>
-                                <!--TEMPLATE_END-->
-                                
-                                <!--ORIGINAL TEMPLATE-->
-                                <!--<li data-assignment-id="--">
-                                    <div class="collapsible-header active">
-                                        Algebra 103
-                                        <div class="right">
-                                            <span class="margin-horiz-8 badge new">4</span>
-                                            <p class="margin-horiz-8 right">
-                                                <span class="js-submitted">10</span> submitted
-                                            </p>
-                                            <p class="margin-horiz-8 right">
-                                                <span class="js-not-submitted">5</span> not submitted
-                                            </p>
-                                        </div>
-                                    </div>
+                                                        $student_name = "Unknown student";
+                                                        $student_adm_no = "---";
+                                                        
+                                                        //If the student was found
+                                                        if($student)
+                                                        {
+                                                            $student_adm_no = $student["adm_no"];
+                                                            $student_name = $student["full_name"];
+                                                        }
+                                                        
 
-                                    <div class="collapsible-body">
-                                        <div class="filter-bar pad-8">
-                                            <a class="btn btn-small btn-flat">Submitted</a>
-                                        </div>
-                                        <div class="row submitted-assignment-list padding-horiz-16">
-                                            <div class="new-submissions col s12 padding-horiz-8">
-                                                <div class="header ">
-                                                    <p class="pad-8">New submissions</p>
-                                                    <div class="divider margin-horiz-16"></div>
+                                                        //If the submission is submitted and not returned yet ~ display it
+                                                        if($ass_sub["submitted"] && (!$ass_sub["returned"])):
+                                            ?>
+                                                            <!--Assignment submissions 
+                                                                TODO: consider making this full width
+                                                            -->
+                                                            <li class="col s12 pad-8">
+                                                                <div class="section container">
+                                                                    <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
+                                                                    <span class="right">
+                                                                        <span class="margin-horiz-16 primary-text-color">
+                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>
+                                                                            <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
+                                                                        </span>
+                                                                        <a class="btn btn-small right" href="javascript:void(0)">Return</a>
+                                                                    </span>
+                                                                </div>
+
+                                                            </li>
+                                            <?php
+                                                        endif;#end if assignment submission is not returned
+                                                    endforeach;
+                                                
+                                                else: #No unreturned assignments found ~ display appropriate message
+                                            ?>
+                                                <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
+                                            <?php
+                                                endif;#end if there are any unreturned assignments
+                                            ?>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                                <ul class="row">
-                                                    <li class="col s12 m6 pad-8">
-                                                        <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
-                                                        <a class="btn-inline">View</a>
-                                                        <span class="right">
-                                                            <span class="margin-horiz-16 secondary-text-color">
-                                                                <a class="js-marks-given">--</a>/100
-                                                            </span>
-                                                            <a class="btn-inline right">Return</a>
-                                                        </span>
-                                                    </li>
-                                                    <li class="col s12 m6 pad-8">
-                                                        <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
-                                                        <a class="btn-inline">View</a>
-                                                        <span class="right">
-                                                            <span class="margin-horiz-16 secondary-text-color">
-                                                                <a class="js-marks-given">--</a>/100
-                                                            </span>
-                                                            <a class="btn-inline right">Return</a>
-                                                        </span>
-                                                    </li>
-                                                    <li class="col s12 m6 pad-8">
-                                                        <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
-                                                        <a class="btn-inline">View</a>
-                                                        <span class="right">
-                                                            <span class="margin-horiz-16 secondary-text-color">
-                                                                <a class="js-marks-given">--</a>/100
-                                                            </span>
-                                                            <a class="btn-inline right disabled">Return</a>
-                                                        </span>
-                                                    </li>
-                                                </ul>
+                                            <?php
+                                                else: #assignment submissions not found for this assignment submission
+                                            ?>
+                                                <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
+                                            <?php
+                                                endif;
+                                            ?>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>-->
-                            <!--END OF ORIGINAL TEMPLATE-->
-                            <!--END PERMISSION-->
-                        </div>
-                    </div>
-                <?php
-                            else:
-                ?>
-                    <!--No assignments found for this classroom-->
-                        <div class="center">
-                            <h6 class="grey-text flow-text">No assignments were found for the classroom <i><?php echo $class_name;?></i></h6>
+                                        </li>
+                                        <?php
+                                            endforeach;#end assignment loop
+                                        ?>
+                                    </ul>
+                                        <!--TEMPLATE_END-->
+                                        
+                                        <!--ORIGINAL TEMPLATE-->
+                                        <!--<li data-assignment-id="--">
+                                            <div class="collapsible-header active">
+                                                Algebra 103
+                                                <div class="right">
+                                                    <span class="margin-horiz-8 badge new">4</span>
+                                                    <p class="margin-horiz-8 right">
+                                                        <span class="js-submitted">10</span> submitted
+                                                    </p>
+                                                    <p class="margin-horiz-8 right">
+                                                        <span class="js-not-submitted">5</span> not submitted
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="collapsible-body">
+                                                <div class="filter-bar pad-8">
+                                                    <a class="btn btn-small btn-flat">Submitted</a>
+                                                </div>
+                                                <div class="row submitted-assignment-list padding-horiz-16">
+                                                    <div class="new-submissions col s12 padding-horiz-8">
+                                                        <div class="header ">
+                                                            <p class="pad-8">New submissions</p>
+                                                            <div class="divider margin-horiz-16"></div>
+                                                        </div>
+                                                        <ul class="row">
+                                                            <li class="col s12 m6 pad-8">
+                                                                <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
+                                                                <a class="btn-inline">View</a>
+                                                                <span class="right">
+                                                                    <span class="margin-horiz-16 secondary-text-color">
+                                                                        <a class="js-marks-given">--</a>/100
+                                                                    </span>
+                                                                    <a class="btn-inline right">Return</a>
+                                                                </span>
+                                                            </li>
+                                                            <li class="col s12 m6 pad-8">
+                                                                <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
+                                                                <a class="btn-inline">View</a>
+                                                                <span class="right">
+                                                                    <span class="margin-horiz-16 secondary-text-color">
+                                                                        <a class="js-marks-given">--</a>/100
+                                                                    </span>
+                                                                    <a class="btn-inline right">Return</a>
+                                                                </span>
+                                                            </li>
+                                                            <li class="col s12 m6 pad-8">
+                                                                <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
+                                                                <a class="btn-inline">View</a>
+                                                                <span class="right">
+                                                                    <span class="margin-horiz-16 secondary-text-color">
+                                                                        <a class="js-marks-given">--</a>/100
+                                                                    </span>
+                                                                    <a class="btn-inline right disabled">Return</a>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    
+                                    <!--END OF ORIGINAL TEMPLATE-->
+                                    <!--END PERMISSION-->
+                                </div>
+                        <?php
+                            else:#No assignments found in classroom
+                        ?>
+                        <!--No assignments found for this classroom-->
+                            <div class="center">
+                                <h6 class="grey-text flow-text">No assignments were found for the classroom <i><?php echo $class_name;?></i></h6>
+                            </div>
+
                         </div>
                 <?php
                             endif;
+                    //Close row assignment container class-ass-container
+                ?>
+                    </div>
+                <?php
                         endforeach;
                     else:#classrooms not found
                 ?>
@@ -1163,6 +1170,48 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
             <script>
                 $(document).ready(function(){
+                    /*GLOBAL VARIABLES*/
+                    var selected_class = "selected"; //css class used for selected class
+                    var $ass_classroom_card = ".ass-classroom-card"; //css selector for an assignment submission classroom card ~ cards that appear at the top
+                    var $class_ass_container = ".classroom-ass-container"; //css selector for class_assignment container
+
+                    //Hide all assignment containers
+                    function HideAllAssContainers()
+                    {
+                        $(".classroom-ass-container").addClass("hide");
+                    }
+
+                    //Show only the assignments of the active classroom
+                    function ShowActiveAssContainer()
+                    {
+                        HideAllAssContainers();//Hide all assignment containers
+
+                        //Display the appropriate container for the currently selected classroom card
+                        var active_container_id = $($ass_classroom_card+".selected").attr("data-content-trigger");
+                        
+                        $($class_ass_container+"#"+active_container_id).removeClass("hide");
+                    }
+
+                    /*When a classroom card is clicked*/
+                    $($ass_classroom_card).click(function(){
+                        
+                        var trigger_id = $(this).attr("data-content-trigger");
+                        var $child_card_selector = ".card.tiny";
+                        
+                        //Remove class from all the other cards as well as their child cards
+                        $($ass_classroom_card).removeClass(selected_class);
+                        $($ass_classroom_card).children($child_card_selector).removeClass(selected_class);
+
+                        //Add the class to the clicked card as well as its immediate child
+                        $(this).children($child_card_selector).addClass(selected_class);
+                        $(this).addClass(selected_class);
+
+                        //Display assignments for the currently clicked card
+                        ShowActiveAssContainer();
+                    });
+                    
+                    ShowActiveAssContainer();
+
                     /*Validate an input to check if it is a number. WORKING*/
                     function ValidateNumberInput(input,max,min)
                     {
