@@ -130,7 +130,7 @@ var AssignmentEvents = function () {
                             var action2 = 'morph-in';
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                                e.preventDefault();
                                 addToForm(action2, hook, modal_id); //when add students is clicked//
 
                             }); //when add students is clicked//
@@ -225,7 +225,7 @@ var AssignmentEvents = function () {
                             var action2 = 'morph-in';
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                                e.preventDefault();
                                 addToForm(action2, hook, modal_id); //when add students is clicked//
 
                             }); //when add students is clicked//
@@ -303,7 +303,11 @@ var AssignmentEvents = function () {
             if (typeof newAssignmentClassIds === 'undefined') {
             
                 newAssignmentClassIds = 0;
+            } else {
+                newAssignmentClassIds = newAssignmentClassIds.slice(0,-1);
+                newAssignmentClassIds = newAssignmentClassIds.split(',');
             }
+
             if (typeof totalClassrooms === 'undefined') {
 
                 totalClassrooms = 0;
@@ -343,13 +347,9 @@ var AssignmentEvents = function () {
                         var returndata = jQuery.parseJSON(returndata),
                             message = '';
 
-                        if (returndata.failedFiles === '' && returndata.result) {
+                        if (returndata.failedFiles === '' ) {
                             message = '<span class="green-text name text-lighten-4">Success in creating the assignment.</span>';
-                        } else if (returndata.result === false || returndata.result === null) {
-                            message = '<span class="red-text name text-lighten-5">Error in creating the assignment. Kindly try again later.</span>';
-                        }
-
-                        if (returndata.failedFiles !== '') {
+                        } else {
                             $.each(returndata.failedFiles, function (b,k) {
                                 
                                 message = '<span class="red-text name text-lighten-5">Error in uploading ' + newAssignmentResources[k].name + '</span>';
@@ -357,10 +357,7 @@ var AssignmentEvents = function () {
                                 Materialize.toast(message, 5000, '', function () {
                                     console.log('toast on file upload error');
                                 });
-
                             });
-                            
-                            return;
                         }
                         
                         // Materialize.toast(message, displayLength, className, completeCallback);
@@ -368,6 +365,26 @@ var AssignmentEvents = function () {
                             console.log('toast on mysql error');
                         });
                         
+                        var c = 0;
+                        for (var l =0; l < returndata.result.length; l++) {
+                            if(!returndata.result[l]) {
+                                message = '<span class="red-text name text-lighten-5">Error in creating the assignment for class ' + newAssignmentClassIds[l] + '.</span>';
+                                // Materialize.toast(message, displayLength, className, completeCallback);
+                                Materialize.toast(message, 5000, '', function () {
+                                    console.log('toast on file upload error');
+                                });
+                                c++;
+                            }
+                        }
+
+                        if(c === 0) {
+                            message = '<span class="green-text name text-lighten-4">Success in creating the assignment.</span>';
+                            // Materialize.toast(message, displayLength, className, completeCallback);
+                            Materialize.toast(message, 5000, '', function () {
+                                console.log('toast on file upload success');
+                            });
+                        }
+
                     },
                     error: function (e) {
                         console.log("Not Cool");
