@@ -44,7 +44,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         $classrooms = DbInfo::GetSpecificTeacherClassrooms($loggedInTeacherId);
                         if ($classrooms):   
                      ?>
-                    <div class="row"id="classroomCardList" >
+                    <div class="row" id="classroomCardList">
                     <?php
 
                        $reversed_classrooms = DbInfo::ReverseResult($classrooms);#an array that has the reversed values of the array, newest is the first
@@ -933,7 +933,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
 
                                 <div class=" input-field col s12 m6">
-                                    <select id="createTestDifficulty" name="create_test_difficulty" class="validate" required>
+                                    <select id="createTestDifficulty" name="create_test_difficulty" class="validate">
                                         <option value="Very Easy">Very Easy</option>
                                         <option value="Easy">Easy</option>
                                         <option value="Moderate">Moderate</option>
@@ -1245,6 +1245,6 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     });
                     
                     /*Returning assignments to students*/
-                    
+
                 });
             </script>

@@ -721,7 +721,7 @@ class Test
 
 
                 <div class=" input-field col s12 m6">
-                    <select id="editTestDifficulty" name="edit_test_difficulty" class="validate" required>
+                    <select id="editTestDifficulty" name="edit_test_difficulty" class="validate">
                         <option value="Very Easy">Very Easy</option>
                         <option value="Easy">Easy</option>
                         <option value="Moderate">Moderate</option>
