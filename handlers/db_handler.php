@@ -1498,50 +1498,43 @@ if(isset($_POST['action'])) {
             $postData = json_decode($_POST['data']);
 
             //var_dump($postData);
+
             $attachments = '';
+            $result = array();
 
             for($g = 0; $g < count($_FILES); $g++){
                 $attachments .= $_FILES['file-'.$g]['name'] . ',';
             }
 
-            $args = array (
-                "ass_id" => (empty($_POST['assignmentid']) ? 0 : $_POST['assignmentid']),
-                "teacher_id"=>$_SESSION['admin_acc_id'],
-                "ass_title"=> $postData->assignmenttitle,
-                "ass_description"=>$postData->assignmentdescription,
-                "class_id"=>$postData->classids,
-                "due_date"=>$postData->duedate,
-                "attachments"=>$attachments,
-                "max_grade"=>$postData->maxgrade,
-                "comments_enabled"=>$postData->cancomment
-            );
+            for($h = 0; $h < count($postData->classids); $h++) {
+
+                $args = array (
+                    "ass_id" => (empty($_POST['assignmentid']) ? 0 : $_POST['assignmentid']),
+                    "teacher_id"=>$_SESSION['admin_acc_id'],
+                    "ass_title"=> $postData->assignmenttitle,
+                    "ass_description"=>$postData->assignmentdescription,
+                    "class_id"=>$postData->classids[$h],
+                    "due_date"=>$postData->duedate,
+                    "attachments"=>$attachments,
+                    "max_grade"=>$postData->maxgrade,
+                    "comments_enabled"=>$postData->cancomment
+                );
+
+                $r = DbHandler::UpdateAssignmentInfo($args);
+
+                array_push($result,$r);
+            }
 
             //Attempt uploading the files first
             $uploader = new EsomoUploader();
             $failed_files = $uploader->UploadFile('assignment');
 
+            $returnresult = array (
+                'failedFiles' => $failed_files,
+                'result' => $result
+            );
 
-            $result = DbHandler::UpdateAssignmentInfo($args);
-
-            if($result) {#true
-                $returnresult = array (
-                    'failedFiles' => $failed_files,
-                    'result' => true
-                );
-                echo json_encode($returnresult);
-            } elseif(!$result) {#false
-                $returnresult = array (
-                    'failedFiles' => $failed_files,
-                    'result' => false
-                );
-                echo json_encode($returnresult);
-            } else {#null
-                $returnresult = array (
-                    'failedFiles' => $failed_files,
-                    'result' => null
-                );
-                echo json_encode($returnresult);
-            }
+            echo json_encode($returnresult);
 
             break;
         default:

@@ -481,72 +481,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             endforeach;#end assignment loop
                                         ?>
                                     </ul>
-                                        <!--TEMPLATE_END-->
-                                        
-                                        <!--ORIGINAL TEMPLATE-->
-                                        <!--<li data-assignment-id="--">
-                                            <div class="collapsible-header active">
-                                                Algebra 103
-                                                <div class="right">
-                                                    <span class="margin-horiz-8 badge new">4</span>
-                                                    <p class="margin-horiz-8 right">
-                                                        <span class="js-submitted">10</span> submitted
-                                                    </p>
-                                                    <p class="margin-horiz-8 right">
-                                                        <span class="js-not-submitted">5</span> not submitted
-                                                    </p>
-                                                </div>
-                                            </div>
 
-                                            <div class="collapsible-body">
-                                                <div class="filter-bar pad-8">
-                                                    <a class="btn btn-small btn-flat">Submitted</a>
-                                                </div>
-                                                <div class="row submitted-assignment-list padding-horiz-16">
-                                                    <div class="new-submissions col s12 padding-horiz-8">
-                                                        <div class="header ">
-                                                            <p class="pad-8">New submissions</p>
-                                                            <div class="divider margin-horiz-16"></div>
-                                                        </div>
-                                                        <ul class="row">
-                                                            <li class="col s12 m6 pad-8">
-                                                                <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
-                                                                <a class="btn-inline">View</a>
-                                                                <span class="right">
-                                                                    <span class="margin-horiz-16 secondary-text-color">
-                                                                        <a class="js-marks-given">--</a>/100
-                                                                    </span>
-                                                                    <a class="btn-inline right">Return</a>
-                                                                </span>
-                                                            </li>
-                                                            <li class="col s12 m6 pad-8">
-                                                                <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
-                                                                <a class="btn-inline">View</a>
-                                                                <span class="right">
-                                                                    <span class="margin-horiz-16 secondary-text-color">
-                                                                        <a class="js-marks-given">--</a>/100
-                                                                    </span>
-                                                                    <a class="btn-inline right">Return</a>
-                                                                </span>
-                                                            </li>
-                                                            <li class="col s12 m6 pad-8">
-                                                                <p data-student-id="" class="no-padding student-name no-margin">Gabriel Muchiri, <span class="js-student-id primary-text-color">7082</span></p>
-                                                                <a class="btn-inline">View</a>
-                                                                <span class="right">
-                                                                    <span class="margin-horiz-16 secondary-text-color">
-                                                                        <a class="js-marks-given">--</a>/100
-                                                                    </span>
-                                                                    <a class="btn-inline right disabled">Return</a>
-                                                                </span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    
-                                    <!--END OF ORIGINAL TEMPLATE-->
-                                    <!--END PERMISSION-->
                                 </div>
                         <?php
                             else:#No assignments found in classroom

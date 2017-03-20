@@ -1206,7 +1206,7 @@ var ClassroomEvents = function () {
                             var action2 = 'morph-in';
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                                e.preventDefault();
                                 addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                             }); //when add students is clicked//
@@ -1306,7 +1306,7 @@ var ClassroomEvents = function () {
                             var action2 = 'morph-in';
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                                e.preventDefault();
                                 addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                             }); //when add students is clicked//
@@ -1456,7 +1456,7 @@ var ClassroomEvents = function () {
                         var action2 = 'morph-in';
 
                         $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                            e.preventDefault();
                             addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                         }); //when add students is clicked//
@@ -1553,7 +1553,7 @@ var ClassroomEvents = function () {
                         var action2 = 'morph-in';
 
                         $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                            e.preventDefault();
                             addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                         }); //when add students is clicked//
@@ -1689,7 +1689,7 @@ var ClassroomEvents = function () {
                         var action2 = 'morph-in';
 
                         $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
-
+                            e.preventDefault();
                             addToForm(action2, hook, modal_id, 0); //when add or remove students is clicked//
                             
                         }); //when add or remove students is clicked//
