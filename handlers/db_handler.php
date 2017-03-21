@@ -1428,7 +1428,6 @@ if(isset($_POST['action'])) {
             $failed_files = $uploader->UploadFile('resource');     
             
             $file_name = "";
-            //var_dump($failed_files);
 
             for($f = 0; $f < count($data); $f++) 
             {
@@ -1454,10 +1453,10 @@ if(isset($_POST['action'])) {
             }
 
             if(count($failed_files) > 0) {//If inserting the data to the database is true, upload file
-                echo json_encode(['failed_files' => $failed_files, 'status' => true]);
+                echo json_encode(['failed_files' => $failed_files, 'status' => false]);
 
             } else {
-                echo json_encode(['failed_files' => $failed_files, 'status' => false]);
+                echo json_encode(['failed_files' => $failed_files, 'status' => true]);
             }
 
             unset($_FILES);
