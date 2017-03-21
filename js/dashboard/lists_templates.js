@@ -328,7 +328,8 @@ var Lists_Templates = function () {
         templateOutput += '<div id="resourcesTotalInfo" class="col m6 s12">';
         templateOutput += '<h6 class=" op-4">To upload</h6>';
         templateOutput += '<h4 class="white-text"><span id="totalResources">0</span> files</h4>';
-        templateOutput += '<br><div class="progress hide" style="width:50%;"><div class="indeterminate"></div></div>';
+        templateOutput += '<br><div class="progress" style="width:0%;"><div class="determinate" style="width:0%;"></div></div>';
+        templateOutput += '<h6 class="num-progress hide secondary-text-color"><i>Uploading <span class="js-num-progress">0%</span></i></h6>';
         templateOutput += '</div>';
         templateOutput += '<div class="col m6 s12">';
         templateOutput += '<form id="createResourcesForm">';

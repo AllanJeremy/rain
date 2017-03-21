@@ -142,17 +142,32 @@ var ResourcesEvents = function () {
             $.ajax({
                 url: "handlers/db_handler.php",
                 data: formData,
+                xhr: function() {
+                    var myXhr = $.ajaxSettings.xhr();
+                        if(myXhr.upload){
+                            myXhr.upload.addEventListener('progress', progress, false);
+                        }
+                        return myXhr;
+                },
                 cache: false,
                 contentType: false,
                 processData: false,
                 type: 'POST',
                 beforeSend : function () {
                     //Make the loader visible
-                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').removeClass('hide');
+                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .num-progress').removeClass('hide');
+                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html('0%');
+
+                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').animate({
+                        width:'50%'
+                    },300);
+                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').animate({
+                        width:'0%'
+                    },300);
 
                 },
                 success: function (returndata) {
-                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').addClass('hide');
+
                     console.log("Cool");
                     console.log(returndata);
                     //$('#uploadResource').closeModal();
@@ -361,6 +376,33 @@ var ResourcesEvents = function () {
         });
 
 
+    };
+
+    //--------------------------------
+
+    var progress = function (e) {
+
+        if(e.lengthComputable){
+            var max = e.total;
+            var current = e.loaded;
+
+            var Percentage = Math.ceil((current * 100)/max);
+            console.log(Percentage + '%');
+
+            $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html(Percentage + '%');
+            $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').css({
+                width : Percentage + '%'
+            });
+
+            if(Percentage >= 100)
+            {
+
+                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html(Percentage + '%');
+                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .num-progress').addClass('hide');
+
+                // process completed
+            }
+        }
     };
 
     //--------------------------------
