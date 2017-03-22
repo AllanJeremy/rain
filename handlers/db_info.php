@@ -553,7 +553,7 @@ class DbInfo
     }
 
     //Get the returned assignments ~ returns the returned assignments
-    public static function GetReturnedAssignments($teacher_id)
+    public static function GetReturnedAssSubmissions($teacher_id)
     {
         global $dbCon;
 
@@ -573,7 +573,7 @@ class DbInfo
     }
 
     //Get the returned assignments ~ returns the returned assignments
-    public static function GetUnreturnedAssignments($teacher_id)
+    public static function GetUnreturnedAssSubmissions($teacher_id)
     {
         global $dbCon;
 

@@ -362,10 +362,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <ul class="collapsible popout" data-collapsible="accordion">
                                         <?php
                                             //Returned assignments
-                                            $returned_ass = DbInfo::GetReturnedAssignments($loggedInTeacherId);
+                                            $returned_ass = DbInfo::GetReturnedAssSubmissions($loggedInTeacherId);
                                             
                                             //Unreturned assignments
-                                            $unreturned_ass = DbInfo::GetUnreturnedAssignments($loggedInTeacherId);
+                                            $unreturned_ass = DbInfo::GetUnreturnedAssSubmissions($loggedInTeacherId);
                                                 
                                             //Loop through all assignments and display them
                                             foreach($ass_in_classroom as $ass):
@@ -445,8 +445,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                 TODO: consider making this full width
                                                             -->
                                                             <li class="col s12 pad-8 ass-submission-container">
+
                                                                 <div class=" container">
-                                                                    <p data-student-id="" class=" no-padding student-name no-margin">
+                                                                    <p data-student-id="" class=" pad-8 student-name no-margin">
                                                                         <a class="black-text" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></a>
                                                                     </p>
                                                                     <div class="input-field inline comment">
@@ -455,16 +456,19 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                             <i class="material-icons">comment</i>
                                                                         </label>
                                                                     </div>
-                                                                    <span class="right">
-                                                                        <span class="margin-horiz-16 primary-text-color">
-                                                                            <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
-<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
-                                                                        <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
-                                                                        </span>
-                                                                        <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
-                                                                    </span>
-                                                                </div>
 
+                                                                    <div class="section container">
+                                                                        <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></p></a>
+                                                                        <span class="right">
+                                                                            <span class="margin-horiz-16 primary-text-color">
+                                                                                <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+    <!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
+                                                                            <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
+                                                                            </span>
+                                                                            <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
                                                             </li>
                                             <?php
                                                         endif;#end if assignment submission is not returned
@@ -486,8 +490,50 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             <?php
                                                 endif;
                                             ?>
+                                                <!--Returned assignment submissions-->
+                                                <div class="row returned-assignment-list padding-horiz-16">
+                                                    <div class="returned-submissions col s12 padding-horiz-8">
+                                                        <div class="header ">
+                                                            <p class="pad-8">Returned submissions</p>
+                                                            <div class="divider margin-horiz-16"></div>
+                                                        </div>
+                                                        <ul class="row returned-ass">
+                                                            <?php
+                                                                $no_returned_msg = "No returned assignments found";
+                                                                if($returned_ass && $returned_ass->num_rows>0):
+                                                                    foreach($returned_ass as $sub):
+                                                                        $student = DbInfo::GetStudentByAccId($sub["student_id"]);
+
+                                                                        $student_name = "Unknown student";
+                                                                        $student_adm_no = "---";
+
+                                                                        //If the student was found
+                                                                        if($student)
+                                                                        {
+                                                                            $student_adm_no = $student["adm_no"];
+                                                                            $student_name = $student["full_name"];
+                                                                        }
+                                                            ?>
+                                                                    <li class="container col s12 m6">
+                                                                        <br><?php echo $student_name." (Adm No. $student_adm_no) "?>
+                                                                        <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                                    </li>
+                                                            <?php
+                                                                    endforeach;
+                                                                else:
+                                                            ?>
+                                                                <p><?php echo $no_returned_msg;?></p>
+                                                            <?php
+                                                                endif;
+                                                            ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </li>
+
+
                                         <?php
                                             endforeach;#end assignment loop
                                         ?>
@@ -1215,6 +1261,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 if(response["return_status"]==1)
                                 {
                                     $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
+                                    var $grade_input = $parent_ul.children(".ass-grade-achieved");
+                                    var grade = $grade_input.val();
+                                    var max_grade = $grade_input.attr("max");
+
                                     //Remove the submission from the DOM
                                     $self.parents($ass_submission_container).remove();
                                     
@@ -1225,6 +1275,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     {
                                         $parent_ul.html("<p>No new assignment submissions were found.</p>");
                                     }
+                                    console.log($(".returned-submissions").children("ul.returned-ass"));
+                                    //Add the submitted info to the DOM under the returned assignments section
+                                    $(".returned-submissions").children("ul.returned-ass",function(){
+
+                                        //Append html
+                                        $(this).append("<br><li class='col s12 s6'>"+student_name+" <span class='chip'>"+grade+"/"+max_grade+"</span></li>");
+                                    });
+
+                                    //Display success message
                                     Materialize.toast(success_message,toast_time);
                                     
                                 }
