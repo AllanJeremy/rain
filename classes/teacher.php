@@ -191,19 +191,11 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
                 $grade = 0;
             }
 
-            
             $update_query = "UPDATE ass_submissions SET grade=? WHERE submission_id=?";
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                $update_stmt->bind_param("ii",$submission_id,$grade);
-                if($update_stmt->execute())
-                {
-                    return true;#successfully executed query
-                }
-                else
-                {
-                    return false;#failed to execute query
-                }
+                $update_stmt->bind_param("ii",$grade,$submission_id);
+                return($update_stmt->execute());
             }
             else
             {
@@ -224,14 +216,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
             if($update_stmt = $dbCon->prepare($update_query))
             {
                 $update_stmt->bind_param("i",$submission_id);
-                if($update_stmt->execute())
-                {
-                    return true;#successfully executed query
-                }
-                else
-                {
-                    return false;#failed to execute query
-                }
+                return($update_stmt->execute());
             }
             else
             {
@@ -257,14 +242,7 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
                 if($update_stmt = $dbCon->prepare($update_query))
                 {
                     $update_stmt->bind_param("i",$ass_id);
-                    if($update_stmt->execute())
-                    {
-                        return true;#successfully executed query
-                    }
-                    else
-                    {
-                        return false;#failed to execute query
-                    }
+                    return($update_stmt->execute());
                 }
                 else
                 {
@@ -342,7 +320,19 @@ if(isset($_POST['action'])) {
             
             //dddd
             break;
-        
+        case 'ReturnAssSubmission'://Return assignment submission
+            $teacher = new Teacher();
+            
+            //Getting the submission information
+            $data = &$_POST["submission_data"];
+            $submission_id = $data["submission_id"];
+            $grade = $data["grade"];
+            
+            $grade_status = $teacher->GradeAssignment($submission_id,$grade);#grade the assignment 
+            $return_status = $teacher->ReturnAssignment($submission_id);#return the assignment to the Student
+
+            $final_status=array("grade_status"=>$grade_status,"return_status"=>$return_status);
+            echo (json_encode($final_status));
         default:
             return null;
             break;

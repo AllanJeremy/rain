@@ -404,6 +404,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                     {
                                                         $returned_btn_disabled = "";
                                                     }
+
+                                                    $no_submissions_message = "No new assignment submissions were found.";
                                             ?>
                                                 <div class="filter-bar pad-8">
                                                     <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
@@ -416,6 +418,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             <div class="divider margin-horiz-16"></div>
                                                         </div>
                                                         <ul class="row">
+                                                        
                                             <?php                                            
                                                 //If there are any unreturned assignment submissions
                                                 if($unreturned_ass && $unreturned_ass->num_rows>0):
@@ -441,16 +444,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             <!--Assignment submissions 
                                                                 TODO: consider making this full width
                                                             -->
-                                                            <li class="col s12 pad-8">
+                                                            <li class="col s12 pad-8 ass-submission-container">
                                                                 <div class="section container">
                                                                     <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
                                                                     <span class="right">
                                                                         <span class="margin-horiz-16 primary-text-color">
                                                                             <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
 <!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
-                                                                            <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
+                                                                        <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
                                                                         </span>
-                                                                        <a class="btn btn-small right" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student">Return</a>
+                                                                        <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
                                                                     </span>
                                                                 </div>
 
@@ -461,7 +464,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                 
                                                 else: #No unreturned assignments found ~ display appropriate message
                                             ?>
-                                                <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
+                                                <p><?php echo $no_submissions_message;?></p>
                                             <?php
                                                 endif;#end if there are any unreturned assignments
                                             ?>
@@ -471,7 +474,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             <?php
                                                 else: #assignment submissions not found for this assignment submission
                                             ?>
-                                                <p>No new assignment submissions found for assignment <i><?php echo $ass_title;?></i></p>
+                                                <p><?php echo $no_submissions_message;?></p>
                                             <?php
                                                 endif;
                                             ?>
@@ -1111,7 +1114,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     var $ass_classroom_card = ".ass-classroom-card"; //css selector for an assignment submission classroom card ~ cards that appear at the top
                     var $class_ass_container = ".classroom-ass-container"; //css selector for class_assignment container
                     var $ass_grade_achieved = ".ass-grade-achieved";//css selector for grade achieved for an assignment submission
-
+                    var $return_ass_submission = ".return-ass-submission";
+                    var $ass_submission_container = ".ass-submission-container";
                     //Hide all assignment containers
                     function HideAllAssContainers()
                     {
@@ -1180,6 +1184,53 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     });
                     
                     /*Returning assignments to students*/
+                    $($return_ass_submission).click(function(){
+                        var $self = $(this);
+                        //Student name
+                        var student_name = $(this).attr("data-student-name");
+                        //Submission data
+                        var sub_id = $(this).attr("data-submission-id");
+                        var sub_grade = $(this).siblings("span").children("input.ass-grade-achieved").val();
+                        var sub_data = {"grade":sub_grade,"submission_id":sub_id};
 
+                        $.post("classes/teacher.php",{"action":"ReturnAssSubmission","submission_data":sub_data},function(response,status){
+                            var success_message = "Successfully returned the assignment to "+student_name;
+                            var failure_message = "Failed to return the assignment to "+student_name;
+                            var toast_time = 2500; //Duration the toast will last
+
+                            response = JSON.parse(response);
+
+                            //Successfully graded the assignment
+                            if(response["grade_status"]==1)
+                            {
+                                //Successfully returned the assignment
+                                if(response["return_status"]==1)
+                                {
+                                    $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
+                                    //Remove the submission from the DOM
+                                    $self.parents($ass_submission_container).remove();
+                                    
+                                    var sub_count = $parent_ul.children("li").length;
+                                    
+                                    //If there are no submissions left in the DOM
+                                    if(sub_count==0)
+                                    {
+                                        $parent_ul.html("<p>No new assignment submissions were found.</p>");
+                                    }
+                                    Materialize.toast(success_message,toast_time);
+                                    
+                                }
+                                else //Failed to return the assignment
+                                {
+                                    Materialize.toast(failure_message+". Error : Successfully graded but failed to return submission",toast_time);
+                                }
+                            }
+                            else
+                            {
+                                Materialize.toast(failure_message+". Error : Failed to grade submission",toast_time);
+                            }
+                        
+                        });
+                    });
                 });
             </script>
