@@ -362,10 +362,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <ul class="collapsible popout" data-collapsible="accordion">
                                         <?php
                                             //Returned assignments
-                                            $returned_ass = DbInfo::GetReturnedAssignments($loggedInTeacherId);
+                                            $returned_ass = DbInfo::GetReturnedAssSubmissions($loggedInTeacherId);
                                             
                                             //Unreturned assignments
-                                            $unreturned_ass = DbInfo::GetUnreturnedAssignments($loggedInTeacherId);
+                                            $unreturned_ass = DbInfo::GetUnreturnedAssSubmissions($loggedInTeacherId);
                                                 
                                             //Loop through all assignments and display them
                                             foreach($ass_in_classroom as $ass):
@@ -446,7 +446,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             -->
                                                             <li class="col s12 pad-8 ass-submission-container">
                                                                 <div class="section container">
-                                                                    <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
+                                                                    <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></p></a>
                                                                     <span class="right">
                                                                         <span class="margin-horiz-16 primary-text-color">
                                                                             <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
@@ -478,8 +478,50 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             <?php
                                                 endif;
                                             ?>
+                                                <!--Returned assignment submissions-->
+                                                <div class="row returned-assignment-list padding-horiz-16">
+                                                    <div class="returned-submissions col s12 padding-horiz-8">
+                                                        <div class="header ">
+                                                            <p class="pad-8">Returned submissions</p>
+                                                            <div class="divider margin-horiz-16"></div>
+                                                        </div>
+                                                        <ul class="row">
+                                                            <?php
+                                                                $no_returned_msg = "No returned assignments found";
+                                                                if($returned_ass && $returned_ass->num_rows>0):
+                                                                    foreach($returned_ass as $sub):
+                                                                        $student = DbInfo::GetStudentByAccId($sub["student_id"]);
+
+                                                                        $student_name = "Unknown student";
+                                                                        $student_adm_no = "---";
+                                                                        
+                                                                        //If the student was found
+                                                                        if($student)
+                                                                        {
+                                                                            $student_adm_no = $student["adm_no"];
+                                                                            $student_name = $student["full_name"];
+                                                                        }
+                                                            ?>
+                                                                    <li class="container col s12 m6">
+                                                                        <br><?php echo $student_name." (Adm No. $student_adm_no) "?> 
+                                                                        <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                                    </li>
+                                                            <?php
+                                                                    endforeach;
+                                                                else:
+                                                            ?>
+                                                                <p><?php echo $no_returned_msg;?></p>
+                                                            <?php
+                                                                endif;                                                            
+                                                            ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            
                                         </li>
+                                        
+
                                         <?php
                                             endforeach;#end assignment loop
                                         ?>
