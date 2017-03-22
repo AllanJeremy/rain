@@ -6580,7 +6580,7 @@ label {
 /* Text inputs */
 /* line 25, ../sass/components/forms/_input-fields.scss */
 input.browser-default {
-  height: auto;
+  height: 2rem !Important;
   width: auto;
   max-width: 50px;
   line-height: 2rem;
@@ -6880,16 +6880,25 @@ textarea.materialize-textarea + label:after {
 .input-field.inline .select-dropdown {
   margin-bottom: 1rem;
 }
-/* line 155, ../sass/components/forms/_input-fields.scss */
+/* line 156, ../sass/components/forms/_input-fields.scss */
+.input-field.comment label {
+  top: 0.3rem;
+}
+/* line 160, ../sass/components/forms/_input-fields.scss */
+.input-field.comment label.active {
+  transform: translateY(0%) !important;
+  margin-left: 8px;
+}
+/* line 168, ../sass/components/forms/_input-fields.scss */
 .input-field.col label {
   left: 0.75rem;
 }
-/* line 159, ../sass/components/forms/_input-fields.scss */
+/* line 172, ../sass/components/forms/_input-fields.scss */
 .input-field.col .prefix ~ label,
 .input-field.col .prefix ~ .validate ~ label {
   width: calc(100% - 3rem - 1.5rem);
 }
-/* line 168, ../sass/components/forms/_input-fields.scss */
+/* line 181, ../sass/components/forms/_input-fields.scss */
 .input-field label {
   color: #9e9e9e;
   position: absolute;
@@ -6898,23 +6907,23 @@ textarea.materialize-textarea + label:after {
   cursor: text;
   transition: .2s ease-out;
 }
-/* line 177, ../sass/components/forms/_input-fields.scss */
+/* line 190, ../sass/components/forms/_input-fields.scss */
 .input-field label.active {
   font-size: 0.8rem;
   transform: translateY(-140%);
 }
-/* line 183, ../sass/components/forms/_input-fields.scss */
+/* line 197, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix {
   position: absolute;
   width: 3rem;
   font-size: 2rem;
   transition: color .2s;
 }
-/* line 189, ../sass/components/forms/_input-fields.scss */
+/* line 203, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix.active {
   color: #d8b759;
 }
-/* line 192, ../sass/components/forms/_input-fields.scss */
+/* line 206, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ input,
 .input-field .prefix ~ textarea,
 .input-field .prefix ~ label,
@@ -6924,19 +6933,19 @@ textarea.materialize-textarea + label:after {
   width: 92%;
   width: calc(100% - 3rem);
 }
-/* line 202, ../sass/components/forms/_input-fields.scss */
+/* line 216, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ label {
   margin-left: 3rem;
 }
 @media only screen and (max-width: 992px) {
-  /* line 205, ../sass/components/forms/_input-fields.scss */
+  /* line 219, ../sass/components/forms/_input-fields.scss */
   .input-field .prefix ~ input {
     width: 86%;
     width: calc(100% - 3rem);
   }
 }
 @media only screen and (max-width: 600px) {
-  /* line 212, ../sass/components/forms/_input-fields.scss */
+  /* line 226, ../sass/components/forms/_input-fields.scss */
   .input-field .prefix ~ input {
     width: 80%;
     width: calc(100% - 3rem);
@@ -6944,29 +6953,29 @@ textarea.materialize-textarea + label:after {
 }
 
 /* Search Field */
-/* line 222, ../sass/components/forms/_input-fields.scss */
+/* line 236, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] {
   display: block;
   line-height: inherit;
   padding-left: 4rem;
   width: calc(100% - 4rem);
 }
-/* line 228, ../sass/components/forms/_input-fields.scss */
+/* line 242, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search]:focus {
   background-color: #fff;
   border: 0;
   box-shadow: none;
   color: #444;
 }
-/* line 234, ../sass/components/forms/_input-fields.scss */
+/* line 248, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search]:focus + label i, .input-field input[type=search]:focus ~ .mdi-navigation-close, .input-field input[type=search]:focus ~ .material-icons {
   color: #444;
 }
-/* line 241, ../sass/components/forms/_input-fields.scss */
+/* line 255, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] + label {
   left: 1rem;
 }
-/* line 245, ../sass/components/forms/_input-fields.scss */
+/* line 259, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] ~ .mdi-navigation-close, .input-field input[type=search] ~ .material-icons {
   position: absolute;
   top: 0;
@@ -6977,14 +6986,32 @@ textarea.materialize-textarea + label:after {
   transition: .3s color;
 }
 
+/* line 270, ../sass/components/forms/_input-fields.scss */
+input[type=text].js-comment-bar {
+  border: 1px solid #e8e8e8;
+  padding-left: 36px;
+  padding-right: 4px;
+  height: 2rem;
+}
+
+/* line 277, ../sass/components/forms/_input-fields.scss */
+input[type=text].js-comment-bar:focus {
+  height: 2.4rem;
+  background-color: #f1f1f1;
+}
+/* line 281, ../sass/components/forms/_input-fields.scss */
+input[type=text].js-comment-bar:focus + label {
+  top: 0.5rem;
+}
+
 /* Textarea */
-/* line 261, ../sass/components/forms/_input-fields.scss */
+/* line 290, ../sass/components/forms/_input-fields.scss */
 textarea {
   width: 100%;
   height: 3rem;
   background-color: transparent;
 }
-/* line 266, ../sass/components/forms/_input-fields.scss */
+/* line 295, ../sass/components/forms/_input-fields.scss */
 textarea.materialize-textarea {
   overflow-y: hidden;
   /* prevents scroll bar flash */
@@ -6994,7 +7021,7 @@ textarea.materialize-textarea {
   min-height: 3rem;
 }
 
-/* line 275, ../sass/components/forms/_input-fields.scss */
+/* line 304, ../sass/components/forms/_input-fields.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -7006,18 +7033,18 @@ textarea.materialize-textarea {
 }
 
 /* Autocomplete */
-/* line 285, ../sass/components/forms/_input-fields.scss */
+/* line 314, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content {
   margin-top: -15px;
   display: block;
   opacity: 1;
   position: static;
 }
-/* line 292, ../sass/components/forms/_input-fields.scss */
+/* line 321, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content li .highlight {
   color: #444;
 }
-/* line 294, ../sass/components/forms/_input-fields.scss */
+/* line 323, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content li img {
   height: 40px;
   width: 40px;
@@ -9703,7 +9730,7 @@ body {
 }
 
 /* line 81, ../sass/_style.scss */
-.no-margin {
+.no-margin, .comment {
   margin: 0 !Important;
 }
 
@@ -10204,9 +10231,10 @@ input:-webkit-autofill:active {
 /* line 547, ../sass/_style.scss */
 .php-data, .card .card-content ul.collapsible li .collapsible-body p {
   opacity: 0.78;
+  word-wrap: break-word;
 }
 
-/* line 551, ../sass/_style.scss */
+/* line 552, ../sass/_style.scss */
 .new-class {
   opacity: 0;
   -moz-transform: translateY(-8px) scale(0.95);
@@ -10238,22 +10266,22 @@ input:-webkit-autofill:active {
     opacity: 1;
   }
 }
-/* line 579, ../sass/_style.scss */
+/* line 580, ../sass/_style.scss */
 .card-panel span, .card-content p {
   -webkit-font-smoothing: antialiased;
 }
-/* line 581, ../sass/_style.scss */
+/* line 582, ../sass/_style.scss */
 .card-panel span.students-taken, .card-content p.students-taken {
   font-size: 12px;
   line-height: 1.5;
 }
-/* line 585, ../sass/_style.scss */
+/* line 586, ../sass/_style.scss */
 .card-panel span i.material-icons, .card-content p i.material-icons {
   font-size: 12px;
   line-height: 1.5;
 }
 
-/* line 592, ../sass/_style.scss */
+/* line 593, ../sass/_style.scss */
 .assignment-warning p, .assignment-warning a, .assignment-info p, .assignment-info a {
   padding-left: 20px;
   padding-right: 20px;
@@ -10263,50 +10291,50 @@ input:-webkit-autofill:active {
   line-height: 20px;
   margin: 0;
 }
-/* line 594, ../sass/_style.scss */
+/* line 595, ../sass/_style.scss */
 .assignment-warning p i.material-icons, .assignment-warning a i.material-icons, .assignment-info p i.material-icons, .assignment-info a i.material-icons {
   line-height: 20px;
   font-size: 16px;
 }
 
-/* line 611, ../sass/_style.scss */
+/* line 612, ../sass/_style.scss */
 a.btn-skip-question {
   color: #EF5350;
 }
 
-/* line 614, ../sass/_style.scss */
+/* line 615, ../sass/_style.scss */
 #images .card-panel .row {
   margin-bottom: 0;
 }
 
-/* line 617, ../sass/_style.scss */
+/* line 618, ../sass/_style.scss */
 .card-col {
   width: 310px;
 }
-/* line 620, ../sass/_style.scss */
+/* line 621, ../sass/_style.scss */
 .card-col.selected {
   background-color: rgba(0, 0, 0, 0.08);
 }
 @media only screen and (max-width: 600px) {
-  /* line 617, ../sass/_style.scss */
+  /* line 618, ../sass/_style.scss */
   .card-col {
     width: 100%;
     max-width: 100%;
   }
 }
 
-/* line 630, ../sass/_style.scss */
+/* line 631, ../sass/_style.scss */
 .card .card-content ul.collapsible {
   box-shadow: none;
   margin-left: -21px;
   margin-right: -21px;
 }
-/* line 636, ../sass/_style.scss */
+/* line 637, ../sass/_style.scss */
 .card .card-content ul.collapsible li .collapsible-header {
   padding-left: 20px;
   padding-right: 20px;
 }
-/* line 644, ../sass/_style.scss */
+/* line 645, ../sass/_style.scss */
 .card .card-content ul.collapsible li .collapsible-body p {
   font-size: 14px;
   line-height: 18px;
@@ -10316,14 +10344,14 @@ a.btn-skip-question {
   padding-bottom: 24px;
 }
 
-/* line 660, ../sass/_style.scss */
+/* line 661, ../sass/_style.scss */
 .to-edit {
   transition-delay: 400ms;
   transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1);
   transition-duration: 240ms;
 }
 
-/* line 667, ../sass/_style.scss */
+/* line 668, ../sass/_style.scss */
 .to-remove {
   opacity: 0.27;
   -moz-transform: scaleX(0) scaleY(0) !important;
@@ -10336,7 +10364,7 @@ a.btn-skip-question {
   transition-duration: 240ms !Important;
 }
 
-/* line 677, ../sass/_style.scss */
+/* line 678, ../sass/_style.scss */
 .morph-in {
   height: inherit;
   opacity: 0;
@@ -10372,14 +10400,14 @@ a.btn-skip-question {
     opacity: 1;
   }
 }
-/* line 708, ../sass/_style.scss */
+/* line 709, ../sass/_style.scss */
 .assignment-doc {
   border-radius: 8px;
   border: 1px rgba(80, 80, 80, 0.08) solid;
   padding: 8px;
 }
 
-/* line 717, ../sass/_style.scss */
+/* line 718, ../sass/_style.scss */
 .modal #dragDropArea {
   margin: -24px;
   margin-bottom: 20px;
@@ -10388,71 +10416,76 @@ a.btn-skip-question {
   position: relative;
 }
 
-/* line 725, ../sass/_style.scss */
+/* line 726, ../sass/_style.scss */
 .op-4 {
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* line 729, ../sass/_style.scss */
+/* line 730, ../sass/_style.scss */
 #uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large, #uploadResource form#createResourcesForm .file-field .btn-large {
   float: right !Important;
 }
 
-/* line 733, ../sass/_style.scss */
+/* line 734, ../sass/_style.scss */
 #uploadResource form#createResourcesForm input.upload-btn.btn-floating {
   position: absolute;
   right: 24px;
   bottom: -27.5px;
 }
 
-/* line 739, ../sass/_style.scss */
+/* line 740, ../sass/_style.scss */
 .resource-view {
   height: auto;
   background-color: rgba(185, 145, 145, 0.24);
   word-wrap: break-word;
 }
 
-/* line 745, ../sass/_style.scss */
+/* line 746, ../sass/_style.scss */
 .resource-view > i.material-icons {
   width: 100%;
   line-height: 50px;
   text-align: center;
 }
 
-/* line 751, ../sass/_style.scss */
+/* line 752, ../sass/_style.scss */
 .uppercase {
   text-transform: uppercase !Important;
 }
 
-/* line 766, ../sass/_style.scss */
+/* line 762, ../sass/_style.scss */
+.card.tiny {
+  content: '';
+}
+
+/* line 767, ../sass/_style.scss */
 #classroomAss_Container .collapsible-header span.badge {
   position: inherit !Important;
 }
 
-/* line 770, ../sass/_style.scss */
+/* line 771, ../sass/_style.scss */
 .collapsible-header .right .badge {
   padding: 4px 8px;
   position: relative;
 }
 
-/* line 774, ../sass/_style.scss */
+/* line 775, ../sass/_style.scss */
 a.btn-inline:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
   color: #ffab40;
   margin-right: 20px;
   transition: color .3s ease;
   text-transform: uppercase;
 }
-/* line 780, ../sass/_style.scss */
+/* line 781, ../sass/_style.scss */
 a.btn-inline:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating):hover {
   color: #ffd8a6;
 }
 
-/* line 783, ../sass/_style.scss */
+/* line 784, ../sass/_style.scss */
 .primary-text-color {
   color: #781822 !important;
 }
 
-/* line 786, ../sass/_style.scss */
+/* line 787, ../sass/_style.scss */
 .secondary-text-color, .action-text-color {
   color: #d8b759 !important;
 }

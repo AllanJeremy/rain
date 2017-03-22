@@ -546,6 +546,7 @@ $height: auto;
 }
 .php-data {
     opacity: 0.78;
+    word-wrap: break-word;
 }
 
 .new-class {
@@ -759,7 +760,7 @@ a.btn-skip-question {
     }
 
     &.tiny {
-
+        content: '';
     }
 }
 
@@ -788,7 +789,7 @@ a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
 }
 
 
+.comment {
+    @extend .no-margin;
 
-
-
-
+}

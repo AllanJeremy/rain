@@ -23,7 +23,7 @@
 
 
 input.browser-default {
-    height: auto;
+    height: 2rem !Important;
     width: auto;
     max-width: 50px;
     line-height: 2rem;
@@ -148,6 +148,19 @@ textarea.materialize-textarea {
     .select-dropdown {
       margin-bottom: 1rem;
     }
+
+  }
+
+  &.comment {
+
+      label {
+          top: 0.3rem;
+      }
+
+      label.active {
+          transform: translateY(0%) !Important;
+          margin-left: 8px;
+      }
   }
 
   // Gutter spacing
@@ -178,6 +191,7 @@ textarea.materialize-textarea {
     font-size: $label-font-size;
     transform: translateY(-140%);
   }
+
 
   // Prefix Icons
   .prefix {
@@ -252,6 +266,21 @@ textarea.materialize-textarea {
     font-size: 2rem;
     transition: .3s color;
   }
+}
+input[type=text].js-comment-bar {
+    border: 1px solid #e8e8e8;
+    padding-left: 36px;
+    padding-right: 4px;
+    height: 2rem;
+}
+
+input[type=text].js-comment-bar:focus {
+    height: 2.4rem;
+    background-color: #f1f1f1;
+
+    & + label {
+        top: 0.5rem;
+    }
 }
 
 

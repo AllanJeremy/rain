@@ -445,8 +445,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                 TODO: consider making this full width
                                                             -->
                                                             <li class="col s12 pad-8 ass-submission-container">
-                                                                <div class="section container">
-                                                                    <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></p></a>
+                                                                <div class=" container">
+                                                                    <p data-student-id="" class=" no-padding student-name no-margin">
+                                                                        <a class="black-text" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></a>
+                                                                    </p>
+                                                                    <div class="input-field inline comment">
+                                                                        <input type="text" placeholder="comment" class="js-comment-bar" name="comment">
+                                                                        <label for="comment" data-error="wrong" data-success="right">
+                                                                            <i class="material-icons">comment</i>
+                                                                        </label>
+                                                                    </div>
                                                                     <span class="right">
                                                                         <span class="margin-horiz-16 primary-text-color">
                                                                             <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
