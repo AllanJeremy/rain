@@ -485,7 +485,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             <p class="pad-8">Returned submissions</p>
                                                             <div class="divider margin-horiz-16"></div>
                                                         </div>
-                                                        <ul class="row">
+                                                        <ul class="row returned-ass">
                                                             <?php
                                                                 $no_returned_msg = "No returned assignments found";
                                                                 if($returned_ass && $returned_ass->num_rows>0):
@@ -1249,6 +1249,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 if(response["return_status"]==1)
                                 {
                                     $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
+                                    var $grade_input = $parent_ul.children(".ass-grade-achieved");
+                                    var grade = $grade_input.val();
+                                    var max_grade = $grade_input.attr("max");
+
                                     //Remove the submission from the DOM
                                     $self.parents($ass_submission_container).remove();
                                     
@@ -1259,6 +1263,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     {
                                         $parent_ul.html("<p>No new assignment submissions were found.</p>");
                                     }
+                                    console.log($(".returned-submissions").children("ul.returned-ass"));
+                                    //Add the submitted info to the DOM under the returned assignments section
+                                    $(".returned-submissions").children("ul.returned-ass",function(){
+                                        
+                                        //Append html
+                                        $(this).append("<br><li class='col s12 s6'>"+student_name+" <span class='chip'>"+grade+"/"+max_grade+"</span></li>");
+                                    });
+
+                                    //Display success message
                                     Materialize.toast(success_message,toast_time);
                                     
                                 }
