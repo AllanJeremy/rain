@@ -456,18 +456,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                             <i class="material-icons">comment</i>
                                                                         </label>
                                                                     </div>
-
-                                                                    <div class="section container">
-                                                                        <a href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><p data-student-id="" class="no-padding student-name no-margin"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></p></a>
-                                                                        <span class="right">
-                                                                            <span class="margin-horiz-16 primary-text-color">
-                                                                                <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
-    <!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
-                                                                            <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
-                                                                            </span>
-                                                                            <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
+                                                                    <span class="right">
+                                                                        <span class="margin-horiz-16 primary-text-color">
+                                                                            <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
+                                                                        <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
                                                                         </span>
-                                                                    </div>
+                                                                        <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
+                                                                    </span>
                                                                 </div>
                                                             </li>
                                             <?php
@@ -514,10 +510,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                             $student_name = $student["full_name"];
                                                                         }
                                                             ?>
-                                                                    <li class="container col s12 m6">
-                                                                        <br><?php echo $student_name." (Adm No. $student_adm_no) "?>
-                                                                        <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
-                                                                    </li>
+                                                            <li class="container col s12 m6">
+                                                                <br><?php echo $student_name." (Adm No. $student_adm_no) "?>
+                                                                <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                            </li>
                                                             <?php
                                                                     endforeach;
                                                                 else:
@@ -1261,13 +1257,26 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 if(response["return_status"]==1)
                                 {
                                     $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
-                                    var $grade_input = $parent_ul.children(".ass-grade-achieved");
+                                    var $grade_input = $parent_ul.find(".ass-grade-achieved");
                                     var grade = $grade_input.val();
+                                    var student_data = $self.parent('span').siblings("p.student-name");
                                     var max_grade = $grade_input.attr("max");
+                                    console.log(student_data);
+                                    console.log($self.parent());
+                                    console.log($self.parent('span'));
+                                    var str = "<li class='col s12 m6 pad-8'>"+student_data[0].outerHTML+" <span class='chip'>"+grade+"/"+max_grade+"</span></li>"
+                                    var old_sub_count = $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass li').length;
 
+
+                                    //Add the submitted info to the DOM under the returned assignments section
+                                    if (old_sub_count == 0){
+                                        $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass').html(str);
+                                    } else {
+                                        $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass').append(str);
+
+                                    }
                                     //Remove the submission from the DOM
                                     $self.parents($ass_submission_container).remove();
-                                    
                                     var sub_count = $parent_ul.children("li").length;
                                     
                                     //If there are no submissions left in the DOM
@@ -1275,13 +1284,6 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     {
                                         $parent_ul.html("<p>No new assignment submissions were found.</p>");
                                     }
-                                    console.log($(".returned-submissions").children("ul.returned-ass"));
-                                    //Add the submitted info to the DOM under the returned assignments section
-                                    $(".returned-submissions").children("ul.returned-ass",function(){
-
-                                        //Append html
-                                        $(this).append("<br><li class='col s12 s6'>"+student_name+" <span class='chip'>"+grade+"/"+max_grade+"</span></li>");
-                                    });
 
                                     //Display success message
                                     Materialize.toast(success_message,toast_time);
