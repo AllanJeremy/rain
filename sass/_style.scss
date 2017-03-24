@@ -77,6 +77,9 @@ body {
 .marg-16 {
     margin: 16px !Important;
 }
+.line-height-0 {
+    line-height: 1 !Important;
+}
 
 .no-margin {
 	margin: 0 !Important;
@@ -798,6 +801,7 @@ a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
     
     .js-see-all-comments {
         right: 0;
+        font-size: 12px;
     }
 }
 

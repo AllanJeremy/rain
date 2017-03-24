@@ -61,11 +61,11 @@ class EsomoResource
                         <div class="resource-details-container">
                             <p>Description: <?php echo empty($res_description) ? '<span class="grey-text">Not written</span>' : $res_description; ?></p>
                         </div>
-                    <h6 class="grey-text uppercase text-lighten-2 "><?php echo $res_found['file_type'];?></h4>
+                    <h6 class="grey-text uppercase text-lighten-2 "><?php echo $res_found['file_type'];?></h6>
                 </div>
                 <div class="card-action">
                     <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
+                    <a class="" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
 
 <!--                    <a class="btn btn-flat right viewResourceDetails" href="javascript:void(0)">DETAILS</a>-->
                 </div>
@@ -122,7 +122,7 @@ class EsomoResource
         $account_type = &$user_info["account_type"];
         
         #Resource related Variable declaration
-        $res_edit_btn_class ="btn btn-flat right js-edit-resource";#classes applied to all edit buttons
+        $res_edit_btn_class =" right js-edit-resource";#classes applied to all edit buttons
         $res_edit_btn_properties = "";#Properties of the edit button
         $res_name = $res_file_type = $res_file_link = $res_description = "";
         $res_id = $res_teacher_id = 0;#resource teacher id
@@ -159,12 +159,16 @@ class EsomoResource
                                 <p>Description: <span class="js-res-description"><?php echo empty($res_description) ? '--' : $res_description; ?></span></p>
 <!--                                <a class="btn btn-flat viewResourceDetails " href="javascript:void(0)">RESOURCE DETAILS</a>-->
                             </div>
-                            <h6 class="grey-text uppercase text-lighten-1"><?php echo $res_found['file_type'];?></h6>
+                            <h6 class="grey-text uppercase text-lighten-1"><?php echo explode(".",explode("/",$res_found['file_type'])
+                                                                                              [count(explode("/",$res_found['file_type'])) - 1]
+                                                                                             )[count(explode(".",explode("/",$res_found['file_type'])
+                                                                                                            [count(explode("/",$res_found['file_type'])) - 1]
+                                                                                                           )) - 1]; ?> </h6>
                         </div>
                     </div>
                     <div class="card-action">
                         <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="btn" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
+                    <a class="" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
                     <a <?php echo $res_edit_btn_properties?> href="javascript:void(0)">EDIT</a>
                     </div>
 

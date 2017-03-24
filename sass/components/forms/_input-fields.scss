@@ -283,6 +283,7 @@ input[type=text].js-comment-bar {
     padding-left: 36px;
     padding-right: 4px;
     height: 2rem;
+    width: calc(100% - 32px);
 }
 
 input[type=text].js-comment-bar:focus {
@@ -290,7 +291,12 @@ input[type=text].js-comment-bar:focus {
     background-color: #f1f1f1;
 
     & + label {
-        top: 0.5rem;
+//        top: 0.5rem;
+        display: table-caption;
+    }
+
+    & ~ i, ~ i.material-icons {
+        font-size: 36px;
     }
 }
 
