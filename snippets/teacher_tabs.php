@@ -320,7 +320,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         ?>
                         <!--CARD_TEMPLATE_START-->
                         <div class="col s12 m6 l4 card-col ass-classroom-card <?php echo $selected_class;?>" data-content-trigger="<?php echo $container_id;?>">
-                            <div class=" card tiny <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" >
+                            <div class=" card tiny  <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" >
                                 <div class="card-content row">
                                     <span class="card-title white-text truncate col s8">
                                         <?php echo $classroom['class_name']?>
@@ -448,17 +448,18 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                                                                 <div class=" container">
                                                                     <p data-student-id="" class=" pad-8 student-name no-margin">
-                                                                        <a class="black-text" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span> | <i><?php echo $ass_title;?> Submission</i></a>
+                                                                        <a class="black-text" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></a><a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-3"> | <i class="material-icons">read</i></a>
                                                                     </p>
                                                                     <div class="input-field inline comment">
-                                                                        <input type="text" placeholder="comment" class="js-comment-bar" name="comment">
-                                                                        <label for="comment" data-error="wrong" data-success="right">
+                                                                        <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                        <label for="comment">
                                                                             <i class="material-icons">comment</i>
                                                                         </label>
+                                                                        <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">see all (0/*$count_comments*)</a>
                                                                     </div>
                                                                     <span class="right">
                                                                         <span class="margin-horiz-16 primary-text-color">
-                                                                            <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+                                                                            <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default tiny grader"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
 <!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
                                                                         <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
                                                                         </span>
@@ -513,6 +514,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             <li class="container col s12 m6">
                                                                 <br><?php echo $student_name." (Adm No. $student_adm_no) "?>
                                                                 <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                                <div class="input-field inline comment">
+                                                                    <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                    <label for="comment">
+                                                                        <i class="material-icons">comment</i>
+                                                                    </label>
+                                                                    <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">see all (0/*$count_comments*)</a>
+                                                                </div>
                                                             </li>
                                                             <?php
                                                                     endforeach;
@@ -1264,7 +1272,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     console.log(student_data);
                                     console.log($self.parent());
                                     console.log($self.parent('span'));
-                                    var str = "<li class='col s12 m6 pad-8'>"+student_data[0].outerHTML+" <span class='chip'>"+grade+"/"+max_grade+"</span></li>"
+                                    var str = "<li class='col s12 m6 pad-8'>"+student_data[0].outerHTML+" <div class='input-field inline comment'><span class='chip'>"+grade+" / "+max_grade+"</span><input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'><label for='comment'><i class='material-icons'>comment</i></label><a class='right btn-inline js-see-all-comments'>see all</a></div></li>"
                                     var old_sub_count = $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass li').length;
 
 

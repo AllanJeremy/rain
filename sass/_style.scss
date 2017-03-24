@@ -793,3 +793,11 @@ a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
     @extend .no-margin;
 
 }
+
+.inline.comment {
+    
+    .js-see-all-comments {
+        right: 0;
+    }
+}
+

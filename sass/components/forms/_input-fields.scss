@@ -25,11 +25,22 @@
 input.browser-default {
     height: 2rem !Important;
     width: auto;
-    max-width: 50px;
     line-height: 2rem;
-    text-align: right;
     margin: 0 !Important;
     background-color: rgba(0, 0, 0, 0.06);
+    
+    &.grader {
+        
+        text-align: right;
+    }
+    &.tiny {
+        max-width: 50px;
+        
+    }
+    
+    &.normal {
+        max-width: 240px
+    }
     
     .inline-input {
         
