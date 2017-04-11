@@ -1,0 +1,104 @@
+.php-data {
+    opacity: 0.78;
+    word-wrap: break-word;
+}
+
+.op-4 {
+    color: $datepicker-year;
+}
+.margin-horiz-8 {
+    margin-bottom: 0 !Important;
+    margin-top: 0 !Important;
+    margin-left: 8px !Important;
+    margin-right: 8px !Important;
+}
+.margin-horiz-16 {
+    margin-bottom: 0 !Important;
+    margin-top: 0 !Important;
+    margin-left: 16px !Important;
+    margin-right: 16px !Important;
+}
+.margin-vert-8 {
+    margin-right: 0 !Important;
+    margin-left: 0 !Important;
+    margin-top: 8px !Important;
+    margin-bottom: 8px !Important;
+}
+.margin-vert-4 {
+    margin-right: 0 !Important;
+    margin-left: 0 !Important;
+    margin-top: 4px !Important;
+    margin-bottom: 4px !Important;
+}
+.margin-vert-16 {
+    margin-right: 0 !Important;
+    margin-left: 0 !Important;
+    margin-top: 16px !Important;
+    margin-bottom: 16px !Important;
+}
+.padding-horiz-8 {
+    padding-bottom: 0 !Important;
+    padding-top: 0 !Important;
+    padding-left: 8px !Important;
+    padding-right: 8px !Important;
+}
+.padding-horiz-16 {
+    padding-bottom: 0 !Important;
+    padding-top: 0 !Important;
+    padding-left: 16px !Important;
+    padding-right: 16px !Important;
+}
+.pad-8 {
+    padding: 8px !Important;
+}
+.pad-6 {
+    padding: 6px !Important;
+}
+.pad-16 {
+    padding: 16px !Important;
+}
+
+.marg-6 {
+    margin: 6px !Important;
+}
+.marg-8 {
+    margin: 8px !Important;
+}
+.marg-16 {
+    margin: 16px !Important;
+}
+.line-height-0 {
+    line-height: 1 !Important;
+}
+.line-height-48 {
+    line-height: 48px !Important;
+}
+
+.no-margin {
+	margin: 0 !Important;
+}
+.no-bottom-margin {
+	margin-bottom: 0 !Important;
+}
+
+.uppercase {
+    text-transform: uppercase !Important;
+}
+
+.my-container {
+    width: 54%;
+    margin: 0 auto;
+    max-width: 1280px;
+
+    @media #{$small-and-down} {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media #{$large-and-up} {
+  .container {
+    width: 90%;
+  }
+
+}

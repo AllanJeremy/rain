@@ -42,3 +42,9 @@
 @import "components/date_picker/default";
 @import "components/date_picker/default.date";
 @import "components/date_picker/default.time";
+
+// import custom components
+@import "components/custom_components/links";
+@import "components/custom_components/global";
+@import "components/custom_components/cards";
+@import "components/custom_components/animations";

@@ -32,7 +32,7 @@
         
     </head>
 
-    <body class="side-nav-page yellow lighten-5">
+    <body class="side-nav-page grey lighten-5">
 
         <?php 
             require_once("handlers/session_handler.php");

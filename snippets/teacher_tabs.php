@@ -325,7 +325,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <span class="card-title white-text truncate col s8">
                                         <?php echo $classroom['class_name']?>
                                     </span>
-                                    <span class="new badge col s4">4</span>
+                                    <span class="new badge col s4 hide">4</span>
                                 </div>
                             </div>
                         </div>
@@ -378,7 +378,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                         <li data-assignment-id="--">
                                             <div class="collapsible-header ">
                                                 <span><?php echo $ass_title;?></span>
-                                                <div class="right">
+                                                <div class="right hide">
                                                     <span class="margin-horiz-8 badge new">4</span>
                                                     <p class="margin-horiz-8 right">
                                                         <span class="js-submitted">10</span> submitted
@@ -1169,8 +1169,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                 <!--ACCOUNT SECTION-->
                 <div class="row main-tab" id="teacherAccountTab">
-                    <div class="col s12">
-                        <p>Account section</p>
+                    <div class="row no-bottom-margin">
+                        <div class="col s5">
+                            <p class="grey-text">Your account</p>
+                        </div>
                     </div>
                 </div>
                                 
@@ -1283,7 +1285,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     console.log(student_data);
                                     console.log($self.parent());
                                     console.log($self.parent('span'));
-                                    var str = "<li class='col s12 m6 pad-8'>"+student_data[0].outerHTML.split('|')[0] +" <span class='chip'>"+grade+" / "+max_grade+"</span><br><div class='input-field inline comment'><input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'><label for='comment'><i class='material-icons'>comment</i></label><br><a class='right btn-inline js-see-all-comments'>all comments</a></div></li>"
+                                    var str = "<li class='col s12 m6 pad-8'>"+student_data[0].outerHTML.split('|')[0] +" <span class='chip'>"+grade+" / "+max_grade+"</span><br><div class='input-field inline comment'><input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'><label for='comment'><i class='material-icons'>comment</i></label><br><a class='right btn-inline js-see-all-comments'>all comments</a></div></li>";
                                     var old_sub_count = $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass li').length;
 
 

@@ -1,0 +1,75 @@
+.new-class {
+    opacity: 0;
+    @include transform(translateY(-8px) scale(0.95));
+
+    will-change: opacity;
+    transition: opacity .7s;
+    animation-delay: .4s;
+    -webkit-animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
+    animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
+
+}
+
+@-webkit-keyframes new-classroom {
+  to {
+      @include transform(translateY(0px) scale(1));
+
+      opacity: 1;
+    }
+}
+
+@keyframes new-classroom {
+  to {
+      @include transform(translateY(0px)  scale(1));
+      opacity: 1;
+    }
+}
+
+//MORPHING STYLES
+.to-edit {
+    transition-delay: 400ms;
+    transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1);
+    transition-duration: 240ms;
+
+}
+
+.to-remove {
+    opacity: 0.27;
+    @include transform(scaleX(0) scaleY(0) !Important);
+    will-change: transform !Important;
+    transition-delay: 400ms !Important;
+    transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1) !Important;
+    transition-duration: 240ms !Important;
+
+}
+
+.morph-in {
+
+    height: inherit;
+    opacity: 0;
+    z-index: 8888;
+    @include transform(scaleX(0.55) scaleY(0.45));
+    will-change: transform opacity z-index;
+
+    animation-delay: .3s;
+    -webkit-animation: morph-in 330ms 210ms ease-out forwards;
+    animation: morph-in 330ms 210ms ease-out forwards;
+
+}
+
+@-webkit-keyframes morph-in {
+  to {
+      @include transform(scaleX(1));
+      z-index: inherit;
+      opacity: 1;
+    }
+}
+
+@keyframes morph-in {
+  to {
+      width: inherit;
+      @include transform(scaleX(1) scaleY(1));
+      z-index: inherit;
+      opacity: 1;
+    }
+}

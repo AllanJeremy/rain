@@ -1,0 +1,70 @@
+a.btn-skip-question {
+    color: color("red", "lighten-1");
+}
+
+
+a.btn-icon {
+    padding: 14px;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: rgba(0, 0, 0, 0.78);
+    font-size: 1.3rem;
+    line-height: 1.3rem;
+    transition: all .3s;
+    border-radius: 50%;
+    background-color: transparent;
+
+    .material-icons {
+        font-size: 1.3rem;
+        line-height: 1.3rem;
+    }
+
+    &:active {
+        background-color: #f5f5f5;
+    }
+}
+
+nav {
+  // background-color: color("materialize-red", "lighten-2");
+
+  a {
+    -webkit-font-smoothing: antialiased;
+  }
+  ul li a:hover, ul li.active {
+    background-color: color("brookhurst-theme-primary", "base");
+  }
+}
+form {
+    a.mini-link {
+        font-size: 12px;
+        //line-height: inherit;
+        opacity: .78;
+    }
+}
+a.button-collapse.top-nav {
+  position: absolute;
+  text-align: center;
+  height: 48px;
+  width: 48px;
+  left: 7.5%;
+  top: 0;
+  float: none;
+  margin-left: 1.5rem;
+  color: #fff;
+  font-size: 36px;
+  z-index: 2;
+
+  &.full {
+    line-height: 122px;
+  }
+
+  i {
+    font-size: 32px;
+  }
+}
+
+@media #{$small-and-down} {
+  a.button-collapse.top-nav {
+    left: 5%;
+  }
+}

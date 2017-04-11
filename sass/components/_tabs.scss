@@ -1,4 +1,18 @@
 .tabs {
+
+    &.inline {
+        display: inline-flex !Important;
+        width: auto !Important;
+        margin-left: 8px;
+        margin-right: 8px;
+
+      &.tabs-transparent {
+
+          .indicator {
+                background-color: #fff;
+          }
+        }
+    }
   &.tabs-transparent {
     background-color: transparent;
 

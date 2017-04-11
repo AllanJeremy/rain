@@ -28,65 +28,6 @@ html {
 body {
   background-color: #fcfcfc;
 }
-.margin-horiz-8 {
-    margin-bottom: 0 !Important;
-    margin-top: 0 !Important;
-    margin-left: 8px !Important;
-    margin-right: 8px !Important;
-}
-.margin-horiz-16 {
-    margin-bottom: 0 !Important;
-    margin-top: 0 !Important;
-    margin-left: 16px !Important;
-    margin-right: 16px !Important;
-}
-.margin-vert-8 {
-    margin-right: 0 !Important;
-    margin-left: 0 !Important;
-    margin-top: 8px !Important;
-    margin-bottom: 8px !Important;
-}
-.margin-vert-16 {
-    margin-right: 0 !Important;
-    margin-left: 0 !Important;
-    margin-top: 16px !Important;
-    margin-bottom: 16px !Important;
-}
-.padding-horiz-8 {
-    padding-bottom: 0 !Important;
-    padding-top: 0 !Important;
-    padding-left: 8px !Important;
-    padding-right: 8px !Important;
-}
-.padding-horiz-16 {
-    padding-bottom: 0 !Important;
-    padding-top: 0 !Important;
-    padding-left: 16px !Important;
-    padding-right: 16px !Important;
-}
-.pad-8 {
-    padding: 8px !Important;
-}
-.pad-16 {
-    padding: 16px !Important;
-}
-
-.marg-8 {
-    margin: 8px !Important;
-}
-.marg-16 {
-    margin: 16px !Important;
-}
-.line-height-0 {
-    line-height: 1 !Important;
-}
-
-.no-margin {
-	margin: 0 !Important;
-}
-.no-bottom-margin {
-	margin-bottom: 0 !Important;
-}
 span.tiny-info {
     padding-left: 6px;
     padding-bottom: 2px;
@@ -155,43 +96,6 @@ h5 > span {
 }
 .name {
     text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.37);
-}
-a.btn-icon {
-    padding: 14px;
-    padding-left: 16px;
-    padding-right: 16px;
-    color: rgba(0, 0, 0, 0.78);
-    font-size: 1.3rem;
-    line-height: 1.3rem;
-    transition: all .3s;
-    border-radius: 50%;
-    background-color: transparent;
-    
-    .material-icons {
-        font-size: 1.3rem;
-        line-height: 1.3rem;
-    }
-
-    &:active {
-        background-color: #f5f5f5;
-    }
-}
-nav {
-  // background-color: color("materialize-red", "lighten-2");
-
-  a {
-    -webkit-font-smoothing: antialiased;
-  }
-  ul li a:hover, ul li.active {
-    background-color: color("brookhurst-theme-primary", "base");
-  }
-}
-form {
-    a.mini-link {
-        font-size: 12px;
-        //line-height: inherit;
-        opacity: .78;
-    }
 }
 
 .header {
@@ -380,33 +284,6 @@ nav.top-nav {
         height: auto;
     }
 }
-a.button-collapse.top-nav {
-  position: absolute;
-  text-align: center;
-  height: 48px;
-  width: 48px;
-  left: 7.5%;
-  top: 0;
-  float: none;
-  margin-left: 1.5rem;
-  color: #fff;
-  font-size: 36px;
-  z-index: 2;
-
-  &.full {
-    line-height: 122px;
-  }
-
-  i {
-    font-size: 32px;
-  }
-}
-
-@media #{$small-and-down} {
-  a.button-collapse.top-nav {
-    left: 5%;
-  }
-}
 
 @media #{$medium-and-down} {
   nav .nav-wrapper {
@@ -423,24 +300,6 @@ a.button-collapse.top-nav {
         text-transform: uppercase;
     }
   }
-}
-
-.my-container {
-    width: 54%;
-    margin: 0 auto;
-    max-width: 1280px;
-    
-    @media #{$small-and-down} {
-        width: 90%;
-        margin: 0 auto;
-    }
-}
-
-@media #{$large-and-up} {
-  .container {
-    width: 90%;
-  }
-  
 }
 
 #responsive-img {
@@ -547,50 +406,7 @@ $height: auto;
   max-width: 100%;
  }
 }
-.php-data {
-    opacity: 0.78;
-    word-wrap: break-word;
-}
 
-.new-class {
-    opacity: 0;
-    @include transform(translateY(-8px) scale(0.95));
-    
-    will-change: opacity;
-    transition: opacity .7s;
-    animation-delay: .4s;
-    -webkit-animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
-    animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
-    
-}
-
-@-webkit-keyframes new-classroom {
-  to { 
-      @include transform(translateY(0px) scale(1));
-      
-      opacity: 1;
-    }
-}
-
-@keyframes new-classroom {
-  to { 
-      @include transform(translateY(0px)  scale(1));
-      opacity: 1;
-    }
-}
-
-// Card Page styling
-.card-panel span, .card-content p{
-  -webkit-font-smoothing: antialiased;
-    &.students-taken {
-        font-size: 12px;
-        line-height: 1.5;
-    }
-    i.material-icons {
-        font-size: 12px;
-        line-height: 1.5;
-    }
-}
 .assignment-warning, .assignment-info {
     
     p, a {
@@ -612,9 +428,6 @@ $height: auto;
     
     
 }
-a.btn-skip-question {
-    color: color("red", "lighten-1");
-}
 #images .card-panel .row {
   margin-bottom: 0;
 }
@@ -628,84 +441,6 @@ a.btn-skip-question {
     @media #{$small-and-down} {
         width: 100%;
         max-width: 100%;
-    }
-}
-.card .card-content {
-    ul.collapsible {
-        box-shadow: none;
-        margin-left: -21px;
-        margin-right: -21px;
-        
-        li {
-            .collapsible-header {
-                padding-left: 20px; 
-                padding-right: 20px; 
-            }
-            
-            .collapsible-body {
-                
-                
-                p {
-                    @extend .php-data;
-                    font-size: 14px;
-                    line-height: 18px;
-                    padding-left: 20px;
-                    padding-right: 20px;
-                    padding-top: 24px;
-                    padding-bottom: 24px;
-                }
-                
-            }
-        } 
-    }
-}
-
-//MORPHING STYLES
-.to-edit {
-    transition-delay: 400ms;
-    transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1);
-    transition-duration: 240ms;
-
-}
-
-.to-remove {
-    opacity: 0.27;
-    @include transform(scaleX(0) scaleY(0) !Important);
-    will-change: transform !Important;
-    transition-delay: 400ms !Important;
-    transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1) !Important;
-    transition-duration: 240ms !Important;
-    
-}
-
-.morph-in {
-    
-    height: inherit;
-    opacity: 0;
-    z-index: 8888;
-    @include transform(scaleX(0.55) scaleY(0.45));
-    will-change: transform opacity z-index;
-    
-    animation-delay: .3s;
-    -webkit-animation: morph-in 330ms 210ms ease-out forwards;
-    animation: morph-in 330ms 210ms ease-out forwards;
-    
-}
-
-@-webkit-keyframes morph-in {
-  to { 
-      @include transform(scaleX(1));
-      z-index: inherit;
-      opacity: 1;
-    }
-}
-
-@keyframes morph-in {
-  to { 
-      width: inherit;
-      @include transform(scaleX(1) scaleY(1));
-      z-index: inherit;
-      opacity: 1;
     }
 }
 
@@ -724,10 +459,6 @@ a.btn-skip-question {
     padding: 24px;
     background-color: $primary-color;
     position: relative;
-}
-
-.op-4 {
-    color: $datepicker-year;
 }
 
 #uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large {
@@ -752,21 +483,6 @@ a.btn-skip-question {
     text-align: center;
 }
 
-.uppercase {
-    text-transform: uppercase !Important;
-}
-
-.card {
-
-    &.selected {
-        @extend .z-depth-4;
-    }
-
-    &.tiny {
-        content: '';
-    }
-}
-
 #classroomAss_Container .collapsible-header span.badge {
     position: inherit !Important;
 }
@@ -775,13 +491,8 @@ a.btn-skip-question {
 	padding: 4px 8px;
     position: relative;
 }
-a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
-    color: $card-link-color;
-    margin-right: $card-padding;
-    transition: color .3s ease;
-    text-transform: uppercase;
-
-    &:hover { color: $card-link-color-light; }
+.primary-color {
+    background-color: $primary-color !Important;
 }
 
 .primary-text-color {
@@ -805,3 +516,54 @@ a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
     }
 }
 
+.assignment-action-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.inline-editor {
+    min-height: 1000px;
+    min-width: 400px;
+    background-color: color("shades", "white");
+    border-radius: 3px;
+    margin-top: 140px;
+
+    @media #{$small-and-down} {
+    min-width: calc(100% - 32px);
+    }
+}
+.inline-toolbar {
+    position: absolute;
+    z-index: 8888;
+    will-change: display;
+    transition-duration: .3s;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+    margin-bottom: 20px;
+
+    &.pinned {
+        z-index: 888888;
+        top: 0;
+        left: 0;
+        padding: 16px;
+        width: 100%;
+        margin: 0;
+        @extend .z-depth-2;
+    }
+
+}
+
+.assignment-tinymce {
+    position: relative;
+}
+
+.pin-nav-top {
+
+    &.pinned {
+        z-index: 888888;
+        top: 0;
+        width: 100%;
+    }
+}

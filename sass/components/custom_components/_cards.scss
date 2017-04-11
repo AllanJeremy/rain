@@ -1,0 +1,41 @@
+.card .card-content {
+    ul.collapsible {
+        box-shadow: none;
+        margin-left: -21px;
+        margin-right: -21px;
+
+        li {
+            .collapsible-header {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .collapsible-body {
+
+
+                p {
+                    @extend .php-data;
+                    font-size: 14px;
+                    line-height: 18px;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    padding-top: 24px;
+                    padding-bottom: 24px;
+                }
+
+            }
+        }
+    }
+}
+
+
+.card {
+
+    &.selected {
+        @extend .z-depth-4;
+    }
+
+    &.tiny {
+        content: '';
+    }
+}

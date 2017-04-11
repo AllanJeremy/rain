@@ -52,7 +52,7 @@
                 </ul>
             </div>
         </li>
-        <li class="">
+        <li class="hide">
             <a class="collapsible-header">Grades</a>
             <div class="collapsible-body">
                 <ul>
