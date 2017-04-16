@@ -9806,13 +9806,18 @@ a.button-collapse.top-nav i {
   opacity: 0.78;
   word-wrap: break-word;
 }
+/* line 5, ../sass/components/custom_components/_global.scss */
+.php-data i.material-icons, .card .card-content ul.collapsible li .collapsible-body p i.material-icons {
+  font-size: inherit;
+  line-height: inherit;
+}
 
-/* line 6, ../sass/components/custom_components/_global.scss */
+/* line 11, ../sass/components/custom_components/_global.scss */
 .op-4 {
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* line 9, ../sass/components/custom_components/_global.scss */
+/* line 14, ../sass/components/custom_components/_global.scss */
 .margin-horiz-8 {
   margin-bottom: 0 !Important;
   margin-top: 0 !Important;
@@ -9820,7 +9825,7 @@ a.button-collapse.top-nav i {
   margin-right: 8px !Important;
 }
 
-/* line 15, ../sass/components/custom_components/_global.scss */
+/* line 20, ../sass/components/custom_components/_global.scss */
 .margin-horiz-16 {
   margin-bottom: 0 !Important;
   margin-top: 0 !Important;
@@ -9828,7 +9833,7 @@ a.button-collapse.top-nav i {
   margin-right: 16px !Important;
 }
 
-/* line 21, ../sass/components/custom_components/_global.scss */
+/* line 26, ../sass/components/custom_components/_global.scss */
 .margin-vert-8 {
   margin-right: 0 !Important;
   margin-left: 0 !Important;
@@ -9836,7 +9841,7 @@ a.button-collapse.top-nav i {
   margin-bottom: 8px !Important;
 }
 
-/* line 27, ../sass/components/custom_components/_global.scss */
+/* line 32, ../sass/components/custom_components/_global.scss */
 .margin-vert-4 {
   margin-right: 0 !Important;
   margin-left: 0 !Important;
@@ -9844,7 +9849,7 @@ a.button-collapse.top-nav i {
   margin-bottom: 4px !Important;
 }
 
-/* line 33, ../sass/components/custom_components/_global.scss */
+/* line 38, ../sass/components/custom_components/_global.scss */
 .margin-vert-16 {
   margin-right: 0 !Important;
   margin-left: 0 !Important;
@@ -9852,7 +9857,7 @@ a.button-collapse.top-nav i {
   margin-bottom: 16px !Important;
 }
 
-/* line 39, ../sass/components/custom_components/_global.scss */
+/* line 44, ../sass/components/custom_components/_global.scss */
 .padding-horiz-8 {
   padding-bottom: 0 !Important;
   padding-top: 0 !Important;
@@ -9860,7 +9865,7 @@ a.button-collapse.top-nav i {
   padding-right: 8px !Important;
 }
 
-/* line 45, ../sass/components/custom_components/_global.scss */
+/* line 50, ../sass/components/custom_components/_global.scss */
 .padding-horiz-16 {
   padding-bottom: 0 !Important;
   padding-top: 0 !Important;
@@ -9868,69 +9873,69 @@ a.button-collapse.top-nav i {
   padding-right: 16px !Important;
 }
 
-/* line 51, ../sass/components/custom_components/_global.scss */
+/* line 56, ../sass/components/custom_components/_global.scss */
 .pad-8 {
   padding: 8px !Important;
 }
 
-/* line 54, ../sass/components/custom_components/_global.scss */
+/* line 59, ../sass/components/custom_components/_global.scss */
 .pad-6 {
   padding: 6px !Important;
 }
 
-/* line 57, ../sass/components/custom_components/_global.scss */
+/* line 62, ../sass/components/custom_components/_global.scss */
 .pad-16 {
   padding: 16px !Important;
 }
 
-/* line 61, ../sass/components/custom_components/_global.scss */
+/* line 66, ../sass/components/custom_components/_global.scss */
 .marg-6 {
   margin: 6px !Important;
 }
 
-/* line 64, ../sass/components/custom_components/_global.scss */
+/* line 69, ../sass/components/custom_components/_global.scss */
 .marg-8 {
   margin: 8px !Important;
 }
 
-/* line 67, ../sass/components/custom_components/_global.scss */
+/* line 72, ../sass/components/custom_components/_global.scss */
 .marg-16 {
   margin: 16px !Important;
 }
 
-/* line 70, ../sass/components/custom_components/_global.scss */
+/* line 75, ../sass/components/custom_components/_global.scss */
 .line-height-0 {
   line-height: 1 !Important;
 }
 
-/* line 73, ../sass/components/custom_components/_global.scss */
+/* line 78, ../sass/components/custom_components/_global.scss */
 .line-height-48 {
   line-height: 48px !Important;
 }
 
-/* line 77, ../sass/components/custom_components/_global.scss */
+/* line 82, ../sass/components/custom_components/_global.scss */
 .no-margin, .comment {
   margin: 0 !Important;
 }
 
-/* line 80, ../sass/components/custom_components/_global.scss */
+/* line 85, ../sass/components/custom_components/_global.scss */
 .no-bottom-margin {
   margin-bottom: 0 !Important;
 }
 
-/* line 84, ../sass/components/custom_components/_global.scss */
+/* line 89, ../sass/components/custom_components/_global.scss */
 .uppercase {
   text-transform: uppercase !Important;
 }
 
-/* line 88, ../sass/components/custom_components/_global.scss */
+/* line 93, ../sass/components/custom_components/_global.scss */
 .my-container {
   width: 54%;
   margin: 0 auto;
   max-width: 1280px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 88, ../sass/components/custom_components/_global.scss */
+  /* line 93, ../sass/components/custom_components/_global.scss */
   .my-container {
     width: 90%;
     margin: 0 auto;
@@ -9938,7 +9943,7 @@ a.button-collapse.top-nav i {
 }
 
 @media only screen and (min-width: 993px) {
-  /* line 100, ../sass/components/custom_components/_global.scss */
+  /* line 105, ../sass/components/custom_components/_global.scss */
   .container {
     width: 90%;
   }

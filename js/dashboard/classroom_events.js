@@ -8,7 +8,7 @@ var ClassroomEvents = function () {
         console.log('classroom events created');
         
         //global inits
-        cleanOutModals();
+        Modals_Events.cleanOutModals();
         
         //classroom inits
         createClassroom();
@@ -53,7 +53,7 @@ var ClassroomEvents = function () {
             //1 & 2
             $('.modal#editClassRoom').closeModal();
             //6
-            cleanOutModals();
+            Modals_Events.cleanOutModals();
             $('#classroomCardList .card-col[data-classroom-id=' + classid + ']').addClass('to-remove');
             
             //3
@@ -430,7 +430,7 @@ var ClassroomEvents = function () {
         $('a#createClassroom').click(function (e) {
             e.preventDefault();
             
-            cleanOutModals();//remove any modal if exists
+            Modals_Events.cleanOutModals();//remove any modal if exists
             
             console.log('fetching form template');
             
@@ -706,7 +706,7 @@ var ClassroomEvents = function () {
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(errorMessage, 5000, '', function () {
-                    cleanOutModals();
+                    Modals_Events.cleanOutModals();
                 });
                 
             }
@@ -719,7 +719,7 @@ var ClassroomEvents = function () {
         
             $('#' + str1).closeModal();
            
-            cleanOutModals();
+            Modals_Events.cleanOutModals();
 
             //} else {
 
@@ -774,7 +774,7 @@ var ClassroomEvents = function () {
 
                     /*3*/self.parents('.card').addClass('grey z-depth-4 to-edit');
 
-                    cleanOutModals();//remove any modal if exists
+                    Modals_Events.cleanOutModals();//remove any modal if exists
 
                     console.log(resultData);
 
@@ -1055,7 +1055,7 @@ var ClassroomEvents = function () {
         /*6*/
                     $('#' + str1).closeModal();
         /*7*/
-                    cleanOutModals();
+                    Modals_Events.cleanOutModals();
                     
                 } else {
 
@@ -1075,7 +1075,7 @@ var ClassroomEvents = function () {
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(errorMessage, 5000, '', function() {
-                    cleanOutModals();
+                    Modals_Events.cleanOutModals();
                 });
                 
             }
@@ -1113,7 +1113,7 @@ var ClassroomEvents = function () {
             if($(checkedCheckboxEl).length > 0) {//checked
                 
                 //remove existing esomo modal
-                cleanOutModal('#esomoModal' + modal_id);
+                Modals_Events.cleanOutModal('#esomoModal' + modal_id);
                 
                 var classiD = localStorage.getItem("cardId");
                 
@@ -1197,7 +1197,7 @@ var ClassroomEvents = function () {
 
                             var modal_action = 'Add';
                             
-                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1297,7 +1297,7 @@ var ClassroomEvents = function () {
 
                             var modal_action = 'Add';
                             
-                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1324,7 +1324,7 @@ var ClassroomEvents = function () {
   
             } else if ($(checkedCheckboxEl).length < 1) {
             
-                cleanOutModal('#esomoModal' + modal_id);
+                Modals_Events.cleanOutModal('#esomoModal' + modal_id);
                 
                 console.log('removing list');
             
@@ -1366,7 +1366,7 @@ var ClassroomEvents = function () {
             var action = $(el).attr('data-action');
             
             //remove existing esomo modal
-            cleanOutModal('#esomoModal' + modal_id);
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
             var classiD = localStorage.getItem("cardId");
 
@@ -1447,7 +1447,7 @@ var ClassroomEvents = function () {
 
                         var modal_action = 'Add';
                         
-                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1544,7 +1544,7 @@ var ClassroomEvents = function () {
 
                         var modal_action = 'Add';
                         
-                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1597,7 +1597,7 @@ var ClassroomEvents = function () {
             var action = $(el).attr('data-action');
             
             //remove existing esomo modal
-            cleanOutModal('#esomoModal' + modal_id);
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
             var classiD = localStorage.getItem("cardId");
 
@@ -1680,7 +1680,7 @@ var ClassroomEvents = function () {
                         
                         var modal_action = 'Remove';
 
-                        var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible:false});
 
@@ -1898,7 +1898,7 @@ var ClassroomEvents = function () {
             
             console.log(totalSelected);
 
-            cleanOutModal('#esomoModal' + modal_id);
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
             return true;
 
@@ -1906,7 +1906,7 @@ var ClassroomEvents = function () {
 
             console.log(totalSelected);
 
-            cleanOutModal('#esomoModal' + modal_id);
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
             return null;
 
@@ -2006,61 +2006,7 @@ var ClassroomEvents = function () {
         return 1;
         
     };
-    
-    //--------------------------------
-    //--------------------------------  MODAL EVENTS AND FUNCTIONS
-    //--------------------------------
-    
-    //----------------------------      FUNCTIONS
-    
-    var loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
-        
-        var args = {
-            modalId: modal_id,
-            modalActionType: {
-                actionClose: 'close-hivi',
-                actionAdd: 'add-hivi'
-            },
-            modal_action: modal_action,
-            templateHeader: modal_header,
-            templateBody: modal_body
-            
-        };
-        
-        var esomoModal = Lists_Templates.esomoModalTemplate(args);
-        
-        $('main').append(esomoModal);
-        
-    };
-    
-    //--------------------------------
-    
-    var cleanOutModal = function (str) {
-        
-        console.log('cleaning out modal' + str);
-        
-        $('.modal' + str).remove();
 
-        console.log($('main').find('.modal' + str).length);
-        
-    };
-    
-    //----------------------------
-    
-    var cleanOutModals = function () {
-        
-        console.log('cleaning out classrooms dialogs');
-        
-        //$('a#createClassroom').attr('data-target', '');
-        
-        $('.modal ').remove();
-
-    };
-    
-    //--------------------------------
-    //--------------------------------  END OF MODAL EVENTS AND FUNCTIONS
-    //--------------------------------
-    
     this.__construct();
     
 };

@@ -10,7 +10,7 @@
         <?php MyHeaderHandler::GetMetaData(); ?>
         
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
     </head>
 
     <body>
@@ -148,7 +148,7 @@
         ?>
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+<!--        <script type="text/javascript" src="js/main.js"></script>-->
         <script type="text/javascript" src="js/login.js"></script>
         
         <script>

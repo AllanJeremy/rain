@@ -7,25 +7,17 @@ var ScheduleEvents = function () {
     
     this.__construct = function () {
         console.log('schedule events created');
-        
-        //global inits
-        //cleanOutModals();
-        
+
         //schedule inits
         openScheduleForm();     //done
         closeScheduleForm();    //done
         submitSchedule();       //done
-        editSchedule();         //50%
-        updateSchedule();       //0%
+        editSchedule();         //done
+        updateSchedule();       //done
         deleteSchedule();       //done
-        markAttendedSchedule();             //done
-        unmarkAttendedSchedule();           //done
-        markStudentAttendancePerSchedule(); // - - -
-        markAllDone();          //Beta - version
+        markAttendedSchedule();                 //done
+        unmarkAttendedSchedule();               //done
         openSchedule();         //done
-        overdueScheduleReminder();          //Beta - version
-        getPendingSchedules();  //Beta - version
-        archiveSchedule();      //Beta - version
         addObjective();         //done
         removeObjective();      //done
         updateClassroomDropdownExtraInfo();     //done
@@ -33,6 +25,11 @@ var ScheduleEvents = function () {
         addObjectiveFromSubtopics();            //done
         tableNavigate();                        //done
         nextPrevSchedule();                     //done
+        markStudentAttendancePerSchedule();     // - - -
+        markAllDone();          //Beta - version
+        overdueScheduleReminder();              //Beta - version
+        getPendingSchedules();  //Beta - version
+        archiveSchedule();      //Beta - version
         
     };
     
@@ -867,7 +864,7 @@ var ScheduleEvents = function () {
 
             }, 'json');
 
-            cleanOutModals();
+            Modals_Events.cleanOutModals();
 
             $('a#submitNewSchedule').addClass('hide');
             $('a#updateSchedule').removeClass('hide');
@@ -893,7 +890,7 @@ var ScheduleEvents = function () {
             //close modal
             $('.modal#' + self.parents('.modal').attr('id') ).closeModal();
             //remove modal from dom
-            cleanOutModals();
+            Modals_Events.cleanOutModals();
 
             $('table#' + re).find('tr[data-schedule-id="' + scheduleid + '"]').addClass('to-remove');
 
@@ -914,7 +911,7 @@ var ScheduleEvents = function () {
                     }
 
                     //6
-                    //cleanOutModals();
+                    //Modals_Events.cleanOutModals();
 
                 }, 'text');
 
@@ -997,7 +994,7 @@ var ScheduleEvents = function () {
 
                         $('#' + modalid).closeModal();
 
-                        cleanOutModals();
+                        Modals_Events.cleanOutModals();
 
                     }
 
@@ -1257,7 +1254,7 @@ var ScheduleEvents = function () {
 
                     $('#' + modalid).closeModal();
 
-                    cleanOutModals();
+                    Modals_Events.cleanOutModals();
 
                     console.log(previousattributeid);
                 }
@@ -1383,7 +1380,7 @@ var ScheduleEvents = function () {
 
                     console.log(nextattributeid);
 
-                    cleanOutModals();
+                    Modals_Events.cleanOutModals();
                 }
             }
         });
@@ -1408,60 +1405,6 @@ var ScheduleEvents = function () {
     var archiveSchedule = function () {
 
     };
-    
-    //--------------------------------
-    //--------------------------------  MODAL EVENTS AND FUNCTIONS
-    //--------------------------------
-
-    //----------------------------      FUNCTIONS
-
-    var loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
-
-        var args = {
-            modalId: modal_id,
-            modalActionType: {
-                actionClose: 'close-hivi',
-                actionAdd: 'add-hivi'
-            },
-            modal_action: modal_action,
-            templateHeader: modal_header,
-            templateBody: modal_body
-
-        };
-
-        var esomoModal = Lists_Templates.esomoModalTemplate(args);
-
-        $('main').append(esomoModal);
-
-    };
-
-    //--------------------------------
-
-    var cleanOutModal = function (str) {
-
-        console.log('cleaning out modal' + str);
-
-        $('.modal' + str).remove();
-
-        console.log($('main').find('.modal' + str).length);
-
-    };
-
-    //----------------------------
-
-    var cleanOutModals = function () {
-
-        console.log('cleaning out classrooms dialogs');
-
-        //$('a#createClassroom').attr('data-target', '');
-
-        $('.modal ').remove();
-
-    };
-
-    //--------------------------------
-    //--------------------------------  END OF MODAL EVENTS AND FUNCTIONS
-    //--------------------------------
 
     this.__construct();
 

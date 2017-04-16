@@ -135,7 +135,12 @@ about how you came to achieve this.</p>
                                 <p>Resources: <span class="php-data"><a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a></span></p>
                             </div>
                             <div class="card-action center-align brookhurst-theme-primary assignment-results">
-                                <p class="white-text">Grade given: <span class="php-data">90%</span></p>
+                                <p class="white-text no-margin">Grade given: <span class="php-data">90%</span></p>
+                                <div class="js-assignment-comments assignment-info">
+                                    <a href="#" class="<!--deep-orange-text text-accent-3--> php-data white-text" onclick="")>
+                                        <i class="material-icons center">message</i> 12
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

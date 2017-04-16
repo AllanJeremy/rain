@@ -252,7 +252,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 </span></p>
                             </div>
                             <div class="card-action">
-                                <a href="#!" id="editClassroom">Edit</a>
+                                <a href="#!" id="editAssignment">Edit</a>
                                 <a href="#!" class="right">Call Back</a>
     <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
                             </div>

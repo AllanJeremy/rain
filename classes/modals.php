@@ -70,7 +70,7 @@ class EsomoModal implements EsomoModalFunctions
             //If the modal title has been provided, add the title to the DOM
             if(isset($modal_title)&&(!empty($modal_title))):
         ?>
-                <<?php echo $title_tag;?> class="<?php echo $title_classes;?>">
+                <?php echo $title_tag;?> class="<?php echo $title_classes;?>">
                     <?php echo $modal_title?>
                 </<?php echo $title_tag;?>>
         <?php

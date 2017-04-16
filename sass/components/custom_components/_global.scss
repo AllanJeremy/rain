@@ -1,6 +1,11 @@
 .php-data {
     opacity: 0.78;
     word-wrap: break-word;
+
+    i.material-icons {
+        font-size: inherit;
+        line-height: inherit;
+    }
 }
 
 .op-4 {

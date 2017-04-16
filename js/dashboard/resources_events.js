@@ -15,6 +15,7 @@ var ResourcesEvents = function () {
         editResource();
         uploadEditedResource();
         deleteResource();
+        minimizeSubjectResources();
 
     };
 
@@ -102,6 +103,8 @@ var ResourcesEvents = function () {
         });
     };
 
+    //-----------
+
     //Uploads the resources form
     var UploadResources = function () {
 
@@ -185,6 +188,8 @@ var ResourcesEvents = function () {
         });
     };
 
+    //-----------
+
     var validateFiles = function (files) {
         var mimetypes = Array("application/pdf","image/jpeg","image/jpg","image/png","application/msword","application/vnd.ms-excel","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.openxmlformats-officedocument.presentationml.presentation"),
             maxsize = 52428800,
@@ -208,6 +213,8 @@ var ResourcesEvents = function () {
         }
         return reportdata;
     };
+
+    //-----------
 
     //Generates the resources list, each with textareas.
     var generateResourcesFormList = function (obj) {
@@ -331,11 +338,12 @@ var ResourcesEvents = function () {
         });
     };
 
+    //-----------
+
     var deleteResource = function () {
         $('main').on('click', ' a#moreResourcesCardDelete', function (e) {
             e.preventDefault();
             console.log('will delete');
-
 
             var self = $(this), re,
                 res_id = self.parents('.modal').attr('id').split('_').pop(),
@@ -346,7 +354,7 @@ var ResourcesEvents = function () {
             //close modal
             $('.modal#' + self.parents('.modal').attr('id') ).closeModal();
             //remove modal from dom
-            cleanOutModals();
+            Modals_Events.cleanOutModals();
 
             $('.tr_res_container[data-res-id=' + res_id + ']').addClass('to-remove');
             //3
@@ -407,25 +415,31 @@ var ResourcesEvents = function () {
 
     //--------------------------------
 
-    var cleanOutModal = function (str) {
+    var minimizeSubjectResources = function () {
 
-        console.log('cleaning out modal' + str);
+        $('main').on('click', 'a.js-minimize-subject-resources', function (e) {
+            e.preventDefault();
+            console.log('minimizing div');
+            console.log($(this)[0].innerText);
 
-        $('.modal' + str).remove();
+            var subjectgroup = $(this).parents('.subject-group'),
+                subjectgroupbody = subjectgroup.find('.subject-group-body');
 
-        console.log($('main').find('.modal' + str).length);
+            if($(this).hasClass('hidden')) {
+                subjectgroupbody.slideDown();
+                $(this).children('i.material-icons')[0].innerText = 'expand_more';
+                $(this).removeClass('hidden');
 
-    };
+            } else {
 
-    //----------------------------
+                subjectgroupbody.slideUp();
 
-    var cleanOutModals = function () {
+                $(this).children('i.material-icons')[0].innerText = 'expand_less';
+                $(this).addClass('hidden');
 
-        console.log('cleaning out classrooms dialogs');
+            }
 
-        //$('a#createClassroom').attr('data-target', '');
-
-        $('.modal ').remove();
+        });
 
     };
 

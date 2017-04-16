@@ -11,24 +11,11 @@
         
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
         <link  rel="stylesheet" type="text/css" href="stylesheets/pace-theme-flash.css"/>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        
-        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
-        <script type="text/javascript" src="js/materialize.js"></script>
-        <script type="text/javascript" src="js/moment.js"></script>
-        <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>
-        <script type="text/javascript" src="js/dashboard/result.js"></script>
-        <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
-        <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
-        <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/resources_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/events.js"></script>
-        <script type="text/javascript" src="js/dashboard/test_events.js"></script>
-        <script type="text/javascript" src="js/dashboard.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="js/pace.js"></script>
+        <script src="js/head.min.js"></script>
+        <script>
+//            head.load('https://fonts.googleapis.com/icon?family=Material+Icons');
+        </script>
+
         
     </head>
 
@@ -217,7 +204,25 @@
                 header('Location:'.$redirectPath);
             endif;#end the main if statement
         ?>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         
+        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
+        <script type="text/javascript" src="js/materialize.js"></script>
+        <script type="text/javascript" src="js/moment.js"></script>
+<!--        <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>-->
+        <script type="text/javascript" src="js/dashboard/result.js"></script>
+        <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
+        <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
+        <script type="text/javascript" src="js/dashboard/modals_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/resources_events.js"></script>
+        <script type="text/javascript" src="js/dashboard/events.js"></script>
+        <script type="text/javascript" src="js/dashboard/test_events.js"></script>
+        <script type="text/javascript" src="js/dashboard.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/pace.js"></script>
         <script type="text/javascript" src="js/picker.time.js"></script>
 
         <script>

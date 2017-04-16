@@ -61,7 +61,11 @@ class EsomoResource
                         <div class="resource-details-container">
                             <p>Description: <?php echo empty($res_description) ? '<span class="grey-text">Not written</span>' : $res_description; ?></p>
                         </div>
-                    <h6 class="grey-text uppercase text-lighten-2 "><?php echo $res_found['file_type'];?></h6>
+                    <h6 class="grey-text uppercase text-lighten-2 "><?php echo explode(".",explode("/",$res_found['file_type'])
+                                                                                              [count(explode("/",$res_found['file_type'])) - 1]
+                                                                                             )[count(explode(".",explode("/",$res_found['file_type'])
+                                                                                                            [count(explode("/",$res_found['file_type'])) - 1]
+                                                                                                           )) - 1]; ?></h6>
                 </div>
                 <div class="card-action">
                     <!--TODO: Make this display the file regardless of type in a new tab-->
@@ -93,7 +97,14 @@ class EsomoResource
 
                 if($resources):
      ?>
-    <h4 class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></h4>
+<div class="col s8">
+    <h5 class="grey-text text-darken-2 s8 col"><?php echo $subject["subject_name"];?></h5>
+</div>
+<div class="col s4">
+    <a class="js-minimize-subject-resources btn-icon right" href="#!" >
+        <i class="material-icons">expand_more</i>
+    </a>
+</div>
      <?php
                     self::DisplayResourceBase($resources);
                     echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
@@ -206,8 +217,16 @@ class EsomoResource
                     if($resources):
     ?>
         <div class='row subject-group' data-subject-group="<?php echo $subject_id; ?>">
-        <h4 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h4>
-    <?php
+<!--        <h4 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h4>-->
+            <div class="col s8">
+                <h5 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h5>
+            </div>
+            <div class="col s4">
+                <a class="js-minimize-subject-resources btn-icon right" href="#!" id="">
+                    <i class="material-icons">expand_more</i>
+                </a>
+            </div>
+            <?php
                         echo "<div class='row subject-group-body'>";
                         self::DisplayEditResourceBase($user_info,$resources);
                         echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found

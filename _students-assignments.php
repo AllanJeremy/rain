@@ -99,8 +99,10 @@
             </div>
         </main>
 
-        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
-        <script type="text/javascript" src="js/materialize.js"></script>
+        <script src="js/jquery-2.0.0.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src="js/dashboard/events.js"></script>
+
         <!--DON'T MESS WITH-->
         <script src="tinymce/jquery.tinymce.min.js"></script>
         <script src="tinymce/tinymce.min.js"></script>

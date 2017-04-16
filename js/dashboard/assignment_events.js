@@ -6,13 +6,12 @@ var AssignmentEvents = function () {
     
     this.__construct = function () {
         console.log('assignment events created');
-        
-        //global inits
-        cleanOutModals();
-        
+
         //assignment inits
         addClassroomToAssignment();
         submitNewAssignment();
+        showAssignmentComments();
+
     };
     
     //------------------------------
@@ -46,7 +45,7 @@ var AssignmentEvents = function () {
             if($(checkedCheckboxEl).length > 0) {//checked
                 
                 //remove existing esomo modal
-                cleanOutModal('#esomoModal' + modal_id);
+                Modals_Events.cleanOutModal('#esomoModal' + modal_id);
                 
                 console.log('adding list');
                 
@@ -117,7 +116,7 @@ var AssignmentEvents = function () {
 
                                 modal_header = 'Send assignment to classrooms',
                                 modal_body = List,
-                                classroomListModal = loadEsomoModal(modal_id, modal_header, modal_body, 'add classrooms');
+                                classroomListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, 'add classrooms');
                             
                             $('input#searchStudentFormList').autocomplete({
                                 data: autocompletedata
@@ -242,7 +241,7 @@ var AssignmentEvents = function () {
   
             } else if ($(checkedCheckboxEl).length < 1) {
             
-                cleanOutModal('#esomoModal' + modal_id);
+                Modals_Events.cleanOutModal('#esomoModal' + modal_id);
                 
                 console.log('removing list');
             
@@ -416,7 +415,7 @@ var AssignmentEvents = function () {
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(errorMessage, 5000, '', function () {
-                    cleanOutModals();
+                    Modals_Events.cleanOutModals();
                 });
             }
 
@@ -527,7 +526,7 @@ var AssignmentEvents = function () {
             
             console.log(totalSelected);
 
-            cleanOutModal('#esomoModal' + modal_id);
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
             return true;
 
@@ -535,7 +534,7 @@ var AssignmentEvents = function () {
 
             console.log(totalSelected);
 
-            cleanOutModal('#esomoModal' + modal_id);
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
             return null;
 
@@ -545,6 +544,19 @@ var AssignmentEvents = function () {
     
     //--------------------------------
     
+    var showAssignmentComments = function () {
+
+        $('main').on('click', '.js-assignment-comments', function (e) {
+
+            e.preventDefault();
+
+            console.log('opening modal clicked');
+
+        });
+    };
+
+    //--------------------------------
+
     var cleanArray = function (actual) {
         
         var newArray = new Array();
@@ -562,24 +574,7 @@ var AssignmentEvents = function () {
         return newArray;
         
     };
-    
-    //--------------------------------
-    
-    var masonryGridInit = function (str) {
-        var masonryContainer = 'classroomCardList';
-        
-        var $container = $('#' + masonryContainer);
-                
-                $container.masonry({
-                    columnWidth: '.card-col',
-                    itemSelector: '.col'
-                });
-    };
-    
-    //--------------------------------
-    //--------------------------------  MODAL EVENTS AND FUNCTIONS
-    //--------------------------------
-    
+
     //----------------------------      FUNCTIONS
     
     var progress = function (e) {
@@ -602,55 +597,6 @@ var AssignmentEvents = function () {
         }
     };
 
-    //--------------------------------
-
-    var loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
-        
-        var args = {
-            modalId: modal_id,
-            modalActionType: {
-                actionClose: 'close-hivi',
-                actionAdd: 'add-hivi'
-            },
-            templateHeader: modal_header,
-            templateBody: modal_body,
-            modal_action: modal_action
-        };
-        
-        var esomoModal = Lists_Templates.esomoModalTemplate(args);
-        
-        $('main').append(esomoModal);
-        
-    };
-    
-    //--------------------------------
-    
-    var cleanOutModal = function (str) {
-        
-        console.log('cleaning out modal' + str);
-        
-        $('.modal' + str).remove();
-
-        console.log($('main').find('.modal' + str).length);
-        
-    };
-    
-    //----------------------------
-    
-    var cleanOutModals = function () {
-        
-        console.log('cleaning out assignments dialogs');
-        
-        //$('a#createClassroom').attr('data-target', '');
-        
-        $('.modal ').remove();
-
-    };
-    
-    //--------------------------------
-    //--------------------------------  END OF MODAL EVENTS AND FUNCTIONS
-    //--------------------------------
-    
     this.__construct();
     
 };
