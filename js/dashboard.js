@@ -35,16 +35,21 @@ var Dashboard = function () {
             tagExists = $(notCollapsibleHeader).map(function (v) {
                 if ($(this).attr('id') === currTag.split('#').pop()) {
                     console.log('tag is valid');
-                    return true;
-                } else {
                     return false;
+                } else {
+                    return true;
                 }
             }),
             tabActivates,
             id,
             pageTitle;
+        if (currTag.split('')[1] === '!') {
+            console.log(currTag.split('')[1]);
+            tagExists = true;
+            currTag = '';//just clear just incase
+        }
 
-        if (!currTag || currTag === '#!' || currTag === '#' || tagExists) {
+        if (!currTag || currTag === '#' || tagExists) {
             switch (firstElement[0].nodeName) {
             case 'UL':
                 firstElement.children('li:eq(0)')

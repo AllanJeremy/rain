@@ -11,7 +11,7 @@
         
         <link  rel="stylesheet" type="text/css" href="stylesheets/compiled-materialize.css"/>
         <link  rel="stylesheet" type="text/css" href="stylesheets/pace-theme-flash.css"/>
-        <script src="js/head.min.js"></script>
+<!--        <script src="js/head.min.js"></script>-->
         <script>
 //            head.load('https://fonts.googleapis.com/icon?family=Material+Icons');
         </script>
@@ -204,7 +204,6 @@
                 header('Location:'.$redirectPath);
             endif;#end the main if statement
         ?>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
@@ -227,6 +226,12 @@
 
         <script>
         $(document).ready(function() {
+            //init the dashboard application except on login page
+            if (location.pathname.split('/').pop() != 'login.php') {
+                var dashboard = new Dashboard();
+            }
+
+            $('.mobile-button-collapse').sideNav();
             $('select').material_select();
             $('.tooltipped').tooltip({delay: 50});
             $('.modal-trigger').leanModal({dismissible : false});//a workaround the lean-overlay click event
@@ -358,5 +363,6 @@
         
         </script>
         <script type="text/javascript" src="js/test_functions.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </body>
 </html>
