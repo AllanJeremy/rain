@@ -131,7 +131,7 @@
 
                     <div class="row">  
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a href="javascript:void(0)" class="right btn" id="createStudentAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -142,9 +142,9 @@
                 <br>
                 <div class="col s12 no-data-message valign-wrapper grey lighten-3">
                     <h6 class="center-align valign grey-text " id="importMessage">
-                        Some info here
+                        Add your student excel file here and click import
                         <br>
-                        Lorem ipsum
+                        Note : The file must correspond to the agreed upon structure for the import to work
                     </h6>
                 </div>
                 <br>
@@ -339,7 +339,7 @@
                     <div class="row">
                         
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a class="right btn" id="createTeacherAccount">Create account</a>
                         </div>
                     </div>
                 </form>
@@ -530,7 +530,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a href="javascript:void(0)" class="right btn" id="createPrincipalAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -679,7 +679,7 @@
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a href="javascript:void(0)" class="right btn" id="createSuperuserAccount" >Create account</a>
                         </div>
                     </div>
                 </form>

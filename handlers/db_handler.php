@@ -1253,6 +1253,59 @@ if(isset($_POST['action'])) {
     $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
 
     switch($_POST['action']) {
+        
+        case 'CreateStudentAccount': #Create a student account
+            require_once("classes/student.php");
+            $data = $_POST["data"];
+
+            $student = new Student();
+            $create_status = $student->CreateStudentAccount($data);
+
+            echo $create_status;#Print out the create status for feedback handling by javascript
+        break;
+
+        case 'CreateTeacherAccount': #Create a teacher account
+            require_once("classes/teacher.php");
+            $data = $_POST["data"];
+            $create_status = false;#The create status for the account ~ true on success | false or null on failure
+            
+            $teacher = new Teacher();
+            $create_status = $teacher->CreateTeacher($data);
+
+            echo $create_status;#Print out the create status for feedback handling by javascript
+        break;
+
+        case 'CreatePrincipalAccount': #Create a principal account
+            require_once("classes/principal.php");
+            $data = $_POST["data"];
+            $create_teacher_acc = $_POST["create_teacher_acc"];
+            $principal = new Principal();
+            
+            $create_status = false;#The create status for the account ~ true on success | false or null on 
+            //If create a corresponding teacher account is selected
+            if($create_teacher_acc)
+            {
+                require_once("classes/teacher.php");#include teacher class
+                $create_status = $principal->CreatePrincipalTeacherAccount($data);
+            }
+            else #Only create principal account
+            {
+                $create_status = $principal->CreatePrincipal($data);
+            }
+
+            echo $create_status;#Print out the create status for feedback handling by javascript
+        break;
+
+        case 'CreateSuperuserAccount': #Create a superuser account
+            require_once("classes/superuser.php");
+            $data = $_POST["data"];
+
+            $superuser = new Superuser();
+            $create_status = $superuser->CreateSuperuser($data);
+
+            echo $create_status;#Print out the create status for feedback handling by javascript
+        break;
+
         case 'UpdateClassroomInfo':
             
             $args = array(

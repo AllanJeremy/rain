@@ -21,12 +21,6 @@ class AdminAccount extends CommentHandler
     public $encrypted_password;
     public $accType;
 
-    //Constructor
-    function __construct()
-    {
-        
-    }
-
     //returns true if the account exists false if it doesn't - faster than the db_info function, selects one column
     public static function AccountExists($username,$acc_type)
     {

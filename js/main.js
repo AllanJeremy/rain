@@ -29,5 +29,7 @@ $(function (z) {
     /**************
     SEARCHBAR FUNCTIONALITIES END
     ************/
+
+    /*Superuser validation*/
     
 }, jQuery); // end of document ready
