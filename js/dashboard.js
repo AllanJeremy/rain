@@ -47,9 +47,10 @@ var Dashboard = function () {
             console.log(currTag.split('')[1]);
             tagExists = true;
             currTag = '';//just clear just incase
+            console.log('clearing');
         }
 
-        if (!currTag || currTag === '#' || tagExists) {
+        if (!currTag || currTag === '#' || tagExists === false) {
             switch (firstElement[0].nodeName) {
             case 'UL':
                 firstElement.children('li:eq(0)')

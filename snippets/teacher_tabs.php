@@ -358,201 +358,201 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 <p class="title">Assignments for <i><?php echo $class_name;?></i></p>
 
                             </div>
-                                <div class="col s12 body">
-                                    <!--PERMISSION-->
-                                    <ul class="collapsible popout" data-collapsible="accordion">
-                                        <?php
-                                            //Returned assignments
-                                            $returned_ass = DbInfo::GetReturnedAssSubmissions($loggedInTeacherId);
-                                            
-                                            //Unreturned assignments
-                                            $unreturned_ass = DbInfo::GetUnreturnedAssSubmissions($loggedInTeacherId);
-                                                
-                                            //Loop through all assignments and display them
-                                            foreach($ass_in_classroom as $ass):
-                                                $ass_title = $ass["ass_title"];
-                                                $ass_description = $ass["ass_description"];
-                                                $ass_id = $ass["ass_id"];
-                                        ?>
-                                        <!--TEMPLATE_START-->
-                                        <li data-assignment-id="--">
-                                            <div class="collapsible-header ">
-                                                <span><?php echo $ass_title;?></span>
-                                                <div class="right hide">
-                                                    <span class="margin-horiz-8 badge new">4</span>
-                                                    <p class="margin-horiz-8 right">
-                                                        <span class="js-submitted">10</span> submitted
-                                                    </p>
-                                                    <p class="margin-horiz-8 right">
-                                                        <span class="js-not-submitted">5</span> not submitted
-                                                    </p>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col s12 m8">
-                                                        <span class="no-margin line-height-0">Description</span>
-                                                        <p class="js-assignment-description no-margin line-height-0"><?php echo $ass_description;?></p>
-                                                    </div>
+                            <div class="col s12 body">
+                                <!--PERMISSION-->
+                                <ul class="collapsible popout" data-collapsible="accordion">
+                                    <?php
+                                        //Returned assignments
+                                        $returned_ass = DbInfo::GetReturnedAssSubmissions($loggedInTeacherId);
+
+                                        //Unreturned assignments
+                                        $unreturned_ass = DbInfo::GetUnreturnedAssSubmissions($loggedInTeacherId);
+
+                                        //Loop through all assignments and display them
+                                        foreach($ass_in_classroom as $ass):
+                                            $ass_title = $ass["ass_title"];
+                                            $ass_description = $ass["ass_description"];
+                                            $ass_id = $ass["ass_id"];
+                                    ?>
+                                    <!--TEMPLATE_START-->
+                                    <li data-assignment-id="--">
+                                        <div class="collapsible-header ">
+                                            <span><?php echo $ass_title;?></span>
+                                            <div class="right hide">
+                                                <span class="margin-horiz-8 badge new">4</span>
+                                                <p class="margin-horiz-8 right">
+                                                    <span class="js-submitted">10</span> submitted
+                                                </p>
+                                                <p class="margin-horiz-8 right">
+                                                    <span class="js-not-submitted">5</span> not submitted
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s12 m8">
+                                                    <span class="no-margin line-height-0">Description</span>
+                                                    <p class="js-assignment-description no-margin line-height-0"><?php echo $ass_description;?></p>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <!--Assignment submissions-->
-                                            <div class="collapsible-body">
+                                        <!--Assignment submissions-->
+                                        <div class="collapsible-body">
 
-                                            <?php
-                                                $ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id);
-                                                
-                                                //Check if assignment submission exist for this specific assignment
-                                                if($ass_submissions): #if assignment submissions were found
+                                        <?php
+                                            $ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id);
 
-                                                    //Check if there are any returned assignments ~ if there are, show the return button
-                                                    $returned_btn_disabled = "disabled";
+                                            //Check if assignment submission exist for this specific assignment
+                                            if($ass_submissions): #if assignment submissions were found
 
-                                                    //If there are any returned assignments ~ enable the returned button
-                                                    if($returned_ass && $returned_ass->num_rows>0)
+                                                //Check if there are any returned assignments ~ if there are, show the return button
+                                                $returned_btn_disabled = "disabled";
+
+                                                //If there are any returned assignments ~ enable the returned button
+                                                if($returned_ass && $returned_ass->num_rows>0)
+                                                {
+                                                    $returned_btn_disabled = "";
+                                                }
+
+                                                $no_submissions_message = "No new assignment submissions were found.";
+                                        ?>
+                                            <div class="filter-bar pad-8">
+                                                <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
+                                            </div>
+
+                                            <div class="row submitted-assignment-list padding-horiz-16">
+                                                <div class="new-submissions col s12 padding-horiz-8">
+                                                    <div class="header ">
+                                                        <p class="pad-8">New submissions</p>
+                                                        <div class="divider margin-horiz-16"></div>
+                                                    </div>
+                                                    <ul class="row">
+
+                                        <?php
+                                            //If there are any unreturned assignment submissions
+                                            if($unreturned_ass && $unreturned_ass->num_rows>0):
+                                                //Loop through each assignment submission for this assignment
+                                                foreach($ass_submissions as $ass_sub):
+                                                    $student_id = $ass_sub["student_id"];
+                                                    $student = DbInfo::GetStudentByAccId($student_id);
+
+                                                    $student_name = "Unknown student";
+                                                    $student_adm_no = "---";
+
+                                                    //If the student was found
+                                                    if($student)
                                                     {
-                                                        $returned_btn_disabled = "";
+                                                        $student_adm_no = $student["adm_no"];
+                                                        $student_name = $student["full_name"];
                                                     }
 
-                                                    $no_submissions_message = "No new assignment submissions were found.";
-                                            ?>
-                                                <div class="filter-bar pad-8">
-                                                    <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
-                                                </div>
 
-                                                <div class="row submitted-assignment-list padding-horiz-16">
-                                                    <div class="new-submissions col s12 padding-horiz-8">
-                                                        <div class="header ">
-                                                            <p class="pad-8">New submissions</p>
-                                                            <div class="divider margin-horiz-16"></div>
-                                                        </div>
-                                                        <ul class="row">
-                                                        
-                                            <?php                                            
-                                                //If there are any unreturned assignment submissions
-                                                if($unreturned_ass && $unreturned_ass->num_rows>0):
-                                                    //Loop through each assignment submission for this assignment
-                                                    foreach($ass_submissions as $ass_sub):
-                                                        $student_id = $ass_sub["student_id"];
-                                                        $student = DbInfo::GetStudentByAccId($student_id);
+                                                    //If the submission is submitted and not returned yet ~ display it
+                                                    if($ass_sub["submitted"] && (!$ass_sub["returned"])):
+                                        ?>
+                                                        <!--Assignment submissions
+                                                            TODO: consider making this full width
+                                                        -->
+                                                        <li class="col s12 pad-8 ass-submission-container">
 
-                                                        $student_name = "Unknown student";
-                                                        $student_adm_no = "---";
-                                                        
-                                                        //If the student was found
-                                                        if($student)
-                                                        {
-                                                            $student_adm_no = $student["adm_no"];
-                                                            $student_name = $student["full_name"];
-                                                        }
-                                                        
-
-                                                        //If the submission is submitted and not returned yet ~ display it
-                                                        if($ass_sub["submitted"] && (!$ass_sub["returned"])):
-                                            ?>
-                                                            <!--Assignment submissions 
-                                                                TODO: consider making this full width
-                                                            -->
-                                                            <li class="col s12 pad-8 ass-submission-container">
-
-                                                                <div class=" container">
-                                                                    <a class="black-text pad-8 student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></a><a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-3"> | <i class="material-icons">read</i></a>
-                                                                    <br>
-                                                                    <div class="input-field inline comment">
-                                                                        <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
-                                                                        <label for="comment">
-                                                                            <i class="material-icons">comment</i>
-                                                                        </label>
-                                                                        <br>
-                                                                        <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all comments (3)</a>
-                                                                    </div>
-                                                                    <span class="right">
-                                                                        <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
-                                                                            <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default tiny grader"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
-<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
-                                                                        <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
-                                                                        </span>
-                                                                        <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
-                                                                    </span>
-                                                                </div>
-                                                            </li>
-                                            <?php
-                                                        endif;#end if assignment submission is not returned
-                                                    endforeach;
-                                                
-                                                else: #No unreturned assignments found ~ display appropriate message
-                                            ?>
-                                                <p><?php echo $no_submissions_message;?></p>
-                                            <?php
-                                                endif;#end if there are any unreturned assignments
-                                            ?>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            <?php
-                                                else: #assignment submissions not found for this assignment submission
-                                            ?>
-                                                <p><?php echo $no_submissions_message;?></p>
-                                            <?php
-                                                endif;
-                                            ?>
-                                                <!--Returned assignment submissions-->
-                                                <div class="row returned-assignment-list padding-horiz-16">
-                                                    <div class="returned-submissions col s12 padding-horiz-8">
-                                                        <div class="header ">
-                                                            <p class="pad-8">Returned submissions</p>
-                                                            <div class="divider margin-horiz-16"></div>
-                                                        </div>
-                                                        <ul class="row returned-ass">
-                                                            <?php
-                                                                $no_returned_msg = "No returned assignments found";
-                                                                if($returned_ass && $returned_ass->num_rows>0):
-                                                                    foreach($returned_ass as $sub):
-                                                                        $student = DbInfo::GetStudentByAccId($sub["student_id"]);
-
-                                                                        $student_name = "Unknown student";
-                                                                        $student_adm_no = "---";
-
-                                                                        //If the student was found
-                                                                        if($student)
-                                                                        {
-                                                                            $student_adm_no = $student["adm_no"];
-                                                                            $student_name = $student["full_name"];
-                                                                        }
-                                                            ?>
-                                                            <li class="container col s12 m6">
-                                                                <?php echo $student_name." (Adm No. $student_adm_no) "?>
-                                                                <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                            <div class=" container">
+                                                                <a class="black-text pad-8 student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></a><a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-3"> | <i class="material-icons">read</i></a>
+                                                                <br>
                                                                 <div class="input-field inline comment">
                                                                     <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
                                                                     <label for="comment">
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
                                                                     <br>
-                                                                    <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all</a>
+                                                                    <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all comments (3)</a>
                                                                 </div>
-                                                            </li>
-                                                            <?php
-                                                                    endforeach;
-                                                                else:
-                                                            ?>
-                                                                <p><?php echo $no_returned_msg;?></p>
-                                                            <?php
-                                                                endif;
-                                                            ?>
-                                                        </ul>
-                                                    </div>
+                                                                <span class="right">
+                                                                    <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
+                                                                        <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default tiny grader"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
+                                                                    <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
+                                                                    </span>
+                                                                    <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
+                                                                </span>
+                                                            </div>
+                                                        </li>
+                                        <?php
+                                                    endif;#end if assignment submission is not returned
+                                                endforeach;
+
+                                            else: #No unreturned assignments found ~ display appropriate message
+                                        ?>
+                                            <p><?php echo $no_submissions_message;?></p>
+                                        <?php
+                                            endif;#end if there are any unreturned assignments
+                                        ?>
+                                                    </ul>
                                                 </div>
                                             </div>
-
-                                        </li>
-
-
                                         <?php
-                                            endforeach;#end assignment loop
+                                            else: #assignment submissions not found for this assignment submission
                                         ?>
-                                    </ul>
+                                            <p><?php echo $no_submissions_message;?></p>
+                                        <?php
+                                            endif;
+                                        ?>
+                                            <!--Returned assignment submissions-->
+                                            <div class="row returned-assignment-list padding-horiz-16">
+                                                <div class="returned-submissions col s12 padding-horiz-8">
+                                                    <div class="header ">
+                                                        <p class="pad-8">Returned submissions</p>
+                                                        <div class="divider margin-horiz-16"></div>
+                                                    </div>
+                                                    <ul class="row returned-ass">
+                                                        <?php
+                                                            $no_returned_msg = "No returned assignments found";
+                                                            if($returned_ass && $returned_ass->num_rows>0):
+                                                                foreach($returned_ass as $sub):
+                                                                    $student = DbInfo::GetStudentByAccId($sub["student_id"]);
 
-                                </div>
+                                                                    $student_name = "Unknown student";
+                                                                    $student_adm_no = "---";
+
+                                                                    //If the student was found
+                                                                    if($student)
+                                                                    {
+                                                                        $student_adm_no = $student["adm_no"];
+                                                                        $student_name = $student["full_name"];
+                                                                    }
+                                                        ?>
+                                                        <li class="container col s12 m6">
+                                                            <?php echo $student_name." (Adm No. $student_adm_no) "?>
+                                                            <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                            <div class="input-field inline comment">
+                                                                <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                <label for="comment">
+                                                                    <i class="material-icons">comment</i>
+                                                                </label>
+                                                                <br>
+                                                                <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all</a>
+                                                            </div>
+                                                        </li>
+                                                        <?php
+                                                                endforeach;
+                                                            else:
+                                                        ?>
+                                                            <p><?php echo $no_returned_msg;?></p>
+                                                        <?php
+                                                            endif;
+                                                        ?>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+
+
+                                    <?php
+                                        endforeach;#end assignment loop
+                                    ?>
+                                </ul>
+
+                            </div>
                         <?php
                             else:#No assignments found in classroom
                         ?>
@@ -565,9 +565,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <?php
                             endif;
                     //Close row assignment container class-ass-container
-                ?>
-                    </div>
-                <?php
+
                         endforeach;
                     else:#classrooms not found
                 ?>
@@ -579,7 +577,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <?php
                         endif;
                     ?>
-
+                </div>
 
                 <!--SCHEDULE SECTION-->
                 <div class="row main-tab" id="schedulesTab">
@@ -743,7 +741,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         </div>
                     </div>
                     <br>
-                    <div class="row no-bottom-margin">
+                    <div class="row no-bottom-margin" id="pendingScheduleCont">
                         <div class="col s5">
                             <p class="grey-text">Pending schedules</p>
                         </div>
@@ -755,74 +753,73 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 <i class="material-icons">search</i>
                             </a>
                         </div>
-                    </div>
-                    <div class="divider"></div>
-                    <br>
-                    <table class="bordered-light responsive-table" id="pendingScheduleTable" data-paginate-through="6">
-                        <thead>
-                            <tr>
-                                <th data-field="name" class="center-align">Schedule title</th>
-                                <th data-field="description" class="center-align">schedule description</th>
-                                <th data-field="due" class="center-align">Due date</th>
-                                <th data-field="action" class="center-align">Action</th>
-                            </tr>
-                        </thead>
-                        <?php
+                        <br>
+                        <table class="bordered-light responsive-table" id="pendingScheduleTable" data-paginate-through="6">
+                            <thead>
+                                <tr>
+                                    <th data-field="name" class="center-align">Schedule title</th>
+                                    <th data-field="description" class="center-align">schedule description</th>
+                                    <th data-field="due" class="center-align">Due date</th>
+                                    <th data-field="action" class="center-align">Action</th>
+                                </tr>
+                            </thead>
+                            <?php
 
-//                        $teacher_acc_id = $_SESSION['admin_acc_id'];
+    //                        $teacher_acc_id = $_SESSION['admin_acc_id'];
 
-                        $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
-//                                var_dump($teacherSchedules=>num_rows);
+                            $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
+    //                                var_dump($teacherSchedules=>num_rows);
 
-                        $i = 0;
+                            $i = 0;
 
-                        foreach($teacherSchedules as $pendingschedules) {
+                            foreach($teacherSchedules as $pendingschedules) {
 
-                            if($pendingschedules['attended_schedule'] == 0) {
+                                if($pendingschedules['attended_schedule'] == 0) {
 
-                                $pendingSchedulesData[$i] = $pendingschedules;
+                                    $pendingSchedulesData[$i] = $pendingschedules;
 
-                                $i++;
+                                    $i++;
+                                }
+
                             }
 
-                        }
+                            $paginationtype = 'table';
+                            $numberperrows = 6;
+                            $active = 1;
+                            $type = 'pending';
+                            $listdata = '1';
 
-                        $paginationtype = 'table';
-                        $numberperrows = 6;
-                        $active = 1;
-                        $type = 'pending';
-                        $listdata = '1';
+                            if (isset($pendingSchedulesData)) {
 
-                        if (isset($pendingSchedulesData)) {
+                                $listdata = $pendingSchedulesData;
 
-                            $listdata = $pendingSchedulesData;
+                                DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
 
-                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+                            } else {
 
-                        } else {
+                                echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                            }
 
-                            echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
-                        }
+                            ?>
+                        </table>
+                        <div class="row">
+                            <?php
 
-                        ?>
-                    </table>
-                    <div class="row">
-                        <?php
+                            $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
 
-                        $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
+                            if ($numberOfTbody == 0) {
+                                $numberOfTbody = 1;
+                            }
 
-                        if ($numberOfTbody == 0) {
-                            $numberOfTbody = 1;
-                        }
+                            $position = 'center';
 
-                        $position = 'center';
+                            DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
 
-                        DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
+                            ?>
 
-                        ?>
-
+                        </div>
                     </div>
-                    <div class="row no-bottom-margin">
+                    <div class="row no-bottom-margin" id="attendedScheduleCont">
                         <div class="col s5">
                             <p class="grey-text">Schedules attended</p>
                         </div>
@@ -834,65 +831,64 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 <i class="material-icons">search</i>
                             </a>
                         </div>
-                    </div>
-                    <div class="divider"></div>
-                    <br>
-                    <table class="bordered-light responsive-table" id="attendedScheduleTable" data-paginate-through="6">
-                        <thead >
-                            <tr>
-                                <th data-field="name" class="center-align">Schedule title</th>
-                                <th data-field="description" class="center-align">schedule description</th>
-                                <th data-field="due" class="center-align">Due date</th>
-                                <th data-field="action" class="center-align">Action</th>
-                            </tr>
-                        </thead>
-                        <?php
+                        <br>
+                        <table class="bordered-light responsive-table" id="attendedScheduleTable" data-paginate-through="6">
+                            <thead >
+                                <tr>
+                                    <th data-field="name" class="center-align">Schedule title</th>
+                                    <th data-field="description" class="center-align">schedule description</th>
+                                    <th data-field="due" class="center-align">Due date</th>
+                                    <th data-field="action" class="center-align">Action</th>
+                                </tr>
+                            </thead>
+                            <?php
 
-                        $i = 0;
+                            $i = 0;
 
-                        $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
+                            $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
 
-                        foreach($teacherSchedules as $attendedschedules) {
+                            foreach($teacherSchedules as $attendedschedules) {
 
-                            if($attendedschedules['attended_schedule'] == 1) {
+                                if($attendedschedules['attended_schedule'] == 1) {
 
-                                $attendedSchedulesData[$i] = $attendedschedules;
+                                    $attendedSchedulesData[$i] = $attendedschedules;
 
-                                $i++;
+                                    $i++;
+                                }
+
                             }
 
-                        }
+                            $paginationtype = 'table';
+                            $numberperrows = 6;
+                            $active = 1;
+                            $type = 'done';
+                            $listdata = '1';
 
-                        $paginationtype = 'table';
-                        $numberperrows = 6;
-                        $active = 1;
-                        $type = 'done';
-                        $listdata = '1';
+                            if (isset($attendedSchedulesData)) {
 
-                        if (isset($attendedSchedulesData)) {
+                                $listdata = $attendedSchedulesData;
 
-                            $listdata = $attendedSchedulesData;
+                                DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
 
-                            DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+                            } else {
 
-                        } else {
+                                echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                            }
 
-                            echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
-                        }
+                            ?>
+                        </table>
+                        <div class="row">
+                            <?php
 
-                        ?>
-                    </table>
-                    <div class="row">
-                        <?php
+                            $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
 
-                        $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
+                            $position = 'center';
 
-                        $position = 'center';
+                            DBInfo::PaginateControl($active, $position, $numberOfTbody, 'attendedScheduleTable');
 
-                        DBInfo::PaginateControl($active, $position, $numberOfTbody, 'attendedScheduleTable');
+                            ?>
 
-                        ?>
-
+                        </div>
                     </div>
                 </div>
 
