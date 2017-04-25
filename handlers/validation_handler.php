@@ -9,124 +9,100 @@ class Validator
     public static $password_error = "";#password error
 
     //Teacher form entry information is valid - returns true if valid and false if not
-    public static function TeacherSignupValid()
+    public static function TeacherSignupValid($data)
     {
         #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (
+        return
+        (
             isset(
-                $_POST["new_teacher_first_name"],
-                $_POST["new_teacher_last_name"],
-                $_POST["new_teacher_email"],
-                $_POST["new_teacher_username"],
-                $_POST["new_teacher_staff_id"]
+                $data["first_name"],
+                $data["last_name"],
+                $data["email"],
+                $data["username"],
+                $data["staff_id"]
             )
             &&
             (
-                $_POST["new_teacher_first_name"] !== "" &&
-                $_POST["new_teacher_last_name"] !== "" &&
-                $_POST["new_teacher_email"] !== "" &&
-                $_POST["new_teacher_username"] !== "" &&
-                $_POST["new_teacher_staff_id"] !== ""               
+                !empty($data["first_name"])&&
+                !empty($data["last_name"])&&
+                !empty($data["email"])&&
+                !empty($data["username"])&&
+                !empty($data["staff_id"])
             )
-        )
-        {
-            return true;
-        }
-        else
-        {
-            //echo "missing values ";
-            return false;
-        }
+        );
 
     }
 
     // Principal form entry information is valid  - returns true if valid and false if not
-    public static function PrincipalSignupValid()
+    public static function PrincipalSignupValid($data)
     {
         #if the principal details are set (form data filled,phone can be left blank), create account
-        if (
+        return
+        (
             isset(
-                $_POST["new_principal_first_name"],
-                $_POST["new_principal_last_name"],
-                $_POST["new_principal_email"],
-                $_POST["new_principal_username"],
-                $_POST["new_principal_staff_id"]
+                $data["first_name"],
+                $data["last_name"],
+                $data["email"],
+                $data["username"],
+                $data["staff_id"]
             )
             &&
             (
-                $_POST["new_principal_first_name"] !== "" &&
-                $_POST["new_principal_last_name"] !== "" &&
-                $_POST["new_principal_email"] !== "" &&
-                $_POST["new_principal_username"] !== "" &&
-                $_POST["new_principal_staff_id"] !== ""                
+                !empty($data["first_name"]) &&
+                !empty($data["last_name"]) &&
+                !empty($data["email"]) &&
+                !empty($data["username"]) &&
+                !empty($data["staff_id"])
             )
-        )
-        { 
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        );
     }
 
     // Super user form entry information is valid - returns true if valid and false if not
-    public static function SuperuserSignupValid()
+    public static function SuperuserSignupValid($data)
     {
         #if the principal details are set (form data filled,phone can be left blank), create account
-        if (
+        return
+        (
             isset(
-                $_POST["new_superuser_first_name"],
-                $_POST["new_superuser_last_name"],
-                $_POST["new_superuser_email"],
-                $_POST["new_superuser_username"],
-                $_POST["new_superuser_staff_id"]
+                $data["first_name"],
+                $data["last_name"],
+                $data["email"],
+                $data["username"],
+                $data["staff_id"]
             )
             &&
             (
-                $_POST["new_superuser_first_name"] !== "" &&
-                $_POST["new_superuser_last_name"] !== "" &&
-                $_POST["new_superuser_email"] !== "" &&
-                $_POST["new_superuser_username"] !== "" &&
-                $_POST["new_superuser_staff_id"] !== ""            
+                !empty($data["first_name"]) &&
+                !empty($data["last_name"]) &&
+                !empty($data["email"]) &&
+                !empty($data["username"]) &&
+                !empty($data["staff_id"])
             )
-        )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        );
+
     }
 
     // Student form entry information is valid
-    public static function StudentSignupValid()
+    public static function StudentSignupValid($data)
     {
         #if the principal details are set (form data filled,phone can be left blank), create account
-        if (
+        return
+        (
             isset(
-                $_POST["new_student_id"],
-                $_POST["new_student_first_name"],
-                $_POST["new_student_last_name"],
-                $_POST["new_student_username"]
+                $data["student_id"],
+                $data["first_name"],
+                $data["last_name"],
+                $data["username"]
             )
             &&
             (
-                $_POST["new_student_id"] !== "" &&
-                $_POST["new_student_first_name"] !== "" &&
-                $_POST["new_student_last_name"] !== "" &&
-                $_POST["new_student_username"] !== ""             
+                !empty($data["student_id"]) &&
+                !empty($data["first_name"]) &&
+                !empty($data["last_name"]) &&
+                !empty($data["username"])
             )
-        )
-        {
-            return true;
-        }
-        else
-        {
-            //echo "missing values ";
-            return false;
-        }
+        );
+
     }
 
     

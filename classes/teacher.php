@@ -54,53 +54,40 @@ class Teacher extends AdminAccount implements TeacherAssignmentFunctions
     #Other Code here
     //Create a teacher account - call this to create  a teacher account
     //TODO Add the various account properties as parameters to the function
-    public function CreateTeacher()
+    public function CreateTeacher($data)
     {
         #Properties
     /*
-        $this->staffId
-        $this->firstName
-        $this->lastName
-        $this->username
-        $this->email
-        $this->phone
-        $this->password
+        $this->staffId = $data["staffId"]
+        $this->firstName = $data["firstName"]
+        $this->lastName = $data["lastName"]
+        $this->username = $data["username"]
+        $this->email = $data["email"]
+        $this->phone = $data["phone"]
+        $this->password = $data["password"]
     */
 
         #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (Validator::TeacherSignupValid())
+        if (Validator::TeacherSignupValid($data))
         {         
             #set the class variable values to the post variable values
-            $this->staffId = htmlspecialchars($_POST["new_teacher_staff_id"]);
-            $this->firstName = htmlspecialchars($_POST["new_teacher_first_name"]);
-            $this->lastName = htmlspecialchars($_POST["new_teacher_last_name"]);
-            $this->username = htmlspecialchars($_POST["new_teacher_username"]);
-            $this->email = htmlspecialchars($_POST["new_teacher_email"]);
+            $this->staffId = htmlspecialchars($data["staff_id"]);
+            $this->firstName = htmlspecialchars($data["first_name"]);
+            $this->lastName = htmlspecialchars($data["last_name"]);
+            $this->username = htmlspecialchars($data["username"]);
+            $this->email = htmlspecialchars($data["email"]);
             $this->password = $this->username;#default password is the username
             
 
 
             #if the phone number was set, set the this to it, otherwise leave the default in $args [""]
-            if(isset($_POST["new_teacher_phone"]))
+            if(isset($data["phone"]))
             {
-                $this->phone = htmlspecialchars($_POST["new_teacher_phone"]);
-                unset($_POST["new_teacher_phone"]);#unset after usage
+                $this->phone = htmlspecialchars($data["phone"]);
             }
 
             #converts the this-> variables to an argument array
             $args = parent::GetArgsArray();
-            
-
-            #unset the post variables once they have been used
-            unset(
-                $_POST["new_teacher_first_name"],
-                $_POST["new_teacher_last_name"],
-                $_POST["new_teacher_email"],
-                $_POST["new_teacher_username"],
-                $_POST["new_teacher_staff_id"],
-                $_POST["new_teacher_password"],
-                $_POST["new_teacher_confirm_password"]
-            );
 
             return parent::CreateAccount($args);
         }

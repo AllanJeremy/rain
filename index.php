@@ -126,25 +126,6 @@
                                             
                                             break;
                                         case "superuser":
-                                            require_once("classes/superuser.php");
-                                            require_once("classes/principal.php");
-                                            require_once("classes/teacher.php");
-                                            require_once("classes/student.php");
-
-                                            $teacher = new Teacher();
-                                            $teacher->CreateTeacher();
-                                            
-                                            $principal = new Principal();
-                                            $principal->CreatePrincipal();#use this if the create corresponding account option is NOT checked - DEFAULT
-                                            
-                                            //$principal->CreatePrincipalTeacherAccount();#use this if the create corresponding account option is checked
-
-                                            $superuser = new Superuser();
-                                            $superuser->CreateSuperuser();
-
-                                            $student = new Student();
-                                            $student->CreateStudentAccount();
-
                                             $pageTitle = 'Dashboard';
                                             $searchBar = 'hide';
                                             

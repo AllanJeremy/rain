@@ -329,7 +329,7 @@ class DbInfo
        } 
        else
        {
-           return self::SinglePropertyExists("student_accounts","adm_no",$std_id,"i");;
+           return $students;
        }
     }
 
@@ -1860,7 +1860,120 @@ if(isset($_GET['action'])) {
             
         break;
 
+        /*Ids exist*/
+        case 'SuperuserStaffIdExists':
+            $staff_id = htmlspecialchars($_GET["staff_id"]);
+            $id_exists = DbInfo::SuperuserStaffIdExists($id);
+
+            if($id_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "staff id does not exist";
+            }
+        break;
+        case 'PrincipalStaffIdExists':
+            $staff_id = htmlspecialchars($_GET["staff_id"]);
+            $id_exists = DbInfo::PrincipalStaffIdExists($id);
+
+            if($id_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "staff id does not exist";
+            }
+        break;
+        case 'TeacherStaffIdExists':
+            $staff_id = htmlspecialchars($_GET["staff_id"]);
+            $id_exists = DbInfo::TeacherStaffIdExists($id);
+
+            if($id_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "staff id does not exist";
+            }
+        break;
+        case 'StudentIdValidation':
+            $student_id = htmlspecialchars($_GET["student_id"]);
+            $id_exists = DbInfo::StudentIdExists($student_id);
+
+            if($id_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "student id does not exist";
+            }
+        break;
+
+        /*Usernames exist*/
+        case 'SuperuserUsernameExists':
+            $username = htmlspecialchars($_GET["username"]);
+            $username_exists  = DbInfo::SuperuserUsernameExists($username);
+
+            if($username_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "username does not exist";
+            }
+        break;
+
+        case 'PrincipalUsernameExists':
+            $username = htmlspecialchars($_GET["username"]);
+            $username_exists  = DbInfo::PrincipalUsernameExists($username);
+
+            if($username_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "username does not exist";
+            }
+        break;
+
+        case 'TeacherUsernameExists':
+            $username = htmlspecialchars($_GET["username"]);
+            $username_exists  = DbInfo::TeacherUsernameExists($username);
+
+            if($username_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "username does not exist";
+            }
+        break;
+
+        case 'StudentUsernameExists':
+            $username = htmlspecialchars($_GET["username"]);
+            $username_exists  = DbInfo::StudentUsernameExists($username);
+
+            if($username_exists)
+            {
+                echo true;
+            }
+            else
+            {
+                echo "username does not exist";
+            }
+
+        break;
+
         default:
+            echo "invalid get request";
             return null;
             break;
     }

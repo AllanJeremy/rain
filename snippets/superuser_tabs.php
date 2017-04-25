@@ -1,5 +1,9 @@
 <?php 
     require_once (realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/student.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/teacher.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/principal.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/superuser.php")); #Allows retrieving information from database
 ?>
 
 <div class="container">
@@ -103,10 +107,10 @@
                 <br>
                 <br>
                 <br>
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post" id="createStudentForm">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentId" type="number" class="validate" name="new_student_id" required>
+                            <input id="newStudentId" type="number" class="" name="new_student_id" required>
                             <label for="newStudentId">Student id<sup>*</sup></label>
                         </div>
                     </div>
@@ -124,14 +128,14 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentUsername" type="text" class="validate" name="new_student_username" required>
+                            <input id="newStudentUsername" type="text" class="" name="new_student_username" required>
                             <label for="newStudentUsername" >Username<sup>*</sup></label>
                         </div>
                     </div>
 
                     <div class="row">  
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a href="javascript:void(0)" class="right btn" id="createStudentAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -142,9 +146,9 @@
                 <br>
                 <div class="col s12 no-data-message valign-wrapper grey lighten-3">
                     <h6 class="center-align valign grey-text " id="importMessage">
-                        Some info here
+                        Add your student excel file here and click import
                         <br>
-                        Lorem ipsum
+                        Note : The file must correspond to the agreed upon structure for the import to work
                     </h6>
                 </div>
                 <br>
@@ -186,7 +190,7 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m5 s12">
-                                <select>
+                                <select id="student_bulk_action">
                                     <option value="" disabled selected>Bulk action</option>
                                     <option value="super_student_delete">Delete Account(s)</option>
                                     <option value="super_student_reset">Reset Account(s)</option>
@@ -251,7 +255,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" value="<?php echo $student['acc_id']?>"
-                                 class="filled-in" id="filled-box-student-<?php echo $student['acc_id']?>" />
+                                 class="filled-in selected_students" id="filled-box-student-<?php echo $student['acc_id']?>" />
                                 <label for="filled-box-student-<?php echo $student['acc_id']?>"></label>
                             </td>
                             <td><?php echo $student["adm_no"]?></td>
@@ -298,7 +302,7 @@
                 <br>
                 <br>
                 <br>
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post" id="createTeacherForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherFirstName" type="text" class="validate" name="new_teacher_first_name" required>
@@ -325,21 +329,21 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherUsername" type="text" class="validate" name="new_teacher_username" required>
+                            <input id="newTeacherUsername" type="text" class="" name="new_teacher_username" required>
                             <label for="new_teacher_username">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_teacher_staff_id">
-                            <label for="newStaffId" required>Staff ID<sup>*</sup></label>
+                            <input id="newTeacherStaffId" type="number" class="" name="new_teacher_staff_id">
+                            <label for="newTeacherStaffId" required>Staff ID<sup>*</sup></label>
                         </div>
                     </div>
 
                     <div class="row">
                         
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a class="right btn" id="createTeacherAccount">Create account</a>
                         </div>
                     </div>
                 </form>
@@ -358,7 +362,7 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m5 s12">
-                                <select>
+                                <select id="teacher_bulk_action">
                                     <option value="" disabled selected>Bulk action</option>
                                     <option value="super_teacher_delete">Delete Account(s)</option>
                                     <option value="super_teacher_reset">Reset Account(s)</option>
@@ -423,7 +427,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" value="<?php echo $teacher['acc_id']?>"
-                                 class="filled-in" id="filled-box-admin-<?php echo $teacher['acc_id']?>" />
+                                 class="filled-in selected_teachers" id="filled-box-admin-<?php echo $teacher['acc_id']?>" />
                                 <label for="filled-box-admin-<?php echo $teacher['acc_id']?>"></label>
                             </td>
                             <td><?php echo $teacher["staff_id"] ?></td>
@@ -483,7 +487,7 @@
                         Note : You can only create a maximum of <?php echo Principal::MAX_PRINCIPAL_ACCOUNTS?> principal accounts
                     </h6>
                 </div>
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post"  id="createPrincipalForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newPrincipalFirstName" type="text" class="validate" name="new_principal_first_name" required>
@@ -510,14 +514,14 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipalUsername" type="text" class="validate" name="new_principal_username" required>
+                            <input id="newPrincipalUsername" type="text" class="" name="new_principal_username" required>
                             <label for="newPrincipalUsername">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_principal_staff_id" required>
-                            <label for="newStaffId">Staff ID<sup>*</sup></label>
+                            <input id="newPrincipalStaffId" type="number" class="" name="new_principal_staff_id" required>
+                            <label for="newPrincipalStaffId">Staff ID<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -530,7 +534,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a href="javascript:void(0)" class="right btn" id="createPrincipalAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -549,13 +553,13 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m4 s6">
-                                <a class="btn btn-flat waves-effect waves-light" type="submit">Edit account</a>
+                                <a class="btn btn-flat waves-effect waves-light hide" id="super_edit_principal_acc">Edit accounts</a>
                             </div>
                             <div class="input-field col m4 s6">
-                                <a class="btn btn-flat waves-effect waves-light" type="submit">Reset account</a>
+                                <a class="btn btn-flat waves-effect waves-light" id="super_reset_principal_acc">Reset accounts</a>
                             </div>
                             <div class="input-field col m4 s6">
-                                <a class="btn btn-flat waves-effect waves-light" type="submit">Delete account</a>
+                                <a class="btn btn-flat waves-effect waves-light" id="super_delete_principal_acc">Delete accounts</a>
                             </div>
                         </div>
                     </form>
@@ -579,7 +583,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" value="<?php echo $principal['acc_id']?>"
-                                 class="filled-in" id="filled-box-admin-<?php echo $principal['acc_id']?>" />
+                                 class="filled-in selected_principals" id="filled-box-admin-<?php echo $principal['acc_id']?>" />
                                 <label for="filled-box-admin-<?php echo $principal['acc_id']?>"></label>
                             </td>
                             <td><?php echo $principal["staff_id"] ?></td>
@@ -639,7 +643,7 @@
                     </h6>
                 </div>
 
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post" id="createSuperuserForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newSuperuserFirstName" type="text" class="validate" name="new_superuser_first_name" required>
@@ -666,20 +670,20 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newSuperuserUsername" type="text" class="validate" name="new_superuser_username" required>
+                            <input id="newSuperuserUsername" type="text" class="" name="new_superuser_username" required>
                             <label for="newSuperuserUsername">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_superuser_staff_id" required>
-                            <label for="newStaffId">Staff ID<sup>*</sup></label>
+                            <input id="newSuperuserStaffId" type="number" class="" name="new_superuser_staff_id" required>
+                            <label for="newSuperuserStaffId">Staff ID<sup>*</sup></label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Create account</button>
+                            <a href="javascript:void(0)" class="right btn" id="createSuperuserAccount" >Create account</a>
                         </div>
                     </div>
                 </form>

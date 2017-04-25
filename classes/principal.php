@@ -17,17 +17,17 @@ class Principal extends AdminAccount
     #Other Code here
     //Create a superuser account - call this to create  a superuser account
     //TODO Add the various account properties as parameters to the function
-    public function CreatePrincipal()
+    public function CreatePrincipal($data)
     {
         #Properties
     /*
-        $this->staffId
-        $this->firstName
-        $this->lastName
-        $this->username
-        $this->email
-        $this->phone
-        $this->password
+        $this->staffId = $data["staffId"]
+        $this->firstName = $data["firstName"]
+        $this->lastName = $data["lastName"]
+        $this->username = $data["username"]
+        $this->email = $data["email"]
+        $this->phone = $data["phone"]
+        $this->password = $data["password"]
     */
     global $dbCon;
     $select_query = "SELECT acc_id FROM admin_accounts WHERE account_type='principal'";
@@ -40,92 +40,44 @@ class Principal extends AdminAccount
      if($principal_accounts <= self::MAX_PRINCIPAL_ACCOUNTS )
      {
         #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (Validator::PrincipalSignupValid())
+        if (Validator::PrincipalSignupValid($data))
         {         
-            #set the class variable values to the post variable values
-            $this->staffId = htmlspecialchars($_POST["new_principal_staff_id"]);
-            $this->firstName = htmlspecialchars($_POST["new_principal_first_name"]);
-            $this->lastName = htmlspecialchars($_POST["new_principal_last_name"]);
-            $this->username = htmlspecialchars($_POST["new_principal_username"]);
-            $this->email = htmlspecialchars($_POST["new_principal_email"]);
-            $this->password = $this->username;#default password is the username
-            
+                #set the class variable values to the post variable values
+                $this->staffId = htmlspecialchars($data["staff_id"]);
+                $this->firstName = htmlspecialchars($data["first_name"]);
+                $this->lastName = htmlspecialchars($data["last_name"]);
+                $this->username = htmlspecialchars($data["username"]);
+                $this->email = htmlspecialchars($data["email"]);
+                $this->password = $this->username;#default password is the username
 
+                #if the phone number was set, set the this to it, otherwise leave the default in $args [""]
+                if(isset($data["phone"]))
+                {
+                    $this->phone = htmlspecialchars($data["phone"]);
+                }
 
-            #if the phone number was set, set the this to it, otherwise leave the default in $args [""]
-            if(isset($_POST["new_principal_phone"]))
-            {
-                $this->phone = htmlspecialchars($_POST["new_principal_phone"]);
-                unset($_POST["new_principal_phone"]);#unset after usage
+                #converts the this-> variables to an argument array
+                $args = parent::GetArgsArray();
+
+                return parent::CreateAccount($args);
             }
-
-            #converts the this-> variables to an argument array
-            $args = parent::GetArgsArray();
-            
-
-            #unset the post variables once they have been used
-            unset(
-                $_POST["new_principal_first_name"],
-                $_POST["new_principal_last_name"],
-                $_POST["new_principal_email"],
-                $_POST["new_principal_username"],
-                $_POST["new_principal_staff_id"],
-                $_POST["new_principal_password"],
-                $_POST["new_principal_confirm_password"]
-            );
-
-            return parent::CreateAccount($args);
+            return false;
         }
-        return false;
-     }
-     else
-     {
-         return null;#Cannot create anymore principal accounts
-     }
+        else
+        {
+            return null;#Cannot create anymore principal accounts
+        }
     }
 
     //Create principal teacher account : when select corresponding teacher account is selected
-    public function CreatePrincipalTeacherAccount()
+    public function CreatePrincipalTeacherAccount($data)
     {       
-        #set the class variable values to the post variable values
-        $this->staffId = htmlspecialchars($_POST["new_principal_staff_id"]);
-        $this->firstName = htmlspecialchars($_POST["new_principal_first_name"]);
-        $this->lastName = htmlspecialchars($_POST["new_principal_last_name"]);
-        $this->username = htmlspecialchars($_POST["new_principal_username"]);
-        $this->email = htmlspecialchars($_POST["new_principal_email"]);
-        $this->password = $this->username;#default password is the username
-        
+        require_once("teacher.php");
+        $teacher = new Teacher();
 
+        $create_principal_status = $this->CreatePrincipal($data);
+        $create_teacher_status = $teacher->CreateTeacher($data);
 
-        #if the phone number was set, set the this to it, otherwise leave the default in $args [""]
-        if(isset($_POST["new_principal_phone"]))
-        {
-            $this->phone = htmlspecialchars($_POST["new_principal_phone"]);
-            unset($_POST["new_principal_phone"]);#unset after usage
-        }
-
-        #converts the this-> variables to an argument array
-        $args = parent::GetArgsArray();
-
-        #unset the post variables once they have been used
-        unset(
-            $_POST["new_principal_first_name"],
-            $_POST["new_principal_last_name"],
-            $_POST["new_principal_email"],
-            $_POST["new_principal_username"],
-            $_POST["new_principal_staff_id"],
-            $_POST["new_principal_password"],
-            $_POST["new_principal_confirm_password"]
-        );
-
-        parent::CreateAccount($args);#create principal account
-
-        $this->accType = "teacher";
-        $args = parent::GetArgsArray();
-        parent::CreateAccount($args);#create teacher account
-
-        $this->accType = "principal";
-
-        return true;#on success return true, expected to succeed anyway
+        return ($create_principal_status && $create_teacher_status);
     }
 };
