@@ -1,7 +1,6 @@
 <main>
     <div class=" container">
         <?php
-        require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 
         if (!isset($_SESSION["student_adm_no"])) {
             ?>

@@ -2,9 +2,11 @@
 
 <html lang="en" >
     <head>
-        <?php require_once("handlers/header_handler.php");?>
-        <?php require_once("handlers/db_info.php");?>
-
+        <?php
+        require_once("handlers/header_handler.php");
+        require_once("handlers/db_info.php");
+        require_once("handlers/date_handler.php"); #Date handler. Handles all date operations
+        ?>
         <title><?php echo MyHeaderHandler::GetPageTitle();?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -23,9 +25,10 @@
                 //show all assignments so that the students can rechoose the assignment
                 include_once('snippets/student_assignments.php');
             } else {
+                $assignment['teacher_name'] = DbInfo::GetTeacherById($assignment['teacher_id']);
                 include_once('snippets/student_do_assignment.php');
-                $assignment['teacher_name'] = DbInfo::TeacherStaffIdExists($assignment['teacher_id']);
-                //var_dump($assignment);
+
+                var_dump($assignment);
             }
         } else {
             //show all assignments so that the students can rechoose the assignment

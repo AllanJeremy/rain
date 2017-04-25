@@ -32,17 +32,27 @@ var Dashboard = function () {
             notCollapsibleHeader = '.side-nav a:not(.collapsible-header)',
             collapsibleHeader = '.side-nav a.collapsible-header',
             currTag = location.hash,
-            tagExists = $(notCollapsibleHeader).map(function (v) {
+            tags = $(notCollapsibleHeader).map(function (v) {
                 if ($(this).attr('id') === currTag.split('#').pop()) {
                     console.log('tag is valid');
-                    return false;
-                } else {
                     return true;
+                } else {
+                    console.log('tag is NOT valid');
+                    return false;
                 }
             }),
             tabActivates,
             id,
-            pageTitle;
+            pageTitle,
+            tagExists = true;
+
+        console.log(jQuery.inArray(true, tags));
+
+        //if there's a true value in tags array, the tab exists
+        if (jQuery.inArray(true, tags) === -1) {
+            tagExists = false;
+        }
+
         if (currTag.split('')[1] === '!') {
             console.log(currTag.split('')[1]);
             tagExists = true;
