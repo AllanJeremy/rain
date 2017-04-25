@@ -63,7 +63,7 @@ class Superuser extends AdminAccount
     }#end of master if
     else
     {
-         return null;#cannot create anymore superuser accounts, as the limit has been reached
+         return false;#cannot create anymore superuser accounts, as the limit has been reached
     }   
     
     }#end of function

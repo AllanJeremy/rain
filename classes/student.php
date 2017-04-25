@@ -109,17 +109,8 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
                 $args["class_ids"]
                 );        
 
-                if ($insert_stmt->execute())
-                {
-                    echo "<p class='pink-text'>Succeeded in creating the student account</p>";
-                }
-                else
-                {
-                    
-                    echo "<p class='teal-text'>Failed in creating the student account<br>".$dbCon->error."</p>";
-                }
-                
-                return true;#return true if account was successfully created
+                #return true if account was successfully created
+                return($insert_stmt->execute());
             }
             else #if the query cannot be prepared
             {
@@ -174,19 +165,21 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
     }
 
     //Public function that can be called to create the student account
-    public function CreateStudentAccount()
+    public function CreateStudentAccount($data)
     {
+        $signup_valid = Validator::StudentSignupValid($data);
+        
         #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (Validator::StudentSignupValid())
+        if ($signup_valid)
         {         
             #set the class variable values to the post variable values
-            $this->student_id = htmlspecialchars($_POST["new_student_id"]);
-            $this->first_name = htmlspecialchars($_POST["new_student_first_name"]);
-            $this->last_name = htmlspecialchars($_POST["new_student_last_name"]); 
+            $this->student_id = htmlspecialchars($data["student_id"]);
+            $this->first_name = htmlspecialchars($data["first_name"]);
+            $this->last_name = htmlspecialchars($data["last_name"]); 
 
             $this->full_name = $this->first_name . " " . $this->last_name;#full name is first name + last name
 
-            $this->username = htmlspecialchars($_POST["new_student_username"]);
+            $this->username = htmlspecialchars($data["username"]);
             $this->password = $this->username; #default password is the username
 
             $args = $this->GetArgsArray();

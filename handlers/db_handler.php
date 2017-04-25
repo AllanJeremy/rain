@@ -1255,17 +1255,17 @@ if(isset($_POST['action'])) {
     switch($_POST['action']) {
         
         case 'CreateStudentAccount': #Create a student account
-            require_once("classes/student.php");
+            require_once("../classes/student.php");
             $data = $_POST["data"];
 
             $student = new Student();
             $create_status = $student->CreateStudentAccount($data);
-
+            
             echo $create_status;#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreateTeacherAccount': #Create a teacher account
-            require_once("classes/teacher.php");
+            require_once("../classes/teacher.php");
             $data = $_POST["data"];
             $create_status = false;#The create status for the account ~ true on success | false or null on failure
             
@@ -1276,7 +1276,7 @@ if(isset($_POST['action'])) {
         break;
 
         case 'CreatePrincipalAccount': #Create a principal account
-            require_once("classes/principal.php");
+            require_once("../classes/principal.php");
             $data = $_POST["data"];
             $create_teacher_acc = $_POST["create_teacher_acc"];
             $principal = new Principal();
@@ -1285,7 +1285,7 @@ if(isset($_POST['action'])) {
             //If create a corresponding teacher account is selected
             if($create_teacher_acc)
             {
-                require_once("classes/teacher.php");#include teacher class
+                require_once("../classes/teacher.php");#include teacher class
                 $create_status = $principal->CreatePrincipalTeacherAccount($data);
             }
             else #Only create principal account
@@ -1297,7 +1297,7 @@ if(isset($_POST['action'])) {
         break;
 
         case 'CreateSuperuserAccount': #Create a superuser account
-            require_once("classes/superuser.php");
+            require_once("../classes/superuser.php");
             $data = $_POST["data"];
 
             $superuser = new Superuser();

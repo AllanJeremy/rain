@@ -1,5 +1,9 @@
 <?php 
     require_once (realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/student.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/teacher.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/principal.php")); #Allows retrieving information from database
+    require_once (realpath(dirname(__FILE__) . "/../classes/superuser.php")); #Allows retrieving information from database
 ?>
 
 <div class="container">
@@ -103,10 +107,10 @@
                 <br>
                 <br>
                 <br>
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post" id="createStudentForm">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentId" type="number" class="validate" name="new_student_id" required>
+                            <input id="newStudentId" type="number" class="" name="new_student_id" required>
                             <label for="newStudentId">Student id<sup>*</sup></label>
                         </div>
                     </div>
@@ -124,7 +128,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStudentUsername" type="text" class="validate" name="new_student_username" required>
+                            <input id="newStudentUsername" type="text" class="" name="new_student_username" required>
                             <label for="newStudentUsername" >Username<sup>*</sup></label>
                         </div>
                     </div>
@@ -298,7 +302,7 @@
                 <br>
                 <br>
                 <br>
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post" id="createTeacherForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newTeacherFirstName" type="text" class="validate" name="new_teacher_first_name" required>
@@ -325,14 +329,14 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newTeacherUsername" type="text" class="validate" name="new_teacher_username" required>
+                            <input id="newTeacherUsername" type="text" class="" name="new_teacher_username" required>
                             <label for="new_teacher_username">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_teacher_staff_id">
-                            <label for="newStaffId" required>Staff ID<sup>*</sup></label>
+                            <input id="newTeacherStaffId" type="number" class="" name="new_teacher_staff_id">
+                            <label for="newTeacherStaffId" required>Staff ID<sup>*</sup></label>
                         </div>
                     </div>
 
@@ -483,7 +487,7 @@
                         Note : You can only create a maximum of <?php echo Principal::MAX_PRINCIPAL_ACCOUNTS?> principal accounts
                     </h6>
                 </div>
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post"  id="createPrincipalForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newPrincipalFirstName" type="text" class="validate" name="new_principal_first_name" required>
@@ -510,14 +514,14 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipalUsername" type="text" class="validate" name="new_principal_username" required>
+                            <input id="newPrincipalUsername" type="text" class="" name="new_principal_username" required>
                             <label for="newPrincipalUsername">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_principal_staff_id" required>
-                            <label for="newStaffId">Staff ID<sup>*</sup></label>
+                            <input id="newPrincipalStaffId" type="number" class="" name="new_principal_staff_id" required>
+                            <label for="newPrincipalStaffId">Staff ID<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
@@ -639,7 +643,7 @@
                     </h6>
                 </div>
 
-                <form class="col s12" method="post" action="">
+                <form class="col s12" method="post" id="createSuperuserForm">
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="newSuperuserFirstName" type="text" class="validate" name="new_superuser_first_name" required>
@@ -666,14 +670,14 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newSuperuserUsername" type="text" class="validate" name="new_superuser_username" required>
+                            <input id="newSuperuserUsername" type="text" class="" name="new_superuser_username" required>
                             <label for="newSuperuserUsername">Username<sup>*</sup></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newStaffId" type="number" class="validate" name="new_superuser_staff_id" required>
-                            <label for="newStaffId">Staff ID<sup>*</sup></label>
+                            <input id="newSuperuserStaffId" type="number" class="" name="new_superuser_staff_id" required>
+                            <label for="newSuperuserStaffId">Staff ID<sup>*</sup></label>
                         </div>
                     </div>
 

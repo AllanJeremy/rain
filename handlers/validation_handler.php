@@ -96,7 +96,7 @@ class Validator
             )
             &&
             (
-                !empty($data["new_student_id"]) &&
+                !empty($data["student_id"]) &&
                 !empty($data["first_name"]) &&
                 !empty($data["last_name"]) &&
                 !empty($data["username"])             
