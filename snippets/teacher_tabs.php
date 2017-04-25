@@ -247,7 +247,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <?php if ($ass_attachments=="None"): ?>
                                     No Attachments
                                     <?php else:?>
-                                    <a href="#!resourceFile1" id="resourceFile"><?php echo $ass_attachments;?></a>
+                                    <a href="_students-assignments.php?id=<?php echo $assignment["ass_id"]; ?>&sect=resources" target="_blank"><?php echo $ass_attachments;?></a>
                                     <?php endif;?>
                                 </span></p>
                             </div>
@@ -356,7 +356,6 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     ?>
                             <div class="col s12" id="header">
                                 <p class="title">Assignments for <i><?php echo $class_name;?></i></p>
-
                             </div>
                             <div class="col s12 body">
                                 <!--PERMISSION-->
@@ -455,7 +454,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         <li class="col s12 pad-8 ass-submission-container">
 
                                                             <div class=" container">
-                                                                <a class="black-text pad-8 student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank"><?php echo $student_name;?> <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span></a><a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-3"> | <i class="material-icons">read</i></a>
+                                                                <a class="black-text pad-8 student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank">
+                                                                    <?php echo $student_name;?>
+                                                                    <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span>
+                                                                </a>
+                                                                <a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-3">
+                                                                     | <i class="material-icons">read</i>
+                                                                </a>
                                                                 <br>
                                                                 <div class="input-field inline comment">
                                                                     <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
@@ -468,8 +473,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                 <span class="right">
                                                                     <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
                                                                         <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default tiny grader"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
-<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
-                                                                    <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
+<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php //echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
+                                                                        <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
                                                                     </span>
                                                                     <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
                                                                 </span>
@@ -518,23 +523,23 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                         $student_adm_no = $student["adm_no"];
                                                                         $student_name = $student["full_name"];
                                                                     }
-                                                        ?>
-                                                        <li class="container col s12 m6">
-                                                            <?php echo $student_name." (Adm No. $student_adm_no) "?>
-                                                            <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
-                                                            <div class="input-field inline comment">
-                                                                <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
-                                                                <label for="comment">
-                                                                    <i class="material-icons">comment</i>
-                                                                </label>
-                                                                <br>
-                                                                <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all</a>
-                                                            </div>
-                                                        </li>
-                                                        <?php
+                                                                    ?>
+                                                                    <li class="container col s12 m6">
+                                                                        <?php echo $student_name." (Adm No. $student_adm_no) "?>
+                                                                        <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
+                                                                        <div class="input-field inline comment">
+                                                                            <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                            <label for="comment">
+                                                                                <i class="material-icons">comment</i>
+                                                                            </label>
+                                                                            <br>
+                                                                            <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all</a>
+                                                                        </div>
+                                                                    </li>
+                                                                    <?php
                                                                 endforeach;
                                                             else:
-                                                        ?>
+                                                                    ?>
                                                             <p><?php echo $no_returned_msg;?></p>
                                                         <?php
                                                             endif;
@@ -560,10 +565,11 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <div class="center">
                                 <h6 class="grey-text flow-text">No assignments were found for the classroom <i><?php echo $class_name;?></i></h6>
                             </div>
-
-                        </div>
-                <?php
+                            <?php
                             endif;
+                            ?>
+                        </div>
+                    <?php
                     //Close row assignment container class-ass-container
 
                         endforeach;

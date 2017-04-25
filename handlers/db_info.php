@@ -366,7 +366,7 @@ class DbInfo
                 }   
                 else
                 {
-                    return false;
+                    return $result;
                 }
             }
             else

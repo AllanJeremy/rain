@@ -5,7 +5,7 @@ var Forms_Templates = function () {
     
     //--------------
     
-    this.__construct = function () {
+    this.construct = function () {
         console.log('Forms templates created');
         
     };
@@ -59,7 +59,7 @@ var Forms_Templates = function () {
     
     //--------------------------
     
-    this.createScheduleForm = function () {
+    this.createScheduleForm = function (obj) {
         var templateOutput = '';
 
         templateOutput += '<form class="col s12"><div class="row">';
@@ -212,7 +212,7 @@ var Forms_Templates = function () {
         templateOutput += '</form></div>';
         templateOutput += '<div class="row">';
         templateOutput += '<div class="col s12 m10 offset-m1">';
-        templateOutput += '<a class="btn" id="updateResource" data-res-id="'+ id +'">Update</a>';
+        templateOutput += '<a class="btn" id="updateResource" data-res-id="' + id + '">Update</a>';
         templateOutput += '</div></div>';
 
         return templateOutput;
@@ -357,6 +357,6 @@ var Forms_Templates = function () {
     
     //--------------------------
     
-    this.__construct();
+    this.construct();
     
 };

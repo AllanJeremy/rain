@@ -9,6 +9,7 @@ var Events = function () {
         
         Modals_Events = new Modals_Events();
 
+
         ClassroomEvents = new ClassroomEvents();
         AssignmentEvents = new AssignmentEvents();
         ScheduleEvents = new ScheduleEvents();

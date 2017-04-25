@@ -82,12 +82,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                     <?php if ($ass_attachments=="None"): ?>
                                     No Attachments
                                     <?php else:?>
-                                    <a href="#!resourceFile1" id="resourceFile"><?php echo $ass_attachments;?></a>
+                                    <a href="_students-assignments.php?id=<?php echo $assignment["ass_id"]; ?>&sect=resources" target="_blank"><?php echo $ass_attachments;?></a>
                                     <?php endif;?>
                                 </span></p>
                             </div>
                             <div class="card-action">
-                                <a href="#!"  id="submitAssignment" class="right">Submit</a>
+                                <a href="_students-assignments.php?id=<?php echo $assignment["ass_id"]; ?>&sect=assignment" class="right" target="_blank">Submit</a>
                                 <br>
                             </div>
                         </div>
