@@ -365,7 +365,7 @@ var Lists_Templates = function () {
 
     //--------------------------------------
 
-    this.resourcesErrorListTemplate = function (obj, obj2) {
+    this.documentUploadsErrorListTemplate = function (obj, obj2) {
 
         var templateOutput = '', v;
 
@@ -428,6 +428,31 @@ var Lists_Templates = function () {
         templateOutput += '<label for="resourceDescription">Description</label></div>';
         templateOutput += '</div></div></div>';
         //templateOutput += '<div class="divider"></div>';
+
+        return templateOutput;
+
+    };
+
+    //--------------------------------------
+
+    this.documentsListTemplate = function (obj, i) {
+
+        var templateOutput = '';
+
+        templateOutput += '<div class="col s4"  data-index="' + i + '">';
+        templateOutput += '<div class="card resource-view">';
+        templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
+        //info row ---
+        templateOutput += '<div class="info row no-margin">';
+        templateOutput += '<div class="col s12"><p class="title">';
+        templateOutput += obj.name;
+        templateOutput += '</p>';
+        templateOutput += '<p class="size">';
+        templateOutput += (obj.size / (1024 * 1024)).toFixed(2) + ' mbs';
+//        templateOutput += '<div class="col s3"><p class="size right-align">';
+//        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
+        templateOutput += '</p></div></div>';
+        templateOutput += '</div></div>';
 
         return templateOutput;
 

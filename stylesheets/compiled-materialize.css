@@ -10630,7 +10630,7 @@ input:-webkit-autofill:active {
 /* line 536, ../sass/_style.scss */
 .inline-toolbar {
   position: absolute;
-  z-index: 8888;
+  z-index: 88;
   will-change: display;
   transition-duration: .3s;
   width: 100%;

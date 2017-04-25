@@ -37,7 +37,7 @@ if (!isset($_SESSION["student_adm_no"])) {
         } else {
     ?>
 
-<header data-assignment-id="" class="">
+<header data-assignment-id="<?php echo $assignment['ass_id']; ?>" class="">
     <div class="brookhurst-theme-primary lighten-1">
         <div class="container ">
             <br>
@@ -61,16 +61,13 @@ if (!isset($_SESSION["student_adm_no"])) {
             <ul class="tabs inline tabs-transparent">
                 <?php
     if(isset($_GET['sect'])) {
-
         if($_GET['sect'] == 'resources' && isset($_GET['sect'])) {
-
             $res_tab_class = 'active';
             $ass_tab_class = '';
         } else {
             $res_tab_class = '';
             $ass_tab_class = 'active';
         }
-
     } else {
         $res_tab_class = '';
         $ass_tab_class = 'active';
@@ -80,8 +77,8 @@ if (!isset($_SESSION["student_adm_no"])) {
                 <li class="tab col s6"><a href="#resources" class="<?php echo $res_tab_class; ?>">resources</a></li>
             </ul>
 
-            <a class="white-text btn-flat btn right marg-6" title="download the whole assignment">download</a>
-            <a class="white-text btn-flat btn right marg-6" title="upload your assignment">upload <span class="badge">5</span></a>
+            <a class="white-text btn-flat btn right marg-6 js-download-assignment" title="download the whole assignment">download</a>
+            <a class="white-text btn-flat btn right marg-6 js-upload-assignment" title="upload your assignment">upload </a>
         </div>
     </div>
 
@@ -164,9 +161,60 @@ if (!isset($_SESSION["student_adm_no"])) {
             </ul>
         </div>
     </div>
-</main>
 
+    <div id="assignmentUpload" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div id="dragDropArea">
+                <h4 class="white-text">
+                    Upload assignment documents
+                </h4>
+                <div class="row no-margin">
+                    <div id="assignmentTotalInfo" class="col m6 s12">
+                        <h6 class=" op-4">To upload</h6>
+                        <h4 class="white-text">
+                            <span id="totalAssignments">0</span> files
+                        </h4>
+                        <br>
+                        <div class="progress" style="width:0%;">
+                            <div class="determinate" style="width:0%;"></div>
+                        </div>
+                        <h6 class="num-progress hide secondary-text-color">
+                            <i>Uploading <span class="js-num-progress">0%</span></i>
+                        </h6>
+                    </div>
+                    <div class="col m6 s12">
+                        <form id="createAssignmentForm">
+                            <div class=" input-field col s12 file-field ">
+                                <div class="btn">
+                                    <span>add assignment</span>
+                                    <input type="file" multiple name="assignments">
+                                </div>
+                            </div>
+                            <input type="submit" name="submitBtn" class="hide btn material-icons btn-floating btn-large upload-btn" value="&#xE2C6;" />
+                        </form>
+                        <div style="padding-top:20px;margin-top:20px;" class="hide-on-med-and-down">
+                            <br>
+                            <h6 class="right-align op-4">or drag and drop on the colored area.</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-margin" id="errorContainer">
+                <ul></ul>
+            </div>
+            <div class="row" id="assignmentsList">
+                <div class="container row" >
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-red btn-flat">close</a>
+            <a href="#!" id="uploadAssignment" class=" modal-action waves-effect waves-green btn disabled"><i class="material-icons left">&#xE2C6;</i>upload</a>
+        </div>
+    </div>
+</main>
 <script src="js/jquery-2.0.0.js"></script>
+<script src="js/dashboard/lists_templates.js"></script>
 <script src="js/dashboard/student_assignment_events.js"></script>
 
 <!--DON'T MESS WITH-->
@@ -197,6 +245,7 @@ if (!isset($_SESSION["student_adm_no"])) {
         toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect forecolor backcolor | link unlink anchor | image media"
     });
 
+    Lists_Templates = new Lists_Templates();
     StudentAssignmentEvents = new StudentAssignmentEvents();
 
     var $target = $('.pin-nav-top'),

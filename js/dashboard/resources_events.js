@@ -68,7 +68,7 @@ var ResourcesEvents = function () {
                 $('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
 
                 $.each(validateresult, function(b,x) {
-                    errorlist += Lists_Templates.resourcesErrorListTemplate(files[x.index], x.errortype);
+                    errorlist += Lists_Templates.documentUploadsErrorListTemplate(files[x.index], x.errortype);
 
                 });
 
