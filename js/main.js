@@ -460,4 +460,247 @@ $(document).ready(function (z) {
             CreateSuperuserAccount(data,$form);
         }
     });
+
+    /*Bulk actions superuser section*/
+
+    //Student bulk action
+    $("#student_bulk_action").change(function(){
+        var $self = $(this);
+        var $option = $self.val();
+         
+        var $selected_accounts = $("input.selected_students:checked");
+
+        var acc_id = null;
+        var selected_acc_ids = [];
+        $selected_accounts.each(function(){
+            $acc = $(this);
+            acc_id = $acc.val();
+            selected_acc_ids.push(acc_id);
+        });
+
+        data = {"acc_ids":selected_acc_ids};
+        console.log();
+        
+        var number_of_accs = data["acc_ids"].length;
+        //If some accounts have been selected
+        if(number_of_accs > 0)
+        {
+            console.log("option : "+$option);
+            //Delete or reset student account
+            switch($option)
+            {
+                case "super_student_delete":
+                console.log("Deleting student");
+                    $selected_accounts.each(function(){
+                        $(this).addClass("disabled");
+                        $(this).attr("disabled","disabled");
+                    });
+                    $.post(db_handler_path,{"action":"SuperuserDeleteStudents","data":data},function(response,status){
+                        is_valid = IsValidResponse(response);
+                        if(is_valid)
+                        {
+                            $selected_accounts.parents("tr").remove();
+                            Materialize.toast("Successfully deleted "+number_of_accs+" accounts",(timeout_time*2));
+                        }
+                        else
+                        {
+                            Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+
+                            //Re-enable the checkboxes
+                            $selected_accounts.each(function(){
+                                $(this).removeClass("disabled");
+                                $(this).removeAttr("disabled");
+                            });
+                        }
+                    });
+                break;
+                case "super_student_reset":
+                        $.post(db_handler_path,{"action":"SuperuserResetStudents","data":data},function(response,status){
+                        is_valid = IsValidResponse(response);
+                        if(is_valid)
+                        {
+                            Materialize.toast("Successfully reset "+number_of_accs+" accounts",(timeout_time*2));
+                        }
+                        else
+                        {
+                            Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                        }
+                    });
+                break;
+            }
+        }
+        else
+        {
+            Materialize.toast("Bulk action failed, select accounts to perform action on first",(timeout_time*2));
+        }
+
+    });
+
+    //Teacher bulk action
+    $("#teacher_bulk_action").change(function(){
+        var $self = $(this);
+        var $option = $self.val();
+         
+        var $selected_accounts = $("input.selected_teachers:checked");
+
+        var acc_id = null;
+        var selected_acc_ids = [];
+        $selected_accounts.each(function(){
+            $acc = $(this);
+            acc_id = $acc.val();
+            selected_acc_ids.push(acc_id);
+        });
+
+        data = {"acc_ids":selected_acc_ids};
+        
+        
+        var number_of_accs = data["acc_ids"].length;
+        console.log(number_of_accs);
+        //If some accounts have been selected
+        if(number_of_accs > 0)
+        {
+            console.log("option : "+$option);
+            //Delete or reset student account
+            switch($option)
+            {
+                case "super_teacher_delete":
+                    $selected_accounts.each(function(){
+                        $(this).addClass("disabled");
+                        $(this).attr("disabled","disabled");
+                    });
+                    $.post(db_handler_path,{"action":"SuperuserDeleteTeachers","data":data},function(response,status){
+                        is_valid = IsValidResponse(response);
+                        if(is_valid)
+                        {
+                            $selected_accounts.parents("tr").remove();
+                            Materialize.toast("Successfully deleted "+number_of_accs+" accounts",(timeout_time*2));
+                        }
+                        else
+                        {
+                            Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+
+                            //Re-enable the checkboxes
+                            $selected_accounts.each(function(){
+                                $(this).removeClass("disabled");
+                                $(this).removeAttr("disabled");
+                            });
+                        }
+                    });
+                break;
+                case "super_teacher_reset":
+                        $.post(db_handler_path,{"action":"SuperuserResetTeachers","data":data},function(response,status){
+                        is_valid = IsValidResponse(response);
+                        if(is_valid)
+                        {
+                            Materialize.toast("Successfully reset "+number_of_accs+" accounts",(timeout_time*2));
+                        }
+                        else
+                        {
+                            Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                        }
+                    });
+                break;
+            }
+        }
+        else
+        {
+            Materialize.toast("Bulk action failed, select accounts to perform action on first",(timeout_time*2));
+        }   
+    });
+
+    //Principal delete action
+    $("#super_delete_principal_acc").click(function()
+    {
+        var $self = $(this);
+         
+        var $selected_accounts = $("input.selected_principals:checked");
+
+        var acc_id = null;
+        var selected_acc_ids = [];
+        $selected_accounts.each(function(){
+            $acc = $(this);
+            acc_id = $acc.val();
+            selected_acc_ids.push(acc_id);
+        });
+
+        data = {"acc_ids":selected_acc_ids};
+        console.log();
+        
+        var number_of_accs = data["acc_ids"].length;
+        //If some accounts have been selected
+        if(number_of_accs > 0)
+        {
+            //Disable each input
+            $selected_accounts.each(function(){
+                $(this).addClass("disabled");
+                $(this).attr("disabled","disabled");
+            });
+
+            //Delete principal accounts
+            $.post(db_handler_path,{"action":"SuperuserDeletePrincipals","data":data},function(response,status){
+                is_valid = IsValidResponse(response);
+                if(is_valid)
+                {
+                    $selected_accounts.parents("tr").remove();
+                    Materialize.toast("Successfully deleted "+number_of_accs+" accounts",(timeout_time*2));
+                }
+                else
+                {
+                    Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+
+                    //Re-enable the checkboxes
+                    $selected_accounts.each(function(){
+                        $(this).removeClass("disabled");
+                        $(this).removeAttr("disabled");
+                    });
+                }
+            });
+        
+        }
+        else
+        {
+            Materialize.toast("Bulk action failed, select accounts to perform action on first",(timeout_time*2));
+        }
+
+    });
+
+    //Principal reset action
+    $("#super_reset_principal_acc").click(function()
+    {
+        var $self = $(this);
+         
+        var $selected_accounts = $("input.selected_principals:checked");
+
+        var acc_id = null;
+        var selected_acc_ids = [];
+        $selected_accounts.each(function(){
+            $acc = $(this);
+            acc_id = $acc.val();
+            selected_acc_ids.push(acc_id);
+        });
+
+        data = {"acc_ids":selected_acc_ids};
+        
+        var number_of_accs = data["acc_ids"].length;
+        //If some accounts have been selected
+        if(number_of_accs > 0)
+        {
+            $.post(db_handler_path,{"action":"SuperuserResetPrincipals","data":data},function(response,status){
+                is_valid = IsValidResponse(response);
+                if(is_valid)
+                {
+                    Materialize.toast("Successfully reset "+number_of_accs+" accounts",(timeout_time*2));
+                }
+                else
+                {
+                    Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                }
+            });
+        }
+        else
+        {
+            Materialize.toast("Failed to reset accounts, select accounts to perform action on first",(timeout_time*2));
+        }
+
+    });
 }); // end of document ready

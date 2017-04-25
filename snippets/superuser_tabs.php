@@ -190,7 +190,7 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m5 s12">
-                                <select>
+                                <select id="student_bulk_action">
                                     <option value="" disabled selected>Bulk action</option>
                                     <option value="super_student_delete">Delete Account(s)</option>
                                     <option value="super_student_reset">Reset Account(s)</option>
@@ -255,7 +255,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" value="<?php echo $student['acc_id']?>"
-                                 class="filled-in" id="filled-box-student-<?php echo $student['acc_id']?>" />
+                                 class="filled-in selected_students" id="filled-box-student-<?php echo $student['acc_id']?>" />
                                 <label for="filled-box-student-<?php echo $student['acc_id']?>"></label>
                             </td>
                             <td><?php echo $student["adm_no"]?></td>
@@ -362,7 +362,7 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m5 s12">
-                                <select>
+                                <select id="teacher_bulk_action">
                                     <option value="" disabled selected>Bulk action</option>
                                     <option value="super_teacher_delete">Delete Account(s)</option>
                                     <option value="super_teacher_reset">Reset Account(s)</option>
@@ -427,7 +427,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" value="<?php echo $teacher['acc_id']?>"
-                                 class="filled-in" id="filled-box-admin-<?php echo $teacher['acc_id']?>" />
+                                 class="filled-in selected_teachers" id="filled-box-admin-<?php echo $teacher['acc_id']?>" />
                                 <label for="filled-box-admin-<?php echo $teacher['acc_id']?>"></label>
                             </td>
                             <td><?php echo $teacher["staff_id"] ?></td>
@@ -553,13 +553,13 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m4 s6">
-                                <a class="btn btn-flat waves-effect waves-light" type="submit">Edit account</a>
+                                <a class="btn btn-flat waves-effect waves-light hide" id="super_edit_principal_acc">Edit accounts</a>
                             </div>
                             <div class="input-field col m4 s6">
-                                <a class="btn btn-flat waves-effect waves-light" type="submit">Reset account</a>
+                                <a class="btn btn-flat waves-effect waves-light" id="super_reset_principal_acc">Reset accounts</a>
                             </div>
                             <div class="input-field col m4 s6">
-                                <a class="btn btn-flat waves-effect waves-light" type="submit">Delete account</a>
+                                <a class="btn btn-flat waves-effect waves-light" id="super_delete_principal_acc">Delete accounts</a>
                             </div>
                         </div>
                     </form>
@@ -583,7 +583,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" value="<?php echo $principal['acc_id']?>"
-                                 class="filled-in" id="filled-box-admin-<?php echo $principal['acc_id']?>" />
+                                 class="filled-in selected_principals" id="filled-box-admin-<?php echo $principal['acc_id']?>" />
                                 <label for="filled-box-admin-<?php echo $principal['acc_id']?>"></label>
                             </td>
                             <td><?php echo $principal["staff_id"] ?></td>
