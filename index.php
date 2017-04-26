@@ -86,8 +86,7 @@
                                     
                                     
                                     <?php
-                                    
-                                    
+
                                     //Setting the active page title according to the account type
                                     //Hiding the search icon according to the account type
                                     switch ($accType) {
@@ -207,6 +206,10 @@
 
         <script>
         $(document).ready(function() {
+
+            paceOptions = {
+                ajax: true
+            };
             //init the dashboard application except on login page
             if (location.pathname.split('/').pop() != 'login.php') {
                 var dashboard = new Dashboard();

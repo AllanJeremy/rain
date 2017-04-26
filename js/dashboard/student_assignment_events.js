@@ -221,6 +221,35 @@ var StudentAssignmentEvents = function () {
 
     var myAssignmentSave = function (e) {
 
+
+        var fileName, message;
+
+        $('.js-save-myAssignment').click(function () {
+            fileName = $('#myAssignment').find('input.js-myAssignment-title').val();
+
+            if (fileName === '') {
+                message = '<span class="red-text name text-lighten-5">You need to give your document a title before saving it.</span>';
+                // Materialize.toast(message, displayLength, className, completeCallback);
+                Materialize.toast(message, 5000, '', function () {
+                    console.log('toast on file save error');
+                });
+                return;
+            } else {
+                fileName = fileName + '.pdf';
+            }
+
+            $( ".assignment-tinymce #body" ).print();
+            // Cancel click event.
+            return( false );
+
+/*
+            doc.fromHTML($('.assignment-tinymce #body').html(), 15, 15, {
+                'width': 170,
+                    'elementHandlers': specialElementHandlers
+            });
+            doc.save(fileName);
+*/
+        });
     };
 
     //-----------

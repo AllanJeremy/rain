@@ -522,41 +522,53 @@ $height: auto;
     right: 0;
 }
 
-.inline-editor {
-    min-height: 1000px;
-    min-width: 400px;
-    background-color: color("shades", "white");
-    border-radius: 3px;
-    margin-top: 140px;
-
-    @media #{$small-and-down} {
-    min-width: calc(100% - 32px);
-    }
-}
-.inline-toolbar {
-    position: absolute;
-    z-index: 88;
-    will-change: display;
-    transition-duration: .3s;
-    width: 100%;
-    overflow: hidden;
-    overflow-x: scroll;
-    margin-bottom: 20px;
-
-    &.pinned {
-        z-index: 888888;
-        top: 0;
-        left: 0;
-        padding: 16px;
-        width: 100%;
-        margin: 0;
-        @extend .z-depth-2;
-    }
-
-}
 
 .assignment-tinymce {
     position: relative;
+
+    .inline-toolbar {
+        position: absolute;
+        z-index: 88;
+        will-change: display;
+        transition-duration: .3s;
+        width: 100%;
+        overflow: hidden;
+        overflow-x: scroll;
+        margin-bottom: 20px;
+
+        &.pinned {
+            z-index: 888888;
+            top: 0;
+            left: 0;
+            padding: 16px;
+            width: 100%;
+            margin: 0;
+            @extend .z-depth-2;
+        }
+
+    }
+
+    .header {
+        z-index: 77;
+        margin-bottom: 0px;
+        margin-top: 140px;
+        position: relative;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border-bottom: 1px solid #c1c1c1;
+    }
+
+    .inline-editor {
+        min-height: 1000px;
+        min-width: 400px;
+        background-color: color("shades", "white");
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+
+        @media #{$small-and-down} {
+        min-width: calc(100% - 32px);
+        }
+    }
 }
 
 .pin-nav-top {

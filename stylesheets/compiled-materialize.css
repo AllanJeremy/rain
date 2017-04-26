@@ -3363,7 +3363,7 @@ a {
 }
 
 /* line 70, ../sass/components/_global.scss */
-.z-depth-2, .inline-toolbar.pinned {
+.z-depth-2, .assignment-tinymce .inline-toolbar.pinned {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 }
 
@@ -10612,23 +10612,12 @@ input:-webkit-autofill:active {
   right: 0;
 }
 
-/* line 525, ../sass/_style.scss */
-.inline-editor {
-  min-height: 1000px;
-  min-width: 400px;
-  background-color: #FFFFFF;
-  border-radius: 3px;
-  margin-top: 140px;
+/* line 526, ../sass/_style.scss */
+.assignment-tinymce {
+  position: relative;
 }
-@media only screen and (max-width: 600px) {
-  /* line 525, ../sass/_style.scss */
-  .inline-editor {
-    min-width: calc(100% - 32px);
-  }
-}
-
-/* line 536, ../sass/_style.scss */
-.inline-toolbar {
+/* line 529, ../sass/_style.scss */
+.assignment-tinymce .inline-toolbar {
   position: absolute;
   z-index: 88;
   will-change: display;
@@ -10638,8 +10627,8 @@ input:-webkit-autofill:active {
   overflow-x: scroll;
   margin-bottom: 20px;
 }
-/* line 546, ../sass/_style.scss */
-.inline-toolbar.pinned {
+/* line 539, ../sass/_style.scss */
+.assignment-tinymce .inline-toolbar.pinned {
   z-index: 888888;
   top: 0;
   left: 0;
@@ -10647,13 +10636,32 @@ input:-webkit-autofill:active {
   width: 100%;
   margin: 0;
 }
-
-/* line 558, ../sass/_style.scss */
-.assignment-tinymce {
+/* line 551, ../sass/_style.scss */
+.assignment-tinymce .header {
+  z-index: 77;
+  margin-bottom: 0px;
+  margin-top: 140px;
   position: relative;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom: 1px solid #c1c1c1;
+}
+/* line 561, ../sass/_style.scss */
+.assignment-tinymce .inline-editor {
+  min-height: 1000px;
+  min-width: 400px;
+  background-color: #FFFFFF;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+@media only screen and (max-width: 600px) {
+  /* line 561, ../sass/_style.scss */
+  .assignment-tinymce .inline-editor {
+    min-width: calc(100% - 32px);
+  }
 }
 
-/* line 564, ../sass/_style.scss */
+/* line 576, ../sass/_style.scss */
 .pin-nav-top.pinned {
   z-index: 888888;
   top: 0;

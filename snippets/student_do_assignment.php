@@ -51,7 +51,7 @@ if (!isset($_SESSION["student_adm_no"])) {
         </div>
         <div class="assignment-action-header marg-16">
             <a class="btn btn-large js-assignment-submit" href="">Submit</a>
-            <p class="right-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-6 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
+            <p class="center-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-6 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
         </div>
     </div>
     <div class="brookhurst-theme-primary lighten-2 row pin-nav-top">
@@ -88,8 +88,19 @@ if (!isset($_SESSION["student_adm_no"])) {
         <div class="m12 s12 col l8 assignment-tinymce">
             <div hidefocus="0" class="brookhurst-theme-primary lighten-3 row tinymce-toolbar inline-toolbar" id="mytoolbar">
             </div>
-            <div name="body" id="body" class="z-depth-1-half pad-16 inline-editor row tinymce-document">
+            <div class="header white row z-depth-2">
+                <div class="col s6 input-field no-margin">
+                    <input type="text" class="no-margin js-myAssignment-title" placeholder="assignment title" title="type your assignment title">
+
+                </div>
+                <div class="col s6">
+                    <a class="js-save-myAssignment btn-flat marg-8 right" title="save your assignment">Save <i class="material-icons right">save</i></a>
+                </div>
             </div>
+            <div name="body" id="body" class="z-depth-1-half pad-16 inline-editor row tinymce-document">
+
+            </div>
+            <div id="editor"></div>
         </div>
         <div class="m12 col l3 offset-l1 hide-on-med-and-down">
             <div class="row resources-bar marg-16">
@@ -214,6 +225,7 @@ if (!isset($_SESSION["student_adm_no"])) {
     </div>
 </main>
 <script src="js/jquery-2.0.0.js"></script>
+<script src="js/js_print.js"></script>
 <script src="js/dashboard/lists_templates.js"></script>
 <script src="js/dashboard/student_assignment_events.js"></script>
 

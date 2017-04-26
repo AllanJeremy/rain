@@ -97,17 +97,21 @@ class EsomoResource
 
                 if($resources):
      ?>
-<div class="col s8">
-    <h5 class="grey-text text-darken-2 s8 col"><?php echo $subject["subject_name"];?></h5>
-</div>
-<div class="col s4">
-    <a class="js-minimize-subject-resources btn-icon right" href="#!" >
-        <i class="material-icons">expand_more</i>
-    </a>
-</div>
+        <div class='row subject-group' data-subject-group="<?php echo $subject_id; ?>">
+            <div class="col s8">
+                <h5 class="grey-text text-darken-2 s8 col"><?php echo $subject["subject_name"];?></h5>
+            </div>
+            <div class="col s4">
+                <a class="js-minimize-subject-resources btn-icon right" href="#!" >
+                    <i class="material-icons">expand_more</i>
+                </a>
+            </div>
      <?php
+                    echo "<div class='row subject-group-body'>";
                     self::DisplayResourceBase($resources);
                     echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
+                    echo "</div>";#Only display <br> if the subject was found
+                    echo "</div>";#Only display <br> if the subject was found
                 endif;
                 
             endforeach;
@@ -230,6 +234,7 @@ class EsomoResource
                         echo "<div class='row subject-group-body'>";
                         self::DisplayEditResourceBase($user_info,$resources);
                         echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
+                        echo "</div>";#Only display <br> if the subject was found
                         echo "</div>";#Only display <br> if the subject was found
                     endif;
                     
