@@ -11,11 +11,11 @@ var AssignmentEvents = function () {
         addClassroomToAssignment();
         submitNewAssignment();
         showAssignmentComments();
-        addAssignmentComment();
+        addAssignmentComments();
 
     };
     
-    //------------------------------
+    //-------------------------------
     //--------------------------------  ASSIGNMENT EVENTS AND FUNCTIONS
     //--------------------------------
     
@@ -569,7 +569,6 @@ var AssignmentEvents = function () {
         });
     };
 
-
     //--------------------------------
 
     var addAssignmentComments = function () {
@@ -577,10 +576,12 @@ var AssignmentEvents = function () {
         $('main').on('click', '.js-add-assignment-comments', function (e) {
 
             e.preventDefault();
+
+
         });
     };
 
-//--------------------------------
+    //--------------------------------
 
     var cleanArray = function (actual) {
         

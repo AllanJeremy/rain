@@ -1247,6 +1247,7 @@ class DbInfo
                 echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
                 echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
                 echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>' : '');
+                echo '<a class="btn-icon js-see-all-schedule-comments" id="" href="#!"><i class="material-icons">comments</i></a>';
                 echo '</td>';
                 echo '</tr>';
 

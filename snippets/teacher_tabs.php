@@ -616,6 +616,11 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                 <option value="null" disabled selected>Classroom</option>
                                                 <?php
                                                 
+                                                if(!$classrooms) {
+                                                    echo '<option value="null" disabled selected>No classrooms found</option>';
+
+                                                } else {
+
                                                     $teacher_acc_id = $_SESSION['admin_acc_id'];
                                                 
                                                     $classrooms = DBInfo::GetSpecificTeacherClassrooms($teacher_acc_id);
@@ -634,6 +639,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         $stream = $classroom['stream_id'];
                                                         
                                                     }
+                                                }
                                                 
                                                 ?>
                                             </select>
@@ -661,7 +667,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                     <a class="btn-flat mini-link" id="addNewScheduleObjective" href="#!">Add</a>
                                                 </div>
                                                 <div class="col s8 input-field" id="selectContainerHook">
-                                                        <?php
+                                                    <?php
+                                                    if ($classrooms) {
+
                                                         foreach ($classrooms as $Classroom) {
                                                             
                                                             $subjectResult = array(
@@ -714,6 +722,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             echo '</select>';
                                                             
                                                         }
+
+                                                    } else {
+                                                        echo '<select class="schedule_classroom_default">'
+                                                            + '<option value="" disabled selected>Sub-topics</option>'
+                                                            + '<option value="" disabled >Choose a classroom first</option>'
+                                                            + '</select>';
+                                                    }
                                                         ?>
                                                     <select id="schedule_classroom_default">
                                                         <option value="" disabled selected>Sub-topics</option>
@@ -772,12 +787,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             </thead>
                             <?php
 
+                            $teacherSchedules = DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']);
+
+                            //var_dump($teacherSchedules);
     //                        $teacher_acc_id = $_SESSION['admin_acc_id'];
 
-                            $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
-    //                                var_dump($teacherSchedules=>num_rows);
+                            if ($teacherSchedules == true) {
 
                             $i = 0;
+
+                            $teacherSchedules = DBInfo::ReverseResult($teacherSchedules);
 
                             foreach($teacherSchedules as $pendingschedules) {
 
@@ -796,7 +815,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $type = 'pending';
                             $listdata = '1';
 
-                            if (isset($pendingSchedulesData)) {
+
 
                                 $listdata = $pendingSchedulesData;
 
@@ -804,7 +823,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                             } else {
 
-                                echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
                             }
 
                             ?>
@@ -812,16 +831,19 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="row">
                             <?php
 
-                            $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
+                            if ($teacherSchedules == true) {
 
-                            if ($numberOfTbody == 0) {
-                                $numberOfTbody = 1;
+                                $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
+
+                                if ($numberOfTbody == 0) {
+                                    $numberOfTbody = 1;
+                                }
+
+                                $position = 'center';
+
+                                DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
+
                             }
-
-                            $position = 'center';
-
-                            DBInfo::PaginateControl($active, $position, $numberOfTbody, 'pendingScheduleTable');
-
                             ?>
 
                         </div>
@@ -854,6 +876,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                             $teacherSchedules = DBInfo::ReverseResult(DBInfo::GetSpecificTeacherSchedules($_SESSION['admin_acc_id']));
 
+                            if ($teacherSchedules == true) {
+
                             foreach($teacherSchedules as $attendedschedules) {
 
                                 if($attendedschedules['attended_schedule'] == 1) {
@@ -871,7 +895,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $type = 'done';
                             $listdata = '1';
 
-                            if (isset($attendedSchedulesData)) {
+
 
                                 $listdata = $attendedSchedulesData;
 
@@ -879,7 +903,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                             } else {
 
-                                echo "<tbody data-tbody-number='noData' ><tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
                             }
 
                             ?>
@@ -887,12 +911,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="row">
                             <?php
 
+                            if ($teacherSchedules == true) {
+
                             $numberOfTbody = ceil(((count($listdata) - 1) / $numberperrows));
 
                             $position = 'center';
 
                             DBInfo::PaginateControl($active, $position, $numberOfTbody, 'attendedScheduleTable');
 
+                            }
                             ?>
 
                         </div>
