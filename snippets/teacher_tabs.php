@@ -815,12 +815,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $type = 'pending';
                             $listdata = '1';
 
+                                if ($i == 0) {
+                                    echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                } else {
 
 
-                                $listdata = $pendingSchedulesData;
+                                    $listdata = $pendingSchedulesData;
 
-                                DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+                                    DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
 
+                                }
                             } else {
 
                                 echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
@@ -895,12 +899,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $type = 'done';
                             $listdata = '1';
 
+                                if ($i == 0) {
+                                    echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                } else {
 
+                                    $listdata = $attendedSchedulesData;
 
-                                $listdata = $attendedSchedulesData;
-
-                                DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
-
+                                    DBInfo::Paginate($listdata, $paginationtype, $numberperrows, $active, $type);
+                                }
                             } else {
 
                                 echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";

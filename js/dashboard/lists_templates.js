@@ -510,7 +510,7 @@ var Lists_Templates = function () {
         templateOutput += '<div class="modal-footer">';
 
         if (obj.canComment === true) {
-            templateOutput += this.inlineComment(obj.userId, false);
+            templateOutput += this.commentExtraFooterActions(obj.userId, true, commentType);
         }
 
         templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
@@ -526,15 +526,30 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div data-comment-id="' + obj.id + '" class="margin-vert-8' + ((obj.name === 'You') ? 'grey lighten-4' : ' ') + '">';
-        templateOutput += '<br><p class="name marg-6 grey-text text-lighten-3">' + obj.name + '</p>';
-        templateOutput += '<p class="name marg-8 black-text">' + obj.comment + '</p>';
-        templateOutput += '<p class="name marg-6 grey-text text-lighten-4">' + obj.date + '</p>';
+        templateOutput += '<div data-comment-id="' + obj.id + '" class="comment-item padding-vert-8 ' + ((obj.name === 'You') ? 'grey lighten-3' : ' ') + '">';
+        templateOutput += '<br><p class="js-name marg-6 grey-text text-darken-1">' + obj.name + '</p>';
+        templateOutput += '<p class="js-comment marg-8 black-text">' + obj.comment + '</p>';
+        templateOutput += '<p class="js-date marg-6 grey-text text-darken-1">' + obj.date + '</p>';
         templateOutput += '<br><div class="divider"></div>';
         templateOutput += '</div>';
 
         return templateOutput;
     };
+
+    //--------------------------------------
+
+    this.noCommentMessage = function () {
+
+        var templateOutput = '';
+
+        templateOutput += '<div data-comment-id="null" class="comment-item padding-vert-8">';
+        templateOutput += '<br><p class="marg-8 grey-text text-darken-1">No comments found</p>';
+        templateOutput += '<br><div class="divider"></div>';
+        templateOutput += '</div>';
+
+        return templateOutput;
+    };
+
     //--------------------------------------
 
     this.classroomCardListContainer = function (obj) {
@@ -797,6 +812,7 @@ var Lists_Templates = function () {
         templateOutput += '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
         templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide' : '') + '" id="openSchedule">';
         templateOutput += '<i class="material-icons">expand_more</i></a>';
+        templateOutput += '<a class="btn-icon js-see-all-schedule-comments" id="" href="#!"><i class="material-icons">comments</i></a>';
         templateOutput += '</td>';
         
         return templateOutput;
@@ -1014,18 +1030,18 @@ var Lists_Templates = function () {
     
     //-------------------------
     
-    this.commentExtraFooterActions = function (id, all_btn) {
+    this.commentExtraFooterActions = function (id, can_comment, comment_type) {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="input-field inline comment">';
-        templateOutput += '<input data-user-id="' + id + '" type="text" placeholder="comment" class="js-comment-bar browser-default auto" name="comment">';
+        templateOutput += '<div class="input-field inline comment margin-horiz-16" data-schedule-id="' + id + '">';
         templateOutput += '<label for="comment">';
         templateOutput += '<i class="material-icons">comment</i>';
         templateOutput += '</label>';
+        templateOutput += '<input type="text" placeholder="comment" class="js-comment-bar browser-default modal-comment " name="comment">';
 
-        if (all_btn) {
-            templateOutput += '<br><a class="right btn-inline js-see-all-comments" href="javascript:void(0)">all comments</a>';
+        if (can_comment === true) {
+            templateOutput += '<a class="marg-6 btn js-add-' + comment_type + '-comment" href="javascript:void(0)">comment</a>';
 
         }
 

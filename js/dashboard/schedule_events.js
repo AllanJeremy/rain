@@ -30,7 +30,8 @@ var ScheduleEvents = function () {
         overdueScheduleReminder();              //Beta - version
         getPendingSchedules();  //Beta - version
         archiveSchedule();      //Beta - version
-        
+        showScheduleComments();
+        addScheduleComments();
     };
     
     //----------------------------
@@ -1405,6 +1406,95 @@ var ScheduleEvents = function () {
     var archiveSchedule = function () {
 
     };
+
+    var showScheduleComments = function () {
+
+        $('main').on('click', '.js-see-all-schedule-comments', function (e) {
+
+            e.preventDefault();
+
+            console.log('opening schedule comment modal');
+
+            var $this = $(this),
+                id = $this.parents('tr').attr('data-schedule-id'), //id of the comment
+                modal_id = Materialize.guid(), //modal id
+                user_id = 5, //id of the teacher
+                user_name = 'Teacher me', //name of the teacher
+                comment_type = 'schedule',
+                title = 'Make two thongs.', //title of the schedule/assignment...
+                data = [{ //Example of how I hope the array is gotten from the ajax
+                    'id':5,
+                    'comment':'ah weh!',
+                    'name':'Gabriel Muchiri',
+                    'date': 'Yesterday'
+                }, {
+                    'id':12,
+                    'comment':'ah weh!',
+                    'name':'You',
+                    'date': 'Today'
+                }, {
+                    'id':5,
+                    'comment':'ah weh!',
+                    'name':'Gabriel Muchiri',
+                    'date': '5 minutes ago'
+                }],
+                modal_body = '',
+
+                comment_enabled = true; //bool
+
+            console.log(modal_id);
+
+
+            $.get('handlers/db_info.php', {'action' : 'GetScheduleComments', 'id' : id}, function (resultData) {
+                console.log(resultData);
+                if (resultData === true) {
+                    modal_body += Lists_Templates.noCommentMessage();
+
+                } else {
+
+                    for(var i = 0; i < data.length; i++) {
+
+                        modal_body += Lists_Templates.commentList(data[i]);
+
+                    }
+                }
+
+                Modals_Events.loadCommentModal(modal_id, user_id, user_name, comment_type, title, modal_body, comment_enabled);
+
+                $('.modal#' + modal_id).openModal({dismissible: false});
+                console.log('opening modal clicked');
+
+            }, 'json');
+        });
+    };
+
+    var addScheduleComments = function () {
+
+        $('main').on('click', '.js-add-schedule-comment', function (e) {
+            e.preventDefault();
+
+            console.log('opening schedule comment modal');
+            var $this = $(this),
+                id = $this.parents('.input-field.comment').attr('data-schedule-id'), //id of the comment
+                comment = $this.parents('.input-field.comment').find('input.js-comment-bar').val(),
+                action = '';
+
+            console.log(sessionStorage);
+            console.log(id, comment);
+            if (comment === '') {
+                console.log('empty input');
+                return;
+            }
+
+            $.post('handlers/comment_handler.php', {'action' : 'TeacherCommentOnSchedule', 'id' : id, 'comment' : comment}, function (resultData) {
+                console.log(resultData);
+
+            }, 'json');
+
+
+        });
+    };
+
 
     this.__construct();
 

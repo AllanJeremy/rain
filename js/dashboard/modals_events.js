@@ -26,7 +26,7 @@ var Modals_Events = function () {
             canComment: comment_enabled,
         },
             commentModal = Lists_Templates.commentsModal(args);
-
+        console.log(commentModal);
         $('main').append(commentModal);
 
     };

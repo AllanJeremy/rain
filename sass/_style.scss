@@ -516,6 +516,14 @@ $height: auto;
     }
 }
 
+.comment-item {
+    .js-date {
+        font-size: 10px;
+    }
+    .js-name {
+        font-size: 12px;
+    }
+}
 .assignment-action-header {
     position: absolute;
     top: 0;

@@ -1222,6 +1222,7 @@ class DbInfo
                     echo '<td class="right-align schedule-action" width="120">';
                     echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
                     echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>' : '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>');
+                    echo '<a class="btn-icon js-see-all-schedule-comments" id="" href="#!"><i class="material-icons">comments</i></a>';
                     echo '</td>';
                     echo '</tr>';
 
@@ -2009,6 +2010,14 @@ if(isset($_GET['action'])) {
             {
                 echo "username does not exist";
             }
+
+        break;
+
+        case 'GetScheduleComments':
+            $schedule_id = $_GET["id"];
+            $comments  = DbInfo::GetScheduleComments($schedule_id);
+
+            echo json_encode($comments);
 
         break;
 

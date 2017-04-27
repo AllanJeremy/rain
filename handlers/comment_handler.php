@@ -113,7 +113,7 @@ class CommentHandler
     public static function TeacherCommentOnSchedule($schedule_id,$acc_id,$comment_text)
     {
         $commentor_type="teacher";
-        return self::CommentOnItem("schedule_comments","schedule_id",$submission_id,$acc_id,$comment_text,$commentor_type);
+        return self::CommentOnItem("schedule_comments","schedule_id",$acc_id,$comment_text,$commentor_type);
     }
 
     #Principal comment on schedule 
@@ -126,3 +126,38 @@ class CommentHandler
     /*RETRIEVING COMMENTS*/
     //Get specific assignment comments
 };
+
+/*
+-----------------------------
+---------------    AJAX CALLS
+-----------------------------
+*/
+
+if(isset($_POST['action'])) {
+    $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
+    sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
+
+    switch($_POST['action']) {
+        case 'TeacherCommentOnSchedule':
+
+            echo json_encode('tume');
+            $comment_text = $_POST['comment'];
+            $schedule_id = $_POST['id'];
+            $acc_id = $_SESSION['admin_acc_id'];
+
+            $result = CommentHandler::TeacherCommentOnSchedule($schedule_id,$acc_id,$comment_text);
+
+            echo json_encode($result);
+
+            break;
+        case 'StudentIdExists':
+            break;
+    default:
+            echo "invalid get request";
+            return null;
+            break;
+    }
+
+} else {
+    return null;
+}

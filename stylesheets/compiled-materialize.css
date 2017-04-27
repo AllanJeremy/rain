@@ -3744,7 +3744,6 @@ td, th {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
-    display: block;
     position: relative;
     /* sort out borders */
   }
@@ -6663,30 +6662,47 @@ label {
 /* Text inputs */
 /* line 25, ../sass/components/forms/_input-fields.scss */
 input.browser-default {
-  height: 2rem !Important;
   width: auto;
-  line-height: 2rem;
   margin: 0 !Important;
   background-color: rgba(0, 0, 0, 0.06);
 }
-/* line 32, ../sass/components/forms/_input-fields.scss */
+/* line 30, ../sass/components/forms/_input-fields.scss */
 input.browser-default.grader {
   text-align: right;
 }
-/* line 36, ../sass/components/forms/_input-fields.scss */
+/* line 34, ../sass/components/forms/_input-fields.scss */
 input.browser-default.tiny {
   max-width: 50px;
+  height: 2rem !Important;
+  line-height: 2rem;
 }
-/* line 41, ../sass/components/forms/_input-fields.scss */
+/* line 42, ../sass/components/forms/_input-fields.scss */
 input.browser-default.normal {
+  height: 2rem !Important;
+  line-height: 2rem;
   max-width: 240px;
 }
-/* line 45, ../sass/components/forms/_input-fields.scss */
+/* line 48, ../sass/components/forms/_input-fields.scss */
 input.browser-default.auto {
+  height: 2rem !Important;
+  line-height: 2rem;
   width: auto;
 }
-
 /* line 54, ../sass/components/forms/_input-fields.scss */
+input.browser-default.modal-comment {
+  width: 300px !Important;
+  height: 3rem !Important;
+  margin: 6px;
+  line-height: 3rem;
+}
+@media only screen and (max-width: 600px) {
+  /* line 54, ../sass/components/forms/_input-fields.scss */
+  input.browser-default.modal-comment {
+    width: calc(100% - 44px) !important;
+  }
+}
+
+/* line 66, ../sass/components/forms/_input-fields.scss */
 input:not([type]),
 input[type=text],
 input[type=password],
@@ -6714,7 +6730,7 @@ textarea.materialize-textarea {
   box-sizing: content-box;
   transition: all 0.3s;
 }
-/* line 84, ../sass/components/forms/_input-fields.scss */
+/* line 96, ../sass/components/forms/_input-fields.scss */
 input:not([type]):disabled, input:not([type])[readonly="readonly"],
 input[type=text]:disabled,
 input[type=text][readonly="readonly"],
@@ -6743,7 +6759,7 @@ textarea.materialize-textarea[readonly="readonly"] {
   color: rgba(0, 0, 0, 0.26);
   border-bottom: 1px dotted rgba(0, 0, 0, 0.26);
 }
-/* line 91, ../sass/components/forms/_input-fields.scss */
+/* line 103, ../sass/components/forms/_input-fields.scss */
 input:not([type]):disabled + label, input:not([type])[readonly="readonly"] + label,
 input[type=text]:disabled + label,
 input[type=text][readonly="readonly"] + label,
@@ -6771,7 +6787,7 @@ textarea.materialize-textarea:disabled + label,
 textarea.materialize-textarea[readonly="readonly"] + label {
   color: rgba(0, 0, 0, 0.26);
 }
-/* line 97, ../sass/components/forms/_input-fields.scss */
+/* line 109, ../sass/components/forms/_input-fields.scss */
 input:not([type]):focus:not([readonly]),
 input[type=text]:focus:not([readonly]),
 input[type=password]:focus:not([readonly]),
@@ -6788,7 +6804,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   border-bottom: 1px solid #d8b759;
   box-shadow: 0 1px 0 0 #d8b759;
 }
-/* line 103, ../sass/components/forms/_input-fields.scss */
+/* line 115, ../sass/components/forms/_input-fields.scss */
 input:not([type]):focus:not([readonly]) + label,
 input[type=text]:focus:not([readonly]) + label,
 input[type=password]:focus:not([readonly]) + label,
@@ -6804,7 +6820,7 @@ input[type=search]:focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #d8b759;
 }
-/* line 108, ../sass/components/forms/_input-fields.scss */
+/* line 120, ../sass/components/forms/_input-fields.scss */
 input:not([type]).valid, input:not([type]):focus.valid,
 input[type=text].valid,
 input[type=text]:focus.valid,
@@ -6833,7 +6849,7 @@ textarea.materialize-textarea:focus.valid {
   border-bottom: 1px solid #4CAF50;
   box-shadow: 0 1px 0 0 #4CAF50;
 }
-/* line 115, ../sass/components/forms/_input-fields.scss */
+/* line 127, ../sass/components/forms/_input-fields.scss */
 input:not([type]).valid + label:after, input:not([type]):focus.valid + label:after,
 input[type=text].valid + label:after,
 input[type=text]:focus.valid + label:after,
@@ -6863,7 +6879,7 @@ textarea.materialize-textarea:focus.valid + label:after {
   color: #4CAF50;
   opacity: 1;
 }
-/* line 123, ../sass/components/forms/_input-fields.scss */
+/* line 135, ../sass/components/forms/_input-fields.scss */
 input:not([type]).invalid, input:not([type]):focus.invalid,
 input[type=text].invalid,
 input[type=text]:focus.invalid,
@@ -6892,7 +6908,7 @@ textarea.materialize-textarea:focus.invalid {
   border-bottom: 1px solid #F44336;
   box-shadow: 0 1px 0 0 #F44336;
 }
-/* line 130, ../sass/components/forms/_input-fields.scss */
+/* line 142, ../sass/components/forms/_input-fields.scss */
 input:not([type]).invalid + label:after, input:not([type]):focus.invalid + label:after,
 input[type=text].invalid + label:after,
 input[type=text]:focus.invalid + label:after,
@@ -6922,7 +6938,7 @@ textarea.materialize-textarea:focus.invalid + label:after {
   color: #F44336;
   opacity: 1;
 }
-/* line 138, ../sass/components/forms/_input-fields.scss */
+/* line 150, ../sass/components/forms/_input-fields.scss */
 input:not([type]).validate + label,
 input[type=text].validate + label,
 input[type=password].validate + label,
@@ -6939,7 +6955,7 @@ textarea.materialize-textarea.validate + label {
   width: 100%;
   pointer-events: none;
 }
-/* line 144, ../sass/components/forms/_input-fields.scss */
+/* line 156, ../sass/components/forms/_input-fields.scss */
 input:not([type]) + label:after,
 input[type=text] + label:after,
 input[type=password] + label:after,
@@ -6961,41 +6977,42 @@ textarea.materialize-textarea + label:after {
   transition: .2s opacity ease-out, .2s color ease-out;
 }
 
-/* line 155, ../sass/components/forms/_input-fields.scss */
+/* line 167, ../sass/components/forms/_input-fields.scss */
 .input-field {
   position: relative;
   margin-top: 1rem;
 }
-/* line 157, ../sass/components/forms/_input-fields.scss */
+/* line 169, ../sass/components/forms/_input-fields.scss */
 .input-field.inline {
   display: inline-block;
   vertical-align: middle;
   margin-left: 5px;
 }
-/* line 162, ../sass/components/forms/_input-fields.scss */
+/* line 174, ../sass/components/forms/_input-fields.scss */
 .input-field.inline input,
 .input-field.inline .select-dropdown {
   margin-bottom: 1rem;
 }
-/* line 171, ../sass/components/forms/_input-fields.scss */
-.input-field.comment label {
+/* line 183, ../sass/components/forms/_input-fields.scss */
+.input-field.comment input:not(.modal-comment) + label {
   top: 0.3rem;
+  left: 0;
 }
-/* line 175, ../sass/components/forms/_input-fields.scss */
+/* line 189, ../sass/components/forms/_input-fields.scss */
 .input-field.comment label.active {
   transform: translateY(0%) !important;
   margin-left: 8px;
 }
-/* line 183, ../sass/components/forms/_input-fields.scss */
+/* line 197, ../sass/components/forms/_input-fields.scss */
 .input-field.col label {
   left: 0.75rem;
 }
-/* line 187, ../sass/components/forms/_input-fields.scss */
+/* line 201, ../sass/components/forms/_input-fields.scss */
 .input-field.col .prefix ~ label,
 .input-field.col .prefix ~ .validate ~ label {
   width: calc(100% - 3rem - 1.5rem);
 }
-/* line 196, ../sass/components/forms/_input-fields.scss */
+/* line 210, ../sass/components/forms/_input-fields.scss */
 .input-field label {
   color: #9e9e9e;
   position: absolute;
@@ -7004,23 +7021,23 @@ textarea.materialize-textarea + label:after {
   cursor: text;
   transition: .2s ease-out;
 }
-/* line 205, ../sass/components/forms/_input-fields.scss */
+/* line 219, ../sass/components/forms/_input-fields.scss */
 .input-field label.active {
   font-size: 0.8rem;
   transform: translateY(-140%);
 }
-/* line 212, ../sass/components/forms/_input-fields.scss */
+/* line 226, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix {
   position: absolute;
   width: 3rem;
   font-size: 2rem;
   transition: color .2s;
 }
-/* line 218, ../sass/components/forms/_input-fields.scss */
+/* line 232, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix.active {
   color: #d8b759;
 }
-/* line 221, ../sass/components/forms/_input-fields.scss */
+/* line 235, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ input,
 .input-field .prefix ~ textarea,
 .input-field .prefix ~ label,
@@ -7030,19 +7047,19 @@ textarea.materialize-textarea + label:after {
   width: 92%;
   width: calc(100% - 3rem);
 }
-/* line 231, ../sass/components/forms/_input-fields.scss */
+/* line 245, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ label {
   margin-left: 3rem;
 }
 @media only screen and (max-width: 992px) {
-  /* line 234, ../sass/components/forms/_input-fields.scss */
+  /* line 248, ../sass/components/forms/_input-fields.scss */
   .input-field .prefix ~ input {
     width: 86%;
     width: calc(100% - 3rem);
   }
 }
 @media only screen and (max-width: 600px) {
-  /* line 241, ../sass/components/forms/_input-fields.scss */
+  /* line 255, ../sass/components/forms/_input-fields.scss */
   .input-field .prefix ~ input {
     width: 80%;
     width: calc(100% - 3rem);
@@ -7050,29 +7067,29 @@ textarea.materialize-textarea + label:after {
 }
 
 /* Search Field */
-/* line 251, ../sass/components/forms/_input-fields.scss */
+/* line 265, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] {
   display: block;
   line-height: inherit;
   padding-left: 4rem;
   width: calc(100% - 4rem);
 }
-/* line 257, ../sass/components/forms/_input-fields.scss */
+/* line 271, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search]:focus {
   background-color: #fff;
   border: 0;
   box-shadow: none;
   color: #444;
 }
-/* line 263, ../sass/components/forms/_input-fields.scss */
+/* line 277, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search]:focus + label i, .input-field input[type=search]:focus ~ .mdi-navigation-close, .input-field input[type=search]:focus ~ .material-icons {
   color: #444;
 }
-/* line 270, ../sass/components/forms/_input-fields.scss */
+/* line 284, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] + label {
   left: 1rem;
 }
-/* line 274, ../sass/components/forms/_input-fields.scss */
+/* line 288, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] ~ .mdi-navigation-close, .input-field input[type=search] ~ .material-icons {
   position: absolute;
   top: 0;
@@ -7083,37 +7100,37 @@ textarea.materialize-textarea + label:after {
   transition: .3s color;
 }
 
-/* line 285, ../sass/components/forms/_input-fields.scss */
+/* line 299, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar {
   border: 1px solid #e8e8e8;
   padding-left: 36px;
   padding-right: 4px;
   height: 2rem;
-  width: calc(100% - 32px);
+  width: auto;
 }
 
-/* line 293, ../sass/components/forms/_input-fields.scss */
+/* line 307, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar:focus {
   height: 2.4rem;
   background-color: #f1f1f1;
 }
-/* line 297, ../sass/components/forms/_input-fields.scss */
+/* line 311, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar:focus + label {
   display: table-caption;
 }
-/* line 302, ../sass/components/forms/_input-fields.scss */
+/* line 316, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar:focus ~ i, input[type=text].js-comment-bar:focus ~ i.material-icons {
   font-size: 36px;
 }
 
 /* Textarea */
-/* line 311, ../sass/components/forms/_input-fields.scss */
+/* line 325, ../sass/components/forms/_input-fields.scss */
 textarea {
   width: 100%;
   height: 3rem;
   background-color: transparent;
 }
-/* line 316, ../sass/components/forms/_input-fields.scss */
+/* line 330, ../sass/components/forms/_input-fields.scss */
 textarea.materialize-textarea {
   overflow-y: hidden;
   /* prevents scroll bar flash */
@@ -7123,7 +7140,7 @@ textarea.materialize-textarea {
   min-height: 3rem;
 }
 
-/* line 325, ../sass/components/forms/_input-fields.scss */
+/* line 339, ../sass/components/forms/_input-fields.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -7135,18 +7152,18 @@ textarea.materialize-textarea {
 }
 
 /* Autocomplete */
-/* line 335, ../sass/components/forms/_input-fields.scss */
+/* line 349, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content {
   margin-top: -15px;
   display: block;
   opacity: 1;
   position: static;
 }
-/* line 342, ../sass/components/forms/_input-fields.scss */
+/* line 356, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content li .highlight {
   color: #444;
 }
-/* line 344, ../sass/components/forms/_input-fields.scss */
+/* line 358, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content li img {
   height: 40px;
   width: 40px;
@@ -10609,18 +10626,27 @@ input:-webkit-autofill:active {
   font-size: 12px;
 }
 
-/* line 519, ../sass/_style.scss */
+/* line 520, ../sass/_style.scss */
+.comment-item .js-date {
+  font-size: 10px;
+}
+/* line 523, ../sass/_style.scss */
+.comment-item .js-name {
+  font-size: 12px;
+}
+
+/* line 527, ../sass/_style.scss */
 .assignment-action-header {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-/* line 526, ../sass/_style.scss */
+/* line 534, ../sass/_style.scss */
 .assignment-tinymce {
   position: relative;
 }
-/* line 529, ../sass/_style.scss */
+/* line 537, ../sass/_style.scss */
 .assignment-tinymce .inline-toolbar {
   position: absolute;
   z-index: 88;
@@ -10631,7 +10657,7 @@ input:-webkit-autofill:active {
   overflow-x: scroll;
   margin-bottom: 20px;
 }
-/* line 539, ../sass/_style.scss */
+/* line 547, ../sass/_style.scss */
 .assignment-tinymce .inline-toolbar.pinned {
   z-index: 888888;
   top: 0;
@@ -10640,7 +10666,7 @@ input:-webkit-autofill:active {
   width: 100%;
   margin: 0;
 }
-/* line 551, ../sass/_style.scss */
+/* line 559, ../sass/_style.scss */
 .assignment-tinymce .header {
   z-index: 77;
   margin-bottom: 0px;
@@ -10650,7 +10676,7 @@ input:-webkit-autofill:active {
   border-top-right-radius: 3px;
   border-bottom: 1px solid #c1c1c1;
 }
-/* line 561, ../sass/_style.scss */
+/* line 569, ../sass/_style.scss */
 .assignment-tinymce .inline-editor {
   min-height: 1000px;
   min-width: 400px;
@@ -10659,13 +10685,13 @@ input:-webkit-autofill:active {
   border-bottom-right-radius: 3px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 561, ../sass/_style.scss */
+  /* line 569, ../sass/_style.scss */
   .assignment-tinymce .inline-editor {
     min-width: calc(100% - 32px);
   }
 }
 
-/* line 576, ../sass/_style.scss */
+/* line 584, ../sass/_style.scss */
 .pin-nav-top.pinned {
   z-index: 888888;
   top: 0;

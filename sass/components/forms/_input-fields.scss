@@ -23,9 +23,7 @@
 
 
 input.browser-default {
-    height: 2rem !Important;
     width: auto;
-    line-height: 2rem;
     margin: 0 !Important;
     background-color: rgba(0, 0, 0, 0.06);
     
@@ -34,20 +32,34 @@ input.browser-default {
         text-align: right;
     }
     &.tiny {
+
         max-width: 50px;
+        height: 2rem !Important;
+        line-height: 2rem;
         
     }
     
     &.normal {
+        height: 2rem !Important;
+        line-height: 2rem;
         max-width: 240px;
     }
 
     &.auto {
+        height: 2rem !Important;
+        line-height: 2rem;
         width: auto;
     }
     
-    .inline-input {
+    &.modal-comment {
+        width: 300px !Important;
+        height: 3rem !Important;
+        margin: 6px;
+        line-height: 3rem;
         
+        @media #{$small-and-down} {
+            width: calc(100% - 44px) !Important;
+        }
     }
 }
 
@@ -168,8 +180,10 @@ textarea.materialize-textarea {
 
   &.comment {
 
-      label {
+      input:not(.modal-comment) + label {
           top: 0.3rem;
+          left: 0;
+
       }
 
       label.active {
@@ -287,7 +301,7 @@ input[type=text].js-comment-bar {
     padding-left: 36px;
     padding-right: 4px;
     height: 2rem;
-    width: calc(100% - 32px);
+    width: auto;
 }
 
 input[type=text].js-comment-bar:focus {
