@@ -320,13 +320,12 @@ var ResourcesEvents = function () {
                     if ($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').length > 0) {
                         $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').children('.subject-group-body').prepend(res_el);
                     } else {
-                        var str = '<div class="subject-group row" data-subject-group="' + data.subject_id + '">';
-                        str += '<h4 class="grey-text text-darken-2 subject-group-header">' + data.subject_id + '</h4>';
-                        str += '<div class="subject-group-body row">';
-                        str += res_el;
-                        str += '</div><br><div class="divider"></div><br></div>';
 
-                        $('#teacherResourcesTab').children('.tab-content').children('.row').append(str);
+                        var El = Lists_Templates.resourceSubjectGroup({'id':data.subject_id, 'el':res_el});
+                        console.log('implanting this now');
+                        console.log(El);
+
+                        $('#teacherResourcesTab').children('.tab-content').children('.row').append(El);
 
                     }
                     setTimeout(function(t) {

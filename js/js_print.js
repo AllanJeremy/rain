@@ -46,8 +46,7 @@ jQuery.fn.print = function(){
         );
 
     //Get the title of the assignment.
-    var fileTitle = $('#myAssignment').find('input.js-myAssignment-title').val();
-    fileTitle = "<h2 class='center-align'>" + fileTitle + "</h2><br><br>";
+    var fileTitle = "<h2 class='center-align'>" + $('#myAssignment').find('input.js-myAssignment-title').val() + "</h2><br><br>";
 
     // Write the HTML for the document. In this, we will
     // write out the HTML of the current element.

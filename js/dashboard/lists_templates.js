@@ -400,7 +400,7 @@ var Lists_Templates = function () {
         var templateOutput = '';
 
         templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s4">';
-        templateOutput += '<div class="card resource-view">';
+        templateOutput += '<div class="card document-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
         templateOutput += '<div class="info row no-margin">';
@@ -440,7 +440,7 @@ var Lists_Templates = function () {
         var templateOutput = '';
 
         templateOutput += '<div class="col s4"  data-index="' + i + '">';
-        templateOutput += '<div class="card resource-view">';
+        templateOutput += '<div class="card doocument-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
         templateOutput += '<div class="info row no-margin">';
@@ -479,6 +479,64 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.commentsModal = function (obj) {
+
+        var templateOutput = '',
+            commentType = '';
+
+        switch (obj.commentType) {
+
+        case 'schedule':
+            commentType = 'schedule';
+            break;
+        case 'assignment':
+            commentType = 'assignment';
+            break;
+        case 'assignment_submission':
+            commentType = 'assignment submission';
+            break;
+        default:
+            console.log('error. Comment type set to default.');
+            commentType = '';
+            break;
+        }
+
+        templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
+        templateOutput += '<div class="modal-content">';
+        templateOutput += ((commentType !== '') ? '<h4>' + commentType + ' comments</h4>' : '<h4>Comments</h4>');
+        templateOutput += ((commentType !== '') ? "<h5>Comments on " + obj.userName + "'s " + commentType + " (" + obj.title + ")</h5>" : '');
+        templateOutput += obj.templateBody;
+        templateOutput += '</div>';
+        templateOutput += '<div class="modal-footer">';
+
+        if (obj.canComment === true) {
+            templateOutput += this.inlineComment(obj.userId, false);
+        }
+
+        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
+        templateOutput += '</div>';
+        templateOutput += '</div>';
+
+        return templateOutput;
+    };
+
+    //--------------------------------------
+
+    this.commentList = function (obj) {
+
+        var templateOutput = '';
+
+        templateOutput += '<div data-comment-id="' + obj.id + '" class="margin-vert-8' + ((obj.name === 'You') ? 'grey lighten-4' : ' ') + '">';
+        templateOutput += '<br><p class="name marg-6 grey-text text-lighten-3">' + obj.name + '</p>';
+        templateOutput += '<p class="name marg-8 black-text">' + obj.comment + '</p>';
+        templateOutput += '<p class="name marg-6 grey-text text-lighten-4">' + obj.date + '</p>';
+        templateOutput += '<br><div class="divider"></div>';
+        templateOutput += '</div>';
+
+        return templateOutput;
+    };
+    //--------------------------------------
+
     this.classroomCardListContainer = function (obj) {
         
         var templateOutput = '';
@@ -841,6 +899,21 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.resourceSubjectGroup = function (obj) {
+
+        var templateOutput = '<div class="subject-group row" data-subject-group="' + obj.id + '">';
+
+        templateOutput += '<h4 class="grey-text text-darken-2 subject-group-header">' + obj.id + '</h4>';
+        templateOutput += '<div class="subject-group-body row">';
+        templateOutput += obj.el;
+        templateOutput += '</div><br><div class="divider"></div><br></div>';
+
+        return templateOutput;
+
+    };
+
+    //--------------------------------------
+
     this.infoExtraFooterActions = function (obj, id) {
 
         var templateOutput = '',
@@ -893,6 +966,7 @@ var Lists_Templates = function () {
         return templateOutput;
 
     };
+
     //--------------------------------------
 
     this.editExtraFooterActions = function (obj) {
@@ -940,6 +1014,28 @@ var Lists_Templates = function () {
     
     //-------------------------
     
+    this.commentExtraFooterActions = function (id, all_btn) {
+
+        var templateOutput = '';
+
+        templateOutput += '<div class="input-field inline comment">';
+        templateOutput += '<input data-user-id="' + id + '" type="text" placeholder="comment" class="js-comment-bar browser-default auto" name="comment">';
+        templateOutput += '<label for="comment">';
+        templateOutput += '<i class="material-icons">comment</i>';
+        templateOutput += '</label>';
+
+        if (all_btn) {
+            templateOutput += '<br><a class="right btn-inline js-see-all-comments" href="javascript:void(0)">all comments</a>';
+
+        }
+
+        templateOutput += '</div>';
+
+        return templateOutput;
+    };
+
+    //-------------------------
+
     this.noResourceMessage = function () {
         var templateOutput = '';
 

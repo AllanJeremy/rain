@@ -11,6 +11,7 @@ var AssignmentEvents = function () {
         addClassroomToAssignment();
         submitNewAssignment();
         showAssignmentComments();
+        addAssignmentComment();
 
     };
     
@@ -20,11 +21,11 @@ var AssignmentEvents = function () {
     
     var addClassroomToAssignment = function () {
         
-        var checkboxEl = 'input#addClassroomToAssignment, input#addMoreClassroomToAssignment';
-        var checkedCheckboxEl = 'input#addClassroomToAssignment:checked, input#addMoreClassroomToAssignment:checked';
-        var modal_id = 'NewAssClassroomList';
-                        
-        var main = $('main');
+        var checkboxEl = 'input#addClassroomToAssignment, input#addMoreClassroomToAssignment',
+            checkedCheckboxEl = 'input#addClassroomToAssignment:checked, input#addMoreClassroomToAssignment:checked',
+            modal_id = 'NewAssClassroomList',
+
+            main = $('main');
         
         main.on('change', checkboxEl, function (e) {
         
@@ -32,24 +33,24 @@ var AssignmentEvents = function () {
         
             e.preventDefault();
             
-            var hook = $('.classroom-list');
+            var hook = $('.classroom-list'),
+                action = $(checkboxEl).val();
             
             console.log('V- ' + $(checkboxEl).val());
             console.log('V- ' + $(checkboxEl).attr('name'));
             console.log('V- ' + $(checkboxEl).attr('id'));
-            
-            var action = $(checkboxEl).val();
+
             
             console.log('length- ' + $(checkedCheckboxEl).length);
             
-            if($(checkedCheckboxEl).length > 0) {//checked
+            if ($(checkedCheckboxEl).length > 0) {//checked
                 
                 //remove existing esomo modal
                 Modals_Events.cleanOutModal('#esomoModal' + modal_id);
                 
                 console.log('adding list');
                 
-                if( $(checkboxEl).val() === "GetSpecificTeacherClassrooms" ) {
+                if ($(checkboxEl).val() === "GetSpecificTeacherClassrooms") {
 
                     $.get('handlers/db_info.php', {"action" : action}, function (result) {
                         console.log('get results:- ');
@@ -64,10 +65,9 @@ var AssignmentEvents = function () {
 
                         if (typeof result === 'object') {
                             //loop
-
-                            var output = '';
-                            var count = 0;
-                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
+                            var output = '',
+                                count = 0,
+                                autocompletedata = '{';//limit autocomplete dropdown to 20;
 
                             for (var key in result) {
 
@@ -115,8 +115,9 @@ var AssignmentEvents = function () {
                             //append the list to esomo modal
 
                                 modal_header = 'Send assignment to classrooms',
-                                modal_body = List,
-                                classroomListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, 'add classrooms');
+                                modal_body = List;
+
+                            Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, 'add classrooms');
                             
                             $('input#searchStudentFormList').autocomplete({
                                 data: autocompletedata
@@ -208,7 +209,7 @@ var AssignmentEvents = function () {
 
                             var modal_body = formList;
 
-                            var studentListModal = loadEsomoModal(modal_id, modal_header, modal_body, 'add students');
+                            Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, 'add students');
                             
                             $('input#searchStudentFormList').autocomplete({
                                 data: autocompletedata
@@ -219,7 +220,7 @@ var AssignmentEvents = function () {
                             console.log(formList);
 
                             //Init functions needed for the esomo actions
-                            updateEsomoModalProgress(modal_id);
+                            Modals_Events.updateEsomoModalProgress(modal_id);
 
                             var action2 = 'morph-in';
 
@@ -546,16 +547,40 @@ var AssignmentEvents = function () {
     
     var showAssignmentComments = function () {
 
-        $('main').on('click', '.js-assignment-comments', function (e) {
+        $('main').on('click', '.js-see-assignment-comments', function (e) {
 
             e.preventDefault();
 
+            var $this = $(this),
+                id = $this.parent('.comment').attr('data-comment-id'), //id of the comment
+                modal_id = Materialize.guid, //modal id
+                user_id = $this.parent('.comment').find('input.js-comment-bar').attr('data-user-id'), //id of the student
+                user_name, //name of the student
+                comment_type = $this.parent('.comment').attr('data-comment-type'),
+                title, //title of the schedule/assignment...
+                modal_body, //the comments
+                comment_enabled; //bool
+
+            Modals_Events.loadCommentModal(modal_id, user_id, user_name, comment_type, title, modal_body, comment_enabled);
+
+            $('.modal#' + modal_id).openModal({dismissible: false});
             console.log('opening modal clicked');
 
         });
     };
 
+
     //--------------------------------
+
+    var addAssignmentComments = function () {
+
+        $('main').on('click', '.js-add-assignment-comments', function (e) {
+
+            e.preventDefault();
+        });
+    };
+
+//--------------------------------
 
     var cleanArray = function (actual) {
         

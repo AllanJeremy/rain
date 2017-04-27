@@ -14,6 +14,25 @@ var Modals_Events = function () {
 
     //--------------------------------------
 
+    this.loadCommentModal = function (modal_id, user_id, user_name, comment_type, title, modal_body, comment_enabled) {
+
+        var args = {
+            modalId: modal_id,
+            userId: user_id,
+            userName: user_name,
+            commentType: comment_type,
+            title: title,
+            templateBody: modal_body,
+            canComment: comment_enabled,
+        },
+            commentModal = Lists_Templates.commentsModal(args);
+
+        $('main').append(commentModal);
+
+    };
+
+    //--------------------------------------
+
     this.loadEsomoModal = function (modal_id, modal_header, modal_body, modal_action) {
 
         var args = {

@@ -462,13 +462,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                      | <i class="material-icons">read</i>
                                                                 </a>
                                                                 <br>
-                                                                <div class="input-field inline comment">
-                                                                    <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                <div class="input-field inline comment" data-comment-id="" data-comment-type="sumbissions">
+                                                                    <input data-user-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
                                                                     <label for="comment">
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
                                                                     <br>
-                                                                    <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all comments (3)</a>
+                                                                    <a class='right btn-inline js-see-assignment-comments' href="javascript:void(0)">all comments (3)</a>
                                                                 </div>
                                                                 <span class="right">
                                                                     <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
@@ -583,6 +583,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <?php
                         endif;
                     ?>
+
                 </div>
 
                 <!--SCHEDULE SECTION-->
@@ -1175,6 +1176,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="col s5">
                             <p class="grey-text">Your account</p>
                         </div>
+                    </div>
+                    <div class="row">
+
                     </div>
                 </div>
                                 

@@ -39,7 +39,11 @@ input.browser-default {
     }
     
     &.normal {
-        max-width: 240px
+        max-width: 240px;
+    }
+
+    &.auto {
+        width: auto;
     }
     
     .inline-input {

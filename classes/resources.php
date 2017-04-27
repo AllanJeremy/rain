@@ -235,7 +235,6 @@ class EsomoResource
                         self::DisplayEditResourceBase($user_info,$resources);
                         echo "<br><div class='divider'></div><br>";#Only display <br> if the subject was found
                         echo "</div>";#Only display <br> if the subject was found
-                        echo "</div>";#Only display <br> if the subject was found
                     endif;
                     
                 endforeach;   

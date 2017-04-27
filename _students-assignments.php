@@ -28,7 +28,7 @@
                 $assignment['teacher_name'] = DbInfo::GetTeacherById($assignment['teacher_id']);
                 include_once('snippets/student_do_assignment.php');
 
-                var_dump($assignment);
+                // var_dump($assignment);
             }
         } else {
             //show all assignments so that the students can rechoose the assignment
