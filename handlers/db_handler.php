@@ -1588,7 +1588,12 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserDeleteStudents':
-            $acc_ids = ($_POST["data"])["acc_ids"];
+            $data = ($_POST["data"]);
+            $acc_ids = null;
+            if(isset($data))
+            {
+                $acc_ids = $data["acc_ids"];
+            }
 
             if(@$acc_ids && isset($acc_ids))
             {
@@ -1609,7 +1614,12 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserResetStudents':
-            $acc_ids = ($_POST["data"])["acc_ids"];
+            $data = ($_POST["data"]);
+            $acc_ids = null;
+            if(isset($data))
+            {
+                $acc_ids = $data["acc_ids"];
+            }
 
             if(@$acc_ids && isset($acc_ids))
             {
@@ -1630,7 +1640,12 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserDeleteTeachers':
-            $acc_ids = ($_POST["data"])["acc_ids"];
+            $data = ($_POST["data"]);
+            $acc_ids = null;
+            if(isset($data))
+            {
+                $acc_ids = $data["acc_ids"];
+            }
 
             if(@$acc_ids && isset($acc_ids))
             {
@@ -1651,7 +1666,12 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserResetTeachers':
-            $acc_ids = ($_POST["data"])["acc_ids"];
+            $data = ($_POST["data"]);
+            $acc_ids = null;
+            if(isset($data))
+            {
+                $acc_ids = $data["acc_ids"];
+            }
 
             if(@$acc_ids && isset($acc_ids))
             {
@@ -1671,7 +1691,12 @@ if(isset($_POST['action'])) {
             }
         break;
         case 'SuperuserDeletePrincipals':
-            $acc_ids = ($_POST["data"])["acc_ids"];
+            $data = ($_POST["data"]);
+            $acc_ids = null;
+            if(isset($data))
+            {
+                $acc_ids = $data["acc_ids"];
+            }
 
             if(@$acc_ids && isset($acc_ids))
             {
@@ -1692,7 +1717,12 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserResetPrincipals':
-            $acc_ids = ($_POST["data"])["acc_ids"];
+            $data = ($_POST["data"]);
+            $acc_ids = null;
+            if(isset($data))
+            {
+                $acc_ids = $data["acc_ids"];
+            }
 
             if(@$acc_ids && isset($acc_ids))
             {
