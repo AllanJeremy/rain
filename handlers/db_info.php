@@ -874,22 +874,57 @@ class DbInfo
         }
     }
 
+    //Get comment data and return it
+    private static function GetCommentData($comments,$comment_type)
+    {
+        $comment_list = array();
+        $comment_data = array("comment_type"=>$comment_type,"comments"=>$comment_list);
+        
+        //If comments were available
+        if(@$comments && $comments->num_rows>0)
+        {
+            $cur_comment = array("poster_name"=>"","poster_type"=>"","poster_link"=>"","comment_text"=>"");
+
+            //For each comment
+            foreach($comments as $comment)
+            {
+                $cur_comment["poster_name"] = $comment["commentor_name"];
+                $cur_comment["poster_type"] = $comment["commentor_type"];
+                $cur_comment["poster_link"] = $comment["commentor_link"];
+                $cur_comment["comment_text"] = $comment["comment_text"];
+                
+                array_push($comment_data["comments"],$cur_comment);
+            }
+
+            return json_encode($comment_data);
+        }
+        else
+        {
+            return $comments;
+        }
+    }
     #Get assignment comments
     public static function GetAssComments($ass_id)
     {
-        return self::SinglePropertyExists("ass_comments","ass_id",$ass_id,"i");
+        $comments = self::SinglePropertyExists("ass_comments","ass_id",$ass_id,"i");
+        
+        return self::GetCommentData($comments,"ass_comments");
     }
 
     #Get assignment submissions comments
     public static function GetAssSubmissionComments($submission_id)
     {
-        return self::SinglePropertyExists("ass_submission_comments","submission_id",$submission_id,"i");
+        $comments = self::SinglePropertyExists("ass_submission_comments","submission_id",$submission_id,"i");
+
+        return self::GetCommentData($comments,"ass_submission_comments");
     }
 
     #Get schedule comments
     public static function GetScheduleComments($schedule_id)
     {
-        return self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
+        $comments = self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
+
+        return self::GetCommentData($comments,"schedule_comments");
     }
 /*----------------------------------------------------------------------------------------------------------
                     TESTS AND ANSWERS
@@ -1295,6 +1330,10 @@ class DbInfo
             {
                 array_push($result_array,$result);            
             }
+        }
+        else
+        {
+            return false;
         }        
 
         $array_length = count($result_array);

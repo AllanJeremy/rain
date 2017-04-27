@@ -24,22 +24,22 @@ class DbHandler extends DbInfo
         global $dbCon;#db connection string (mysqli object)
         $prepare_error = "Couldn't prepare query to reset the student account. <br><br> Technical information : ";
 
-        if($student = DbInfo::GetStudentById($acc_id))#if the student exists
+        if($student = DbInfo::GetStudentByAccId($acc_id))#if the student exists
         {
             $new_password = PasswordEncrypt::EncryptPass($student["username"]);#set the new password to be equal to the username
 
-            $reset_query = "UPDATE student_accounts SET password=$new_password WHERE student_accounts.acc_id=?";
+            $reset_query = "UPDATE student_accounts SET password=? WHERE student_accounts.acc_id=?";
 
             if ($reset_stmt = $dbCon->prepare($reset_query))
             {
-                $reset_stmt->bind_param("i",$acc_id);
+                $reset_stmt->bind_param("si",$new_password,$acc_id);
 
                 return($reset_stmt->execute());#run the query to reset the account
 
             }
             else #failed to prepare the query for data retrieval
             {
-                ErrorHandler::PrintError($prepare_error . $dbCon->error);
+                // ErrorHandler::PrintError($prepare_error . $dbCon->error);
                 return null;
             }
         }
@@ -62,15 +62,14 @@ class DbHandler extends DbInfo
 
             $new_password = PasswordEncrypt::EncryptPass($admin_acc["username"]);#set the new password to be equal to the username
 
-            $reset_query = "UPDATE admin_accounts SET password=$new_password WHERE admin_accounts.acc_id=? AND admin_accounts.account_type=?";
+            $reset_query = "UPDATE admin_accounts SET password=? WHERE admin_accounts.acc_id=? AND admin_accounts.account_type=?";
 
             if ($reset_stmt = $dbCon->prepare($reset_query))
             {
-                $reset_stmt->bind_param("is",$acc_id,$acc_type);
+                $reset_stmt->bind_param("sis",$new_password,$acc_id,$acc_type);
 
                 $reset_status = ($reset_stmt->execute());#run the query to reset the account
-                echo $dbCon->error;
-                echo "Resetting admin account";
+   
                 return $reset_status;
             }
             else #failed to prepare the query for data retrieval
@@ -1287,6 +1286,7 @@ if(isset($_POST['action'])) {
             }
             else #Only create principal account
             {
+                echo "Only create the principal";
                 $create_status = $principal->CreatePrincipal($data);
             }
 
@@ -1588,20 +1588,16 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserDeleteStudents':
-            $acc_ids = $_POST["data"];
+            $acc_ids = ($_POST["data"])["acc_ids"];
 
             if(@$acc_ids && isset($acc_ids))
             {
                 $delete_status = true;
 
-                $i=0;
-
                 //For each account, delete that account
                 foreach($acc_ids as $acc_id)
                 {
-                    $delete_status = $delete_status && DbHandler::DeleteStudentAccount($acc_id[$i]);
-
-                    $i++;
+                    $delete_status = $delete_status && DbHandler::DeleteStudentAccount($acc_id);
                 }
 
                 echo $delete_status;
@@ -1613,18 +1609,16 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserResetStudents':
-            $acc_ids = $_POST["data"];
+            $acc_ids = ($_POST["data"])["acc_ids"];
 
             if(@$acc_ids && isset($acc_ids))
             {
                 $reset_status = true;
 
-                $i = 0;
                 //For each account, delete that account
                 foreach($acc_ids as $acc_id)
                 {
-                    $reset_status = $reset_status && DbHandler::ResetStudentAccount($acc_id[$i]);
-                    $i++;
+                    $reset_status = $reset_status && DbHandler::ResetStudentAccount($acc_id);
                 }
 
                 echo $reset_status;
@@ -1636,18 +1630,16 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserDeleteTeachers':
-            $acc_ids = $_POST["data"];
+            $acc_ids = ($_POST["data"])["acc_ids"];
 
             if(@$acc_ids && isset($acc_ids))
             {
                 $delete_status = true;
 
-                $i = 0;
                 //For each account, delete that account
                 foreach($acc_ids as $acc_id)
                 {
-                    $delete_status = $delete_status && DbHandler::DeleteTeacherAccount($acc_id[$i]);
-                    $i++;
+                    $delete_status = $delete_status && DbHandler::DeleteTeacherAccount($acc_id);
                 }
 
                 echo $delete_status;
@@ -1659,18 +1651,16 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserResetTeachers':
-            $acc_ids = $_POST["data"];
+            $acc_ids = ($_POST["data"])["acc_ids"];
 
             if(@$acc_ids && isset($acc_ids))
             {
                 $reset_status = true;
 
-                $i = 0;
                 //For each account, delete that account
                 foreach($acc_ids as $acc_id)
                 {
-                    $reset_status = $reset_status && DbHandler::ResetTeacherAccount($acc_id[$i]);
-                    $i++;
+                    $reset_status = $reset_status && DbHandler::ResetTeacherAccount($acc_id);
                 }
 
                 echo $reset_status;
@@ -1681,18 +1671,16 @@ if(isset($_POST['action'])) {
             }
         break;
         case 'SuperuserDeletePrincipals':
-            $acc_ids = $_POST["data"];
+            $acc_ids = ($_POST["data"])["acc_ids"];
 
             if(@$acc_ids && isset($acc_ids))
             {
                 $delete_status = true;
 
-                $i = 0;
                 //For each account, delete that account
                 foreach($acc_ids as $acc_id)
                 {
-                    $delete_status = $delete_status && DbHandler::DeletePrincipalAccount($acc_id[$i]);
-                    $i++;
+                    $delete_status = $delete_status && DbHandler::DeletePrincipalAccount($acc_id);
                 }
 
                 echo $delete_status;
@@ -1704,21 +1692,18 @@ if(isset($_POST['action'])) {
         break;
 
         case 'SuperuserResetPrincipals':
-            $acc_ids = $_POST["data"];
+            $acc_ids = ($_POST["data"])["acc_ids"];
 
             if(@$acc_ids && isset($acc_ids))
             {
                 $reset_status = true;
 
-                $i = 0;
                 //For each account, delete that account
                 foreach($acc_ids as $acc_id)
                 {
-                    $reset_status = $reset_status && DbHandler::ResetPrincipalAccount($acc_id[$i]);
-                    var_dump($reset_status);
-                    $i++;
+                    $reset_status = $reset_status && DbHandler::ResetPrincipalAccount($acc_id);
                 }
-                echo "reset status ";
+
                 echo $reset_status;
             }
             else

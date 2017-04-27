@@ -258,6 +258,18 @@ $(document).ready(function (z) {
     }
 
     /*SUPERUSER AJAX REQUESTS*/
+    //Clear form inputs
+    function ClearFormInputs($form)
+    {
+        $form.find("input").each(function(){
+            ResetInputValidity($(this));
+            $(this).val("");
+            Materialize.updateTextFields();
+        });
+        $form.find("textarea").html("");
+    }
+
+    //Timeout for toasts
     var timeout_time = 2000;
     //Create student account
     function CreateStudentAccount(data,$form)
@@ -266,6 +278,7 @@ $(document).ready(function (z) {
             //If the account was successfully created
             if(IsValidResponse(response))
             {
+                ClearFormInputs($form);
                 Materialize.toast("Successfully created the student account",timeout_time);
             }
             else
@@ -281,6 +294,7 @@ $(document).ready(function (z) {
             //If the account was successfully created
             if(IsValidResponse(response))
             {
+                ClearFormInputs($form);
                 Materialize.toast("Successfully created the teacher account",timeout_time);
             }
             else
@@ -296,6 +310,7 @@ $(document).ready(function (z) {
             //If the account was successfully created
             if(IsValidResponse(response))
             {
+                ClearFormInputs($form);
                 Materialize.toast("Successfully created the principal account",timeout_time);
             }
             else
@@ -311,6 +326,7 @@ $(document).ready(function (z) {
             //If the account was successfully created
             if(IsValidResponse(response))
             {
+                ClearFormInputs($form);
                 Materialize.toast("Successfully created the superuser account",timeout_time);
             }
             else
@@ -471,11 +487,11 @@ $(document).ready(function (z) {
                         if(is_valid)
                         {
                             $selected_accounts.parents("tr").remove();
-                            Materialize.toast("Successfully deleted "+number_of_accs+" accounts",(timeout_time*2));
+                            Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",(timeout_time*2));
                         }
                         else
                         {
-                            Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                            Materialize.toast("Failed to delete 1 or more students accounts, if the problem persists: contact your web administrator",(timeout_time*2));
 
                             //Re-enable the checkboxes
                             $selected_accounts.each(function(){
@@ -490,11 +506,11 @@ $(document).ready(function (z) {
                         is_valid = IsValidResponse(response);
                         if(is_valid)
                         {
-                            Materialize.toast("Successfully reset "+number_of_accs+" accounts",(timeout_time*2));
+                            Materialize.toast("Successfully reset "+number_of_accs+" student account(s)",(timeout_time*2));
                         }
                         else
                         {
-                            Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                            Materialize.toast("Failed to reset 1 or more student accounts, if the problem persists: contact your web administrator",(timeout_time*2));
                         }
                     });
                 break;
@@ -544,7 +560,7 @@ $(document).ready(function (z) {
                         if(is_valid)
                         {
                             $selected_accounts.parents("tr").remove();
-                            Materialize.toast("Successfully deleted "+number_of_accs+" accounts",(timeout_time*2));
+                            Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",(timeout_time*2));
                         }
                         else
                         {
@@ -613,7 +629,7 @@ $(document).ready(function (z) {
                 if(is_valid)
                 {
                     $selected_accounts.parents("tr").remove();
-                    Materialize.toast("Successfully deleted "+number_of_accs+" accounts",(timeout_time*2));
+                    Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",(timeout_time*2));
                 }
                 else
                 {

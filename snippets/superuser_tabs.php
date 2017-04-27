@@ -198,15 +198,15 @@
                                 </select>
                                 <label>Bulk action</label>
                             </div>
-                            <div class="input-field col m5 s9">
+                            <div class="input-field col m5 s9 hide">
                                 <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
                                 <label for="filterListSearch">Search</label>
                             </div>
-                            <div class="input-field col m2 s3">
+                            <div class="input-field col m2 s3 hide">
                                 <a class="btn btn-floating waves-effect waves-light" type="submit"><i class="material-icons">search</i></a>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row hide">
                             <div class="input-field col s2">
                                 <p>Filter: </p>
                             </div>
@@ -370,15 +370,15 @@
                                 </select>
                                 <label>Bulk action</label>
                             </div>
-                            <div class="input-field col m5 s9">
+                            <div class="input-field col m5 s9 hide">
                                 <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
                                 <label for="filterListSearch">Search</label>
                             </div>
-                            <div class="input-field col m2 s3">
+                            <div class="input-field col m2 s3 hide">
                                 <a class="btn btn-floating waves-effect waves-light" type="submit"><i class="material-icons">search</i></a>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row hide">
                             <div class="input-field col s2">
                                 <p>Filter: </p>
                             </div>
@@ -700,16 +700,16 @@
             ?>
                 <div class="row" id="superuserFilterList">
                     <form class="col s12" action="">
-                        <div class="row">
-                            <div class="input-field col m10 s9">
+                        <div class="row hide">
+                            <div class="input-field col m10 s9 hide">
                                 <input id="filterListSearch" type="text" class="validate" name="filter-list-search">
                                 <label for="filterListSearch">Search</label>
                             </div>
-                            <div class="input-field col m2 s3">
+                            <div class="input-field col m2 s3 hide">
                                 <a class="btn btn-floating waves-effect waves-light" type="submit"><i class="material-icons">search</i></a>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row hide">
                             <div class="input-field col s2">
                                 <p>Filter: </p>
                             </div>

@@ -29,6 +29,13 @@ class CommentHandler
                 }
             break;
 
+            case "principal":         
+                if($principal = DbInfo::GetPrincipalById($acc_id))
+                {
+                    $commentor_link .= "accType='principal'&id=$acc_id";#tr means teacher
+                    $commentor_name = $principal["first_name"] . " " . $principal["last_name"];
+                }
+            break;
             default:
                 $commentor_link .= "accType='undefined'&id=$acc_id";#undefined means unviewable profile debug. Should be blank ideally 
                 $commentor_name = "Anonymous";#if we cannot find the commentor's account type                
@@ -45,7 +52,7 @@ class CommentHandler
         global $dbCon;
         
         //Insert Query
-        $insert_query="INSERT INTO $table_name($fk_col_name,comment_text,commentor_name,commentor_link)  VALUES(?,?,?,?)";
+        $insert_query="INSERT INTO $table_name($fk_col_name,comment_text,commentor_name,commentor_link,commentor_type)  VALUES(?,?,?,?,?)";
         
         //Commentor variables
         $commentor_info = self::GetCommentorInfo($acc_id,$commentor_type);#Commentor info array
@@ -55,7 +62,7 @@ class CommentHandler
         if($insert_stmt = $dbCon->prepare($insert_stmt))
         {
             //(ass_id,comment_text,commentor_name,commentor_link)
-            $insert_stmt->bind_param("isss",$fk_col_value,$comment_text,$commentor_name,$commentor_link);
+            $insert_stmt->bind_param("issss",$fk_col_value,$comment_text,$commentor_name,$commentor_link,$commentor_type);
             
             if($insert_stmt->execute())
             {
@@ -68,26 +75,54 @@ class CommentHandler
         }
         else
         {
-            var_dump($dbCon->error);
+            // var_dump($dbCon->error);
             return null;#failed to execute the query
         }
     }
 
-    #Comment on assignment
-    public static function CommentOnAss($ass_id,$acc_id,$comment_text,$commentor_type="student")
+    #Student comment on assignment
+    public static function StudentCommentOnAss($ass_id,$acc_id,$comment_text)
     {
+        $commentor_type="student";
         return self::CommentOnItem("ass_comments","ass_id",$ass_id,$acc_id,$comment_text,$commentor_type);
     } 
 
-    #Comment on assignment submission
-    public static function CommentOnAssSubmission($submission_id,$acc_id,$comment_text,$commentor_type="student")
+    #Student comment on assignment submission
+    public static function StudentCommentOnAssSubmission($submission_id,$acc_id,$comment_text)
     {
+        $commentor_type="student";
         return self::CommentOnItem("ass_submission_comments","submission_id",$submission_id,$acc_id,$comment_text,$commentor_type);
     }
 
-    #Comment on schedule 
-    public static function CommentOnSchedule($schedule_id,$acc_id,$comment_text,$commentor_type="teacher")
+    #Teacher comment on assignment
+    public static function TeacherCommentOnAss($ass_id,$acc_id,$comment_text)
     {
+        $commentor_type="teacher";
+        return self::CommentOnItem("ass_comments","ass_id",$ass_id,$acc_id,$comment_text,$commentor_type);
+    } 
+
+    #Teacher comment on assignment submission
+    public static function TeacherCommentOnAssSubmission($submission_id,$acc_id,$comment_text)
+    {
+        $commentor_type="teacher";
+        return self::CommentOnItem("ass_submission_comments","submission_id",$submission_id,$acc_id,$comment_text,$commentor_type);
+    }
+
+
+    #Teacher comment on schedule 
+    public static function TeacherCommentOnSchedule($schedule_id,$acc_id,$comment_text)
+    {
+        $commentor_type="teacher";
         return self::CommentOnItem("schedule_comments","schedule_id",$submission_id,$acc_id,$comment_text,$commentor_type);
     }
+
+    #Principal comment on schedule 
+    public static function PrincipalCommentOnSchedule($schedule_id,$acc_id,$comment_text)
+    {
+        $commentor_type="principal";
+        return self::CommentOnItem("schedule_comments","schedule_id",$submission_id,$acc_id,$comment_text,$commentor_type);
+    }
+
+    /*RETRIEVING COMMENTS*/
+    //Get specific assignment comments
 };
