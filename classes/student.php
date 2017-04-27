@@ -7,22 +7,16 @@ require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #A
 require_once (dirname(__FILE__) ."/../handlers/validation_handler.php");#Handles validation of form data
 require_once (dirname(__FILE__) ."/../handlers/comment_handler.php");#Handles comments
 
-#DECLARES WHAT FUNCTIONS ARE USED FOR COMMENTS by STUDENTS
-interface StudentCommentFunctions
-{
-    public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text);#Student comment on assignment
-    public function StudentCommentOnAssSubmission($submission_id,$student_acc_id,$comment_text);#Comment on ass. submission
-}
 
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE STUDENT MUST IMPLEMENT
-interface StudentAssignmentFunctions extends StudentCommentFunctions
+interface StudentAssignmentFunctions
 {
     public function SubmitAssignment($ass_id,$student_id,$attachments="");#submit an assignment
     public function CancelAssignmentSubmission($submission_id);#Cancel an assignment submission
 };
 
 #CLASS THAT HANDLES STUDENT RELATED FUNCTIONS
-class Student extends CommentHandler implements StudentAssignmentFunctions
+class Student implements StudentAssignmentFunctions
 {
     //Variable initialization
     public $student_id;
@@ -260,17 +254,5 @@ class Student extends CommentHandler implements StudentAssignmentFunctions
             return null;#failed to prepare the query
         }
     }       
-
-    //Comment on assignment
-    public function StudentCommentOnAss($ass_id,$student_acc_id,$comment_text) 
-    {
-        return CommentHandler::CommentOnAss($ass_id,$student_acc_id,$comment_text,"student");        
-    }
-
-    //Comment on assignment submission
-    public function StudentCommentOnAssSubmission($submission_id,$student_acc_id,$comment_text)
-    {
-        return CommentHandler::CommentOnAssSubmission($submission_id,$student_acc_id,$comment_text,"teacher");
-    }
 
 };

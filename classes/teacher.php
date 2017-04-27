@@ -3,19 +3,8 @@
 require_once (dirname(__FILE__) ."/../classes/admin_account.php");#admin account -  contains parent class
 require_once (dirname(__FILE__) ."/../handlers/db_handler.php");#db_handler - convenience delete functions
 
-#DECLARES WHAT FUNCTIONS ARE USED FOR COMMENTS by TEACHERS
-interface TeacherCommentFunctions
-{
-    //Assignments
-    public function TrCommentOnAss($ass_id,$teacher_id,$comment_text);#Teacher comment on ass.
-    
-    //Assignment submissions
-    public function TrCommentOnAssSubmission($submission_id,$teacher_id,$comment_text);#Comment on ass. submission
-
-}
-
 #DECLARES WHAT ASSIGNMENT FUNCTIONS THE TEACHER MUST IMPLEMENT
-interface TeacherAssignmentFunctions extends TeacherCommentFunctions
+interface TeacherAssignmentFunctions
 {
     //Create an assignment
     public function CreateAssignment($args=array(
@@ -41,7 +30,7 @@ interface TeacherAssignmentFunctions extends TeacherCommentFunctions
 };
 
 #CLASS THAT HANDLES TEACHER RELATED FUNCTIONS
-class Teacher extends AdminAccount implements TeacherAssignmentFunctions
+class Teacher extends AdminAccount
 {
     //Variable initialization
 
