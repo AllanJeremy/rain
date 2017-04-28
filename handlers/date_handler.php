@@ -14,8 +14,8 @@ interface EsomoDateFunctions
     #returns the difference between the sent date and the due date
     public static function GetDateDiff($date_sent,$date_due); 
     
-    #Gets the date info and returns it in an array - takes a date_diff as a parameter    
-    public static function GetDateInfo($date_diff);
+    #Gets the date info and returns it in an array - takes a date_input as a parameter    
+    public static function GetDateInfo($date_input);
 
     #returns the current date the database date format
     public static function GetCurrentDate();
@@ -172,12 +172,23 @@ class EsomoDate implements EsomoDateFunctions
     //Gets the date info and returns it in an array - takes a date_input as a parameter
     public static function GetDateInfo($date_input)
     {
-        $years = $date_input->format("%r%y");
-        $months = $date_input->format("%r%m");
-        $days = $date_input->format("%r%d");
-        $hours = $date_input->format("%r%H");
-        $minutes = $date_input->format("%r%I");
-        $seconds = $date_input->format("%r%S");
+        $date = null;
+        //If the time entered is not date time, create a new date time from it.
+        if(!is_a($date_input,"DateTime"))
+        {
+            $date = new DateTime($date_input);
+        }
+        else //otherwise, if it is datetime, then set the date equal to it
+        {
+            $date = $date_input;
+        }
+
+        $years = $date->format("%r%y");
+        $months = $date->format("%r%m");
+        $days = $date->format("%r%d");
+        $hours = $date->format("%r%H");
+        $minutes = $date->format("%r%I");
+        $seconds = $date->format("%r%S");
 
         return array("years"=>$years,"months"=>$months,"days"=>$days,"hours"=>$hours,"minutes"=>$minutes,"seconds"=>$seconds);
     }

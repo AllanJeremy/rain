@@ -883,15 +883,25 @@ class DbInfo
         //If comments were available
         if(@$comments && $comments->num_rows>0)
         {
-            $cur_comment = array("poster_name"=>"","poster_type"=>"","poster_link"=>"","comment_text"=>"");
+            $cur_comment = array("comment_id"=>"","poster_name"=>"","poster_type"=>"","poster_link"=>"","comment_text"=>"","date"=>"","time"=>"");
 
             //For each comment
             foreach($comments as $comment)
             {
+                $cur_comment["comment_id"] = $comment["comment_id"];
                 $cur_comment["poster_name"] = $comment["commentor_name"];
                 $cur_comment["poster_type"] = $comment["commentor_type"];
                 $cur_comment["poster_link"] = $comment["commentor_link"];
                 $cur_comment["comment_text"] = $comment["comment_text"];
+
+                $date_info = EsomoDate::GetDateInfo($comment["date_sent"]);
+                
+                //Format the date and time into a usable format eg. (Fri,April 28, 2017)
+                $date = $date_info["days"].", ".$date_info["months"]." ".$date_info["days"].", ".$date_info["years"];
+                $time = $date_info["hours"].":".$date_info["minutes"];
+                
+                $cur_comment["date"] = $date;
+                $cur_comment["time"] = $time;
                 
                 array_push($comment_data["comments"],$cur_comment);
             }
