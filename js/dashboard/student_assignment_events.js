@@ -20,10 +20,10 @@ var StudentAssignmentEvents = function () {
         // HEADER, NOT MAIN
 
         //Checks on file input change, updates, the modal infos
-        $('main').on('change', "form#createAssignmentForm input:file", function (e) {
+        $('main').on('change', "form#createAssignmentForm input.js-assignments.active", function (e) {
             e.preventDefault();
 
-            files = document.forms['createAssignmentForm']['assignments'].files;
+            files = document.forms['createAssignmentForm']['.js-assignments'].files;
             totalfiles = files.length;
 
             console.log(files);
@@ -43,12 +43,16 @@ var StudentAssignmentEvents = function () {
 
             assignmentslisthook = $('.modal#assignmentUpload .modal-content').children('#assignmentsList');
 
+            assignmentslisthook.prepend(filesinfo);
+
+/*
             assignmentslisthook.fadeOut(300, function () {
 
                 $(this).html(filesinfo);
 
                 $(this).fadeIn();
             });
+*/
 
             var validateresult = validateFiles(files);
             assignments_errorshook = $('.modal#assignmentUpload .modal-content').children('#errorContainer');
@@ -87,6 +91,15 @@ var StudentAssignmentEvents = function () {
         };
 
     //-----------
+    //Will generate a new file input then prepend the added files
+    var addMoreAssignmentFiles = function () {
+        $('main').on('click', 'a.js-submit-assignment', function (e) {
+            e.preventDefault();
+
+        });
+    };
+
+    //-----------
     //submit the assignments form
     var submitAssignment = function () {
 
@@ -97,10 +110,10 @@ var StudentAssignmentEvents = function () {
                 return;
             }
 
-            var files = document.forms['createAssignmentForm']['assignments'].files,
-                filesdescription = '', subjectid;
+            var fileinputs = document.forms['addAssignmentForm']['.js-assignments'],
+                files, filesdescription = '', subjectid;
 
-            console.log(files);
+            console.log(fileinputs);
 
             //ajax
             // Create a new FormData object.

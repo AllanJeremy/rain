@@ -1,5 +1,5 @@
     <?php
-if (!isset($_SESSION["student_adm_no"])) {
+if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
 ?>
 <div class="row">
@@ -50,8 +50,18 @@ if (!isset($_SESSION["student_adm_no"])) {
             <br>
         </div>
         <div class="assignment-action-header marg-16">
+            <?php
+            if(!isset($_SESSION['admin_acc_id'])) :
+            ?>
             <a class="btn btn-large js-assignment-submit" href="">Submit</a>
             <p class="center-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-6 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
+            <?php
+            else:
+            ?>
+            <p class="marg-16 center-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-16 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
+            <?php
+            endif;
+            ?>
         </div>
     </div>
     <div class="brookhurst-theme-primary lighten-2 row pin-nav-top">
@@ -72,18 +82,33 @@ if (!isset($_SESSION["student_adm_no"])) {
         $res_tab_class = '';
         $ass_tab_class = 'active';
     }
+    if(!isset($_SESSION['admin_acc_id'])) {
+        echo '<li class="tab col s6"><a class="'.$ass_tab_class.'" href="#myAssignment">My assignment</a></li>';
+        $res_tab_class = 'active';
+        $ass_tab_class = '';
+
+    };
                 ?>
-                <li class="tab col s6"><a class="<?php echo $ass_tab_class; ?>" href="#myAssignment">My assignment</a></li>
+
                 <li class="tab col s6"><a href="#resources" class="<?php echo $res_tab_class; ?>">resources</a></li>
             </ul>
 
+        <?php
+        if(!isset($_SESSION['admin_acc_id'])) :
+           ?>
             <a class="white-text btn-flat btn right marg-6 js-download-assignment" title="download the whole assignment">download</a>
             <a class="white-text btn-flat btn right marg-6 js-upload-assignment" title="upload your assignment">upload </a>
+        <?php
+           endif;
+        ?>
         </div>
     </div>
 
 </header>
 <main>
+    <?php
+    if(!isset($_SESSION['admin_acc_id'])) :
+       ?>
     <div id="myAssignment" class="row container">
         <div class="m12 s12 col l8 assignment-tinymce">
             <div hidefocus="0" class="brookhurst-theme-primary lighten-3 row tinymce-toolbar inline-toolbar" id="mytoolbar">
@@ -138,6 +163,10 @@ if (!isset($_SESSION["student_adm_no"])) {
             </div>
         </div>
     </div>
+
+    <?php
+       endif;
+    ?>
 
     <div id="resources" class="row container">
         <div class="col s12">
@@ -262,7 +291,8 @@ if (!isset($_SESSION["student_adm_no"])) {
 
     var $target = $('.pin-nav-top'),
         $target2 = $('.inline-toolbar'),
-        $target3 = $('.resources-bar');
+        $target3 = $('.resources-bar'),
+        $zeroOffset = $target.offset().top;
 
     $target.pushpin({
         top: $target.offset().top,
@@ -270,12 +300,12 @@ if (!isset($_SESSION["student_adm_no"])) {
         offset: 0
     });
     $target2.pushpin({
-        top: $target.offset().top + $target.outerHeight(),
+        top: $zeroOffset + $target.outerHeight(),
         bottom: $('main').outerHeight(),
         offset: $target.outerHeight()
     });
     $target3.pushpin({
-        top: $target.offset().top + $target.outerHeight(),
+        top: $zeroOffset + $target.outerHeight(),
         bottom: $('main').outerHeight(),
         offset: $target.outerHeight() + 160
     });

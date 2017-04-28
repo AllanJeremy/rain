@@ -545,7 +545,7 @@ $height: auto;
         margin-bottom: 20px;
 
         &.pinned {
-            z-index: 888888;
+            z-index: 888;
             top: 0;
             left: 0;
             padding: 16px;
@@ -582,7 +582,7 @@ $height: auto;
 .pin-nav-top {
 
     &.pinned {
-        z-index: 888888;
+        z-index: 888;
         top: 0;
         width: 100%;
     }

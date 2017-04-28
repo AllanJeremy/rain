@@ -10659,7 +10659,7 @@ input:-webkit-autofill:active {
 }
 /* line 547, ../sass/_style.scss */
 .assignment-tinymce .inline-toolbar.pinned {
-  z-index: 888888;
+  z-index: 888;
   top: 0;
   left: 0;
   padding: 16px;
@@ -10693,7 +10693,7 @@ input:-webkit-autofill:active {
 
 /* line 584, ../sass/_style.scss */
 .pin-nav-top.pinned {
-  z-index: 888888;
+  z-index: 888;
   top: 0;
   width: 100%;
 }

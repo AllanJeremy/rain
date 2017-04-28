@@ -12,6 +12,7 @@ var AssignmentEvents = function () {
         submitNewAssignment();
         showAssignmentComments();
         addAssignmentComments();
+        uploadMyAssignment();
 
     };
     
@@ -581,7 +582,7 @@ var AssignmentEvents = function () {
         });
     };
 
-    //--------------------------------
+    //----------------------------      FUNCTIONS
 
     var cleanArray = function (actual) {
         
@@ -601,7 +602,8 @@ var AssignmentEvents = function () {
         
     };
 
-    //----------------------------      FUNCTIONS
+
+    //--------------------------------
     
     var progress = function (e) {
 
