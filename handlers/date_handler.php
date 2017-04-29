@@ -25,6 +25,10 @@ class EsomoDate implements EsomoDateFunctions
 {
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
 
+    public static function Negate($number)
+    {
+        return (-1 * abs($number));
+    }
     //returns the text that will be used for due dates
     public static function GetDueText($due_date)
     {
@@ -35,13 +39,26 @@ class EsomoDate implements EsomoDateFunctions
         //Finding the difference between the date today and the date before
         $date_today = date(self::DB_DATE_FORMAT);
         $date_difference = self::GetDateDiff($date_today,$due_date);
-        var_dump($date_difference->d);
-        if($date_difference->d < 0 || $date_difference->m < 0 || $date_difference->y)
+        
+        //If the date difference is a negative number
+        if($date_difference->invert==1)
+        {
+            $date_difference->y = self::Negate($date_difference->y);
+            $date_difference->m = self::Negate($date_difference->m);
+            $date_difference->d = self::Negate($date_difference->d);
+            $date_difference->h = self::Negate($date_difference->h);
+            $date_difference->i = self::Negate($date_difference->i);
+            $date_difference->s = self::Negate($date_difference->s);
+        }
+
+        //the date has passed
+        if($date_difference->d < 0 || $date_difference->m < 0 || $date_difference->y<0)
         {
             $due_text = "Late!";
             $due_class = "red darken-1";
         }
-        elseif($date_difference->d == 0)
+        #the date is today
+        elseif($date_difference->d == 0 && $date_difference->m == 0 && $date_difference->y == 0)
         {
             $due_class = "red darken-1";
             if($date_difference->h > 0)
@@ -77,7 +94,8 @@ class EsomoDate implements EsomoDateFunctions
             }
 
         }
-        elseif($date_difference->d == 1)
+        #one day left
+        elseif($date_difference->d == 1 && $date_difference->m == 0 && $date_difference->y == 0)
         {
             $due_text = "Due Tomorrow!";
         }
@@ -141,7 +159,7 @@ class EsomoDate implements EsomoDateFunctions
     {
         $date = "";
         //If the time entered is not date time, create a new date time from it.
-        if(!is_a($date_input,"DateTime"))
+        if(!is_a($date_input,"DateTime") && is_string($date_input))
         {
             $date = new DateTime($date_input);
         }
@@ -173,7 +191,7 @@ class EsomoDate implements EsomoDateFunctions
     {
         $date = null;
         //If the time entered is not date time, create a new date time from it.
-        if(!is_a($date_input,"DateTime"))
+        if(!is_a($date_input,"DateTime") && is_string($date_input))
         {
             $date = new DateTime($date_input);
         }

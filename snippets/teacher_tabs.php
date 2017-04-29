@@ -225,7 +225,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="card white">
                             <div class="assignment-info <?php echo $ass_due_info['due_class']?> z-depth-2"><p class="center grey-text text-lighten-3"><?php echo $ass_due_info["due_text"];?></p></div>
                             <div class="card-content">
-                                <span class="card-title"><?php echo $assignment["ass_title"]; ?></span>
+                                <span class="card-title truncate" title="<?php echo $assignment["ass_title"];?>"><?php echo $assignment["ass_title"]; ?></span>
 
                                 <ul class="collapsible " data-collapsible="accordion">
                                     <li>
