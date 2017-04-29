@@ -35,26 +35,25 @@ class EsomoDate implements EsomoDateFunctions
         //Finding the difference between the date today and the date before
         $date_today = date(self::DB_DATE_FORMAT);
         $date_difference = self::GetDateDiff($date_today,$due_date);
-        $date_info = self::GetDateInfo($date_difference); 
-
-        if($date_info["days"] < 0 || $date_info["months"] < 0 || $date_info["years"])
+        var_dump($date_difference->d);
+        if($date_difference->d < 0 || $date_difference->m < 0 || $date_difference->y)
         {
             $due_text = "Late!";
             $due_class = "red darken-1";
         }
-        elseif($date_info["days"] == 0)
+        elseif($date_difference->d == 0)
         {
             $due_class = "red darken-1";
-            if($date_info["hours"]>0)
+            if($date_difference->h > 0)
             {
-                $due_text = "Due in ".$date_info["hours"]."h";
-                if($date_info["minutes"]>0)
+                $due_text = "Due in ".$date_difference->h."h";
+                if($date_difference->i>0)
                 {
-                    $due_text.=" and ".$date_info["minutes"]."min";
+                    $due_text.=" and ".$date_difference->i."min";
                 }
-                elseif($date_info["minutes"]==0)
+                elseif($date_difference->i==0)
                 {
-                    $due_text = "Due in ".$date_info["hours"]."h";
+                    $due_text = "Due in ".$date_difference->h."h";
                 }
                 else
                 {
@@ -63,11 +62,11 @@ class EsomoDate implements EsomoDateFunctions
             }
             else
             {
-                if($date_info["minutes"]>0)
+                if($date_difference->i>0)
                 {
-                    $due_text="Due in  ".$date_info["minutes"]."min";
+                    $due_text="Due in  ".$date_difference->i."min";
                 }
-                elseif($date_info["minutes"]==0)
+                elseif($date_difference->i==0)
                 {
                     $due_text = "Due Today!";
                 }
@@ -78,14 +77,14 @@ class EsomoDate implements EsomoDateFunctions
             }
 
         }
-        elseif($date_info["days"] == 1)
+        elseif($date_difference->d == 1)
         {
             $due_text = "Due Tomorrow!";
         }
         else
         {
             $due_class = "light-blue darken-4";
-            $due_text = "Due in ".$date_info["days"]." days";
+            $due_text = "Due in ".$date_difference->d." days";
         }
 
         return array("due_text"=>$due_text,"due_class"=>$due_class); 
