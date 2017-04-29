@@ -440,7 +440,7 @@ var Lists_Templates = function () {
         var templateOutput = '';
 
         templateOutput += '<div class="col s4"  data-index="' + i + '">';
-        templateOutput += '<div class="card doocument-view">';
+        templateOutput += '<div class="card document-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
         templateOutput += '<div class="info row no-margin">';

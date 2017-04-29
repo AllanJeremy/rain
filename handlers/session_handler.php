@@ -236,7 +236,8 @@ if(isset($_GET['action'])) {
 
             break;
         default:
-
+            echo json_encode(['error'=>'no such GET action']);
+            return;
             break;
 
     }

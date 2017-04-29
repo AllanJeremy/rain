@@ -37,7 +37,28 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         } else {
     ?>
 
-<header data-assignment-id="<?php echo $assignment['ass_id']; ?>" class="">
+<?php
+    //Find if student had already submitted the assignment
+    //Will show the files the student submitted instead of the tinyMCE.
+    //Faster
+    $ass_submission_exists = DbInfo::GetAssSubmissionsByAssId($assignment['ass_id']);
+    foreach($ass_submission_exists as $ass_submission_exist) {
+
+        //var_dump($ass_submission_exist);
+        //$ass_submission_exists = true;
+        if($ass_submission_exist['submitted'] == 1) {
+            $submitted = '1';
+        } else {
+            $submitted = '1';
+        }
+
+    }
+?>
+<header data-comments-enabled="<?php echo $assignment['comments_enabled']; ?>" data-submitted="<?php echo $submitted; ?>" data-assignment-id="<?php echo $assignment['ass_id']; ?>" class="">
+    <div class="no-margin progress pace js-progress-bar" style="width:0%;">
+        <div class="determinate" style="width:0%;"></div>
+    </div>
+
     <div class="brookhurst-theme-primary lighten-1">
         <div class="container ">
             <br>
@@ -52,10 +73,20 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         <div class="assignment-action-header marg-16">
             <?php
             if(!isset($_SESSION['admin_acc_id'])) :
+            if($submitted == '1') :
             ?>
-            <a class="btn btn-large js-assignment-submit" href="">Submit</a>
+            <a class="btn green btn-large js-submit-assignment disabled"  href="#submitAssignment"><i class="material-icons right white-text">done</i>Submitted</a>
+            <p class="center-align js-assignment-due green lighten-3 pad-6 white-text">Submitted on <?php echo EsomoDate::GetOptimalDateTime($ass_submission_exist['date_submitted'])['day'] .' '. EsomoDate::GetOptimalDateTime($ass_submission_exist['date_submitted'])['date']; ?></p>
+            <h6 class="right-align green-text text-lighten-5">Graded</h6>
+            <h5 class="right-align green-text text-accent-2">70/100</h5>
+            <?php
+            else:
+            ?>
+
+            <a class="btn btn-large js-submit-assignment disabled" href="#submitAssignment">Submit</a>
             <p class="center-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-6 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
             <?php
+            endif;
             else:
             ?>
             <p class="marg-16 center-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-16 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
@@ -82,23 +113,26 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         $res_tab_class = '';
         $ass_tab_class = 'active';
     }
-    if(!isset($_SESSION['admin_acc_id'])) {
-        echo '<li class="tab col s6"><a class="'.$ass_tab_class.'" href="#myAssignment">My assignment</a></li>';
+    if(isset($_SESSION['admin_acc_id'])) {
         $res_tab_class = 'active';
         $ass_tab_class = '';
 
     };
                 ?>
 
+                <li class="tab col s6"><a class="<?php echo $ass_tab_class; ?>" href="#myAssignment">My assignment</a></li>
                 <li class="tab col s6"><a href="#resources" class="<?php echo $res_tab_class; ?>">resources</a></li>
             </ul>
 
         <?php
         if(!isset($_SESSION['admin_acc_id'])) :
+
+            if($submitted != '1') :
            ?>
             <a class="white-text btn-flat btn right marg-6 js-download-assignment" title="download the whole assignment">download</a>
-            <a class="white-text btn-flat btn right marg-6 js-upload-assignment" title="upload your assignment">upload </a>
+            <a class="white-text btn-flat hide btn right marg-6 js-upload-assignment" title="upload your assignment">upload </a>
         <?php
+           endif;
            endif;
         ?>
         </div>
@@ -108,7 +142,47 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 <main>
     <?php
     if(!isset($_SESSION['admin_acc_id'])) :
-       ?>
+    if($submitted == '1') :
+    ?>
+    <?php //Get the resources uploaded, loop them hear?>
+
+    <div id="myAssignment" class="row container">
+        <p>Documents you submitted</p>
+        <div class="divider"></div>
+        <br>
+        <?php
+
+        $attachments = explode(',',$ass_submission_exist['attachments']);
+        array_pop($attachments);
+
+        for($i = 0; $i < count($attachments); $i++) :
+            //echo $attachments[$i];
+        ?>
+
+        <div class="col m4 s6"  data-index="<?php echo $i; ?>">
+            <div class="card document-view">
+                <!--icon for the type of media?-->
+                <i class="material-icons">&#xE24D;</i>
+                <div class="info row no-margin">
+                    <div class="col s12">
+                        <p class="title"><?php echo $attachments[$i]; ?> </p>
+                        <p class="format"><?php echo explode(".",$attachments[$i])[count(explode(".",$attachments[$i])) - 1]; ?></p>
+                        <p class="size"> unknown size</p>
+                        <a target="_blank" href="./uploads/ass_submissions/<?php echo $attachments[$i]; ?>" class="btn-inline right">View</a>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php
+    endfor;
+    ?>
+    </div>
+    <?php
+    else:
+    ?>
+
     <div id="myAssignment" class="row container">
         <div class="m12 s12 col l8 assignment-tinymce">
             <div hidefocus="0" class="brookhurst-theme-primary lighten-3 row tinymce-toolbar inline-toolbar" id="mytoolbar">
@@ -137,17 +211,27 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
                         $attachments = explode(",",$assignment['attachments']);
                         array_pop($attachments);
-
+                        if(count($attachments) < 2 && count($attachments) > 0) :
+                        ?>
+                        <li class="margin-vert-8">
+                            <a href="./uploads/assignments/<?php echo $attachment; ?>" target="_blank" class="black-text"><?php echo $attachment; ?></a>
+                            <p class="no-margin grey-text text-lighten-1 secondary-title"><?php echo explode(".",$attachment)[count(explode(".",$attachment)) - 1]; ?></p>
+                            <p class="no-margin grey-text text-lighten-1 secondary-title">unknown size</p>
+                        </li>
+                        <li class="divider"></li>
+                        <?php
+                        else:
                         foreach($attachments as $attachment):
                         ?>
                         <li class="margin-vert-8">
                             <a href="" class="black-text"><?php echo $attachment; ?></a>
                             <p class="no-margin grey-text text-lighten-1 secondary-title"><?php echo explode(".",$attachment)[count(explode(".",$attachment)) - 1]; ?></p>
-                            <p class="no-margin grey-text text-lighten-1 secondary-title">23kb</p>
+                            <p class="no-margin grey-text text-lighten-1 secondary-title">unknown size</p>
                         </li>
                         <li class="divider"></li>
                         <?php
                         endforeach;
+                        endif;
                         ?>
 
                         <!--TEMPLATE-->
@@ -166,6 +250,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
     <?php
        endif;
+       endif;
     ?>
 
     <div id="resources" class="row container">
@@ -175,8 +260,18 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                 <?php
 
                 $attachments = explode(",",$assignment['attachments']);
-                array_pop($attachments);
 
+                array_pop($attachments);
+                if(count($attachments) < 2 && count($attachments) > 0) :
+                ?>
+                <li class="margin-vert-8">
+                    <a href="./uploads/assignments/<?php echo $attachment; ?>" target="_blank" class="black-text"><?php echo $attachment; ?></a>
+                    <p class="no-margin grey-text text-lighten-1 secondary-title"><?php echo explode(".",$attachment)[count(explode(".",$attachment)) - 1]; ?></p>
+                    <p class="no-margin grey-text text-lighten-1 secondary-title">23kb</p>
+                </li>
+                <li class="divider"></li>
+                <?php
+                else:
                 foreach($attachments as $attachment):
                 ?>
                 <li class="margin-vert-8">
@@ -187,6 +282,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                 <li class="divider"></li>
                 <?php
                 endforeach;
+                endif;
                 ?>
 
                 <!--TEMPLATE-->
@@ -215,15 +311,15 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                             <span id="totalAssignments">0</span> files
                         </h4>
                         <br>
-                        <div class="progress" style="width:0%;">
+                        <div class="progress js-progress-bar" style="width:0%;">
                             <div class="determinate" style="width:0%;"></div>
                         </div>
                         <h6 class="num-progress hide secondary-text-color">
-                            <i>Uploading <span class="js-num-progress">0%</span></i>
+                            <i>Uploading <span class="js-upload-num-progress">0%</span></i>
                         </h6>
                     </div>
                     <div class="col m6 s12">
-                        <form id="createAssignmentForm">
+                        <form id="addAssignmentForm">
                             <div class=" input-field col s12 file-field ">
                                 <div class="btn">
                                     <span>add assignment</span>
@@ -248,8 +344,8 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
             </div>
         </div>
         <div class="modal-footer">
-            <a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-red btn-flat">close</a>
-            <a href="#!" id="uploadAssignment" class=" modal-action waves-effect waves-green btn disabled"><i class="material-icons left">&#xE2C6;</i>upload</a>
+            <a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-blue btn-flat">okay</a>
+            <a href="#!" id="submitAssignment_Modal" class=" modal-action waves-effect waves-green btn disabled js-submit-assignment"><i class="material-icons left">send</i>submit</a>
         </div>
     </div>
 </main>

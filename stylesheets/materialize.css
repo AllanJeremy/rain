@@ -4015,17 +4015,22 @@ nav ul a span.badge {
   overflow: hidden;
 }
 /* line 672, ../sass/components/_global.scss */
+.progress.pace {
+  position: absolute;
+  top: 0;
+}
+/* line 677, ../sass/components/_global.scss */
 .progress.modal-progress {
   overflow: visible !Important;
   margin: 1rem 0 1rem 0 !important;
 }
 @media only screen and (max-width: 600px) {
-  /* line 672, ../sass/components/_global.scss */
+  /* line 677, ../sass/components/_global.scss */
   .progress.modal-progress {
     margin: 1rem 0 2rem 0 !Important;
   }
 }
-/* line 686, ../sass/components/_global.scss */
+/* line 691, ../sass/components/_global.scss */
 .progress .determinate {
   position: absolute;
   top: 0;
@@ -4035,7 +4040,7 @@ nav ul a span.badge {
   transition: width .3s linear;
   border-radius: 2px;
 }
-/* line 695, ../sass/components/_global.scss */
+/* line 700, ../sass/components/_global.scss */
 .progress .determinate span {
   position: absolute;
   color: #d1aa3c;
@@ -4043,11 +4048,11 @@ nav ul a span.badge {
   font-size: 16px;
   top: 16px;
 }
-/* line 703, ../sass/components/_global.scss */
+/* line 708, ../sass/components/_global.scss */
 .progress .indeterminate {
   background-color: #d8b759;
 }
-/* line 705, ../sass/components/_global.scss */
+/* line 710, ../sass/components/_global.scss */
 .progress .indeterminate:before {
   content: '';
   position: absolute;
@@ -4058,7 +4063,7 @@ nav ul a span.badge {
   will-change: left, right;
   animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 }
-/* line 717, ../sass/components/_global.scss */
+/* line 722, ../sass/components/_global.scss */
 .progress .indeterminate:after {
   content: '';
   position: absolute;
@@ -4102,37 +4107,37 @@ nav ul a span.badge {
 /*******************
   Utility Classes
 *******************/
-/* line 766, ../sass/components/_global.scss */
+/* line 771, ../sass/components/_global.scss */
 .hide {
   display: none !important;
 }
 
-/* line 771, ../sass/components/_global.scss */
+/* line 776, ../sass/components/_global.scss */
 .left-align {
   text-align: left;
 }
 
-/* line 774, ../sass/components/_global.scss */
+/* line 779, ../sass/components/_global.scss */
 .right-align {
   text-align: right;
 }
 
-/* line 777, ../sass/components/_global.scss */
+/* line 782, ../sass/components/_global.scss */
 .center, .center-align {
   text-align: center;
 }
 
-/* line 781, ../sass/components/_global.scss */
+/* line 786, ../sass/components/_global.scss */
 .left {
   float: left !important;
 }
 
-/* line 784, ../sass/components/_global.scss */
+/* line 789, ../sass/components/_global.scss */
 .right {
   float: right !important;
 }
 
-/* line 789, ../sass/components/_global.scss */
+/* line 794, ../sass/components/_global.scss */
 .no-select, input[type=range],
 input[type=range] + .thumb {
   -webkit-touch-callout: none;
@@ -4143,19 +4148,19 @@ input[type=range] + .thumb {
   user-select: none;
 }
 
-/* line 798, ../sass/components/_global.scss */
+/* line 803, ../sass/components/_global.scss */
 .circle {
   border-radius: 50%;
 }
 
-/* line 802, ../sass/components/_global.scss */
+/* line 807, ../sass/components/_global.scss */
 .center-block {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 808, ../sass/components/_global.scss */
+/* line 813, ../sass/components/_global.scss */
 .truncate {
   display: block;
   white-space: nowrap;
@@ -4163,7 +4168,7 @@ input[type=range] + .thumb {
   text-overflow: ellipsis;
 }
 
-/* line 815, ../sass/components/_global.scss */
+/* line 820, ../sass/components/_global.scss */
 .no-padding {
   padding: 0 !important;
 }

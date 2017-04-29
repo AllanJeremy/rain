@@ -669,6 +669,11 @@ nav ul a span.badge {
     margin: $element-top-margin 0 $element-bottom-margin 0;
     overflow: hidden;
     
+    &.pace {
+        position: absolute;
+        top: 0;
+    }
+
     &.modal-progress {
         overflow: visible !Important;
         margin: 1rem 0 $element-bottom-margin 0 !Important;

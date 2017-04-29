@@ -2032,8 +2032,8 @@ if(isset($_GET['action'])) {
         break;
 
         default:
-            echo "invalid get request";
-            return null;
+
+            //return null;
             break;
     }
 

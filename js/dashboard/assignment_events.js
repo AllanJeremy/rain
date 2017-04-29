@@ -12,7 +12,6 @@ var AssignmentEvents = function () {
         submitNewAssignment();
         showAssignmentComments();
         addAssignmentComments();
-        uploadMyAssignment();
 
     };
     

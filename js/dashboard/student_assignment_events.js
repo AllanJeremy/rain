@@ -4,12 +4,14 @@ var StudentAssignmentEvents = function () {
     'use strict';
     //--------------
 
-    this.__construct = function () {
+    var userInfo, $this = this;
+
+    this.__construct = function (userInfo) {
         console.log('Assignments events created');
 
         //Assignments inits
         addAssignment();
-        submitAssignment();
+        submitAssignment(userInfo);
         myAssignmentSave();
 
     };
@@ -20,18 +22,18 @@ var StudentAssignmentEvents = function () {
         // HEADER, NOT MAIN
 
         //Checks on file input change, updates, the modal infos
-        $('main').on('change', "form#createAssignmentForm input.js-assignments.active", function (e) {
+        $('main').on('change', "form#addAssignmentForm input[name='assignments']", function (e) {
             e.preventDefault();
 
-            files = document.forms['createAssignmentForm']['.js-assignments'].files;
+            files = document.forms['addAssignmentForm']['assignments'].files;
             totalfiles = files.length;
 
             console.log(files);
             console.log(totalfiles);
             if (files.length > 0) {
-                $('.modal#assignmentUpload').find('a#uploadAssignment').removeClass('disabled');
+                $('a.js-submit-assignment').removeClass('disabled');
             } else {
-                $('.modal#assignmentUpload').find('a#uploadAssignment').addClass('disabled');
+                $('a.js-submit-assignment').addClass('disabled');
 
             }
 
@@ -43,16 +45,12 @@ var StudentAssignmentEvents = function () {
 
             assignmentslisthook = $('.modal#assignmentUpload .modal-content').children('#assignmentsList');
 
-            assignmentslisthook.prepend(filesinfo);
-
-/*
             assignmentslisthook.fadeOut(300, function () {
 
                 $(this).html(filesinfo);
 
                 $(this).fadeIn();
             });
-*/
 
             var validateresult = validateFiles(files);
             assignments_errorshook = $('.modal#assignmentUpload .modal-content').children('#errorContainer');
@@ -62,7 +60,7 @@ var StudentAssignmentEvents = function () {
             if(validateresult.length > 0) {
                 //disable the upload button
                 //show errors
-                $('.modal#assignmentUpload').find('a#uploadAssignment').addClass('disabled');
+                $('a.js-submit-assignment').addClass('disabled');
 
                 $.each(validateresult, function(b,x) {
                     errorlist += Lists_Templates.documentUploadsErrorListTemplate(files[x.index], x.errortype);
@@ -92,54 +90,85 @@ var StudentAssignmentEvents = function () {
 
     //-----------
     //Will generate a new file input then prepend the added files
+    //Update
     var addMoreAssignmentFiles = function () {
-        $('main').on('click', 'a.js-submit-assignment', function (e) {
-            e.preventDefault();
+        //$('main').on('click', 'a.js-submit-assignment', function (e) {
+        //    e.preventDefault();
 
-        });
+        //});
     };
 
     //-----------
     //submit the assignments form
-    var submitAssignment = function () {
+    var submitAssignment = function (userInfo) {
 
-        $('main').on('click', 'a.js-submit-assignment', function (e) {
+        console.log('click event true');
+        console.log(userInfo);
+
+        $('header, main').on('click', 'a.js-submit-assignment', function (e) {
             e.preventDefault();
+            console.log(userInfo);
+            console.log('submitting');
 
-            if ($(this).hasClass('disabled')) {
+            if ($(this).hasClass('disabled') || $('header').attr('data-submitted') === '1') {
+                console.log('cancelled');
                 return;
             }
 
-            var fileinputs = document.forms['addAssignmentForm']['.js-assignments'],
-                files, filesdescription = '', subjectid;
+            var fileinputs = document.forms['addAssignmentForm']['assignments'],
+                files = fileinputs.files, totalfiles = files.length,
+                assid = parseInt($('header').attr('data-assignment-id')),
+                formData = new FormData(),
+                asstitle = $('#myAssignment').find('input.js-myAssignment-title').val(),
+                studentid = userInfo.user_id,
+                submissiontext = '',
+                attachments = '',
+                submitted = 1, DATA = [],
+                notitle_errormessage = '<span class="red-text name text-lighten-5">You need to give your document a title before saving it.</span>',
+                comments_enabled =  parseInt($('header').attr('data-comments-enabled'));
 
             console.log(fileinputs);
 
-            //ajax
-            // Create a new FormData object.
-            var formData = new FormData();
-
-            for (var g = 0; g < files.length; g++) {
-                //Hoping the indexes will match
-                formData.append('file-'+g, files[g]);
+            if (asstitle === '') {
+                Materialize.toast(notitle_errormessage, 5000, '', function () {
+                    console.log('toast on file submit');
+                });
+                return;
             }
 
+            for (var g = 0; g < files.length; g++) {
+                //Append the files
+                formData.append('file-'+g, files[g]);
+                attachments += files[g].name + ',';
+
+            }
+
+            var data = {
+                'submissiontitle' : asstitle,
+                'assid' : assid,
+                'studentid' : studentid,
+                'submissiontext' : submissiontext,
+                'attachments' : attachments,
+                'submitted' : submitted,
+                'commentsenabled' : comments_enabled
+            };
 
             //return;
 
             //Append the data and the action name
-            formData.append('data', JSON.stringify(DATA));
-            formData.append('action', 'AssignmentUpload');
+            formData.append('data', JSON.stringify(data));
+            formData.append('action', 'AssignmentSubmit');
 
             $.ajax({
                 url: "handlers/db_handler.php",
                 data: formData,
                 xhr: function() {
+                    //If the modal is open
                     var myXhr = $.ajaxSettings.xhr();
-                        if(myXhr.upload){
-                            myXhr.upload.addEventListener('progress', progress, false);
-                        }
-                        return myXhr;
+                    if(myXhr.upload){
+                        myXhr.upload.addEventListener('progress', progress, false);
+                    }
+                    return myXhr;
                 },
                 cache: false,
                 contentType: false,
@@ -147,13 +176,17 @@ var StudentAssignmentEvents = function () {
                 type: 'POST',
                 beforeSend : function () {
                     //Make the loader visible
-                    $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .num-progress').removeClass('hide');
-                    $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .js-num-progress').html('0%');
+                    $('.num-progress').removeClass('hide');
+                    $('.js-upload-num-progress').html('0%');
 
-                    $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .progress').animate({
+                    $('.js-progress-bar').animate({
+                        width:'100%'
+                    },300);
+                    $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .progress.js-progress-bar').animate({
                         width:'50%'
                     },300);
-                    $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .progress .determinate').animate({
+
+                    $('.progress.js-progress-bar .determinate').animate({
                         width:'0%'
                     },300);
 
@@ -171,6 +204,7 @@ var StudentAssignmentEvents = function () {
                 },
                 error: function (e) {
                     console.log("Not Cool");
+                    console.log(e.statusText);
                 }
             }, 'json');
 
@@ -214,17 +248,15 @@ var StudentAssignmentEvents = function () {
             var Percentage = Math.ceil((current * 100)/max);
             console.log(Percentage + '%');
 
-            $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .js-num-progress').html(Percentage + '%');
-            $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .progress .determinate').css({
+            $('.js-upload-num-progress').html(Percentage + '%');
+            $('.progress.js-progress-bar .determinate').css({
                 width : Percentage + '%'
             });
 
             if(Percentage >= 100)
             {
-
-                $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .js-num-progress').html(Percentage + '%');
-                $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .num-progress').addClass('hide');
-
+                $('.js-upload-num-progress').html(Percentage + '%');
+                $('.js-upload-num-progress').addClass('hide');
                 // process completed
             }
         }
@@ -279,6 +311,41 @@ var StudentAssignmentEvents = function () {
         return str;
     };
 
-    this.__construct();
+    var ajaxInit = function () {
+
+        $.when(getUserInfo()).then(function (_1,_2,_3) {
+/*
+            console.log(_1);
+            console.log(_2);
+            console.log(_3.responseText);
+*/
+
+            userInfo = jQuery.parseJSON(_1);
+
+            //remove class disables on submit buttons
+            $('a.js-submit-assignment').removeClass('disabled');
+
+            $this.__construct(userInfo);
+
+        });
+
+    };
+
+    //-----------
+
+    var getUserInfo = function () {
+
+        var $req =  $.ajax({
+            url: 'handlers/session_handler.php',
+            data: {'action':'GetLoggedUserInfo'},
+            type: 'GET',
+            processData: true
+        }, 'json');
+
+        return $req;
+
+    };
+
+    ajaxInit();
 
 };

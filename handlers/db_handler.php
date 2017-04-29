@@ -374,7 +374,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 -----------------------------------------------------------------------------------------
 */
     //Update Assignment submission information
-    public static function UpdateAssignmentSubmissionInfo($submission_id,$student_id,$attachments,$submission_text,$submitted=true)//TO TEST
+    public static function UpdateAssignmentSubmissionInfo($submission_title = '',$submission_id,$student_id,$attachments,$submission_text,$submitted=true,$ass_id)//TO TEST
     {
         global $dbCon;
 
@@ -403,12 +403,12 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
         }
         else#assignment submission does not exist ~ Create it
         {
-            $update_query = "INSERT INTO ass_submissions(attachments, submitted, submission_text, student_id) VALUES(?,?,?,?)";
+            $update_query = "INSERT INTO ass_submissions(submission_title,attachments, submitted, submission_text, student_id,ass_id) VALUES(?,?,?,?,?,?)";
 
             //Prepare query to create assignment submission
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                $update_stmt->bind_param("sisi",$attachments,$submitted,$submission_text,$student_id);
+                $update_stmt->bind_param("ssisii",$submission_title,$attachments,$submitted,$submission_text,$student_id,$ass_id);
                 
                 #create assignment submission query ran successfully
                 if($update_stmt->execute())
@@ -417,7 +417,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
                 }
                 else #failed to run create ass_submission query
                 {
-                    return false;
+                    echo $update_stmt->error;
                 }
             }
             else #failed to prepare query to create assignment submission
@@ -1500,6 +1500,50 @@ if(isset($_POST['action'])) {
 
                     $result = true;
                 }
+            }
+
+            if(count($failed_files) > 0) {//If inserting the data to the database is true, upload file
+                echo json_encode(['failed_files' => $failed_files, 'status' => false]);
+
+            } else {
+                echo json_encode(['failed_files' => $failed_files, 'status' => true]);
+            }
+
+            unset($_FILES);
+
+        break;
+
+        case 'AssignmentSubmit':
+
+            $data = json_decode($_POST['data']);
+
+            //Attempt uploading the files first
+            if (count($_FILES) == 0 && $data->attachments == '') {
+
+                $is_failed_file = 0;
+            } else {
+                $uploader = new EsomoUploader();
+                $failed_files = $uploader->UploadFile('ass_submission');
+                $is_failed_file = count($failed_files);
+            }
+
+            $result = false;
+            //If the file did not fail to upload, add it to the database
+            if($is_failed_file < 1)
+            {
+
+                $args = array(
+                    'submission_title' => $data->submissiontitle,
+                    'ass_id' => $data->assid,
+                    'student_id' => $data->studentid,
+                    'submission_text' => $data->submissiontext,
+                    'attachments' => $data->attachments,
+                    'submitted' => $data->submitted
+                );
+
+                $result = DbHandler::UpdateAssignmentSubmissionInfo($args['submission_title'],null,$args['student_id'],$args['attachments'],$args['submission_text'],$args['submitted'],$args['ass_id']);
+
+                $result = true;
             }
 
             if(count($failed_files) > 0) {//If inserting the data to the database is true, upload file
