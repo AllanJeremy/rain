@@ -10565,93 +10565,98 @@ input:-webkit-autofill:active {
 }
 
 /* line 456, ../sass/_style.scss */
-.modal #dragDropArea {
+.modal .js-drag-drop-area {
   margin: -24px;
   margin-bottom: 20px;
   padding: 24px;
   background-color: #781822;
   position: relative;
 }
+/* line 463, ../sass/_style.scss */
+.modal .js-drag-drop-area.blue {
+  background-color: #263238 !Important;
+  border-bottom: 4px solid #f7db8b;
+}
 
-/* line 464, ../sass/_style.scss */
+/* line 469, ../sass/_style.scss */
 #uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large, #uploadResource form#createResourcesForm .file-field .btn-large {
   float: right !Important;
 }
 
-/* line 468, ../sass/_style.scss */
+/* line 473, ../sass/_style.scss */
 #uploadResource form#createResourcesForm input.upload-btn.btn-floating {
   position: absolute;
   right: 24px;
   bottom: -27.5px;
 }
 
-/* line 474, ../sass/_style.scss */
+/* line 479, ../sass/_style.scss */
 .document-view {
   height: auto;
   background-color: rgba(185, 145, 145, 0.24);
   word-wrap: break-word;
 }
 
-/* line 480, ../sass/_style.scss */
+/* line 485, ../sass/_style.scss */
 .document-view > i.material-icons {
   width: 100%;
   line-height: 50px;
   text-align: center;
 }
 
-/* line 486, ../sass/_style.scss */
+/* line 491, ../sass/_style.scss */
 #classroomAss_Container .collapsible-header span.badge {
   position: inherit !Important;
 }
 
-/* line 490, ../sass/_style.scss */
+/* line 495, ../sass/_style.scss */
 .collapsible-header .right .badge {
   padding: 4px 8px;
   position: relative;
 }
 
-/* line 494, ../sass/_style.scss */
+/* line 499, ../sass/_style.scss */
 .primary-color {
   background-color: #781822 !important;
 }
 
-/* line 498, ../sass/_style.scss */
+/* line 503, ../sass/_style.scss */
 .primary-text-color {
   color: #781822 !important;
 }
 
-/* line 501, ../sass/_style.scss */
+/* line 506, ../sass/_style.scss */
 .secondary-text-color, .action-text-color {
   color: #d8b759 !important;
 }
 
-/* line 513, ../sass/_style.scss */
+/* line 518, ../sass/_style.scss */
 .inline.comment .js-see-all-comments {
   right: 0;
   font-size: 12px;
 }
 
-/* line 520, ../sass/_style.scss */
+/* line 525, ../sass/_style.scss */
 .comment-item .js-date {
   font-size: 10px;
 }
-/* line 523, ../sass/_style.scss */
+/* line 528, ../sass/_style.scss */
 .comment-item .js-name {
   font-size: 12px;
 }
 
-/* line 527, ../sass/_style.scss */
+/* line 532, ../sass/_style.scss */
 .assignment-action-header {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-/* line 534, ../sass/_style.scss */
+/* line 539, ../sass/_style.scss */
 .assignment-tinymce {
   position: relative;
 }
-/* line 537, ../sass/_style.scss */
+/* line 542, ../sass/_style.scss */
 .assignment-tinymce .inline-toolbar {
   position: absolute;
   z-index: 88;
@@ -10662,7 +10667,7 @@ input:-webkit-autofill:active {
   overflow-x: scroll;
   margin-bottom: 20px;
 }
-/* line 547, ../sass/_style.scss */
+/* line 552, ../sass/_style.scss */
 .assignment-tinymce .inline-toolbar.pinned {
   z-index: 888;
   top: 0;
@@ -10671,7 +10676,7 @@ input:-webkit-autofill:active {
   width: 100%;
   margin: 0;
 }
-/* line 559, ../sass/_style.scss */
+/* line 564, ../sass/_style.scss */
 .assignment-tinymce .header {
   z-index: 77;
   margin-bottom: 0px;
@@ -10681,7 +10686,7 @@ input:-webkit-autofill:active {
   border-top-right-radius: 3px;
   border-bottom: 1px solid #c1c1c1;
 }
-/* line 569, ../sass/_style.scss */
+/* line 574, ../sass/_style.scss */
 .assignment-tinymce .inline-editor {
   min-height: 1000px;
   min-width: 400px;
@@ -10690,13 +10695,13 @@ input:-webkit-autofill:active {
   border-bottom-right-radius: 3px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 569, ../sass/_style.scss */
+  /* line 574, ../sass/_style.scss */
   .assignment-tinymce .inline-editor {
     min-width: calc(100% - 32px);
   }
 }
 
-/* line 584, ../sass/_style.scss */
+/* line 589, ../sass/_style.scss */
 .pin-nav-top.pinned {
   z-index: 888;
   top: 0;

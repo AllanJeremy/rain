@@ -42,16 +42,19 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
     //Will show the files the student submitted instead of the tinyMCE.
     //Faster
     $ass_submission_exists = DbInfo::GetAssSubmissionsByAssId($assignment['ass_id']);
-    foreach($ass_submission_exists as $ass_submission_exist) {
 
-        //var_dump($ass_submission_exist);
-        //$ass_submission_exists = true;
-        if($ass_submission_exist['submitted'] == 1) {
-            $submitted = '1';
-        } else {
-            $submitted = '1';
+    if($ass_submission_exists) {
+
+        foreach($ass_submission_exists as $ass_submission_exist) {
+            //$ass_submission_exists = true;
+            if($ass_submission_exist['submitted'] == 1) {
+                $submitted = '1';
+            } else {
+                $submitted = '0';
+            }
         }
-
+    } else {
+            $submitted = '0';
     }
 ?>
 <header data-comments-enabled="<?php echo $assignment['comments_enabled']; ?>" data-submitted="<?php echo $submitted; ?>" data-assignment-id="<?php echo $assignment['ass_id']; ?>" class="">
@@ -77,9 +80,17 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
             ?>
             <a class="btn green btn-large js-submit-assignment disabled"  href="#submitAssignment"><i class="material-icons right white-text">done</i>Submitted</a>
             <p class="center-align js-assignment-due green lighten-3 pad-6 white-text">Submitted on <?php echo EsomoDate::GetOptimalDateTime($ass_submission_exist['date_submitted'])['day'] .' '. EsomoDate::GetOptimalDateTime($ass_submission_exist['date_submitted'])['date']; ?></p>
-            <h6 class="right-align green-text text-lighten-5">Graded</h6>
-            <h5 class="right-align green-text text-accent-2">70/100</h5>
             <?php
+            if($ass_submission_exist['returned'] == '1') :
+            ?>
+            <h6 class="right-align green-text text-lighten-5">Graded</h6>
+            <h5 class="right-align green-text text-accent-2"><?php echo $ass_submission_exist['grade']; ?></h5>
+            <?php
+            else:
+            ?>
+            <h6 class="right-align green-text text-lighten-5">Not marked yet</h6>
+            <?php
+            endif;
             else:
             ?>
 
@@ -129,8 +140,8 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
             if($submitted != '1') :
            ?>
-            <a class="white-text btn-flat btn right marg-6 js-download-assignment" title="download the whole assignment">download</a>
-            <a class="white-text btn-flat hide btn right marg-6 js-upload-assignment" title="upload your assignment">upload </a>
+            <a class="white-text btn-flat hide btn right marg-6 js-download-assignment" title="download the whole assignment">download</a>
+            <a class="white-text btn-flat btn right marg-6 js-upload-assignment" title="upload your assignment">upload </a>
         <?php
            endif;
            endif;
@@ -300,15 +311,15 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
     <div id="assignmentUpload" class="modal modal-fixed-footer">
         <div class="modal-content">
-            <div id="dragDropArea">
+            <div class="js-drag-drop-area">
                 <h4 class="white-text">
                     Upload assignment documents
                 </h4>
                 <div class="row no-margin">
-                    <div id="assignmentTotalInfo" class="col m6 s12">
+                    <div class="js-assignment-total-info col m6 s12">
                         <h6 class=" op-4">To upload</h6>
                         <h4 class="white-text">
-                            <span id="totalAssignments">0</span> files
+                            <span class="js-total-assignments">0</span> files
                         </h4>
                         <br>
                         <div class="progress js-progress-bar" style="width:0%;">
@@ -321,7 +332,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                     <div class="col m6 s12">
                         <form id="addAssignmentForm">
                             <div class=" input-field col s12 file-field ">
-                                <div class="btn">
+                                <div class="btn right">
                                     <span>add assignment</span>
                                     <input type="file" multiple name="assignments">
                                 </div>
@@ -335,17 +346,65 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                     </div>
                 </div>
             </div>
-            <div class="row no-margin" id="errorContainer">
+            <div class="row no-margin js-ass-error-container">
                 <ul></ul>
             </div>
-            <div class="row" id="assignmentsList">
+            <div class="row js-ass-submission-list">
                 <div class="container row" >
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-blue btn-flat">okay</a>
-            <a href="#!" id="submitAssignment_Modal" class=" modal-action waves-effect waves-green btn disabled js-submit-assignment"><i class="material-icons left">send</i>submit</a>
+            <a href="#!" id="submitAssignment_Modal" class=" modal-action waves-effect waves-green btn disabled js-submit-assignment"><i class="material-icons right">send</i>submit</a>
+        </div>
+    </div>
+    <div id="assignmentUploadConfirm" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="js-drag-drop-area blue">
+                <h5 class="white-text center-align">
+                    Confirm assignment upload
+                </h5>
+                <div class="row no-margin">
+                    <div class="js-assignment-total-info col s12">
+                        <h6 class="center-align op-4">To upload</h6>
+                        <h4 class="center-align white-text">
+                            <span class="js-total-assignments">0</span> files
+                        </h4>
+                        <br>
+                        <div class="row">
+                            <div class="col s6 offset-s3">
+                                <div class="progress js-progress-bar" style="width:0%;">
+                                    <div class="determinate" style="width:0%;"></div>
+                                </div>
+                                <h6 class="center-align num-progress hide secondary-text-color">
+                                    <i>Uploading <span class="js-upload-num-progress">0%</span></i>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="row container">
+                            <div class="col s12 input-field no-margin">
+                                <textarea class="white-text materialize-textarea js-submission-text" title="Type a text for the teacher" name="submission_text">
+                                </textarea>
+                                <label for="submission_text">Add a comment to your assignment for <?php echo $assignment['teacher_name']['first_name'] .' '. $assignment['teacher_name']['last_name'] ; ?> to read first.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-margin js-ass-error-container">
+                <ul></ul>
+            </div>
+            <div class="row js-ass-submission-list">
+                <div class="container row" >
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-blue btn-flat">okay</a>
+            <a href="#!" id="submitAssignment_Confirm_Modal" class=" modal-action waves-effect waves-green btn disabled js-confirm-submit-assignment"><i class="material-icons right">send</i>confirm</a>
         </div>
     </div>
 </main>

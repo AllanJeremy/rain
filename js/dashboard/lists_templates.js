@@ -322,7 +322,7 @@ var Lists_Templates = function () {
         var templateOutput = '';
 
         templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
-        templateOutput += '<div class="modal-content"><div id="dragDropArea">';
+        templateOutput += '<div class="modal-content"><div class="js-drag-drop-area">';
         templateOutput += '<h4 class="white-text">' + obj.templateHeader + '</h4>';
         templateOutput += '<div class="row no-margin">';
         templateOutput += '<div id="resourcesTotalInfo" class="col m6 s12">';
@@ -334,7 +334,7 @@ var Lists_Templates = function () {
         templateOutput += '<div class="col m6 s12">';
         templateOutput += '<form id="createResourcesForm">';
         templateOutput += '<div class=" input-field col s12 file-field ">';
-        templateOutput += '<div class="btn">';
+        templateOutput += '<div class="btn right">';
         templateOutput += '<span>add resources</span>';
         templateOutput += '<input type="file" multiple name="resources">';
         templateOutput += '</div>';
@@ -399,7 +399,7 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s4">';
+        templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s12 m6 l4">';
         templateOutput += '<div class="card document-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
@@ -439,7 +439,7 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="col s4"  data-index="' + i + '">';
+        templateOutput += '<div class="col s12 m6 l4"  data-index="' + i + '">';
         templateOutput += '<div class="card document-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---

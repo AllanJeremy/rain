@@ -453,12 +453,17 @@ $height: auto;
     padding: 8px;
 }
 
-.modal #dragDropArea {
+.modal .js-drag-drop-area {
     margin: -24px;
     margin-bottom: 20px;
     padding: 24px;
     background-color: $primary-color;
     position: relative;
+
+    &.blue {
+        background-color: #263238 !Important;
+        border-bottom: 4px solid rgb(247, 219, 139);
+    }
 }
 
 #uploadResource form#createResourcesForm .file-field .btn, #uploadResource form#createResourcesForm .file-field .btn-large {

@@ -32,18 +32,22 @@ var StudentAssignmentEvents = function () {
             console.log(totalfiles);
             if (files.length > 0) {
                 $('a.js-submit-assignment').removeClass('disabled');
+                $('a.js-confirm-submit-assignment').removeClass('disabled');
             } else {
                 $('a.js-submit-assignment').addClass('disabled');
+                $('a.js-confirm-submit-assignment').addClass('disabled');
 
             }
 
+            $('.progress.js-progress-bar .determinate').removeClass('red accent-3');
+
             console.log(files);
 
-            $('.modal#assignmentUpload .modal-content').find('span#totalAssignments').html(totalfiles);
+            $('.modal .modal-content').find('span.js-total-assignments').html(totalfiles);
 
             filesinfo = generateAssignmentList(files);
 
-            assignmentslisthook = $('.modal#assignmentUpload .modal-content').children('#assignmentsList');
+            assignmentslisthook = $('.modal .modal-content').children('.js-ass-submission-list');
 
             assignmentslisthook.fadeOut(300, function () {
 
@@ -53,7 +57,7 @@ var StudentAssignmentEvents = function () {
             });
 
             var validateresult = validateFiles(files);
-            assignments_errorshook = $('.modal#assignmentUpload .modal-content').children('#errorContainer');
+            assignments_errorshook = $('.modal .modal-content').children('.js-ass-error-container');
 
             console.log(validateresult);
 
@@ -61,6 +65,7 @@ var StudentAssignmentEvents = function () {
                 //disable the upload button
                 //show errors
                 $('a.js-submit-assignment').addClass('disabled');
+                $('a.js-confirm-submit-assignment').addClass('disabled');
 
                 $.each(validateresult, function(b,x) {
                     errorlist += Lists_Templates.documentUploadsErrorListTemplate(files[x.index], x.errortype);
@@ -77,7 +82,9 @@ var StudentAssignmentEvents = function () {
             assignments_errorshook.find('ul:first').html('');
             errorlist = '';
 
+
         });
+
 
         $('header').on('click', 'a.js-upload-assignment', function (e) {
             e.preventDefault();
@@ -114,6 +121,7 @@ var StudentAssignmentEvents = function () {
                 console.log('cancelled');
                 return;
             }
+            //Check if there's any upload to be submitted.
 
             var fileinputs = document.forms['addAssignmentForm']['assignments'],
                 files = fileinputs.files, totalfiles = files.length,
@@ -127,7 +135,7 @@ var StudentAssignmentEvents = function () {
                 notitle_errormessage = '<span class="red-text name text-lighten-5">You need to give your document a title before saving it.</span>',
                 comments_enabled =  parseInt($('header').attr('data-comments-enabled'));
 
-            console.log(fileinputs);
+            console.log($('#myAssignment > .assignment-tinymce #body.tinymce-document').html());
 
             if (asstitle === '') {
                 Materialize.toast(notitle_errormessage, 5000, '', function () {
@@ -153,7 +161,35 @@ var StudentAssignmentEvents = function () {
                 'commentsenabled' : comments_enabled
             };
 
-            //return;
+            //open the confirm submission modal, parsing the data
+            $('#assignmentUpload').closeModal();
+            $('#assignmentUploadConfirm').openModal({dismissible: false});
+
+            confirmedAssSubmit(formData,data,userInfo);
+
+        });
+    };
+
+    //-----------
+    //pass the data collected and the user info
+    var confirmedAssSubmit = function (form, obj, i) {
+
+        console.log('Final Submit click event set');
+
+        $('main').on('click', 'a#submitAssignment_Confirm_Modal', function (e) {
+            e.preventDefault();
+            var formData = form,
+                data = obj,
+                user = i;
+
+            //Get the submission text sent if comments are enabled
+            if(data.commentsenabled === 1) {
+                data.submissiontext = $('textarea.js-submission-text').val();
+            } else {
+                data.submissiontext = '';
+            }
+
+            console.log(data);
 
             //Append the data and the action name
             formData.append('data', JSON.stringify(data));
@@ -176,31 +212,53 @@ var StudentAssignmentEvents = function () {
                 type: 'POST',
                 beforeSend : function () {
                     //Make the loader visible
-                    $('.num-progress').removeClass('hide');
                     $('.js-upload-num-progress').html('0%');
 
                     $('.js-progress-bar').animate({
                         width:'100%'
-                    },300);
-                    $('.modal#assignmentUpload .modal-content').find('#assignmentsTotalInfo .progress.js-progress-bar').animate({
+                    });
+                    $('.modal#assignmentUpload .modal-content').find('.js-assignment-total-info .progress.js-progress-bar').animate({
                         width:'50%'
-                    },300);
+                    });
 
                     $('.progress.js-progress-bar .determinate').animate({
                         width:'0%'
-                    },300);
+                    });
 
+                    $('.num-progress').addClass('secondary-text-color').removeClass('hide red-text text-accent-1').html('<i>Uploading <span class="js-upload-num-progress">0%</span></i>');
+                    $('.progress.js-progress-bar .determinate').removeClass('red accent-3');
                 },
                 success: function (returndata) {
 
                     console.log("Cool");
                     console.log(returndata);
-                    //$('#uploadAssignment').closeModal();
 
                     var failedfiles = jQuery.parseJSON(returndata);
 
                     console.log(failedfiles);
 
+                    //if success
+                    if(failedfiles.status) {
+                        $('.num-progress').html('Upload successful');
+                        setTimeout(function () {
+                            location.reload();
+
+                        }, 2000);
+
+                    } else {
+
+                        if(failedfiles.failed_files.length > 0) {
+                            //File didn't upload
+                            //Probably there was an error
+                            $('.num-progress').html('Upload error<br>Check if you have any errors on the files list.');
+
+                        } else {
+                            $('.num-progress').html('Upload error<br>');
+
+                        }
+                        $('.num-progress').removeClass('secondary-text-color').addClass('red-text text-accent-1');
+                        $('.progress.js-progress-bar .determinate').addClass('red accent-3');
+                    }
                 },
                 error: function (e) {
                     console.log("Not Cool");
@@ -208,7 +266,11 @@ var StudentAssignmentEvents = function () {
                 }
             }, 'json');
 
+            // Cancel click event.
+            return( false );
+
         });
+
     };
 
     //-----------
@@ -255,8 +317,11 @@ var StudentAssignmentEvents = function () {
 
             if(Percentage >= 100)
             {
-                $('.js-upload-num-progress').html(Percentage + '%');
-                $('.js-upload-num-progress').addClass('hide');
+                $('.js-upload-num-progress').html('100%');
+
+                $('.progress.js-progress-bar .determinate').css({
+                    width : '100%'
+                });
                 // process completed
             }
         }
@@ -287,13 +352,6 @@ var StudentAssignmentEvents = function () {
             // Cancel click event.
             return( false );
 
-/*
-            doc.fromHTML($('.assignment-tinymce #body').html(), 15, 15, {
-                'width': 170,
-                    'elementHandlers': specialElementHandlers
-            });
-            doc.save(fileName);
-*/
         });
     };
 
@@ -324,6 +382,7 @@ var StudentAssignmentEvents = function () {
 
             //remove class disables on submit buttons
             $('a.js-submit-assignment').removeClass('disabled');
+            $('a.js-confirm-submit-assignment').removeClass('disabled');
 
             $this.__construct(userInfo);
 
