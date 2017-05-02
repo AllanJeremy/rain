@@ -570,12 +570,12 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                              UPDATING AND DELETING SCHEDULE COMMENTS
 -----------------------------------------------------------------------------------------
 */
-    #Teacher update ass. comment
+    #Teacher update sch. comment
     public static function UpdateScheduleComment($comment_id,$comment_text)
     {
         return self::UpdateComment("schedule_comments",$comment_id,$comment_text);
     }
-    #Teacher delete ass. comment
+    #Teacher delete sch. comment
     public static function DeleteScheduleComment($comment_id)
     {
        return self::DeleteBasedOnSingleProperty("schedule_comments","comment_id",$comment_id,"i");

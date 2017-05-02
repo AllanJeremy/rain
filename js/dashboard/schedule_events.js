@@ -4,8 +4,9 @@ var ScheduleEvents = function () {
     'use strict';
     
     //--------------
+    var userInfo, $this = this;
     
-    this.__construct = function () {
+    this.__construct = function (userInfo) {
         console.log('schedule events created');
 
         //schedule inits
@@ -30,8 +31,8 @@ var ScheduleEvents = function () {
         overdueScheduleReminder();              //Beta - version
         getPendingSchedules();  //Beta - version
         archiveSchedule();      //Beta - version
-        showScheduleComments();
-        addScheduleComments();
+        showScheduleComments([userInfo.user_id, userInfo.account_type]); //done
+        addScheduleComments(/*userInfo.user_id*/);  //done
     };
     
     //----------------------------
@@ -56,7 +57,7 @@ var ScheduleEvents = function () {
             $('a#openScheduleForm').addClass('hide');
             $('a#closeScheduleForm').removeClass('hide');
             
-            
+            return(false);
         });
         
     };
@@ -85,6 +86,7 @@ var ScheduleEvents = function () {
                 $('a#updateSchedule').addClass('hide');
             }
 
+            return(false);
         });
         
     };
@@ -236,6 +238,7 @@ var ScheduleEvents = function () {
                 
             }
 
+            return(false);
         });
         
     };
@@ -334,6 +337,7 @@ var ScheduleEvents = function () {
 
             }
 
+            return(false);
         });
 
     };
@@ -623,6 +627,7 @@ var ScheduleEvents = function () {
                         break;
                 }
             }
+            return(false);
         });
     };
     
@@ -654,6 +659,7 @@ var ScheduleEvents = function () {
             
             $('#scheduleCreateFormContainer input#objectivesInput').val('');
             
+            return(false);
         });
         
     };
@@ -709,6 +715,7 @@ var ScheduleEvents = function () {
             
             console.log('removed');
             
+            return(false);
         });
         
     };
@@ -770,6 +777,7 @@ var ScheduleEvents = function () {
 
             }
 
+            return(false);
         });
     
     };
@@ -795,6 +803,7 @@ var ScheduleEvents = function () {
             
             $('select').material_select();
             
+            return(false);
         });
     };
     
@@ -833,6 +842,7 @@ var ScheduleEvents = function () {
                 //Format date
                 data.due_date_only = data.due_date.split(' ')[0];
                 data.due_date_only_formatted = moment(data.due_date_only).format('MMMM Do YYYY');
+                //Format time
                 data.due_time_only = data.due_date.split(' ')[1];
                 data.due_time_only_formatted = moment(data.due_date).format('h:mm A');
 
@@ -852,8 +862,7 @@ var ScheduleEvents = function () {
                 $('#scheduleCreateFormContainer input#schedule_title').val(data.schedule_title);
                 $('#scheduleCreateFormContainer select#schedule_classroom').val(data.class_id);
                 $('#scheduleCreateFormContainer #descriptionTextarea').val(data.schedule_description);
-                $('#scheduleCreateFormContainer ul#objectivesList').html('');
-                $('#scheduleCreateFormContainer ul#objectivesList').append(scheduleobjectives);
+                $('#scheduleCreateFormContainer ul#objectivesList').html('').append(scheduleobjectives);
                 $('#scheduleCreateFormContainer input#scheduleDate').val(data.due_date_only_formatted);
                 $('#scheduleCreateFormContainer input#scheduleTime').val(data.due_time_only_formatted);
                 $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val(data.due_date_only);
@@ -871,6 +880,8 @@ var ScheduleEvents = function () {
             $('a#updateSchedule').removeClass('hide');
 
             $('a#openScheduleForm').trigger('click');
+
+            return(false);
 
         });
     };
@@ -918,6 +929,7 @@ var ScheduleEvents = function () {
 
             });
 
+            return(false);
         });
 
     };
@@ -1006,6 +1018,7 @@ var ScheduleEvents = function () {
 
                 }
             }, 'json');
+            return(false);
         });
     };
 
@@ -1048,6 +1061,8 @@ var ScheduleEvents = function () {
 
                 }
             }, 'json');
+            return(false);
+
         });
     };
 
@@ -1384,6 +1399,7 @@ var ScheduleEvents = function () {
                     Modals_Events.cleanOutModals();
                 }
             }
+            return(false);
         });
     };
 
@@ -1407,79 +1423,88 @@ var ScheduleEvents = function () {
 
     };
 
-    var showScheduleComments = function () {
+    var showScheduleComments = function (user) {
+            console.log(user);
 
-        $('main').on('click', '.js-see-all-schedule-comments', function (e) {
-
+        $('main').on('click', 'a.js-see-all-schedule-comments', function (e) {
             e.preventDefault();
 
             console.log('opening schedule comment modal');
 
             var $this = $(this),
                 id = $this.parents('tr').attr('data-schedule-id'), //id of the comment
-                modal_id = Materialize.guid(), //modal id
+                modal_id = Materialize.guid().split('-').join('_'), //modal id
                 user_id = 5, //id of the teacher
                 user_name = 'Teacher me', //name of the teacher
                 comment_type = 'schedule',
                 title = 'Make two thongs.', //title of the schedule/assignment...
                 data = [{ //Example of how I hope the array is gotten from the ajax
-                    'id':5,
-                    'comment':'ah weh!',
-                    'name':'Gabriel Muchiri',
+                    'comment_id':5,
+                    'id':5,//Schedule id
+                    'comment_text':'ah weh!',
+                    'poster_name':'Gabriel Muchiri',
+                    'poster_link':'accType=null&id=null',
                     'date': 'Yesterday'
-                }, {
-                    'id':12,
-                    'comment':'ah weh!',
-                    'name':'You',
-                    'date': 'Today'
-                }, {
-                    'id':5,
-                    'comment':'ah weh!',
-                    'name':'Gabriel Muchiri',
-                    'date': '5 minutes ago'
                 }],
                 modal_body = '',
-
+                self = false,
                 comment_enabled = true; //bool
 
             console.log(modal_id);
 
-
-            $.get('handlers/db_info.php', {'action' : 'GetScheduleComments', 'id' : id}, function (resultData) {
+            $.get('handlers/db_info.php', {'action' : 'GetScheduleComments', 'id' : parseInt(id)}, function (resultData) {
                 console.log(resultData);
-                if (resultData === true) {
-                    modal_body += Lists_Templates.noCommentMessage();
+
+                if (resultData === false) {//No comments found
+                        modal_body += '';
 
                 } else {
 
-                    for(var i = 0; i < data.length; i++) {
+                    for(var i = 0; i < resultData['comments'].length; i++) {
 
-                        modal_body += Lists_Templates.commentList(data[i]);
+                        if (user[0] === resultData['comments'][i]['poster_id'] && user[1] === resultData['comments'][i]['poster_type']) {
+                            self = true;
+
+                            resultData['comments'][i]['poster_name'] = 'You';
+                            resultData['comments'][i]['poster_link'] = 'javascript:void(0)';
+                        }
+
+                        console.log(resultData['comments'][i]);
+                        modal_body += Lists_Templates.commentList(resultData['comments'][i], self);
 
                     }
                 }
 
-                Modals_Events.loadCommentModal(modal_id, user_id, user_name, comment_type, title, modal_body, comment_enabled);
+                console.log(modal_body);
+                Modals_Events.loadCommentModal(modal_id, id, user_name, comment_type, title, modal_body, comment_enabled);
 
                 $('.modal#' + modal_id).openModal({dismissible: false});
                 console.log('opening modal clicked');
 
             }, 'json');
+
+            return(false);
         });
+
     };
 
-    var addScheduleComments = function () {
+    var addScheduleComments = function (/*userid*/) {
 
         $('main').on('click', '.js-add-schedule-comment', function (e) {
             e.preventDefault();
 
             console.log('opening schedule comment modal');
             var $this = $(this),
-                id = $this.parents('.input-field.comment').attr('data-schedule-id'), //id of the comment
+                modalId = $this.parents('.modal').attr('id'),
+                id = $this.parents('.input-field.comment').attr('data-id'), //id of the comment
                 comment = $this.parents('.input-field.comment').find('input.js-comment-bar').val(),
-                action = '';
+                action = '',
+                date,
+                tempCommentId = '__' + id + '_' + Materialize.guid(),//two dashes means it is a temporary value added. The next value is the schedule\assignment id.
+                commentEl,
+                commentfail_errormessage = 'Commenting failed',
+                commentsListHook = $('.modal#' + modalId).find('.modal-content');
 
-            console.log(sessionStorage);
             console.log(id, comment);
             if (comment === '') {
                 console.log('empty input');
@@ -1488,14 +1513,78 @@ var ScheduleEvents = function () {
 
             $.post('handlers/comment_handler.php', {'action' : 'TeacherCommentOnSchedule', 'id' : id, 'comment' : comment}, function (resultData) {
                 console.log(resultData);
+                if(resultData) { //if it returns true
+                    date = moment().fromNow();
 
+                    var commentData = {
+                        'comment_id':tempCommentId,
+                        'comment_text':comment,
+                        'poster_name':'You',
+                        'poster_link':"accType='tr'&id=15",
+                        'date':date
+                    };
+
+                    commentEl = Lists_Templates.commentList(commentData, true);
+
+                    console.log(commentsListHook.outerHeight(true));
+                    //Scroll to the bottom of the div to see the latest comment posted
+                    commentsListHook.animate({
+                        scrollTop : commentsListHook.outerHeight(true)
+                    }, 300);
+
+                    commentsListHook.append(commentEl);
+
+                } else {
+                    Materialize.toast(commentfail_errormessage, 5000, '', function () {
+                        console.log('toast on schedule commenting');
+                    });
+                }
             }, 'json');
 
+            return(false);
 
         });
+
     };
 
+    var getUserInfo = function () {
 
-    this.__construct();
+        var $req =  $.ajax({
+            url: 'handlers/session_handler.php',
+            data: {'action':'GetLoggedUserInfo'},
+            type: 'GET',
+            processData: true
+        }, 'json');
+
+        return $req;
+
+    };
+
+    var ajaxInit = function () {
+
+        $.when(getUserInfo()).then(function (_1,_2,_3) {
+/*
+            console.log(_1);
+            console.log(_2);
+            console.log(_3.responseText);
+*/
+
+            userInfo = jQuery.parseJSON(_1);
+
+            //if user_type is student, don't load the functions else init
+            if(userInfo.account_type !== 'student') {
+                $this.__construct(userInfo);
+            } else {
+                console.log('Student account. No event added to the page.');
+
+                return;
+            }
+
+        });
+
+    };
+
+//    $this.__construct();
+    ajaxInit();
 
 };

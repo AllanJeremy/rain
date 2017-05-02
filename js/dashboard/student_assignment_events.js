@@ -384,7 +384,14 @@ var StudentAssignmentEvents = function () {
             $('a.js-submit-assignment').removeClass('disabled');
             $('a.js-confirm-submit-assignment').removeClass('disabled');
 
-            $this.__construct(userInfo);
+            //if user_type is student, load the functions else return
+            if(userInfo.account_type === 'student') {
+                $this.__construct(userInfo);
+            } else {
+                console.log('teacher account. No event added to the page.');
+
+                return;
+            }
 
         });
 

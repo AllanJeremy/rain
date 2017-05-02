@@ -510,7 +510,7 @@ var Lists_Templates = function () {
         templateOutput += '<div class="modal-footer">';
 
         if (obj.canComment === true) {
-            templateOutput += this.commentExtraFooterActions(obj.userId, true, commentType);
+            templateOutput += this.commentExtraFooterActions(obj.id, true, commentType);
         }
 
         templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
@@ -522,13 +522,13 @@ var Lists_Templates = function () {
 
     //--------------------------------------
 
-    this.commentList = function (obj) {
+    this.commentList = function (obj, self) {
 
         var templateOutput = '';
 
-        templateOutput += '<div data-comment-id="' + obj.id + '" class="comment-item padding-vert-8 ' + ((obj.name === 'You') ? 'grey lighten-3' : ' ') + '">';
-        templateOutput += '<br><p class="js-name marg-6 grey-text text-darken-1">' + obj.name + '</p>';
-        templateOutput += '<p class="js-comment marg-8 black-text">' + obj.comment + '</p>';
+        templateOutput += '<div data-comment-id="' + obj.comment_id + '" class="comment-item new-class padding-vert-8 ' + ((obj.poster_name === 'You') ? 'grey lighten-3' : ' ') + '">';
+        templateOutput += '<br><p class="js-name marg-6 grey-text text-darken-1"><a href="' + obj.poster_link + '" class="underline inherit-color">' + obj.poster_name + '</a><a href="#!" class="' + ((self === true) ? ' ' : 'hide') + ' pad-6 marg-6 right inherit-color js-edit-comment"><i class="material-icons">edit</i></a><a href="#!" class="' + ((self === true) ? ' ' : 'hide') + ' pad-6 marg-6 right inherit-color js-delete-comment"><i class="material-icons">delete</i></a></p>';
+        templateOutput += '<p class="js-comment marg-8 black-text">' + obj.comment_text + '</p>';
         templateOutput += '<p class="js-date marg-6 grey-text text-darken-1">' + obj.date + '</p>';
         templateOutput += '<br><div class="divider"></div>';
         templateOutput += '</div>';
@@ -1034,7 +1034,7 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="input-field inline comment margin-horiz-16" data-schedule-id="' + id + '">';
+        templateOutput += '<div class="input-field inline comment margin-horiz-16" data-id="' + id + '">';
         templateOutput += '<label for="comment">';
         templateOutput += '<i class="material-icons">comment</i>';
         templateOutput += '</label>';

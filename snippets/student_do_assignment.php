@@ -12,7 +12,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         <div class=" col s6 offset-s3 container valign-wrapper">
 <!--                <div class="" style="width:200px">-->
             <div class="valign progress" >
-                    <div class="indeterminate" style="width:0%;"></div>
+                <div class="indeterminate" style="width:0%;"></div>
             </div>
 <!--                </div>-->
         </div>
@@ -76,7 +76,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         <div class="assignment-action-header marg-16">
             <?php
             if(!isset($_SESSION['admin_acc_id'])) :
-            if($submitted == '1') :
+            if($submitted == '1' && isset($_SESSION["student_adm_no"])) :
             ?>
             <a class="btn green btn-large js-submit-assignment disabled"  href="#submitAssignment"><i class="material-icons right white-text">done</i>Submitted</a>
             <p class="center-align js-assignment-due green lighten-3 pad-6 white-text">Submitted on <?php echo EsomoDate::GetOptimalDateTime($ass_submission_exist['date_submitted'])['day'] .' '. EsomoDate::GetOptimalDateTime($ass_submission_exist['date_submitted'])['date']; ?></p>
@@ -100,7 +100,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
             endif;
             else:
             ?>
-            <p class="marg-16 center-align js-assignment-due <?php echo EsomoDate::GetDueText($assignment['due_date'])['due_class']; ?> pad-16 white-text"><?php echo EsomoDate::GetDueText($assignment['due_date'])['due_text']; ?></p>
+            <p class="marg-16 center-align green lighten-2 js-assignment-due pad-16 white-text">Sent on <?php echo EsomoDate::GetOptimalDateTime($assignment['due_date'])['day'] .' '. EsomoDate::GetOptimalDateTime($assignment['due_date'])['date']; ?></p>
             <?php
             endif;
             ?>
@@ -128,11 +128,15 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         $res_tab_class = 'active';
         $ass_tab_class = '';
 
-    };
+    }
+    if(!isset($_SESSION["admin_acc_id"])):
                 ?>
 
                 <li class="tab col s6"><a class="<?php echo $ass_tab_class; ?>" href="#myAssignment">My assignment</a></li>
-                <li class="tab col s6"><a href="#resources" class="<?php echo $res_tab_class; ?>">resources</a></li>
+                <?php
+    endif;
+    ?>
+                <li class="tab col <?php if(isset($_SESSION['student_adm_no'])) {echo 's6';} else { echo 's12';} ?>"><a href="#resources" class="<?php echo $res_tab_class; ?>">resources</a></li>
             </ul>
 
         <?php
@@ -222,16 +226,6 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
                         $attachments = explode(",",$assignment['attachments']);
                         array_pop($attachments);
-                        if(count($attachments) < 2 && count($attachments) > 0) :
-                        ?>
-                        <li class="margin-vert-8">
-                            <a href="./uploads/assignments/<?php echo $attachment; ?>" target="_blank" class="black-text"><?php echo $attachment; ?></a>
-                            <p class="no-margin grey-text text-lighten-1 secondary-title"><?php echo explode(".",$attachment)[count(explode(".",$attachment)) - 1]; ?></p>
-                            <p class="no-margin grey-text text-lighten-1 secondary-title">unknown size</p>
-                        </li>
-                        <li class="divider"></li>
-                        <?php
-                        else:
                         foreach($attachments as $attachment):
                         ?>
                         <li class="margin-vert-8">
@@ -242,7 +236,6 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                         <li class="divider"></li>
                         <?php
                         endforeach;
-                        endif;
                         ?>
 
                         <!--TEMPLATE-->
@@ -273,16 +266,6 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                 $attachments = explode(",",$assignment['attachments']);
 
                 array_pop($attachments);
-                if(count($attachments) < 2 && count($attachments) > 0) :
-                ?>
-                <li class="margin-vert-8">
-                    <a href="./uploads/assignments/<?php echo $attachment; ?>" target="_blank" class="black-text"><?php echo $attachment; ?></a>
-                    <p class="no-margin grey-text text-lighten-1 secondary-title"><?php echo explode(".",$attachment)[count(explode(".",$attachment)) - 1]; ?></p>
-                    <p class="no-margin grey-text text-lighten-1 secondary-title">23kb</p>
-                </li>
-                <li class="divider"></li>
-                <?php
-                else:
                 foreach($attachments as $attachment):
                 ?>
                 <li class="margin-vert-8">
@@ -293,7 +276,6 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                 <li class="divider"></li>
                 <?php
                 endforeach;
-                endif;
                 ?>
 
                 <!--TEMPLATE-->

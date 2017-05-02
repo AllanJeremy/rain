@@ -14,16 +14,16 @@ var Modals_Events = function () {
 
     //--------------------------------------
 
-    this.loadCommentModal = function (modal_id, user_id, user_name, comment_type, title, modal_body, comment_enabled) {
+    this.loadCommentModal = function (modal_id, id, user_name, comment_type, title, modal_body, comment_enabled) {
 
         var args = {
             modalId: modal_id,
-            userId: user_id,
+            id: id,
             userName: user_name,
             commentType: comment_type,
             title: title,
             templateBody: modal_body,
-            canComment: comment_enabled,
+            canComment: comment_enabled
         },
             commentModal = Lists_Templates.commentsModal(args);
         console.log(commentModal);

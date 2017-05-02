@@ -3,6 +3,7 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Connection to the database
 include_once(realpath(dirname(__FILE__) . "/../handlers/error_handler.php")); #Printing error messages
 require_once (realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Allows connection to database
+require_once(realpath(dirname(__FILE__). "/../handlers/date_handler.php")); #Handles date related functions
 
 #USED TO RETRIEVE INFORMATION FROM THE DATABASE
 class DbInfo
@@ -883,7 +884,7 @@ class DbInfo
         //If comments were available
         if(@$comments && $comments->num_rows>0)
         {
-            $cur_comment = array("comment_id"=>"","poster_name"=>"","poster_type"=>"","poster_link"=>"","comment_text"=>"","date"=>"","time"=>"");
+            $cur_comment = array("comment_id"=>"","poster_name"=>"","poster_type"=>"","poster_link"=>"","poster_id"=>"","comment_text"=>"","date"=>"","time"=>"");
 
             //For each comment
             foreach($comments as $comment)
@@ -892,6 +893,7 @@ class DbInfo
                 $cur_comment["poster_name"] = $comment["commentor_name"];
                 $cur_comment["poster_type"] = $comment["commentor_type"];
                 $cur_comment["poster_link"] = $comment["commentor_link"];
+                $cur_comment["poster_id"] = $comment["commentor_id"];
                 $cur_comment["comment_text"] = $comment["comment_text"];
 
                 $date_info = EsomoDate::GetDateInfo($comment["date_sent"]);
@@ -905,8 +907,8 @@ class DbInfo
                 
                 array_push($comment_data["comments"],$cur_comment);
             }
-
-            return json_encode($comment_data);
+            //var_dump($comment_data);
+            return $comment_data;
         }
         else
         {
@@ -933,7 +935,7 @@ class DbInfo
     public static function GetScheduleComments($schedule_id)
     {
         $comments = self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
-
+//        var_dump($comments);
         return self::GetCommentData($comments,"schedule_comments");
     }
 /*----------------------------------------------------------------------------------------------------------
@@ -2024,8 +2026,9 @@ if(isset($_GET['action'])) {
         break;
 
         case 'GetScheduleComments':
-            $schedule_id = $_GET["id"];
-            $comments  = DbInfo::GetScheduleComments($schedule_id);
+            $schedule_id = intval($_GET["id"]);
+
+            $comments = DbInfo::GetScheduleComments($schedule_id);
 
             echo json_encode($comments);
 

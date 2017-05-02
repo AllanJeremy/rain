@@ -46,13 +46,13 @@ class CommentHandler
     //Convenience - comment on anything - assumes all comment tables have the same base structure
     protected static function CommentOnItem($table_name,$fk_col_name,$fk_col_value,$acc_id,$comment_text,$commentor_type="student")
     {
-        $ass_id = htmlspecialchars($ass_id);
+        //$ass_id = htmlspecialchars($ass_id);
         $acc_id = htmlspecialchars($acc_id);
 
         global $dbCon;
         
         //Insert Query
-        $insert_query="INSERT INTO $table_name($fk_col_name,comment_text,commentor_name,commentor_link,commentor_type)  VALUES(?,?,?,?,?)";
+        $insert_stmt="INSERT INTO $table_name($fk_col_name,comment_text,commentor_name,commentor_link,commentor_type,commentor_id)  VALUES(?,?,?,?,?,?)";
         
         //Commentor variables
         $commentor_info = self::GetCommentorInfo($acc_id,$commentor_type);#Commentor info array
@@ -62,7 +62,7 @@ class CommentHandler
         if($insert_stmt = $dbCon->prepare($insert_stmt))
         {
             //(ass_id,comment_text,commentor_name,commentor_link)
-            $insert_stmt->bind_param("issss",$fk_col_value,$comment_text,$commentor_name,$commentor_link,$commentor_type);
+            $insert_stmt->bind_param("issssi",$fk_col_value,$comment_text,$commentor_name,$comment_link,$commentor_type,$acc_id);
             
             if($insert_stmt->execute())
             {
@@ -70,7 +70,7 @@ class CommentHandler
             }
             else
             {
-                return false;#failed to send the assignment
+                return $insert_stmt->error;#failed to send the assignment
             }
         }
         else
@@ -113,14 +113,14 @@ class CommentHandler
     public static function TeacherCommentOnSchedule($schedule_id,$acc_id,$comment_text)
     {
         $commentor_type="teacher";
-        return self::CommentOnItem("schedule_comments","schedule_id",$acc_id,$comment_text,$commentor_type);
+        return self::CommentOnItem("schedule_comments","schedule_id",$schedule_id,$acc_id,$comment_text,$commentor_type);
     }
 
     #Principal comment on schedule 
     public static function PrincipalCommentOnSchedule($schedule_id,$acc_id,$comment_text)
     {
         $commentor_type="principal";
-        return self::CommentOnItem("schedule_comments","schedule_id",$submission_id,$acc_id,$comment_text,$commentor_type);
+        return self::CommentOnItem("schedule_comments","schedule_id",$schedule_id,$submission_id,$acc_id,$comment_text,$commentor_type);
     }
 
     /*RETRIEVING COMMENTS*/
@@ -140,7 +140,6 @@ if(isset($_POST['action'])) {
     switch($_POST['action']) {
         case 'TeacherCommentOnSchedule':
 
-            echo json_encode('tume');
             $comment_text = $_POST['comment'];
             $schedule_id = $_POST['id'];
             $acc_id = $_SESSION['admin_acc_id'];

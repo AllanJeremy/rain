@@ -9949,19 +9949,24 @@ a.button-collapse.top-nav i {
   margin-bottom: 0 !Important;
 }
 
-/* line 89, ../sass/components/custom_components/_global.scss */
+/* line 88, ../sass/components/custom_components/_global.scss */
+.inherit-color {
+  color: inherit !Important;
+}
+
+/* line 91, ../sass/components/custom_components/_global.scss */
 .uppercase {
   text-transform: uppercase !Important;
 }
 
-/* line 93, ../sass/components/custom_components/_global.scss */
+/* line 95, ../sass/components/custom_components/_global.scss */
 .my-container {
   width: 54%;
   margin: 0 auto;
   max-width: 1280px;
 }
 @media only screen and (max-width: 600px) {
-  /* line 93, ../sass/components/custom_components/_global.scss */
+  /* line 95, ../sass/components/custom_components/_global.scss */
   .my-container {
     width: 90%;
     margin: 0 auto;
@@ -9969,7 +9974,7 @@ a.button-collapse.top-nav i {
 }
 
 @media only screen and (min-width: 993px) {
-  /* line 105, ../sass/components/custom_components/_global.scss */
+  /* line 107, ../sass/components/custom_components/_global.scss */
   .container {
     width: 90%;
   }
