@@ -457,7 +457,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
     if($update_stmt = $dbCon->prepare($update_query))
     {
-        $update_stmt->bind_param("si",$comment_id,$comment_text);
+        $update_stmt->bind_param("si",$comment_text,$comment_id);
 
         #if we successfully update the comment
         if($update_stmt->execute())
@@ -1784,8 +1784,24 @@ if(isset($_POST['action'])) {
             {
                 echo false;
             }
-        break;
 
+            break;
+
+        case 'UpdateScheduleComment':
+            $comment_id = $_POST['id'];
+            $comment_text = $_POST['comment_text'];
+
+            $result = DbHandler::UpdateScheduleComment($comment_id, $comment_text);
+
+            echo json_encode($result);
+
+            break;
+        case 'DeleteScheduleComment':
+            $result = DbHandler::DeleteScheduleComment($_POST['id']);
+
+            echo json_encode($result);
+
+            break;
         default:
             return null;
             break;
