@@ -1661,13 +1661,14 @@ var ScheduleEvents = function () {
             $.post('handlers/db_handler.php', {'action' : 'DeleteScheduleComment', 'id' : commentId}, function (resultData) {
                 console.log(resultData);
                 if (resultData === true) {
-                    //commentElHook.remove();
+                    commentElHook.remove();
                 } else {
                     commentElHook.removeClass('to-remove').addClass('new-class');
 
                 }
             }, 'json');
 
+            return (false);
         });
     };
 
