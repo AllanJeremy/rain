@@ -153,7 +153,7 @@ if(isset($_POST['action'])) {
         case 'StudentIdExists':
             break;
     default:
-            echo "invalid get request";
+            // echo "invalid get request";
             return null;
             break;
     }

@@ -124,6 +124,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <?php
                     //Get all assignments that belong to the logged in teacher
                     $assignments = DbInfo::GetSpecificTeacherAssignments($loggedInTeacherId);
+                    $assignments = DbInfo::ReverseResult($assignments);
                 ?>  
                 <div class="row main-tab" id="createAssignmentsTab">
                     <br>
@@ -1206,12 +1207,43 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <!--ACCOUNT SECTION-->
                 <div class="row main-tab" id="teacherAccountTab">
                     <div class="row no-bottom-margin">
-                        <div class="col s5">
+                        <div class="col s12">
                             <p class="grey-text">Your account</p>
                         </div>
                     </div>
-                    <div class="row">
-
+                    <div class="row">            
+                        <br>
+                        <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                            <h6 class="center-align valign grey-text " id="importMessage">
+                                Change your password here
+                                <br>
+                                Note : Passwords must be at least 8 characters long
+                                <br>
+                                Tip: For security, we recommend that you change your password if you are using the default password
+                            </h6>
+                        </div>
+                        
+                        <!--Change password-->
+                        <div class="col s12">
+                            <br>
+                            <form class="form account_form">
+                                <div class="input-container col s12 m4">
+                                    <label for="oldPassword">Old Password</label>
+                                    <input type="password"  id="oldPassword" placeholder="Old password">
+                                </div>
+                                <div class="input-container col s12 m4">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password"  id="newPassword" placeholder="New password">
+                                </div>
+                                <div class="input-container col s12 m4">
+                                    <label for="confirmNewPassword">Confirm Password</label>
+                                    <input type="password"  id="confirmNewPassword" placeholder="Confirm password">
+                                </div>
+                                <div class="input-container col s12">
+                                    <a class="btn right" href="javascript:void(0)" id="btn_change_password">Change password</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                                 
