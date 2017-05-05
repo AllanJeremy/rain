@@ -399,6 +399,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                                         <?php
                                             $ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id);
+                                            $no_submissions_message = "No new assignment submissions were found.";
 
                                             //Check if assignment submission exist for this specific assignment
                                             if($ass_submissions): #if assignment submissions were found
@@ -412,7 +413,6 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                     $returned_btn_disabled = "";
                                                 }
 
-                                                $no_submissions_message = "No new assignment submissions were found.";
                                         ?>
                                             <div class="filter-bar pad-8">
                                                 <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
@@ -1216,150 +1216,3 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 </div>
                                 
             </div>
-
-            <script>
-                $(document).ready(function(){
-                    /*GLOBAL VARIABLES*/
-                    var selected_class = "selected"; //css class used for selected class
-                    var $ass_classroom_card = ".ass-classroom-card"; //css selector for an assignment submission classroom card ~ cards that appear at the top
-                    var $class_ass_container = ".classroom-ass-container"; //css selector for class_assignment container
-                    var $ass_grade_achieved = ".ass-grade-achieved";//css selector for grade achieved for an assignment submission
-                    var $return_ass_submission = ".return-ass-submission";
-                    var $ass_submission_container = ".ass-submission-container";
-                    //Hide all assignment containers
-                    function HideAllAssContainers()
-                    {
-                        $(".classroom-ass-container").addClass("hide");
-                    }
-
-                    //Show only the assignments of the active classroom
-                    function ShowActiveAssContainer()
-                    {
-                        HideAllAssContainers();//Hide all assignment containers
-
-                        //Display the appropriate container for the currently selected classroom card
-                        var active_container_id = $($ass_classroom_card+".selected").attr("data-content-trigger");
-                        
-                        $($class_ass_container+"#"+active_container_id).removeClass("hide");
-                    }
-
-                    /*When a classroom card is clicked*/
-                    $($ass_classroom_card).click(function(){
-                        
-                        var trigger_id = $(this).attr("data-content-trigger");
-                        var $child_card_selector = ".card.tiny";
-                        
-                        //Remove class from all the other cards as well as their child cards
-                        $($ass_classroom_card).removeClass(selected_class);
-                        $($ass_classroom_card).children($child_card_selector).removeClass(selected_class);
-
-                        //Add the class to the clicked card as well as its immediate child
-                        $(this).children($child_card_selector).addClass(selected_class);
-                        $(this).addClass(selected_class);
-
-                        //Display assignments for the currently clicked card
-                        ShowActiveAssContainer();
-                    });
-                    
-                    ShowActiveAssContainer();
-
-                    /*Validate an input to check if it is a number. WORKING*/
-                    function ValidateAssGradeInput($ass_grade_input)
-                    {
-                        var min = parseInt($ass_grade_input.attr("min"));//Minimum valid input
-                        var max = parseInt($ass_grade_input.attr("max"));//Maximum valid input
-                        var curr_val = $ass_grade_input.val();
-
-                        //Regulate the current value
-                        if(curr_val>max)
-                            curr_val=max;
-                        else if(curr_val<min)//If input is less than min, make it equal to min
-                            curr_val=min;
-
-                        return curr_val;
-                    }
-                    
-                    /*Create assignment form submitted*/
-                    $("#createAssignmentForm").submit(function(e){
-                        
-                        e.preventDefault();/*Prevent page from reloading*/
-                        console.log("Form submitted.\nFile data is ",$("#assDueDate").val());
-                        
-                    });
-                    
-                    /*When the value of the assignment grade changes*/
-                    $($ass_grade_achieved).change(function(){
-                        var curr_val = ValidateAssGradeInput($(this));//Current value
-                        $(this).val(curr_val);
-                    });
-                    
-                    /*Returning assignments to students*/
-                    $($return_ass_submission).click(function(){
-                        var $self = $(this);
-                        //Student name
-                        var student_name = $(this).attr("data-student-name");
-                        //Submission data
-                        var sub_id = $(this).attr("data-submission-id");
-                        var sub_grade = $(this).siblings("span").children("input.ass-grade-achieved").val();
-                        var sub_data = {"grade":sub_grade,"submission_id":sub_id};
-
-                        $.post("classes/teacher.php",{"action":"ReturnAssSubmission","submission_data":sub_data},function(response,status){
-                            var success_message = "Successfully returned the assignment to "+student_name;
-                            var failure_message = "Failed to return the assignment to "+student_name;
-                            var toast_time = 2500; //Duration the toast will last
-
-                            response = JSON.parse(response);
-
-                            //Successfully graded the assignment
-                            if(response["grade_status"]==1)
-                            {
-                                //Successfully returned the assignment
-                                if(response["return_status"]==1)
-                                {
-                                    $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
-                                    var $grade_input = $parent_ul.find(".ass-grade-achieved");
-                                    var grade = $grade_input.val();
-                                    var student_data = $self.parent('span').siblings(".student-name");
-                                    var max_grade = $grade_input.attr("max");
-                                    console.log(student_data);
-                                    console.log($self.parent());
-                                    console.log($self.parent('span'));
-                                    var str = "<li class='col s12 m6 pad-8'>"+student_data[0].outerHTML.split('|')[0] +" <span class='chip'>"+grade+" / "+max_grade+"</span><br><div class='input-field inline comment'><input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'><label for='comment'><i class='material-icons'>comment</i></label><br><a class='right btn-inline js-see-all-comments'>all comments</a></div></li>";
-                                    var old_sub_count = $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass li').length;
-
-
-                                    //Add the submitted info to the DOM under the returned assignments section
-                                    if (old_sub_count == 0){
-                                        $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass').html(str);
-                                    } else {
-                                        $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass').prepend(str);
-
-                                    }
-                                    //Remove the submission from the DOM
-                                    $self.parents($ass_submission_container).remove();
-                                    var sub_count = $parent_ul.children("li").length;
-                                    
-                                    //If there are no submissions left in the DOM
-                                    if(sub_count==0)
-                                    {
-                                        $parent_ul.html("<p>No new assignment submissions were found.</p>");
-                                    }
-
-                                    //Display success message
-                                    Materialize.toast(success_message,toast_time);
-                                    
-                                }
-                                else //Failed to return the assignment
-                                {
-                                    Materialize.toast(failure_message+". Error : Successfully graded but failed to return submission",toast_time);
-                                }
-                            }
-                            else
-                            {
-                                Materialize.toast(failure_message+". Error : Failed to grade submission",toast_time);
-                            }
-                        
-                        });
-                    });
-                });
-            </script>

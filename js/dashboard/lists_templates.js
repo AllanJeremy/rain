@@ -538,6 +538,25 @@ var Lists_Templates = function () {
 
     //--------------------------------------
 
+    this.returnedAssignmentSubmissionTemplate = function (obj) {
+
+        var templateOutput = '';
+
+        templateOutput += "<li class='col s12 m6 pad-8'>";
+        templateOutput += obj.name;
+        templateOutput += '<span class="chip">'+obj.grade+' / '+obj.maxgrade+'</span><br>';
+        templateOutput += "<div class='input-field inline comment'>";
+        templateOutput += "<input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'>";
+        templateOutput += "<label for='comment'><i class='material-icons'>comment</i></label><br>";
+        templateOutput += "<a class='right btn-inline js-see-all-comments'>all comments</a>";
+        templateOutput += '</div>';
+        templateOutput += '</li>';
+
+        return templateOutput;
+    };
+
+    //--------------------------------------
+
     this.cancelCommentEdit = function () {
 
         var templateOutput = '';

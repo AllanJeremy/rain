@@ -12,6 +12,8 @@ var AssignmentEvents = function () {
         submitNewAssignment();
         showAssignmentComments();
         addAssignmentComments();
+        returnAssSubmission();
+        assSubmissionCardEvents();
 
     };
     
@@ -601,7 +603,6 @@ var AssignmentEvents = function () {
         
     };
 
-
     //--------------------------------
     
     var progress = function (e) {
@@ -623,6 +624,166 @@ var AssignmentEvents = function () {
             }
         }
     };
+
+    //--------------------------------
+
+    var assSubmissionCardEvents = function () {
+
+        /*GLOBAL VARIABLES*/
+        var selected_class = "selected"; //css class used for selected class
+        var $ass_classroom_card = ".ass-classroom-card"; //css selector for an assignment submission classroom card ~ cards that appear at the top
+        var $class_ass_container = ".classroom-ass-container"; //css selector for class_assignment container
+        var $ass_grade_achieved = ".ass-grade-achieved";//css selector for grade achieved for an assignment submission
+        var $return_ass_submission = ".return-ass-submission";
+        var $ass_submission_container = ".ass-submission-container";
+
+        //Hide all assignment containers
+        function HideAllAssContainers()
+        {
+            $($class_ass_container).addClass("hide");
+        }
+
+        //Show only the assignments of the active classroom
+        function ShowActiveAssContainer()
+        {
+            HideAllAssContainers();//Hide all assignment containers
+
+            //Display the appropriate container for the currently selected classroom card
+            var active_container_id = $($ass_classroom_card+".selected").attr("data-content-trigger");
+
+            $($class_ass_container+"#"+active_container_id).removeClass("hide");
+        }
+
+        /*When a classroom card is clicked*/
+        $($ass_classroom_card).click(function(){
+            var trigger_id = $(this).attr("data-content-trigger");
+            var $child_card_selector = ".card.tiny";
+
+            //Remove class from all the other cards as well as their child cards
+            $($ass_classroom_card).removeClass(selected_class);
+            $($ass_classroom_card).children($child_card_selector).removeClass(selected_class);
+
+            //Add the class to the clicked card as well as its immediate child
+            $(this).children($child_card_selector).addClass(selected_class);
+            $(this).addClass(selected_class);
+
+            //Display assignments for the currently clicked card
+            ShowActiveAssContainer();
+        });
+
+        ShowActiveAssContainer();
+
+        /*Validate an input to check if it is a number. WORKING*/
+        function ValidateAssGradeInput($ass_grade_input)
+        {
+            var min = parseInt($ass_grade_input.attr("min"));//Minimum valid input
+            var max = parseInt($ass_grade_input.attr("max"));//Maximum valid input
+            var curr_val = $ass_grade_input.val();
+
+            //Regulate the current value
+            if(curr_val>max)
+                curr_val=max;
+            else if(curr_val<min)//If input is less than min, make it equal to min
+                curr_val=min;
+
+            return curr_val;
+        }
+
+        /*Create assignment form submitted*/
+        $("#createAssignmentForm").submit(function(e){
+
+            e.preventDefault();/*Prevent page from reloading*/
+            console.log("Form submitted.\nFile data is ",$("#assDueDate").val());
+
+        });
+
+        /*When the value of the assignment grade changes*/
+        $($ass_grade_achieved).change(function(){
+            var curr_val = ValidateAssGradeInput($(this));//Current value
+            $(this).val(curr_val);
+        });
+
+    };
+
+    //--------------------------------
+
+    var returnAssSubmission = function () {
+
+        /*Returning assignments to students*/
+        $('.return-ass-submission').click(function(){
+            console.log('classroom clicked');
+            var $self = $(this), //Student name
+                student_name = $(this).attr("data-student-name"), //Submission data
+                sub_id = $(this).attr("data-submission-id"),
+                sub_grade = $(this).siblings("span").children("input.ass-grade-achieved").val(),
+                sub_data = {"grade":sub_grade,"submission_id":sub_id};
+
+            $.post("classes/teacher.php",{"action":"ReturnAssSubmission","submission_data":sub_data},function(response,status){
+                var success_message = "Successfully returned the assignment to "+student_name,
+                    failure_message = "Failed to return the assignment to "+student_name
+                    toast_time = 2500; //Duration the toast will last
+
+                response = JSON.parse(response);
+
+                //Successfully graded the assignment
+                if(response["grade_status"]==1)
+                {
+                    //Successfully returned the assignment
+                    if(response["return_status"]==1)
+                    {
+                        $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
+                        var $grade_input = $parent_ul.find(".ass-grade-achieved"),
+                            grade = $grade_input.val(),
+                            student_data = $self.parent('span').siblings(".student-name"),
+                            max_grade = $grade_input.attr("max"),
+                            ass_sub_data = {
+                                'name': student_data[0].outerHTML.split('|')[0],
+                                'grade': grade,
+                                'maxgrade': max_grade
+                            },
+                            str = Lists_Templates.returnedAssignmentSubmissionTemplate(ass_sub_data),
+                            old_sub_count = $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass li').length;
+
+                        console.log(student_data);
+                        console.log($self.parent());
+                        console.log($self.parent('span'));
+
+
+                        //Add the submitted info to the DOM under the returned assignments section
+                        if (old_sub_count == 0){
+                            $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass').html(str);
+                        } else {
+                            $self.parents('.submitted-assignment-list').siblings('.returned-assignment-list').find('ul.returned-ass').prepend(str);
+
+                        }
+                        //Remove the submission from the DOM
+                        $self.parents('.ass-submission-container').remove();
+                        var sub_count = $parent_ul.children("li").length;
+
+                        //If there are no submissions left in the DOM
+                        if(sub_count==0)
+                        {
+                            $parent_ul.html("<p>No new assignment submissions were found.</p>");
+                        }
+
+                        //Display success message
+                        Materialize.toast(success_message,toast_time);
+
+                    }
+                    else //Failed to return the assignment
+                    {
+                        Materialize.toast(failure_message+". Error : Successfully graded but failed to return submission",toast_time);
+                    }
+                }
+                else
+                {
+                    Materialize.toast(failure_message+". Error : Failed to grade submission",toast_time);
+                }
+
+            });
+        });
+
+    }
 
     this.__construct();
     

@@ -60,8 +60,6 @@ function validateInputs(type) {
     
 }
 
-
-
 function studentLogin() {
     'use strict';
     var validated, username, password, type, errorMessage, loginData;
@@ -205,4 +203,3 @@ function adminLogin() {
         $('#invalid_admin_login').removeClass('hide');
     }
 }
-
