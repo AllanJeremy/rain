@@ -157,21 +157,20 @@
                 <br>
                 <form class="col s12" method="post" action="">
                     <div class="row">
-                        <div class="input-field col s12">
-                            <input id="importDatabaseName" type="text" class="validate" name="import-database-name">
-                            <label for="importDatabaseName" required>Database name<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="importTableName" type="text" class="validate" name="import-table-name">
-                            <label for="importTableName" required>Table name<sup>*</sup></label>
+                        <div class="file-field input-field col s12">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" id="importStudentDataFile">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Import students</button>
+                            <a class="right btn" href="javascript:void(0)">Import students</a>
                         </div>
                     </div>
                 </form>
