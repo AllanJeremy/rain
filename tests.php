@@ -94,11 +94,11 @@
                             <div class="col s8">
                                 <a class="page-title center-align"><?php echo $test["test_title"];?></a>
                             </div>
-                            <div class="col s2">
+                            <!--<div class="col s2">
                                 <a class="right tooltipped skipped_questions_btn"  href="javascript:void(0)" data-position="bottom" data-delay="50" data-tooltip="Skipped questions">
                                     <i class="material-icons">library_books</i>
                                 </a>
-                            </div>
+                            </div>-->
                             <?php
                                 endif;
                             ?>
@@ -182,8 +182,20 @@
                 header("Location:./"); #redirect to the home page
             endif;
             Test::DisplayEditTestModal();
-            ?>
             
+            ?>
+
+            <!-- Skipped questions modal -->
+            <!--<div id="skipped_que_modal" class="modal">
+                <div class="modal-content">
+                    <h4>Skipped Questions</h4>
+                    <div class="modal-data">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+            </div>-->
         </main>
         <?php
             /*Include the footer at the bottom of the page*/
@@ -605,7 +617,8 @@
                 var answers_provided = ($(".t_test_answer").is(":checked"));//True if answers have been provided
 
                 //Message displayed when no answer is provided
-                var missing_answer_message = "Please provide at least one answer. Note : Unless you skip this question, you will not be able to come back to it. ";
+                var missing_answer_message = "Please provide at least one answer.";
+                // var missing_answer_message = "Please provide at least one answer. Note : Unless you skip this question, you will not be able to come back to it.";
 
                 var $is_skipped = $(this).is("#t_skip_que");
                 //Ensure that at least one answer is provided in order to submit data unless we skip the question (we can leave blank if skipping the question)
@@ -730,28 +743,51 @@
 
         /*TEST TAKER SKIPPING QUESTIONS functionality*/
             //Skipping questions
-            $(".skip_question_btn").click(function(){
+/*            $(".skip_question_btn").click(function(){
 
-            });
+            });*/
 
             //Skipped questions
-            $(".skipped_questions_btn").click(function(){
+            /*$(".skipped_questions_btn").click(function(){
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test ~ consider making this a global variable
                 console.log("Test id = ",test_id);
                 var skipped_questions = null;//initialization
 
                 //Show skipped questions modal
+                var $skipped_que_modal = $("#skipped_que_modal");
+                var $modal_data = $skipped_que_modal.find(".modal-data");
 
                 //Get the skipped questions
                 $.get("handlers/db_info.php",{"action":"GetSkippedQuestions","test_id":test_id},function(data){
                     
                     //TODO : Add error handler for this
                     skipped_questions = JSON.parse(data);
+                    
+                    var content = "";
+                    if(skipped_questions)
+                    {
+                        content = "<ul>";
+                        var cur_que = null;
+                        //Getting each skipped question
+                        for (var i=0; i<skipped_questions.length; i++)
+                        {
+                            cur_que = skipped_questions[i];
+                            content += "<li class='section'><a href=''>Question "+cur_que['question_index']+"</a></li><hr>";
+                        }
+                        content += "</ul>";
+                    }
+                    else
+                    {
+                        content = "<p>No skipped questions found</p>";
+                    }
 
                     //Populate skipped questions modal
+                    $modal_data.append(content);
+
+                    $skipped_que_modal.show();
                 });      
 
-            });
+            });*/
         });//End of document ready
 
         </script>

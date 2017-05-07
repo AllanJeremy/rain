@@ -195,18 +195,18 @@ class Test
                                 $next_que_url = $url_extension.($question_index+1);
                         ?>
                         <!--Progress buttons-->
-                        <div class="col s6 input-field">
+                        <!--<div class="col s6 input-field">
                             <a class="btn-flat center taker_next_url" id="t_skip_que" data-redirect-url="<?php echo $next_que_url;?>">skip</a>
-                        </div>
+                        </div>-->
                         <div class="col s6 input-field">
                             <a class="btn right taker_next_url" id="t_next_que" data-redirect-url="<?php echo $next_que_url;?>"><span class="hidden-on-small-only">Next Question</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
                         </div>
                         <?php
                             else:
                         ?>
-                        <div class="col s6 input-field">
+                        <!--<div class="col s6 input-field">
                             <a class="btn-flat skipped_questions_btn center truncate" type="submit">skipped <span class="hide-on-small-only">questions</span></a>
-                        </div>
+                        </div>-->
                         <div class="col s6 input-field">
                             <a class="btn right" id="t_complete_test" data-redirect-url="tests.php?complete_test=1"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
                         </div>
