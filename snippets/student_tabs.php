@@ -3,6 +3,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
 require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 require_once(realpath(dirname(__FILE__) . "/../handlers/grade_handler.php")); #Grade handler. Handles all grade operations
 require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resources class. Handles all resource related operations
+
+$user_info = MySessionHandler::GetLoggedUserInfo();
 ?>
             <div class="container">
                 <!--<p class="grey-text">Assignments (overview headers)</p>
@@ -147,8 +149,7 @@ about how you came to achieve this.</p>
                 </div>
                 <div class="row main-tab" id="takeATestTab">
                     <div class="row">
-                        <h5 class="grey-text text-darken-1">TESTS AVAILABLE</h5>
-                        <p>These are the tests available to you, they are grouped by subject to help you find tests easier.</p>
+                        <h5 class="grey-text text-darken-1">Tests Avalilable</h5>
                     </div>
                     
                     <div class="divider"></div>
@@ -229,7 +230,87 @@ about how you came to achieve this.</p>
 
                 <!--Test results-->
                 <div class="row main-tab" id="testResultsTab">
-                    <p>Test results will be displayed here</p>
+                    <?php
+                        $results = DbInfo::GetSpecificAccountResults($user_info);
+
+                        //If results were found
+                        if(@$results && $results->num_rows>0):
+                    ?>
+                    <p class="grey-text">Test results</p>
+                    <!--<hr>-->
+                    <table class="table bordered highlight responsive-table">
+                        <tr>
+                            <th>Test</th>
+                            <th>Difficulty</th>
+                            <th>Total marks</th>
+                            <th>Marks Achieved</th>
+                            <th>Grade</th>
+                            <th>Verdict</th>
+                            <th>Date taken</th>
+                            <th>Download</th>
+                        </tr>
+                        
+                        <?php
+                            foreach($results as $result):   
+                            
+                                $test = DbInfo::TestExists($result["test_id"]);
+                                
+                                $test_name = "Unknown test";
+                                $difficulty = "Unknown difficulty";
+                                $total_marks = 100;
+
+                                if($test)
+                                {
+                                    $test_name = $test["test_title"];
+                                    $difficulty = $test["difficulty"];
+                                    $total_marks = $test["max_grade"];
+                                }
+
+                                // $results_html = ;
+                                $test_result_date = EsomoDate::GetDateInfo($result["date_generated"]);
+                        ?>
+                        <tr>
+                            <td><?php 
+                                echo $test_name;
+                            ?></td>
+                            <td><?php 
+                                echo $difficulty;
+                            ?></td>
+                            <td><?php 
+                                 echo $total_marks;
+                            ?></td>
+                            <td><?php 
+                                echo $result["grade"];
+                            ?></td>
+                            <td><?php 
+                                echo $result["grade_text"];
+                            ?></td>
+                            <td><?php 
+                                echo $result["verdict"];
+                            ?></td>
+                            <td><?php 
+                                //Mon 5th May, 2016
+                                echo $result["date_generated"];
+                            ?></td>
+                            <td>
+                                <a href="javascript:void(0)" class="download-test-result btn btn-flat" title="Download results for <?php echo $test_name;?>"><i class="material-icons">archive</i></a>
+                            </td>
+                        </tr>
+                        <?php
+                            endforeach;
+                        ?>
+                    </table>
+                    <?php
+                        else:#No test results found
+                    ?>
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h6 class="center-align valign grey-text " id="testResultsMessage">
+                            No test results found. When you take a test, results will be available here
+                        </h6>
+                    </div>
+                    <?php
+                        endif;
+                    ?>
                 </div>
 
                 <!--Grades-->
@@ -279,7 +360,7 @@ about how you came to achieve this.</p>
                     <div class="row">            
                         <br>
                         <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                            <h6 class="center-align valign grey-text " id="importMessage">
+                            <h6 class="center-align valign grey-text " id="changePasswordMessage">
                                 Change your password here
                                 <br>
                                 Note : Passwords must be at least 8 characters long

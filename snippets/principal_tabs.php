@@ -99,7 +99,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                     <div class="row">            
                         <br>
                         <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                            <h6 class="center-align valign grey-text " id="importMessage">
+                            <h6 class="center-align valign grey-text " id="changePasswordMessage">
                                 Change your password here
                                 <br>
                                 Note : Passwords must be at least 8 characters long

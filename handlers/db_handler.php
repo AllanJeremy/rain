@@ -50,6 +50,86 @@ class DbHandler extends DbInfo
 
     }
 
+    //Update password
+    public static function UpdateAccountPassword($user_info,$data)
+    {
+        //If the old password provided does not match the current password in the database, return false
+        $old_pass = $data["old_password"];
+
+        global $dbCon;
+
+        $acc_id = $user_info["user_id"];
+        $account_type = $user_info["account_type"];
+
+        //Check what type of account it is
+        switch($account_type)
+        {
+            case "student":
+                $update_query = "UPDATE student_accounts SET password=?";
+
+                $student_acc = DbInfo::GetStudentByAccId($acc_id);
+
+                //If the admin account can be found
+                if($student_acc)
+                {
+                    //Check if the old password provided matches the admin password in the database
+                    $old_pass_valid = PasswordEncrypt::Verify($old_pass,$student_acc["password"]);
+                    
+                    //If the old password is not valid ~ return false
+                    if(!$old_pass_valid)
+                    {
+                        echo "<p>Wrong old password provided</p>";
+                        return false;
+                    }
+                }
+                else #Admin account could not be found ~ return false
+                {
+                    echo "<p>Student account you requested could not be found</p>";
+                    return false;
+                }
+            break;
+
+            default:#Admin account type `POSSIBLY HACKABLE, CONSIDER prepareing the account_type as well
+                $update_query = "UPDATE admin_accounts SET password=? WHERE account_type=".htmlspecialchars($account_type);
+                $admin_acc = DbInfo::GetAdminById($acc_id,$account_type);
+
+                //If the admin account can be found
+                if($admin_acc)
+                {
+                    //Check if the old password provided matches the admin password in the database
+                    $old_pass_valid = PasswordEncrypt::Verify($old_pass,$admin_acc["password"]);
+                    
+                    //If the old password is not valid ~ return false
+                    if(!$old_pass_valid)
+                    {
+                        echo "<p>Wrong old password provided</p>";
+                        return false;
+                    }
+                }
+                else #Admin account could not be found ~ return false
+                {
+                    echo "<p>Admin account you requested could not be found</p>";
+                    return false;
+                }
+        }
+
+        //Attempt to prepare query
+        if($update_stmt = $dbCon->prepare($update_query))
+        {
+            //New password is the encrypted form of the new password
+            $new_password = PasswordEncrypt::EncryptPass($data["new_password"]);
+
+            $update_stmt->bind_param("s",$new_password);
+            $update_status = $update_stmt->execute();
+
+            return $update_status;
+        }
+        else #Failed to update the 
+        {
+            return null;
+        }
+    }
+
     //Reset the password of an admin account : takes admin acc_id and acc_type as parameters
     protected static function ResetAdminAccount($acc_id,$acc_type="teacher")#protected to avoid calling it manually which may lead to typos
     {
@@ -1808,6 +1888,14 @@ if(isset($_POST['action'])) {
             {
                 echo false;
             }
+        break;
+
+        //Update account passwords
+        case "UpdateAccountPassword":
+            $data = $_POST["data"];
+            $update_status = DbHandler::UpdateAccountPassword($user_info,$data); 
+
+            echo $update_status;
         break;
 
         default:
