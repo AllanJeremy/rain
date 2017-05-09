@@ -5,8 +5,6 @@
             <!--<a href="#" onclick="hideSideNav()" data-activates="slide-out" class="button-collapse right"><i class="material-icons">menu</i></a>
             -->
             <a id="name" href="#!name" class="no-padding"><span class="white-text name"><?php echo $_SESSION["student_username"] ?></span></a>
-            <p><span class="white-text class">class 10B</span></p>
-            <br>
         </div>
     </li>
     <ul class="collapsible collapsible-accordion">

@@ -23,7 +23,7 @@
     <li class="">
         <a href="#" id="assignments" data-activates="principalAssignmentsTab">Assignments</a>
     </li>
-    <ul class="collapsible collapsible-accordion">
+    <ul class="collapsible collapsible-accordion hide">
         <li class="">
             <a class="collapsible-header">Grades</a>
             <div class="collapsible-body">
@@ -38,12 +38,12 @@
             </div>
         </li>
     </ul>
-    <li>
-        <a href="#!" class="" id="students" data-activates="principalStudentsTab">Students</a>
+    <!--<li>
+        <a href="#!" class="hide" id="students" data-activates="principalStudentsTab">Students</a>
     </li>
     <li>
-        <a href="#!" class="" id="teachers" data-activates="principalTeachersTab">Teachers</a>
-    </li>
+        <a href="#!" class="hide" id="teachers" data-activates="principalTeachersTab">Teachers</a>
+    </li>-->
     <li>
         <a href="#!" class="" id="resources" data-activates="principalResourcesTab">Resources</a>
     </li>

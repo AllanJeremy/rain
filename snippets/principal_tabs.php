@@ -44,24 +44,26 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 </div>
                 
                 <!--Principal student grades tab-->
-                <div class="row main-tab" id="principalStudentGradesTab">
+                <!--<div class="row main-tab" id="principalStudentGradesTab">
                     Principal Student Grades tab
-                </div>
+                </div>-->
                 
                 <!--Principal gradebook tab-->
-                <div class="row main-tab" id="principalGradebookTab">
+                <!--<div class="row main-tab" id="principalGradebookTab">
                     Principal Gradebook tab
-                </div>
+                </div>-->
                 
                 <!--Principal students tab-->
-                <div class="row main-tab" id="principalStudentsTab">
-                    Principal Students tab
-                </div>
+                <!--<div class="row main-tab" id="principalStudentsTab">
+                    <p class="grey-text">Students</p>
+                    <div class="divider"></div><br>
+                </div>-->
                 
                 <!--Principal teachers tab-->
-                <div class="row main-tab" id="principalTeachersTab">
-                    Principal Teachers tab
-                </div>
+                <!--<div class="row main-tab" id="principalTeachersTab">
+                    <p class="grey-text">Teachers</p>
+                    <div class="divider"></div><br>
+                </div>-->
                 <!--Principal resources tab-->
                 <div class="row main-tab" id="principalResourcesTab">
                     <?php
