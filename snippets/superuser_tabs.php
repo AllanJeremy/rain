@@ -88,6 +88,7 @@
                     <td><?php echo $superuser_count; ?></td>                
                 </tr>
             </table>
+        </div>
     </div>
     <!---->
     <div class="row main-tab" id="studentsTab">

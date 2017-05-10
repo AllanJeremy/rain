@@ -1243,15 +1243,18 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     //Generates a report for the results as well as writes to pdf
     public static function GenerateTestResultsReport($results)
     {
-        echo "<h3>Test results Report</h3><ul>";
-            echo "<li>Full Name : ".$results["full_name"]."</li>";
-            echo "<li>Grade (marks) :".$results["grade"]." out of ".$results["max_grade"]."</li>";
-            echo "<li>Percentage : ".$results["percentage"]."</li>";
-            echo "<li>Grade Achieved : ".$results["grade_text"]."</li>";
-            echo "<li>Verdict : ".$results["verdict"]."</li>";
-            echo "<li>Answers right : ".$results["answers_right"]."</li>";
-            echo "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
-        echo "</ul>";
+        $report = "";
+        $report .= "<h3>Test results Report</h3><ul>";
+            $report .= "<li>Full Name : ".$results["full_name"]."</li>";
+            $report .= "<li>Grade (marks) :".$results["grade"]." out of ".$results["max_grade"]."</li>";
+            $report .= "<li>Percentage : ".$results["percentage"]."</li>";
+            $report .= "<li>Grade Achieved : ".$results["grade_text"]."</li>";
+            $report .= "<li>Verdict : ".$results["verdict"]."</li>";
+            $report .= "<li>Answers right : ".$results["answers_right"]."</li>";
+            $report .= "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
+        $report .= "</ul>";
+
+        return $report;
     }
 
     /*
