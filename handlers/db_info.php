@@ -1148,6 +1148,36 @@ class DbInfo
         }
     }
 
+    //Get test results for a specific account
+    public static function GetSpecificAccountResults($user_info)
+    {
+        global $dbCon;
+
+        #Account type
+        $select_query = "SELECT * FROM test_results WHERE taker_id=? AND taker_type=?";
+
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("is",$user_info['user_id'],$user_info['account_type']);
+            $select_status = $select_stmt->execute();
+
+            //If successfully selected
+            if($select_status)
+            {
+                $result = $select_stmt->get_result();
+                return $result;
+            }
+            else
+            {
+                return $select_status;
+            }
+        }
+        else #failed to prepare the query
+        {
+            return null;
+        }
+    }
+
     //Get test results for a specific test
     public static function GetSpecificTestResults($test_id)
     {
