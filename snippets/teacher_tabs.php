@@ -124,6 +124,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <?php
                     //Get all assignments that belong to the logged in teacher
                     $assignments = DbInfo::GetSpecificTeacherAssignments($loggedInTeacherId);
+                    $assignments = DbInfo::ReverseResult($assignments);
                 ?>  
                 <div class="row main-tab" id="createAssignmentsTab">
                     <br>
@@ -1033,7 +1034,87 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                 <!--Test results-->
                 <div class="container row main-tab" id="viewStudentsTestResultTab">
-                    <p>Test results will be displayed here</p>
+                    <?php
+                        $results = DbInfo::GetSpecificAccountResults($user_info);
+
+                        //If results were found
+                        if(@$results && $results->num_rows>0):
+                    ?>
+                    <p class="grey-text">Test results</p>
+                    <!--<hr>-->
+                    <table class="table bordered highlight responsive-table">
+                        <tr>
+                            <th>Test</th>
+                            <th>Difficulty</th>
+                            <th>Total marks</th>
+                            <th>Marks Achieved</th>
+                            <th>Grade</th>
+                            <th>Verdict</th>
+                            <th>Date taken</th>
+                            <th>Download</th>
+                        </tr>
+
+                        <?php
+                            foreach($results as $result):
+
+                                $test = DbInfo::TestExists($result["test_id"]);
+
+                                $test_name = "Unknown test";
+                                $difficulty = "Unknown difficulty";
+                                $total_marks = 100;
+
+                                if($test)
+                                {
+                                    $test_name = $test["test_title"];
+                                    $difficulty = $test["difficulty"];
+                                    $total_marks = $test["max_grade"];
+                                }
+
+                                // $results_html = ;
+                                $test_result_date = EsomoDate::GetDateInfo($result["date_generated"]);
+                        ?>
+                        <tr>
+                            <td><?php
+                                echo $test_name;
+                            ?></td>
+                            <td><?php
+                                echo $difficulty;
+                            ?></td>
+                            <td><?php
+                                 echo $total_marks;
+                            ?></td>
+                            <td><?php
+                                echo $result["grade"];
+                            ?></td>
+                            <td><?php
+                                echo $result["grade_text"];
+                            ?></td>
+                            <td><?php
+                                echo $result["verdict"];
+                            ?></td>
+                            <td><?php
+                                //Mon 5th May, 2016
+                                echo $result["date_generated"];
+                            ?></td>
+                            <td>
+                                <a href="javascript:void(0)" class="download-test-result btn btn-flat" title="Download results for <?php echo $test_name;?>"><i class="material-icons">archive</i></a>
+                            </td>
+                        </tr>
+                        <?php
+                            endforeach;
+                        ?>
+                    </table>
+                    <?php
+                        else:#No test results found
+                    ?>
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h6 class="center-align valign grey-text " id="testResultsMessage">
+                            No test results found. When you take a test, results will be available here
+                        </h6>
+                    </div>
+                    <?php
+                        endif;
+                    ?>
                 </div>
 
                 <!--Take a test-->
@@ -1042,7 +1123,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         $tests = DbInfo::GetSpecificTeacherTests($loggedInTeacherId);
                         if($tests):
                     ?>
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="input-field col s8">
                             <label for="search_take_test">Search Tests</label>
                             <input type="search" id="search_take_test" class="validate" placeholder="Search Here"/>
@@ -1050,11 +1131,11 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="col s4">
                             <a class="btn btn_search_take_test" href="javascript:void(0)">Search</a>
                         </div>
-                    </div>
+                    </div>-->
+                    <h5 class="grey-text">Your tests</h5>
+                    <br>
                     <div class="divider"></div>
-
-                    <h4 class="grey-text text-darken-1">YOUR TESTS</h4>
-
+                    <br>
                     <div class="row">
                     <?php
                         $redirect_url = "";#url the test redirects to
@@ -1206,12 +1287,43 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <!--ACCOUNT SECTION-->
                 <div class="row main-tab" id="teacherAccountTab">
                     <div class="row no-bottom-margin">
-                        <div class="col s5">
+                        <div class="col s12">
                             <p class="grey-text">Your account</p>
                         </div>
                     </div>
                     <div class="row">
+                        <br>
+                        <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                            <h6 class="center-align valign grey-text " id="changePasswordMessage">
+                                Change your password here
+                                <br>
+                                Note : Passwords must be at least 8 characters long
+                                <br>
+                                Tip: For security, we recommend that you change your password if you are using the default password
+                            </h6>
+                        </div>
 
+                        <!--Change password-->
+                        <div class="col s12">
+                            <br>
+                            <form class="form account_form">
+                                <div class="input-container col s12 m4">
+                                    <label for="oldPassword">Old Password</label>
+                                    <input type="password"  id="oldPassword" placeholder="Old password">
+                                </div>
+                                <div class="input-container col s12 m4">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password"  id="newPassword" placeholder="New password">
+                                </div>
+                                <div class="input-container col s12 m4">
+                                    <label for="confirmNewPassword">Confirm Password</label>
+                                    <input type="password"  id="confirmNewPassword" placeholder="Confirm password">
+                                </div>
+                                <div class="input-container col s12">
+                                    <a class="btn right" href="javascript:void(0)" id="btn_change_password">Change password</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                                 

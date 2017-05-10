@@ -50,6 +50,86 @@ class DbHandler extends DbInfo
 
     }
 
+    //Update password
+    public static function UpdateAccountPassword($user_info,$data)
+    {
+        //If the old password provided does not match the current password in the database, return false
+        $old_pass = $data["old_password"];
+
+        global $dbCon;
+
+        $acc_id = $user_info["user_id"];
+        $account_type = $user_info["account_type"];
+
+        //Check what type of account it is
+        switch($account_type)
+        {
+            case "student":
+                $update_query = "UPDATE student_accounts SET password=?";
+
+                $student_acc = DbInfo::GetStudentByAccId($acc_id);
+
+                //If the admin account can be found
+                if($student_acc)
+                {
+                    //Check if the old password provided matches the admin password in the database
+                    $old_pass_valid = PasswordEncrypt::Verify($old_pass,$student_acc["password"]);
+
+                    //If the old password is not valid ~ return false
+                    if(!$old_pass_valid)
+                    {
+                        echo "<p>Wrong old password provided</p>";
+                        return false;
+                    }
+                }
+                else #Admin account could not be found ~ return false
+                {
+                    echo "<p>Student account you requested could not be found</p>";
+                    return false;
+                }
+            break;
+
+            default:#Admin account type `POSSIBLY HACKABLE, CONSIDER prepareing the account_type as well
+                $update_query = "UPDATE admin_accounts SET password=? WHERE account_type=".htmlspecialchars($account_type);
+                $admin_acc = DbInfo::GetAdminById($acc_id,$account_type);
+
+                //If the admin account can be found
+                if($admin_acc)
+                {
+                    //Check if the old password provided matches the admin password in the database
+                    $old_pass_valid = PasswordEncrypt::Verify($old_pass,$admin_acc["password"]);
+
+                    //If the old password is not valid ~ return false
+                    if(!$old_pass_valid)
+                    {
+                        echo "<p>Wrong old password provided</p>";
+                        return false;
+                    }
+                }
+                else #Admin account could not be found ~ return false
+                {
+                    echo "<p>Admin account you requested could not be found</p>";
+                    return false;
+                }
+        }
+
+        //Attempt to prepare query
+        if($update_stmt = $dbCon->prepare($update_query))
+        {
+            //New password is the encrypted form of the new password
+            $new_password = PasswordEncrypt::EncryptPass($data["new_password"]);
+
+            $update_stmt->bind_param("s",$new_password);
+            $update_status = $update_stmt->execute();
+
+            return $update_status;
+        }
+        else #Failed to update the
+        {
+            return null;
+        }
+    }
+
     //Reset the password of an admin account : takes admin acc_id and acc_type as parameters
     protected static function ResetAdminAccount($acc_id,$acc_type="teacher")#protected to avoid calling it manually which may lead to typos
     {
@@ -893,7 +973,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 
                 if($update_stmt->execute())
                 {
-                    echo "<p>Successfully updated question submission</p>";
+                    // echo "<p>Successfully updated question submission</p>";
                     return true;
                 }
                 else
@@ -960,7 +1040,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             //Try executing the update statement
             if($update_stmt->execute())
             {
-                echo "<p>Updated test retake info</p>";
+                // echo "<p>Updated test retake info</p>";
                 return true;
             }
             else #failed to execute the query
@@ -985,6 +1065,28 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     private static function StoreTestResults($results)
     {
         global $dbCon;
+
+        $insert_query = "INSERT INTO test_results(test_id,taker_id,taker_type,grade,percentage,grade_text,verdict,answers_right,answers_wrong,completion_time) VALUES(?,?,?,?,?,?,?,?,?,?)";
+
+        //Prepare the query for storing results
+        if($insert_stmt = $dbCon->prepare($insert_query))
+        {
+            $insert_stmt->bind_param("iisiissiii",$results['test_id'],$results['taker_id'],$results['taker_type'],$results['grade'],$results['percentage'],$results['grade_text'],$results['verdict'],$results['answers_right'],$results['answers_wrong'],$results['completion_time']);
+
+            $insert_status = $insert_stmt->execute();
+
+            //Failed to insert the records into the database
+            if(!$insert_status)
+            {
+                echo "<p>Failed to store the test results in the database</p>";
+            }
+
+            return $insert_status;
+        }
+        else #Failed to prepare the query
+        {
+            return null;
+        }
     }
 
     //Marks the test and returns an associative array containing the results information
@@ -1004,7 +1106,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $test = DbInfo::TestExists($test_id);
 
             //Associative array storing results information. Db info to be printed in a pdf
-            $results = array("first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"","verdict"=>"PASS");
+            $results = array("test_id"=>$test_id,"taker_id"=>"","taker_type"=>"","first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"","verdict"=>"PASS");
 
             #Variables for storing the information on the various questions
             $total_marks = 0;
@@ -1068,6 +1170,10 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             
             //Update some result values
             $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
+
+            $results["taker_id"] = $user_info["user_id"];
+            $results["taker_type"] = $user_info["account_type"];
+
             $results["grade"] = $total_marks;
             $results["percentage"] = $grade_info["percentage"]."% ";
             $results["grade_text"] = $grade_info["grade_text"];
@@ -1076,7 +1182,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             $results["date_generated"] = "";
             $results["completion_time"] = $time_elapsed;
 
-            var_dump($results["completion_time"]);
+
             //Determine the verdict of test results
             if($pass_grade = $test["passing_grade"])
             {
@@ -1447,9 +1553,7 @@ if(isset($_POST['action'])) {
             {
                 $retake_date_time = strtotime($retake_info["retake_date"]);
                 $time_has_elapsed = EsomoDate::DateTimeHasElapsed($retake_date_time);
-                echo "<p>Time has elapsed : ";
-                var_dump($time_has_elapsed);
-                echo "</p>";
+
                 //If the current time is a time past the retake time ~ allow for retake
                 if($time_has_elapsed)
                 {
@@ -1785,6 +1889,7 @@ if(isset($_POST['action'])) {
                 echo false;
             }
 
+<<<<<<< HEAD
             break;
 
         case 'UpdateScheduleComment':
@@ -1802,6 +1907,16 @@ if(isset($_POST['action'])) {
             echo json_encode($result);
 
             break;
+=======
+        //Update account passwords
+        case "UpdateAccountPassword":
+            $data = $_POST["data"];
+            $update_status = DbHandler::UpdateAccountPassword($user_info,$data);
+
+            echo $update_status;
+        break;
+
+>>>>>>> origin/master
         default:
             return null;
             break;

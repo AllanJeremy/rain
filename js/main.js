@@ -690,4 +690,101 @@ $(document).ready(function (z) {
         }
 
     });
+
+    //Minimum password length
+    var MIN_PASS_LENGTH = 8;
+
+    //Changing passwords
+    $("#btn_change_password").click(function(){
+        var toast_time = 4000;
+        var $form = $(this).parents(".account_form");
+
+        var $inputs = $form.find(".input-container").children("input");
+
+        var $old_pass_container = $form.find("#oldPassword");
+        var $new_pass_container = $form.find("#newPassword");
+        var $confirm_pass_container = $form.find("#confirmNewPassword");
+
+        var old_password = $old_pass_container.val();
+        var new_password = $new_pass_container.val();
+        var confirm_password = $confirm_pass_container.val();
+
+        var is_valid = true;
+        $inputs.removeClass("invalid");
+        $inputs.removeClass("valid");
+
+        var error_message = false;
+
+        $inputs.each(function(){
+            //If the current input field is empty or password length < minimum password length
+            if($(this).val() == "")
+            {
+                is_valid = false;
+
+                $(this).addClass("invalid");
+                error_message = "Failed to change password. One or more required fields are empty";
+            }
+            else
+            {
+                //New password length is too short
+                if(new_password.length < MIN_PASS_LENGTH)
+                {
+                    is_valid = false;
+                    error_message = "Failed to change password. Password provided is too short";
+                    $new_pass_container.addClass("invalid");
+                }
+
+                //Confirm password length is too short
+                if(confirm_password.length < MIN_PASS_LENGTH)
+                {
+                    is_valid = false;
+                    error_message = "Failed to change password. Password provided is too short";
+                    $confirm_pass_container.addClass("invalid");
+                }
+            }
+
+        });
+
+        //If the password information provided is valid ~ perform an ajax request
+        if(is_valid)
+        {
+            if(new_password == confirm_password)
+            {
+                //Perform ajax request
+                var data = {
+                    "old_password":old_password,
+                    "new_password":new_password
+                };
+
+                //Update the account password
+                $.post(db_handler_path,{"action":"UpdateAccountPassword","data":data},function(response,status){
+                    var feedback_message;
+                    if(response == "1" || response == "true")
+                    {
+                        feedback_message = "Successfully updated the password for your account. You can use your new password to login to your account";
+                    }
+                    else
+                    {
+                        feedback_message =  "Failed to update the password. Possible reason: the old password you provided is incorrect";
+                    }
+
+                    Materialize.toast(feedback_message,toast_time);
+                });
+
+            }
+            else //New password and password confirmation do not match
+            {
+                error_message = "Failed to change password. New password and password confirmation do not match";
+
+                $new_pass_container.addClass("invalid");
+                $confirm_pass_container.addClass("invalid");
+
+                Materialize.toast(error_message,toast_time);
+            }
+        }
+        else
+        {
+            Materialize.toast(error_message,toast_time);
+        }
+    });
 }); // end of document ready

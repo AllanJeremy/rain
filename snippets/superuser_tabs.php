@@ -157,21 +157,20 @@
                 <br>
                 <form class="col s12" method="post" action="">
                     <div class="row">
-                        <div class="input-field col s12">
-                            <input id="importDatabaseName" type="text" class="validate" name="import-database-name">
-                            <label for="importDatabaseName" required>Database name<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="importTableName" type="text" class="validate" name="import-table-name">
-                            <label for="importTableName" required>Table name<sup>*</sup></label>
+                        <div class="file-field input-field col s12">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" id="importStudentDataFile">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="input-field col s12">
-                            <button class="right btn" type="submit" >Import students</button>
+                            <a class="right btn" href="javascript:void(0)">Import students</a>
                         </div>
                     </div>
                 </form>
@@ -598,6 +597,7 @@
 
                     <div class="row">
                         <div class="col s12 m10 offset-m1">
+                            <!--Message box-->
                             <div class="card-panel blue-grey darken-3 blue-grey-text text-lighten-4">
                                 <h5 class="center">NO PRINCIPAL ACCOUNTS FOUND</h5>
                                 <div class="divider blue-grey lighten-2"></div>
@@ -801,8 +801,45 @@
 
     <!--Superuser account tab-->
     <div class="row main-tab" id="superuserAccountTab">
-        <div class="col s12">
-            <p>Account section</p>
+        <div class="row no-bottom-margin">
+            <div class="col s12">
+                <p class="grey-text">Your account</p>
+            </div>
+
+        </div>
+        <div class="row">
+            <br>
+            <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                <h6 class="center-align valign grey-text " id="changePasswordMessage">
+                    Change your password here
+                    <br>
+                    Note : Passwords must be at least 8 characters long
+                    <br>
+                    Tip: For security, we recommend that you change your password if you are using the default password
+                </h6>
+            </div>
+
+            <!--Change password-->
+            <div class="col s12">
+                <br>
+                <form class="form account_form">
+                    <div class="input-container col s12 m4">
+                        <label for="oldPassword">Old Password</label>
+                        <input type="password"  id="oldPassword" placeholder="Old password">
+                    </div>
+                    <div class="input-container col s12 m4">
+                        <label for="newPassword">New Password</label>
+                        <input type="password"  id="newPassword" placeholder="New password">
+                    </div>
+                    <div class="input-container col s12 m4">
+                        <label for="confirmNewPassword">Confirm Password</label>
+                        <input type="password"  id="confirmNewPassword" placeholder="Confirm password">
+                    </div>
+                    <div class="input-container col s12">
+                        <a class="btn right" href="javascript:void(0)" id="btn_change_password">Change password</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

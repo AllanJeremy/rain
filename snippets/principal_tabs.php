@@ -44,24 +44,26 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 </div>
                 
                 <!--Principal student grades tab-->
-                <div class="row main-tab" id="principalStudentGradesTab">
+                <!--<div class="row main-tab" id="principalStudentGradesTab">
                     Principal Student Grades tab
-                </div>
+                </div>-->
                 
                 <!--Principal gradebook tab-->
-                <div class="row main-tab" id="principalGradebookTab">
+                <!--<div class="row main-tab" id="principalGradebookTab">
                     Principal Gradebook tab
-                </div>
+                </div>-->
                 
                 <!--Principal students tab-->
-                <div class="row main-tab" id="principalStudentsTab">
-                    Principal Students tab
-                </div>
+                <!--<div class="row main-tab" id="principalStudentsTab">
+                    <p class="grey-text">Students</p>
+                    <div class="divider"></div><br>
+                </div>-->
                 
                 <!--Principal teachers tab-->
-                <div class="row main-tab" id="principalTeachersTab">
-                    Principal Teachers tab
-                </div>
+                <!--<div class="row main-tab" id="principalTeachersTab">
+                    <p class="grey-text">Teachers</p>
+                    <div class="divider"></div><br>
+                </div>-->
                 <!--Principal resources tab-->
                 <div class="row main-tab" id="principalResourcesTab">
                     <?php
@@ -90,8 +92,45 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 
                 <!--Principal account tab-->
                 <div class="row main-tab" id="principalAccountTab">
-                    <div class="col s12">
-                        <p>Account section</p>
+                    <div class="row no-bottom-margin">
+                        <div class="col s12">
+                            <p class="grey-text">Your account</p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <br>
+                        <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                            <h6 class="center-align valign grey-text " id="changePasswordMessage">
+                                Change your password here
+                                <br>
+                                Note : Passwords must be at least 8 characters long
+                                <br>
+                                Tip: For security, we recommend that you change your password if you are using the default password
+                            </h6>
+                        </div>
+
+                        <!--Change password-->
+                        <div class="col s12">
+                            <br>
+                            <form class="form account_form">
+                                <div class="input-container col s12 m4">
+                                    <label for="oldPassword">Old Password</label>
+                                    <input type="password"  id="oldPassword" placeholder="Old password">
+                                </div>
+                                <div class="input-container col s12 m4">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password"  id="newPassword" placeholder="New password">
+                                </div>
+                                <div class="input-container col s12 m4">
+                                    <label for="confirmNewPassword">Confirm Password</label>
+                                    <input type="password"  id="confirmNewPassword" placeholder="Confirm password">
+                                </div>
+                                <div class="input-container col s12">
+                                    <a class="btn right" href="javascript:void(0)" id="btn_change_password">Change password</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 
