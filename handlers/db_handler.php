@@ -1888,8 +1888,6 @@ if(isset($_POST['action'])) {
             {
                 echo false;
             }
-
-<<<<<<< HEAD
             break;
 
         case 'UpdateScheduleComment':
@@ -1907,7 +1905,7 @@ if(isset($_POST['action'])) {
             echo json_encode($result);
 
             break;
-=======
+
         //Update account passwords
         case "UpdateAccountPassword":
             $data = $_POST["data"];
@@ -1915,8 +1913,7 @@ if(isset($_POST['action'])) {
 
             echo $update_status;
         break;
-
->>>>>>> origin/master
+        
         default:
             return null;
             break;

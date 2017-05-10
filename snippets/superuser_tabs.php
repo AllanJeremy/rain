@@ -30,62 +30,64 @@
             <p><b>Account type: </b><span> <?php echo $_SESSION["admin_account_type"]; ?> </span></p>
         </div>
         <br>
-        <br>
-        <div class="">
-            <div class="col m10 s12 offset-m1 card-panel indigo lighten-5">
-                <div class="">
-                    <br>
-                    <h5>Change username</h5>
-                    <br>
-                    <p class="light">You can change your username here.</p>
-                    
-                    <form method="post" action="">
-                        <div class="row">
-                            <div class="input-field col s12 m5 offset-m1">
-                                <input id="newUsername" type="text" class="validate" name="new_username">
-                                <label for="newUsername">New username</label>
-                            </div>
-                            <div class="input-field col s12 m5 right-align">
-                                <a type="submit" class="btn">Change username</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col s12 m10 offset-m1 card-panel amber lighten-5">
-                <div class="">
-                    <br>
-                    <h5>Change password</h5>
-                    <br>
-                    <p class="light">You can change your username here.</p>
-                    <form method="post" action="" class=" m8 s10 offset-m2 offset-s1 ">
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input id="currentPassword" type="password" class="validate" name="current_password">
-                                <label for="currentPassword">Current password</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col m6 s12">
-                                <input id="newPassword" type="password" class="validate" name="new_password">
-                                <label for="newPassword">New password</label>
-                            </div>
-                            <div class="input-field col m6 s12">
-                                <input id="inputPasswordConfirm" type="password" class="validate" name="input-password-confirm">
-                                <label for="inputPasswordConfirm">Confirm new password</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 right-align">
-                                <a type="submit" class="btn">Change password</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                
-            </div>
-        </div>
-        
+
+        <?php
+            //Number of accounts for each account type
+            $student_count = $teacher_count = $principal_count = $superuser_count = 0;
+
+            $current_date = EsomoDate::GetCurrentDate();
+            $current_date = EsomoDate::GetOptimalDateTime($current_date);
+
+            //Get all students
+            if($students = DbInfo::GetAllStudents())
+            {
+                $student_count = $students->num_rows;
+            }
+
+            //Get all teachers
+            if($teachers = DbInfo::GetAllTeachers())
+            {
+                $teacher_count = $teachers->num_rows;
+            }
+
+            //Get all principals
+            if($principals = DbInfo::GetAllPrincipals())
+            {
+                $principal_count = $principals->num_rows;
+            }
+
+            //Get all superusers
+            if($superusers = DbInfo::GetAllSuperusers())
+            {
+                $superuser_count = $superusers->num_rows;
+            }
+        ?>
+        <!--Basic stats-->
+        <div class="card-panel">
+            <p class="grey-text">Basic Stats as of <i><?php echo $current_date["day"].", ".$current_date["date"]." at ".$current_date["time"];?></i></p>
+            <div class="divider"></div><br>
+            <table class="table bordered striped">
+                <tr>
+                    <th>Account type</th>
+                    <th>Number of Accounts</th>
+                </tr>
+                <tr>
+                    <td>Student</td>                
+                    <td><?php echo $student_count; ?></td>                
+                </tr>
+                <tr>
+                    <td>Teacher</td>                
+                    <td><?php echo $teacher_count; ?></td>                
+                </tr>
+                <tr>
+                    <td>Principal</td>                
+                    <td><?php echo $principal_count; ?></td>                
+                </tr>
+                <tr>
+                    <td>Superuser</td>                
+                    <td><?php echo $superuser_count; ?></td>                
+                </tr>
+            </table>
     </div>
     <!---->
     <div class="row main-tab" id="studentsTab">

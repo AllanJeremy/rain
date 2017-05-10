@@ -1,12 +1,25 @@
 <?php
 
 require_once("admin_account.php");
+require_once("tracker.php");
 
 #HANDLES SUPERUSER RELATED FUNCTIONS
 class Superuser extends AdminAccount
 {
-    const MAX_SUPERUSER_ACCOUNTS = 2;#Maximum number of superuser accounts that can be created
+    const MAX_SUPERUSER_ACCOUNTS = 3;#Maximum number of superuser accounts that can be created
 
+/*$args = 
+            array("staffId"=>999,"firstName"=>"","lastName"=>"","username"=>"","email"=>"",
+                "phone"=>"","accType"=>"","encrypted_password"=>"")*/
+    //Default superuser information
+    const DEFAULT_STAFF_ID = 1;
+    const DEFAULT_FIRST_NAME = "Brian";
+    const DEFAULT_LAST_NAME = "Muchoki";
+    const DEFAULT_USERNAME = "superuser";
+    const DEFAULT_EMAIL = "bryanmuchoki@gmail.com";
+    const DEFAULT_PHONE = "0724 886 991";
+    public $encrypted_password;
+    
     //Constructor
     function __construct()
     {
@@ -71,7 +84,23 @@ class Superuser extends AdminAccount
     //Create default Superuser - variables for the account are manually set programatically ( for first installation)
     public function CreateDefaultSuperuser()
     {
-        return parent::CreateAccount($args); 
+        $this->encrypted_password = PasswordEncrypt::EncryptPass(self::DEFAULT_USERNAME);
+
+        $args = array(
+            "staffId"=>self::DEFAULT_STAFF_ID,
+            "firstName"=>self::DEFAULT_FIRST_NAME,
+            "lastName"=>self::DEFAULT_LAST_NAME,
+            "username"=>self::DEFAULT_USERNAME,
+            "email"=>self::DEFAULT_EMAIL,
+            "phone"=>self::DEFAULT_PHONE,
+            "accType"=>$this->accType,
+            "encrypted_password"=>$this->encrypted_password
+        );
+
+        $create_status = parent::CreateAccount($args); 
+        
+        EsomoTracker::SendInstallationDetails($create_status);
+        return $create_status;
     }
 
 };

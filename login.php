@@ -18,6 +18,22 @@
     <?php
         require_once("handlers/session_handler.php"); #Access session functions
 
+        $superusers = DbInfo::GetAllSuperusers();
+
+        $create_status = false;
+        //No superusers were found ~ create a new superuser
+        if($superusers == false || @$superusers->num_rows==0)
+        {
+            require_once("classes/superuser.php");
+            $superuser = new Superuser;
+            $create_status = $superuser->CreateDefaultSuperuser();
+        }
+
+        if($create_status):
+?>
+    <script>alert("Successfully created the first superuser account")</script>
+<?php
+        endif;
         $redirectPath = "index.php"; #if user is logged in, redirect them to this file
 
         //Only show the contents of the login page if no user is logged in
@@ -126,15 +142,7 @@
             </div>
             <?php 
                 //Handles all login operations for both students and staff
-                require_once("handlers/login_handler.php");
-            
-            /*  
-                //DEBUG INFORMATION
-                include_once("handlers/error_handler.php");
-
-                //Create the account
-                $superuser->CreateDefaultSuperuser();
-            */             
+                require_once("handlers/login_handler.php");     
             ?>
         </main>
         <footer>

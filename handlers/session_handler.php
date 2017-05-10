@@ -236,14 +236,7 @@ if(isset($_GET['action'])) {
 
             break;
         default:
-<<<<<<< HEAD
-            //echo json_encode(['error'=>'no such GET action']);
-=======
-            // echo json_encode(['error'=>'no such GET action']);
->>>>>>> origin/master
-            return;
-            break;
-
+            return null;
     }
 }
 
