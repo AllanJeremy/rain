@@ -492,7 +492,7 @@ var Lists_Templates = function () {
         case 'assignment':
             commentType = 'assignment';
             break;
-        case 'assignment_submission':
+        case 'ass_submission':
             commentType = 'assignment submission';
             break;
         default:
@@ -510,7 +510,7 @@ var Lists_Templates = function () {
         templateOutput += '<div class="modal-footer">';
 
         if (obj.canComment === true) {
-            templateOutput += this.commentExtraFooterActions(obj.id, true, commentType);
+            templateOutput += this.commentExtraFooterActions(obj.id, true, obj.commentType);
         }
 
         templateOutput += '<a href="javascript:void(0)" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
@@ -1064,7 +1064,7 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="input-field inline comment margin-horiz-16" data-id="' + id + '">';
+        templateOutput += '<div class="input-field inline comment margin-horiz-16" data-comment-type="' + comment_type + '" data-id="' + id + '">';
         templateOutput += '<label for="comment">';
         templateOutput += '<i class="material-icons">comment</i>';
         templateOutput += '</label>';

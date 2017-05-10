@@ -2034,6 +2034,15 @@ if(isset($_GET['action'])) {
 
         break;
 
+        case 'GetAssSubmissionComments':
+            $submission_id = intval($_GET["id"]);
+
+            $comments = DbInfo::GetAssSubmissionComments($submission_id);
+
+            echo json_encode($comments);
+
+        break;
+
         default:
 
             //return null;

@@ -149,6 +149,17 @@ if(isset($_POST['action'])) {
             echo json_encode($result);
 
             break;
+        case 'TeacherCommentOnAssSubmission':
+
+            $comment_text = $_POST['comment'];
+            $submission_id = $_POST['id'];
+            $acc_id = $_SESSION['admin_acc_id'];
+
+            $result = CommentHandler::TeacherCommentOnSchedule($schedule_id,$acc_id,$comment_text);
+
+            echo json_encode($result);
+
+            break;
         case 'StudentIdExists':
             break;
     default:

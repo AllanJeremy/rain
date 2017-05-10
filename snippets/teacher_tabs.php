@@ -374,7 +374,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             $ass_id = $ass["ass_id"];
                                     ?>
                                     <!--TEMPLATE_START-->
-                                    <li data-assignment-id="--">
+                                    <li class="js-assignment-collapsible" data-assignment-id="<?php echo $ass_id; ?>">
                                         <div class="collapsible-header ">
                                             <span><?php echo $ass_title;?></span>
                                             <div class="right hide">
@@ -443,7 +443,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         $student_adm_no = $student["adm_no"];
                                                         $student_name = $student["full_name"];
                                                     }
-
+                                                        //var_dump($ass_sub);
 
                                                     //If the submission is submitted and not returned yet ~ display it
                                                     if($ass_sub["submitted"] && (!$ass_sub["returned"])):
@@ -462,13 +462,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                      | <i class="material-icons">read</i>
                                                                 </a>
                                                                 <br>
-                                                                <div class="input-field inline comment" data-comment-id="" data-comment-type="sumbissions">
+                                                                <div class="input-field inline comment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-comment-type="ass_submission">
                                                                     <input data-user-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
                                                                     <label for="comment">
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
                                                                     <br>
-                                                                    <a class='right btn-inline js-see-assignment-comments' href="javascript:void(0)">all comments (3)</a>
+                                                                    <a class='right btn-inline js-see-assignment-comments' href="javascript:void(0)">all comments</a>
                                                                 </div>
                                                                 <span class="right">
                                                                     <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
