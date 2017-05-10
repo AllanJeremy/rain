@@ -399,7 +399,7 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s12 m6 l4">';
+        templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s5">';
         templateOutput += '<div class="card document-view">';
         templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
@@ -414,7 +414,7 @@ var Lists_Templates = function () {
         templateOutput += '</p></div></div>';
         //end of info row ---
         templateOutput += '</div></div>';
-        templateOutput += '<div class="col s8">';
+        templateOutput += '<div class="col s7">';
         templateOutput += '<div class="row no-margin">';
         templateOutput += '<div class="input-field col s12">';
         templateOutput += '<select id="resourceSubjectType" name="resource_subject" required class="browser-default">';

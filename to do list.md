@@ -1,15 +1,15 @@
-1. Comment system
-2. Assignment       - edit
-                    - callback
-                    - submit assignment [TODO]
+1. Comment system                               DONE
+2. Assignment       - edit                      V1.1.0
+                    - callback                  V1.1.0
+                    - submit assignment         DONE
                     - doing assignment          DONE
-3. Account 
-4. Statistics
-5. Superuser validation [DONE]
+3. Account                                      DONE
+4. Statistics                                   [TODO]
+5. Superuser validation                         DONE
 
 //
-6. Test results
-7. Test skipped questions
+6. Test results                                 DONE
+7. Test skipped questions                       V1.1.1
 
 **Principal statistics**
 
