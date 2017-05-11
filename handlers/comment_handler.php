@@ -155,7 +155,7 @@ if(isset($_POST['action'])) {
             $submission_id = $_POST['id'];
             $acc_id = $_SESSION['admin_acc_id'];
 
-            $result = CommentHandler::TeacherCommentOnSchedule($schedule_id,$acc_id,$comment_text);
+            $result = CommentHandler::TeacherCommentOnAssSubmission($submission_id,$acc_id,$comment_text);
 
             echo json_encode($result);
 

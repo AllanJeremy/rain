@@ -1,6 +1,6 @@
 /*global $, jQuery, alert, console*/
 
-var AssignmentEvents = function () {
+var AssignmentEvents = function (userInfo) {
     'use strict';
     //--------------
     
@@ -15,6 +15,7 @@ var AssignmentEvents = function () {
         returnAssSubmission();
         assSubmissionCardEvents();
 
+        console.log('testing userInfo in assEvents', userInfo);
     };
     
     //-------------------------------
@@ -863,45 +864,6 @@ var AssignmentEvents = function () {
         });
 
     }
-
-    //--------------------------------
-
-    var getUserInfo = function () {
-
-        var $req =  $.ajax({
-            url: 'handlers/session_handler.php',
-            data: {'action':'GetLoggedUserInfo'},
-            type: 'GET',
-            processData: true
-        }, 'json');
-
-        return $req;
-
-    };
-
-    var ajaxInit = function () {
-
-        $.when(getUserInfo()).then(function (_1,_2,_3) {
-/*
-            console.log(_1);
-            console.log(_2);
-            console.log(_3.responseText);
-*/
-
-            userInfo = jQuery.parseJSON(_1);
-
-            //if user_type is student, don't load the functions else init
-            if(userInfo.account_type !== 'student') {
-                $this.__construct(userInfo);
-            } else {
-                console.log('Student account. No event added to the page.');
-
-                return;
-            }
-
-        });
-
-    };
 
     this.__construct();
     

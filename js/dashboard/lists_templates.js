@@ -488,6 +488,7 @@ var Lists_Templates = function () {
 
         case 'schedule':
             commentType = 'schedule';
+
             break;
         case 'assignment':
             commentType = 'assignment';
@@ -504,7 +505,7 @@ var Lists_Templates = function () {
         templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content">';
         templateOutput += ((commentType !== '') ? '<h4>' + commentType + ' comments</h4>' : '<h4>Comments</h4>');
-        templateOutput += ((commentType !== '') ? "<h5>Comments on " + obj.userName + "'s " + commentType + " (" + obj.title + ")</h5>" : '');
+        templateOutput += ((commentType !== '') ? "<h5>ref: " + obj.title + " " + obj.extraInfo + "</h5>" : '');
         templateOutput += obj.templateBody;
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
@@ -1071,7 +1072,7 @@ var Lists_Templates = function () {
         templateOutput += '<input type="text" placeholder="comment" class="js-comment-bar browser-default modal-comment " name="comment">';
 
         if (can_comment === true) {
-            templateOutput += '<a class="marg-6 btn js-add-' + comment_type + '-comment" href="javascript:void(0)">comment</a>';
+            templateOutput += '<a class="marg-6 btn js-add-comment" data-root-hook="' + comment_type + '" href="javascript:void(0)">comment</a>';
 
         }
 

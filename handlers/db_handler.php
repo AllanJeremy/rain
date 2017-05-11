@@ -1890,6 +1890,39 @@ if(isset($_POST['action'])) {
             }
             break;
 
+        //Update and delete assignment comments
+        case 'UpdateAssComment':
+            $comment_id = $_POST['id'];
+            $comment_text = $_POST['comment_text'];
+
+            $result = DbHandler::UpdateAssComment($comment_id, $comment_text);
+
+            echo json_encode($result);
+
+            break;
+        case 'DeleteAssComment':
+            $result = DbHandler::DeleteAssComment($_POST['id']);
+
+            echo json_encode($result);
+
+            break;
+        //Update and delete assSubmission comments
+        case 'UpdateAssSubmissionComment':
+            $comment_id = $_POST['id'];
+            $comment_text = $_POST['comment_text'];
+
+            $result = DbHandler::UpdateAssSubmissionComment($comment_id, $comment_text);
+
+            echo json_encode($result);
+
+            break;
+        case 'DeleteAssSubmissionComment':
+            $result = DbHandler::DeleteAssSubmissionComment($_POST['id']);
+
+            echo json_encode($result);
+
+            break;
+        //Update and delete schedule comments
         case 'UpdateScheduleComment':
             $comment_id = $_POST['id'];
             $comment_text = $_POST['comment_text'];

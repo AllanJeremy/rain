@@ -1258,13 +1258,13 @@ class DbInfo
                     }
 
                     echo '<tr data-schedule-id="'.$val['schedule_id'].'">';
-                    echo '<td>'.$val['schedule_title'].'</td>';
+                    echo '<td class="js-schedule-title">'.$val['schedule_title'].'</td>';
                     echo '<td>'.$val['schedule_description'].'</td>';
                     echo '<td class="right-align" >'.$val['due_date'].'</td>';
                     echo '<td class="right-align schedule-action" width="120">';
-                    echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
-                    echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>' : '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>');
-                    echo '<a class="btn-icon js-see-all-schedule-comments" id="" href="#!"><i class="material-icons">comments</i></a>';
+                    echo '<a class="btn-icon"  id="openSchedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
+                    echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>');
+                    echo '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
                     echo '</td>';
                     echo '</tr>';
 
@@ -1283,14 +1283,14 @@ class DbInfo
             foreach($listdata as $list) {
 
                 echo '<tr data-schedule-id="'.$list['schedule_id'].'">';
-                echo '<td>'.$list['schedule_title'].'</td>';
+                echo '<td class="js-schedule-title">'.$list['schedule_title'].'</td>';
                 echo '<td>'.$list['schedule_description'].'</td>';
                 echo '<td class="right-align" >'.$list['due_date'].'</td>';
                 echo '<td class="right-align schedule-action" width="120">';
                 echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
-                echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-                echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>' : '');
-                echo '<a class="btn-icon js-see-all-schedule-comments" id="" href="#!"><i class="material-icons">comments</i></a>';
+                echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="javascript:void(0)"><i class="material-icons">done</i></a>';
+                echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '');
+                echo '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
                 echo '</td>';
                 echo '</tr>';
 
@@ -2059,6 +2059,15 @@ if(isset($_GET['action'])) {
             $schedule_id = intval($_GET["id"]);
 
             $comments = DbInfo::GetScheduleComments($schedule_id);
+
+            echo json_encode($comments);
+
+        break;
+
+        case 'GetAssComments':
+            $ass_id = intval($_GET["id"]);
+
+            $comments = DbInfo::GetAssComments($ass_id);
 
             echo json_encode($comments);
 

@@ -1,6 +1,6 @@
 /*global $, jQuery, alert, console*/
 
-var StudentAssignmentEvents = function () {
+var StudentAssignmentEvents = function (userInfo) {
     'use strict';
     //--------------
 
@@ -369,49 +369,6 @@ var StudentAssignmentEvents = function () {
         return str;
     };
 
-    var ajaxInit = function () {
-
-        $.when(getUserInfo()).then(function (_1,_2,_3) {
-/*
-            console.log(_1);
-            console.log(_2);
-            console.log(_3.responseText);
-*/
-
-            userInfo = jQuery.parseJSON(_1);
-
-            //remove class disables on submit buttons
-            $('a.js-submit-assignment').removeClass('disabled');
-            $('a.js-confirm-submit-assignment').removeClass('disabled');
-
-            //if user_type is student, load the functions else return
-            if(userInfo.account_type === 'student') {
-                $this.__construct(userInfo);
-            } else {
-                console.log('teacher account. No event added to the page.');
-
-                return;
-            }
-
-        });
-
-    };
-
-    //-----------
-
-    var getUserInfo = function () {
-
-        var $req =  $.ajax({
-            url: 'handlers/session_handler.php',
-            data: {'action':'GetLoggedUserInfo'},
-            type: 'GET',
-            processData: true
-        }, 'json');
-
-        return $req;
-
-    };
-
-    ajaxInit();
+    this.construct(userInfo);
 
 };

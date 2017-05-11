@@ -112,7 +112,6 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                 <div class="row main-tab" id="sentAssignmentsTab">
                     <div class="col card-col" data-assignment-id="">
                         <div class="card white">
-                            <div class="assignment-info right-align"><a href="#" class="deep-orange-text text-accent-3" onclick="")><i class="material-icons">message</i> 12</a></div>
                             <div class="card-content">
                                 <span class="card-title">Assignment title</span>
 
@@ -139,8 +138,8 @@ about how you came to achieve this.</p>
                             <div class="card-action center-align brookhurst-theme-primary assignment-results">
                                 <p class="white-text no-margin">Grade given: <span class="php-data">90%</span></p>
                                 <div class="js-assignment-comments assignment-info">
-                                    <a href="#" class="<!--deep-orange-text text-accent-3--> php-data white-text" onclick="")>
-                                        <i class="material-icons center">message</i> 12
+                                    <a href="#" data-root-hook="assignment" class="js-get-comments <!--deep-orange-text text-accent-3--> php-data white-text" onclick="">
+                                        <i class="material-icons center">message</i>
                                     </a>
                                 </div>
                             </div>

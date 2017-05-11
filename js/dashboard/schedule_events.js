@@ -1,6 +1,6 @@
 /*global $, jQuery, alert, console*/
 
-var ScheduleEvents = function () {
+var ScheduleEvents = function (userInfo) {
     'use strict';
     
     //--------------
@@ -31,8 +31,6 @@ var ScheduleEvents = function () {
         overdueScheduleReminder();              //Beta - version
         getPendingSchedules();  //Beta - version
         archiveSchedule();      //Beta - version
-        showScheduleComments([userInfo.user_id, userInfo.account_type]); //done
-        addScheduleComments(/*userInfo.user_id*/);  //done
     };
     
     //----------------------------

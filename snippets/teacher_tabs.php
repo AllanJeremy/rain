@@ -379,12 +379,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                         <div class="collapsible-header ">
                                             <span><?php echo $ass_title;?></span>
                                             <div class="right hide">
-                                                <span class="margin-horiz-8 badge new">4</span>
+                                                <span class="margin-horiz-8 badge new">0</span>
                                                 <p class="margin-horiz-8 right">
-                                                    <span class="js-submitted">10</span> submitted
+                                                    <span class="js-submitted">0</span> submitted
                                                 </p>
                                                 <p class="margin-horiz-8 right">
-                                                    <span class="js-not-submitted">5</span> not submitted
+                                                    <span class="js-not-submitted">0</span> not submitted
                                                 </p>
                                             </div>
                                             <div class="row">
@@ -469,7 +469,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
                                                                     <br>
-                                                                    <a class='right btn-inline js-see-assignment-comments' href="javascript:void(0)">all comments</a>
+                                                                    <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all comments</a>
                                                                 </div>
                                                                 <span class="right">
                                                                     <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
