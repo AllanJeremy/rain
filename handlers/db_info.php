@@ -1595,7 +1595,7 @@ class DbInfo
             $select_status = $select_stmt->execute();
             $results = @$select_stmt->get_result();
 
-            if(@$select_status && ($result->num_rows>0))
+            if(@$select_status && ($results->num_rows>0))
             {
                 return $results;
             }
@@ -1677,6 +1677,41 @@ class DbInfo
         return $schedules;
     }
 
+    //Get the schedule attendance
+    private static function GetScheduleAttendance($schedules,$is_attended)
+    {
+        $found_schedules = array();
+        //If the schedules were found
+        if($schedules && $schedules->num_rows>0)
+        {
+            foreach($schedules as $schedule)
+            {
+                if($schedule["attended_schedule"] == $is_attended)
+                {
+                    array_push($found_schedules,$schedule);
+                }
+            }
+
+            return $found_schedules;
+        }
+        else
+        {
+            return $schedules;
+        }
+    }
+
+    #Get done schedules
+    public static function GetDoneSchedules($schedules)
+    {
+        return self::GetScheduleAttendance($schedules,true);
+    }
+    
+    #Get unattended schedules
+    public static function GetUnattendedSchedules($schedules)
+    {
+        return self::GetScheduleAttendance($schedules,false);
+    }
+
     //Get assignments within a certain timeframe
     #TODO: Consider refactoring timeframe functions further into a parent function that contains all the core logic [DONE]
     protected static function GetAssignmentsInTimeframe($start_date,$end_date)
@@ -1742,6 +1777,71 @@ class DbInfo
         $assignments = self::GetAssignmentsInTimeframe($thirty_days_ago,$today);
 
         return $assignments;
+    }
+
+    #Get assignment submissions given assignments
+    public static function GetMultipleAssSubmissions($assignments)
+    {
+        $found_ass_submissions = array();
+        if($assignments && @$assignments->num_rows>0)
+        {
+            //For each assignment
+            foreach($assignments as $ass)
+            {
+                //Get assignment submissions for the current assignment
+                $ass_submissions = self::GetAssSubmissionsByAssId($ass["ass_id"]);
+                if($ass_submissions && @$ass_submissions->num_rows>0)
+                {
+                    foreach($ass_submissions as $ass_sub)
+                    {
+                        array_push($found_ass_submissions,$ass_sub);
+                    }
+                }
+            }
+
+            return $found_ass_submissions;
+        }
+        else
+        {
+            return $assignments;
+        }
+    }
+
+    #Get assignment submissions based on assignments
+    private static function GetAssSubsBasedOnAss($assignments,$is_returned)
+    {
+        $ass_submissions = self::GetMultipleAssSubmissions($assignments);
+        $graded_submissions = array();
+        //If assignment submissions were found
+        if($ass_submissions && count($ass_submissions)>0)
+        {
+            foreach($ass_submissions as $ass_sub)
+            {
+                //if the submission is a returned submissiona and the grade has been set
+                if($ass_sub["returned"] == $is_returned && !empty($ass_sub["grade"]))
+                {
+                    array_push($graded_submissions,$ass_sub);
+                }
+            }
+
+            return $graded_submissions;
+        }
+        else
+        {
+            return $ass_submissions;
+        }
+    }
+
+    #Get graded assignment submissions
+    public static function GetGradedAssSubmissions($assignments)
+    {
+        return self::GetAssSubsBasedOnAss($assignments,true);
+    }
+
+    #Get ungraded/unretured assignment submissions
+    public static function GetUngradedAssSubmissions($assignments)
+    {
+        return self::GetAssSubsBasedOnAss($assignments,false);
     }
 
 };#END OF CLASS

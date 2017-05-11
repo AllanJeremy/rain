@@ -2,6 +2,22 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resources class. Handles all resource related operations
 
+//Get number text ~ rounds off number after 1000 to show shorter version eg. 1K instead of 1000
+ function GetNumberText($number)
+ {
+     $num_text = "";
+    if($number>=1000)
+    {
+        $num_text = round(($number/1000),2)."K";
+    }
+    else
+    {
+        $num_text = $number;
+    }
+
+    return $num_text;
+ }
+
  function AddTimeframeDropdown($id="")
  {
      $id_attr = "";
@@ -13,12 +29,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
 <div class="timeframe_container container">
     <label for="<?php echo $id_attr;?>">Timeframe</label>
     <select class="esomo_timeframe" <?php echo $id_attr;?>>
+        <option value="all">All time</option>
         <option value="today">Today so far</option>
         <option value="yesterday">Yesterday</option>
-        <option value="last7days">Last 7 days</option>
+        <option value="last7days" selected>Last 7 days</option>
         <option value="this_month">This month</option>
         <option value="last_month">Last month</option>
-        <option value="all">All time</option>
     </select>
 </div>
 <?php
@@ -41,14 +57,30 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 
                                 <?php
                                     AddTimeframeDropdown("schedule_overview_timeframe");
+
+                                    $schedules = DbInfo::Get7DaySchedules();
+                                    $total_schedule_count = $done_schedule_count = $unattended_schedule_count = 0;
+                                    if($schedules && @$schedules->num_rows>0)
+                                    {
+                                        $total_schedule_count = $schedules->num_rows;
+                                        
+                                        //Returns an array that contains associative arrays corresponding to db records
+                                        $done_schedules = DbInfo::GetDoneSchedules($schedules);
+                                        $unattended_schedules = DbInfo::GetUnattendedSchedules($schedules);
+                                        // var_dump($done_schedules);
+                                        // var_dump($unattended_schedules);
+
+                                        $done_schedule_count = count($done_schedules);
+                                        $unattended_schedule_count = count($unattended_schedules);
+                                    }
                                 ?>
                                 
                                 <!--Total schedules-->
                                 <div class="card col s12 m4">
                                     <div class="card-content">
                                         <p><b>Total</b></p>
-                                        <h4 class="center php-data">1K</h4> 
-                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                        <h4 class="center php-data" id="stats_total_schedules"><?php echo $total_schedule_count;?></h4> 
+                                        <!--<a href="javascript:void(0)" class="btn ">VIEW</a>                 -->
                                     </div>
                                 </div>
 
@@ -56,8 +88,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <div class="card col s12 m4">
                                     <div class="card-content">
                                         <p><b>Done</b></p>
-                                        <h4 class="center php-data">800</h4> 
-                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                        <h4 class="center php-data" id="stats_done_schedules"><?php echo $done_schedule_count;?></h4> 
+                                        <!--<a href="javascript:void(0)" class="btn ">VIEW</a>                 -->
                                     </div>
                                 </div>
 
@@ -65,8 +97,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <div class="card col s12 m4">
                                     <div class="card-content">
                                         <p><b>Unattended</b></p>
-                                        <h4 class="center php-data">200</h4> 
-                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                        <h4 class="center php-data" id="stats_unattended_schedules"><?php echo $unattended_schedule_count;?></h4> 
+                                        <!--<a href="javascript:void(0)" class="btn ">VIEW</a>                 -->
                                     </div>
                                 </div>
 
@@ -90,14 +122,28 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 
                                 <?php
                                     AddTimeframeDropdown("ass_overview_timeframe");
+
+                                    $assignments = DbInfo::Get7DayAssignments();
+                                    $total_ass_sent = $total_ass_subs = $total_graded_ass_subs = 0;
+
+                                    if($assignments && @$assignments->num_rows>0)
+                                    {
+                                        $total_ass_sent = $assignments->num_rows;
+
+                                        $ass_subs = DbInfo::GetMultipleAssSubmissions($assignments);
+                                        $graded_subs = DbInfo::GetGradedAssSubmissions($assignments);
+                                        
+                                        $total_ass_subs = count($ass_subs);
+                                        $total_graded_ass_subs = count($graded_subs);
+                                    }
                                 ?>
                                 
                                 <!--Total assignments sent-->
                                 <div class="card col s12 m4">
                                     <div class="card-content">
                                         <p><b>Total sent</b></p>
-                                        <h4 class="center php-data">30</h4> 
-                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                        <h4 class="center php-data" id="stats_total_ass_sent"><?php echo $total_ass_sent;?></h4> 
+                                        <!--<a href="javascript:void(0)" class="btn ">VIEW</a>                 -->
                                     </div>
                                 </div>
 
@@ -105,8 +151,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <div class="card col s12 m4">
                                     <div class="card-content">
                                         <p><b>Submissions</b></p>
-                                        <h4 class="center php-data">60</h4> 
-                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                        <h4 class="center php-data" id="stats_total_ass_subs"><?php echo $total_ass_subs;?></h4> 
+                                        <!--<a href="javascript:void(0)" class="btn ">VIEW</a>                 -->
                                     </div>
                                 </div>
 
@@ -114,8 +160,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <div class="card col s12 m4">
                                     <div class="card-content">
                                         <p><b>Graded</b></p>
-                                        <h4 class="center php-data">57</h4> 
-                                        <a href="javascript:void(0)" class="btn">VIEW</a>                 
+                                        <h4 class="center php-data" id="stats_total_graded_ass_subs"><?php echo $total_graded_ass_subs;?></h4> 
+                                        <!--<a href="javascript:void(0)" class="btn">VIEW</a>                 -->
                                     </div>
                                 </div>
 
