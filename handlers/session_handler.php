@@ -34,6 +34,7 @@ class MySessionHandler
         $_SESSION["admin_account_type"]= $admin_acc["account_type"];
         $_SESSION["admin_password"]= $admin_acc["password"];
 
+        $_SESSION["admin_using_original_pass"] = PasswordEncrypt::Verify($_SESSION["admin_username"],$_SESSION["admin_password"]);
         return true;
     }
 
@@ -65,7 +66,8 @@ class MySessionHandler
                 $_SESSION["admin_email"],
                 $_SESSION["admin_phone"],
                 $_SESSION["admin_account_type"],
-                $_SESSION["admin_password"]
+                $_SESSION["admin_password"],
+                $_SESSION["admin_using_original_pass"]
             );
 
             header("Location:".self::LOGOUT_REDIRECT_PAGE);#redirect logged out user to this page
@@ -118,7 +120,8 @@ class MySessionHandler
         $_SESSION["student_parent_phone"] = $student_acc["parent_phone"];
         $_SESSION["student_full_name"] = $student_acc["full_name"];
         $_SESSION["student_class_ids"] = $student_acc["class_ids"];
-
+        
+        $_SESSION["student_using_original_pass"] = PasswordEncrypt::Verify($_SESSION["student_username"],$_SESSION["student_password"]);
         return true;
     }
 
@@ -154,7 +157,8 @@ class MySessionHandler
                 $_SESSION["student_parent_name"],
                 $_SESSION["student_parent_phone"],
                 $_SESSION["student_full_name"],
-                $_SESSION["student_class_ids"]
+                $_SESSION["student_class_ids"],
+                $_SESSION["student_using_original_pass"]
             );
 
             header("Location:".self::LOGOUT_REDIRECT_PAGE);#redirect logged out user to this page
@@ -191,7 +195,7 @@ class MySessionHandler
     //Get the information of the currently logged user
     public static function GetLoggedUserInfo()
     {
-        $user_info = array("user_id"=>"","account_type"=>"","first_name"=>"","last_name"=>"","full_name"=>"");
+        $user_info = array("user_id"=>"","account_type"=>"","first_name"=>"","last_name"=>"","full_name"=>"","using_original_pass"=>true);
 
 
         if(self::AdminIsLoggedIn())
@@ -201,6 +205,7 @@ class MySessionHandler
             $user_info["first_name"] = $_SESSION["admin_first_name"];
             $user_info["last_name"] = $_SESSION["admin_last_name"];
             $user_info["full_name"] = $user_info["first_name"] . " " . $user_info["last_name"];
+            $user_info["using_original_pass"] = $_SESSION["admin_using_original_pass"];
         }
         else if(self::StudentIsLoggedIn())
         {
@@ -209,6 +214,7 @@ class MySessionHandler
             $user_info["first_name"] = $_SESSION["student_first_name"];
             $user_info["last_name"] = $_SESSION["student_last_name"];
             $user_info["full_name"] = $user_info["first_name"] . " " . $user_info["last_name"];
+            $user_info["using_original_pass"] = $_SESSION["student_using_original_pass"];
         }
         else
         {
