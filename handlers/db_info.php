@@ -1578,6 +1578,172 @@ class DbInfo
               return $resources;
           }
      }
+
+     /*TIMEFRAME RELATED FUNCTIONS ~ MAINLY USED FOR STATISTICS*/
+     //CONVENIENCE : Get records within a certain timeframe for specific table ~ REFACTORED []
+     private static function GetRecordsInTimeframe($table_name,$date_column,$start_date,$end_date)
+     {
+        global $dbCon;
+
+        $select_query = "SELECT * FROM $table_name WHERE $table_name.$date_column>=? AND $table_name.$date_column<=?";
+
+        //Attempt to prepare query
+        if($select_stmt = $dbCon->prepare($select_query))
+        {
+            $select_stmt->bind_param("ss",$start_date,$end_date);
+
+            $select_status = $select_stmt->execute();
+            $results = @$select_stmt->get_result();
+
+            if(@$select_status && ($result->num_rows>0))
+            {
+                return $results;
+            }
+            else
+            {
+                return $select_status;
+            }
+        }
+        else
+        {
+            return null;
+        }
+     }
+
+     //Get schedules within a certain timeframe
+     #TODO: Consider refactoring timeframe functions further into a parent function that contains all the core  [DONE]
+     protected static function GetSchedulesInTimeframe($start_date,$end_date)
+     {
+        return self::GetRecordsInTimeframe("schedules","schedule_date",$start_date,$end_date);
+     }
+    
+    #Get the current day's schedules
+    public static function GetTodaySchedules()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $schedules = self::GetSchedulesInTimeframe($today,$today);
+
+        return $schedules;
+    }
+    
+    #Get yesterday's schedules
+    public static function GetYesterdaySchedules()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $yesterday = EsomoDate::GetYesterday();
+
+        $schedules = self::GetSchedulesInTimeframe($yesterday,$today);
+
+        return $schedules;
+    }
+
+    #Get schedules for the past 7 days
+    public static function Get7DaySchedules()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $seven_days_ago = EsomoDate::Get7DaysAgo();
+
+        $schedules = self::GetSchedulesInTimeframe($seven_days_ago,$today);
+
+        return $schedules;
+    }
+
+    #Get schedules for this month
+    public static function GetThisMonthSchedules()
+    {
+        $this_month = EsomoDate::GetThisMonth();
+        $schedules = self::GetSchedulesInTimeframe($this_month['start'],$this_month['end']);
+
+        return $schedules;
+    }
+    
+    #Get last month schedules
+    public static function GetLastMonthSchedules()
+    {
+        $last_month = EsomoDate::GetLastMonth();
+        $schedules = self::GetSchedulesInTimeframe($last_month['start'],$last_month['end']);
+
+        return $schedules;
+    }
+
+    #Get schedules for the past 30 days
+    public static function GetLast30DaysSchedules()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $thirty_days_ago = EsomoDate::Get30DaysAgo();
+
+        $schedules = self::GetSchedulesInTimeframe($thirty_days_ago,$today);
+
+        return $schedules;
+    }
+
+    //Get assignments within a certain timeframe
+    #TODO: Consider refactoring timeframe functions further into a parent function that contains all the core logic [DONE]
+    protected static function GetAssignmentsInTimeframe($start_date,$end_date)
+    {
+        return self::GetRecordsInTimeframe("assignments","date_sent",$start_date,$end_date);
+    }
+
+    #Get the current day's assignments
+    public static function GetTodayAssignments()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $assignments = self::GetAssignmentsInTimeframe($today,$today);
+
+        return $assignments;
+    }
+    
+    #Get yesterday's assignments
+    public static function GetYesterdayAssignments()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $yesterday = EsomoDate::GetYesterday();
+
+        $assignments = self::GetAssignmentsInTimeframe($yesterday,$today);
+
+        return $assignments;
+    }
+
+    #Get assignments for the past 7 days
+    public static function Get7DayAssignments()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $seven_days_ago = EsomoDate::Get7DaysAgo();
+
+        $assignments = self::GetAssignmentsInTimeframe($seven_days_ago,$today);
+
+        return $assignments;
+    }
+
+    #Get assignments for this month
+    public static function GetThisMonthAssignments()
+    {
+        $this_month = EsomoDate::GetThisMonth();
+        $assignments = self::GetAssignmentsInTimeframe($this_month['start'],$this_month['end']);
+
+        return $assignments;
+    }
+    
+    #Get last month assignments
+    public static function GetLastMonthAssignments()
+    {
+        $last_month = EsomoDate::GetLastMonth();
+        $assignments = self::GetAssignmentsInTimeframe($last_month['start'],$last_month['end']);
+
+        return $assignments;
+    }
+
+    #Get assignments for the past 30 days
+    public static function GetLast30DaysAssignments()
+    {
+        $today = EsomoDate::GetCurrentDate();
+        $thirty_days_ago = EsomoDate::Get30DaysAgo();
+
+        $assignments = self::GetAssignmentsInTimeframe($thirty_days_ago,$today);
+
+        return $assignments;
+    }
+
 };#END OF CLASS
 
 /*
