@@ -19,11 +19,28 @@ interface EsomoDateFunctions
 
     #returns the current date the database date format
     public static function GetCurrentDate();
+
+    #Return yesterday in db format ~ returns date yesterday
+    public static function GetYesterday();
+
+    #Return yesterday in db format ~ returns date 7 days ago
+    public static function Get7DaysAgo();
+
+    #Return yesterday in db format ~ returns start and end
+    public static function GetThisMonth();
+
+    #Return last month in db format ~ returns start and end
+    public static function GetLastMonth();
+
+    #Return 30 days ago in db format ~ returns the date 30 days ago
+    public static function Get30DaysAgo();
 }
 
 class EsomoDate implements EsomoDateFunctions
 {
     const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+    const DB_FIRST_MONTH_DAY = 'Y-m-01 H:i:s';
+    const DB_LAST_MONTH_DAY = 'Y-m-t H:i:s';
 
     public static function Negate($number)
     {
@@ -209,4 +226,68 @@ class EsomoDate implements EsomoDateFunctions
 
         return array("years"=>$years,"months"=>$months,"days"=>$days,"hours"=>$hours,"minutes"=>$minutes,"seconds"=>$seconds);
     }
-}
+
+    /*TIMEFRAME FUNCTIONS*/
+    //Returns the date - the number of days provided from the current date
+    protected static function GetMonthDiff($months)
+    {
+        $today =  new DateTime(self::GetCurrentDate());
+        $diff = $today->modify("-".$months." month");
+
+        return $diff;
+    }
+    //Returns the date - the number of days provided from the current date
+    protected static function GetDayDiff($days)
+    {
+        $today =  new DateTime(self::GetCurrentDate());
+        
+        $diff = $today->modify('-'.$days.' day');
+
+        return $diff;
+    }
+
+    // Return yesterday in db format ~ returns date yesterday
+    public static function GetYesterday()
+    {
+        return self::GetDayDiff(1)->format(EsomoDate::DB_DATE_FORMAT);
+    }
+
+    // Return yesterday in db format ~ returns date 7 days ago
+    public static function Get7DaysAgo()
+    {
+        return self::GetDayDiff(7)->format(EsomoDate::DB_DATE_FORMAT);
+    }
+
+    // Return yesterday in db format ~ returns start and end
+    public static function GetThisMonth()
+    {
+        $today =  new DateTime(self::GetCurrentDate());
+        
+        $month_start = $today->format(self::DB_FIRST_MONTH_DAY);
+
+        $month_dates = array("start"=>$month_start,"end"=>$today->format(EsomoDate::DB_DATE_FORMAT));
+
+        return $month_dates;
+    }
+
+    // Return last month in db format ~ returns start and end
+    public static function GetLastMonth()
+    {
+        $today =  self::GetCurrentDate();
+        $prev_month = self::GetMonthDiff(1);#Previous month date
+
+        $prev_month_start = $prev_month->format(self::DB_FIRST_MONTH_DAY);
+        $prev_month_end = $prev_month->format(self::DB_LAST_MONTH_DAY);
+
+        
+        $month_dates = array("start"=>$prev_month_start,"end"=>$prev_month_end);
+
+        return $month_dates;
+    }
+
+    // Return 30 days ago in db format ~ returns the date 30 days ago
+    public static function Get30DaysAgo()
+    {
+        return (self::GetDayDiff(30)->format(EsomoDate::DB_DATE_FORMAT));
+    }
+}#End of class

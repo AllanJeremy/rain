@@ -1,6 +1,28 @@
 <?php 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resources class. Handles all resource related operations
+
+ function AddTimeframeDropdown($id="")
+ {
+     $id_attr = "";
+    if(!empty($id))
+    {
+        $id_attr = 'id="'.$id.'"';
+    }
+?>
+<div class="timeframe_container container">
+    <label for="<?php echo $id_attr;?>">Timeframe</label>
+    <select class="esomo_timeframe" <?php echo $id_attr;?>>
+        <option value="today">Today so far</option>
+        <option value="yesterday">Yesterday</option>
+        <option value="last7days">Last 7 days</option>
+        <option value="this_month">This month</option>
+        <option value="last_month">Last month</option>
+        <option value="all">All time</option>
+    </select>
+</div>
+<?php
+ }
 ?>            
             
             <div class="container">
@@ -9,33 +31,132 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 <br>-->
                 <!--Principal stats overview tab-->
                 <div class="row main-tab" id="statsOverviewTab">
-                    
-                    <div class="col card-col">
-                        <div class="card blue-grey lighten-2">
-                            
-                            <div class="card-content">
-                                <span class="card-title ">Schedules overview</span>
 
-                                <p>total Schedules: <span class="php-data">20,000</span></p>
+                    <!--Schedules card section-->
+                    <div class="col s12 l6">
+                        <div class="card">
+                            <div class="card-content row">
+                                <span class="card-title">SCHEDULES</span>
+                                <div class="divider"></div><br>
                                 
-                                <p>Done schedules: <span class="php-data">19,878</span></p>
+                                <?php
+                                    AddTimeframeDropdown("schedule_overview_timeframe");
+                                ?>
                                 
-                                <p>Schedules not done: <span class="php-data">100</span></p>
-                                
-                                <p>Overdue schedules: <span class="php-data">22</span></p>
-                                
+                                <!--Total schedules-->
+                                <div class="card col s12 m4">
+                                    <div class="card-content">
+                                        <p><b>Total</b></p>
+                                        <h4 class="center php-data">1K</h4> 
+                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                    </div>
+                                </div>
+
+                                <!--Done schedules-->
+                                <div class="card col s12 m4">
+                                    <div class="card-content">
+                                        <p><b>Done</b></p>
+                                        <h4 class="center php-data">800</h4> 
+                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                    </div>
+                                </div>
+
+                                <!--Unattended schedules-->
+                                <div class="card col s12 m4">
+                                    <div class="card-content">
+                                        <p><b>Unattended</b></p>
+                                        <h4 class="center php-data">200</h4> 
+                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                    </div>
+                                </div>
+
+                                <!--Assignment Tips-->
+                                <div class="card col s12 blue-grey lighten-4">
+                                    <div class="card-content">
+                                        <p class="center blue-grey-text text-darken-2"><b>Quick Tip</b><br>Unattended schedules are schedules that were not marked as attended by teachers.</p>               
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-action right-align">
-                                <a href="#" class="">more details</a>
-                            </div>
+
                         </div>
                     </div>
-                    
+
+                    <!--Assignments card section-->
+                    <div class="col s12 l6">
+                        <div class="card">
+                            <div class="card-content row">
+                                <span class="card-title">ASSIGNMENTS</span>
+                                <div class="divider"></div><br>
+                                
+                                <?php
+                                    AddTimeframeDropdown("ass_overview_timeframe");
+                                ?>
+                                
+                                <!--Total assignments sent-->
+                                <div class="card col s12 m4">
+                                    <div class="card-content">
+                                        <p><b>Total sent</b></p>
+                                        <h4 class="center php-data">30</h4> 
+                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                    </div>
+                                </div>
+
+                                <!--Assignment submissions-->
+                                <div class="card col s12 m4">
+                                    <div class="card-content">
+                                        <p><b>Submissions</b></p>
+                                        <h4 class="center php-data">60</h4> 
+                                        <a href="javascript:void(0)" class="btn ">VIEW</a>                 
+                                    </div>
+                                </div>
+
+                                <!--Graded assignments-->
+                                <div class="card col s12 m4">
+                                    <div class="card-content">
+                                        <p><b>Graded</b></p>
+                                        <h4 class="center php-data">57</h4> 
+                                        <a href="javascript:void(0)" class="btn">VIEW</a>                 
+                                    </div>
+                                </div>
+
+                                <!--Assignment Tips-->
+                                <div class="card col s12 blue-grey lighten-4">
+                                    <div class="card-content">
+                                        <p class="center blue-grey-text text-darken-2"><b>Quick Tip</b><br>Assignments are only considered graded once the teacher has returned them.</p>               
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 
                 <!--Principal schedules tab-->
                 <div class="row main-tab" id="principalSchedulesTab">
-                    Principal Schedules tab
+                    <div class="col s12 m6 right">
+                        <?php
+                            AddTimeframeDropdown("schedules_timeframe");
+                        ?>
+                    </div>
+                    <div class="col s12 divider"></div><br>
+                    <div class="col s12">
+                        <p class="grey-text text-darken-2">Schedules</p>
+
+                        <table class="table striped bordered" id="schedules_tab_list">
+                            <tr class="table-titles">
+                                <th>Title</th>
+                                <th>Teacher</th>
+                                <th>Classroom</th>
+                                <th>Scheduled on</th>
+                                <th>Due date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                            <!--Table body contents-->
+                        </table>
+                        
+                    </div>
                 </div>
                 
                 <!--Principal assignments tab-->
