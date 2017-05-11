@@ -10,12 +10,9 @@ var AssignmentEvents = function (userInfo) {
         //assignment inits
         addClassroomToAssignment();
         submitNewAssignment();
-        showAssignmentComments();
-        addAssignmentComments();
         returnAssSubmission();
         assSubmissionCardEvents();
 
-        console.log('testing userInfo in assEvents', userInfo);
     };
     
     //-------------------------------
@@ -544,123 +541,6 @@ var AssignmentEvents = function (userInfo) {
 
         }
         
-    };
-    
-    //--------------------------------
-    
-    var showAssignmentComments = function () {
-
-        $('main').on('click', '.js-see-assignment-comments', function (e) {
-
-            e.preventDefault();
-
-            var $this = $(this),
-                ass_id = $this.parents('li.js-assignment-collapsible').attr('data-assignment-id'), //id of the comment
-                submission_id = $this.parent('.comment').attr('data-submission-id'), //id of the submission
-                modal_id = 'modal_' + ass_id + '_ass_sub_' + submission_id, //modal id
-                user_id = $this.parent('.comment').find('input.js-comment-bar').attr('data-user-id'), //id of the student
-                user_name = $this.parents('.ass-submission-container').find('.student-name')[0].innerText.split('|')[0], //name of the student
-                comment_type = $this.parent('.comment').attr('data-comment-type'),
-                title = $this.parents('li.js-assignment-collapsible').find('.collapsible-header span')[0].innerText, //title of the assignment...
-                modal_body = '', //the comments
-                comment_enabled = true; //bool
-
-            console.log(user_name);
-            $.get('handlers/db_info.php', {'action' : 'GetAssSubmissionComments', 'id' : parseInt(submission_id)}, function (resultData) {
-                console.log(resultData);
-
-                if (resultData === false) {//No comments found
-                        modal_body += '';
-
-                } else {
-
-                    for(var i = 0; i < resultData['comments'].length; i++) {
-
-                        if (user[0] === resultData['comments'][i]['poster_id'] && user[1] === resultData['comments'][i]['poster_type']) {
-                            self = true;
-
-                            resultData['comments'][i]['poster_name'] = 'You';
-                            resultData['comments'][i]['poster_link'] = 'javascript:void(0)';
-                        }
-
-                        console.log(resultData['comments'][i]);
-                        modal_body += Lists_Templates.commentList(resultData['comments'][i], self);
-
-                    }
-                }
-
-                console.log(modal_body);
-                Modals_Events.loadCommentModal(modal_id, submission_id, user_name, comment_type, title, modal_body, comment_enabled);
-
-                $('.modal#' + modal_id).openModal({dismissible: false});
-                console.log('opening modal clicked');
-
-
-            }, 'json');
-
-        });
-    };
-
-    //--------------------------------
-
-    var addAssignmentComments = function () {
-
-        $('main').on('click', '.js-add-ass_submission-comment', function (e) {
-            e.preventDefault();
-
-            console.log('adding assignment comment modal');
-            var $this = $(this),
-                modalId = $this.parents('.modal').attr('id'),
-                id = $this.parents('.input-field.comment').attr('data-id'), //id of the submission
-                comment = $this.parents('.input-field.comment').find('input.js-comment-bar').val(),
-                action = '',
-                date,
-                commentType = $this,
-                tempCommentId = '__' + id + '_' + Materialize.guid(),//two dashes means it is a temporary value added. The next value is the schedule\assignment id.
-                commentEl,
-                commentfail_errormessage = 'Commenting failed',
-                commentsListHook = $('.modal#' + modalId).find('.modal-content');
-
-            console.log(id, comment);
-            if (comment === '') {
-                console.log('empty input');
-                return;
-            }
-
-            $.post('handlers/comment_handler.php', {'action' : 'TeacherCommentOnSchedule', 'id' : id, 'comment' : comment}, function (resultData) {
-                console.log(resultData);
-                if(resultData) { //if it returns true
-                    date = moment().fromNow();
-
-                    var commentData = {
-                        'comment_id':tempCommentId,
-                        'comment_text':comment,
-                        'poster_name':'You',
-                        'poster_link':"accType='tr'&id=15",
-                        'date':date
-                    };
-
-                    commentEl = Lists_Templates.commentList(commentData, true);
-
-                    console.log(commentsListHook.outerHeight(true));
-                    //Scroll to the bottom of the div to see the latest comment posted
-                    commentsListHook.animate({
-                        scrollTop : commentsListHook.outerHeight(true)
-                    }, 300);
-
-                    commentsListHook.append(commentEl);
-
-                } else {
-                    Materialize.toast(commentfail_errormessage, 5000, '', function () {
-                        console.log('toast on schedule commenting');
-                    });
-                }
-            }, 'json');
-
-            return(false);
-
-
-        });
     };
 
     //----------------------------      FUNCTIONS
