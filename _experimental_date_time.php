@@ -21,30 +21,19 @@
     require_once("handlers/session_handler.php");
     require_once("handlers/db_info.php");
     require_once("handlers/date_handler.php");
-    $due_days = 1;
-    $due_hours = 1;
-    $due_minutes = 0;
 
-    $due_info = EsomoDate::GetDueText(array("days"=>$due_days,"hours"=>$due_hours,"minutes"=>$due_minutes));
-    echo " <h3>".$due_info["due_text"]."</h3>";
-    echo "<h6> Due days = $due_days</h6>";
-    echo "<h6> Due hours = $due_hours</h6>";
-    echo "<h6> Due minutes = $due_minutes</h6>";
+    $yesterday = EsomoDate::GetYesterday();
+    $seven_days_ago = EsomoDate::Get7DaysAgo();
+    $this_month = EsomoDate::GetThisMonth();
+    $last_month = EsomoDate::GetLastMonth();
+    $last30days = EsomoDate::Get30DaysAgo();
     
-    echo "<br><h3>Date formatting</h3>";
-    $test = EsomoDate::GetOptimalDateTime("2016-12-14 15:47:23");
-    echo $test["date"]." ";
-    echo $test["time"];
 
-    echo "<br><h3>Date difference</h3>";
-
-    $date_diff=EsomoDate::GetDateDiff("2016-12-14 15:47:23","2016-12-25 15:10:07");
-    $date_info = EsomoDate::GetDateInfo($date_diff);
-    echo "Year difference | ".$date_info["years"]."<br>";
-    echo "Month difference | ".$date_info["months"]."<br>";
-    echo "Day difference | ".$date_info["days"]."<br>";
-    echo "Hours difference | ".$date_info["hours"]."<br>";
-    echo "Minutes difference | ".$date_info["minutes"]."<br>";
+    echo "<p>Yesterday date : ".$yesterday."</p>";
+    echo "<p>7 days ago date : ".$seven_days_ago."</p>";
+    echo "<p>This month started : ".$this_month['start']." and has reached ".$this_month['end']."</p>";
+    echo "<p>Last month date started : ".$last_month['start']." and ended on ".$last_month['end']."</p>";
+    echo "<p>30 days ago date : ".$last30days."</p>";
 ?>
 
 </div>

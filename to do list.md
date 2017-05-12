@@ -10,6 +10,7 @@
 //
 6. Test results                                 DONE
 7. Test skipped questions                       V1.1.1
+8. Mark student attendance in schedules V1.1.0
 
 **Principal statistics**
 
