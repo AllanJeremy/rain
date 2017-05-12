@@ -813,10 +813,10 @@ class DbInfo
                 {    
                     foreach($assignments as $assignment)#for every assignment 
                     {
-                        $assignment_submitted = self::GetAssSubmissionsByAssId($assignment["ass_id"]);
+                        // $assignment_submitted = self::GetAssSubmissionsByAssId($assignment["ass_id"]);
 
                         //Only retrieve sent assignments
-                        if ($assignment["sent"] && !$assignment_submitted)
+                        if ($assignment["sent"] /*&& !$assignment_submitted*/)
                         {
                             $class_id_found = $assignment["class_id"];
 
