@@ -16,7 +16,7 @@
     </li>
     <ul class="collapsible collapsible-accordion">
         <li class="">
-            <a class="collapsible-header">Assignments<span class="new badge">4</span></a>
+            <a class="collapsible-header">Assignments</a>
             <div class="collapsible-body">
                 <ul>
                     <li class="">

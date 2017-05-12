@@ -9,14 +9,14 @@
     </li>
     <ul class="collapsible collapsible-accordion">
         <li class="">
-            <a class="collapsible-header active">Assignments<span class="new badge">14</span></a>
+            <a class="collapsible-header active">Assignments</a>
             <div class="collapsible-body">
                 <ul>
                     <li class="active">
-                        <a id="recievedAssignments" data-activates="recievedAssignmentsTab" class="active-bar " href="">received assignments</a>
+                        <a id="recievedAssignments" data-activates="recievedAssignmentsTab" class="active-bar " href="">Received assignments</a>
                     </li>
                     <li>
-                        <a hidden="" id="sentAssignments" data-activates="sentAssignmentsTab" class="" href="">sent assignments</a>
+                        <a hidden="" id="sentAssignments" data-activates="sentAssignmentsTab" class="" href="">Sent assignments</a>
                     </li>
                 </ul>
             </div>
