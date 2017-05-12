@@ -303,7 +303,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                         $teacher_id = $ass["teacher_id"];
                                         $teacher_found = DbInfo::GetTeacherById($teacher_id);
 
-                                        $classroom_id = $schedule["class_id"];
+                                        $classroom_id = $ass["class_id"];
                                         $classroom_found = DbInfo::ClassroomExists($classroom_id);
 
                                         //Foreign key values
@@ -353,10 +353,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <td title="Date the assignment was sent"><?php echo $ass_date_sent;?></td>
                                 <td title="Due date of the assignment"><?php echo $ass_date_due;?></td>
                                 <td title="Number of submissions received from students for this assignment"><?php echo $ass_submission_count;?></td>
-                                <td title="Number of submissions that were graded and returned by the teacher"><?php echo $graded_submissions;?></td>
-                                <td title="Number of submissions that have not yet been graded/returned by the teacher"><?php echo $unreturned_submissions;?></td>
+                                <td title="Number of submissions that were graded and returned by the teacher"><?php echo $graded_submission_count;?></td>
+                                <td title="Number of submissions that have not yet been graded/returned by the teacher"><?php echo $unreturned_submission_count;?></td>
                                 <td>
-                                    <a href="javascript:void(0)" data-schedule-id="<?php echo $schedule_id;?>" class="principal_view_ass" title="View assignment (<?php echo $schedule_title;?>)"><i class="material-icons">visibility</i></a>
+                                    <a href="javascript:void(0)" data-schedule-id="<?php echo $ass_id;?>" class="principal_view_ass" title="View assignment (<?php echo $ass_title;?>)"><i class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
                             <?php
