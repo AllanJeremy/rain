@@ -595,7 +595,7 @@ var AssignmentEvents = function (userInfo) {
         var $class_ass_container = ".classroom-ass-container"; //css selector for class_assignment container
         var $ass_grade_achieved = ".ass-grade-achieved";//css selector for grade achieved for an assignment submission
         var $return_ass_submission = ".return-ass-submission";
-        var $ass_submission_container = ".ass-submission-container";
+        var $ass_submission_item = ".ass-submission-item";
 
         //Hide all assignment containers
         function HideAllAssContainers()
@@ -680,7 +680,7 @@ var AssignmentEvents = function (userInfo) {
 
             $.post("classes/teacher.php",{"action":"ReturnAssSubmission","submission_data":sub_data},function(response,status){
                 var success_message = "Successfully returned the assignment to "+student_name,
-                    failure_message = "Failed to return the assignment to "+student_name
+                    failure_message = "Failed to return the assignment to "+student_name,
                     toast_time = 2500; //Duration the toast will last
 
                 response = JSON.parse(response);
@@ -691,8 +691,8 @@ var AssignmentEvents = function (userInfo) {
                     //Successfully returned the assignment
                     if(response["return_status"]==1)
                     {
-                        $parent_ul = $self.parents("ul.row");//Get the parent ul before removing the button from the dom
-                        var $grade_input = $parent_ul.find(".ass-grade-achieved"),
+                        var $parent_ul = $self.parents("ul.row"),//Get the parent ul before removing the button from the dom
+                            $grade_input = $parent_ul.find(".ass-grade-achieved"),
                             grade = $grade_input.val(),
                             student_data = $self.parent('span').siblings(".student-name"),
                             max_grade = $grade_input.attr("max"),
@@ -717,7 +717,7 @@ var AssignmentEvents = function (userInfo) {
 
                         }
                         //Remove the submission from the DOM
-                        $self.parents('.ass-submission-container').remove();
+                        $self.parents('.ass-submission-item').remove();
                         var sub_count = $parent_ul.children("li").length;
 
                         //If there are no submissions left in the DOM

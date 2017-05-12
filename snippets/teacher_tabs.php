@@ -425,7 +425,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         <p class="pad-8">New submissions</p>
                                                         <div class="divider margin-horiz-16"></div>
                                                     </div>
-                                                    <ul class="row">
+                                                    <ul class="row ass-submission-container">
 
                                         <?php
                                             //If there are any unreturned assignment submissions
@@ -452,15 +452,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         <!--Assignment submissions
                                                             TODO: consider making this full width
                                                         -->
-                                                        <li class="col s12 pad-8 ass-submission-container">
+                                                        <li class="col s12 pad-8 ass-submission-item">
 
                                                             <div class=" container">
                                                                 <a class="black-text pad-8 student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank">
                                                                     <?php echo $student_name;?>
                                                                     <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span>
                                                                 </a>
-                                                                <a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-3">
-                                                                     | <i class="material-icons">read</i>
+                                                                <a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-2">
+                                                                     | read
                                                                 </a>
                                                                 <br>
                                                                 <div class="input-field inline comment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-comment-type="ass_submission">
@@ -525,8 +525,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                         $student_name = $student["full_name"];
                                                                     }
                                                                     ?>
-                                                                    <li class="container col s12 m6">
-                                                                        <?php echo $student_name." (Adm No. $student_adm_no) "?>
+                                                                    <li class="container col s12 m6 ass-submission-container">
+                                                                        <span class="student-name"><?php echo $student_name." (Adm No. $student_adm_no) "?> </span>
                                                                         <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
                                                                         <div class="input-field inline comment">
                                                                             <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
@@ -534,7 +534,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                                 <i class="material-icons">comment</i>
                                                                             </label>
                                                                             <br>
-                                                                            <a class='right btn-inline js-see-all-comments' href="javascript:void(0)">all</a>
+                                                                            <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
                                                                         </div>
                                                                     </li>
                                                                     <?php

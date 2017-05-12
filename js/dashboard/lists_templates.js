@@ -528,7 +528,7 @@ var Lists_Templates = function () {
         var templateOutput = '';
 
         templateOutput += '<div data-comment-id="' + obj.comment_id + '" class="comment-item new-class padding-vert-8 ' + ((obj.poster_name === 'You') ? 'grey lighten-3' : ' ') + '">';
-        templateOutput += '<br><p class="js-name marg-6 grey-text text-darken-1"><a href="' + obj.poster_link + '" class="underline inherit-color">' + obj.poster_name + '</a><a href="javascript:void(0)" class="' + ((self === true) ? ' ' : 'hide') + ' padding-horiz-8 margin-horiz-8 right inherit-color js-edit-comment"><i class="material-icons">edit</i></a><a href="javascript:void(0)" class="' + ((self === true) ? ' ' : 'hide') + ' padding-horiz-8 margin-horiz-8 right inherit-color js-delete-comment"><i class="material-icons">delete</i></a></p>';
+        templateOutput += '<br><p class="js-name marg-6 grey-text text-darken-1"><a href="' + obj.poster_link + '" class="underline inherit-color">' + obj.poster_name + '</a><a href="javascript:void(0)" class="' + ((self === true) ? ' ' : 'hide') + ' padding-horiz-8 margin-horiz-8 right js-edit-comment btn-icon inherit-color"><i class="material-icons">edit</i></a><a href="javascript:void(0)" class="' + ((self === true) ? ' ' : 'hide') + ' padding-horiz-8 margin-horiz-8 right btn-icon inherit-color js-delete-comment"><i class="material-icons">delete</i></a></p>';
         templateOutput += '<p class="js-comment marg-8 black-text">' + obj.comment_text + '</p>';
         templateOutput += '<p class="js-date marg-6 grey-text text-darken-1">' + obj.date + '</p>';
         templateOutput += '<br><div class="divider"></div>';
@@ -543,13 +543,13 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += "<li class='col s12 m6 pad-8'>";
-        templateOutput += obj.name;
+        templateOutput += "<li class='col s12 m6 pad-8 ass-submission-container'>";
+        templateOutput += '<span class="student-name">' + obj.name + '</span>';
         templateOutput += '<span class="chip">'+obj.grade+' / '+obj.maxgrade+'</span><br>';
         templateOutput += "<div class='input-field inline comment'>";
         templateOutput += "<input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'>";
         templateOutput += "<label for='comment'><i class='material-icons'>comment</i></label><br>";
-        templateOutput += "<a class='right btn-inline js-see-all-comments'>all comments</a>";
+        templateOutput += "<a class='right btn-inline js-get-comments' data-root-hook='ass_submission' href='javascript:void(0)'>all comments</a>";
         templateOutput += '</div>';
         templateOutput += '</li>';
 
@@ -836,14 +836,14 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<td>' + obj.schedulename + '</td>';
+        templateOutput += '<td class="js-schedule-title">' + obj.schedulename + '</td>';
         templateOutput += '<td>' + obj.scheduledescription + '</td>';
         templateOutput += '<td class="right-align">' + obj.scheduledatetime + '</td>';
         templateOutput += '<td class="right-align schedule-action" width="120">';
-        templateOutput += '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>';
-        templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide' : '') + '" id="openSchedule">';
+        templateOutput += '<a class="btn-icon" id="attendedSchedule" href="javascript:void(0)"><i class="material-icons">done</i></a>';
+        templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide' : '') + '" href="javascript:void(0)" id="openSchedule">';
         templateOutput += '<i class="material-icons">expand_more</i></a>';
-        templateOutput += '<a class="btn-icon js-see-all-schedule-comments" id="" href="#!"><i class="material-icons">comments</i></a>';
+        templateOutput += '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
         templateOutput += '</td>';
         
         return templateOutput;

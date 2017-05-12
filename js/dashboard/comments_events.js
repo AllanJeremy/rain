@@ -83,7 +83,9 @@ var CommentsEvents = function (userInfo) {
                     $_Q = $this.parent('.comment').attr('data-submission-id');
                     title = $this.parents('li.js-assignment-collapsible').find('.collapsible-header span')[0].innerText;
                     call = 'GetAssSubmissionComments';
-                    extrainfo = '- ' + $this.parents('.ass-submission-container').find('.student-name')[0].innerText.split('|')[0];
+                    console.log($this.parents('.ass-submission-item'));
+                    console.log($this.parents('.ass-submission-item').find('.student-name'));
+                    extrainfo = '- ' + $this.parents('.ass-submission-item').find('.student-name')[0].innerText.split('|')[0];
                     break;
                 default:
                     break;
@@ -260,7 +262,7 @@ var CommentsEvents = function (userInfo) {
             return (false);
         });
 
-        $('main').on('click', 'a.js-cancel-edit-comment', function () {
+        $('main').on('click', 'a.js-cancel-edit-comment', function (e) {
             e.preventDefault();
 
             if (currComment === '') {
