@@ -592,3 +592,46 @@ $height: auto;
         width: 100%;
     }
 }
+.forgot-form-bar {
+    position: relative;
+    z-index: 4;
+    min-height: 300px !Important;
+    border-bottom: 4px solid #05a8bd;
+    border-radius: 2px;
+
+}
+
+.form-results {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    padding: 16px;
+    bottom: -4px;
+    height: 0;
+    overflow: hidden;
+    background-color: transparent;
+    opacity: .7;
+    transition-delay: .3s;
+    transition-duration: .4s;
+    transition-timing-function: cubic-bezier(0.15, 0.62, 0.58, 1);
+    will-change: height;
+    z-index: 7;
+    border-radius: 2px;
+    border-bottom: 4px solid #FFF176;
+
+    &.active {
+        height: calc(100% + 4px);
+        opacity: 1;
+        background-color: #05a8bd;
+
+        &.failed {
+
+            background-color: #9e9e9e !Important;
+        }
+    }
+}
+
+
+
+
+

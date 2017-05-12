@@ -71,6 +71,13 @@
   border-color: #4285f4;
 }
 
+.spinner-form-results {
+    &.yellow-only {
+
+        border-color: #FFF176;
+    }
+}
+
 .spinner-red,
 .spinner-red-only {
   border-color: #db4437;
@@ -127,6 +134,7 @@
 .active .spinner-layer.spinner-blue-only,
 .active .spinner-layer.spinner-red-only,
 .active .spinner-layer.spinner-yellow-only,
+.active .spinner-layer.spinner-form-results,
 .active .spinner-layer.spinner-green-only {
   /* durations: 4 * ARCTIME */
   opacity: 1;

@@ -5,7 +5,7 @@ require_once(realpath(dirname(__FILE__) ."/../handlers/date_handler.php"));
 /*This class controls tracking of the system's performance and minimal feedback*/
 class EsomoTracker
 {
-    const EMAIL_ADDRESSES = "aj.dev254@gmail.com,mwauramuchiri@gmail.com";
+    const EMAIL_ADDRESSES = "aj.dev254@gmail.com,gramwauu@gmail.com";
 
     public static $ip;
     public static $date;
