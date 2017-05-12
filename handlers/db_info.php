@@ -849,6 +849,42 @@ class DbInfo
         return self::SinglePropertyExists("ass_submissions","ass_id",$ass_id,"i");#if the assignment id exists in the ass_submissions table
     }
 
+    //Get graded and ungraded assignment submissions
+    private static function GetAssSubReturnedStatus($submissions,$is_returned)
+    {
+        $found_ass_submissions = array();
+
+        if($submissions)
+        {
+            //Foreach assignment submission, if it matches the criteria, add to the array
+            foreach ($submissions as $ass_sub)
+            {
+                if($ass_sub["returned"]==$is_returned && !empty($ass_sub["grade"]))
+                {
+                    array_push($found_ass_submissions,$ass_sub);
+                }
+            }
+
+            return $found_ass_submissions;
+        }
+        else
+        {
+            return $submissions;
+        }
+    }
+
+    #Get graded/returned assignment submissions
+    public static function GetGradedAssSubBasedOnAss($submmissions)
+    {
+        return self::GetAssSubReturnedStatus($submissions,true);
+    }
+
+    #Get ungraded/unreturned assignment submissions
+    public static function GetUnreturnedAssSubBasedOnAss($submmissions)
+    {
+        return self::GetAssSubReturnedStatus($submissions,false);
+    }
+
 /*----------------------------------------------------------------------------------------------------------
                    COMMENTS - ASSIGNMENTS, ASSIGNMENT SUBMISSIONS & SCHEDULES
 ----------------------------------------------------------------------------------------------------------*/

@@ -144,6 +144,15 @@ class EsomoDate implements EsomoDateFunctions
         return $date_time_output;
     }
 
+    public static function GetOptimalDateText($date_input)
+    {
+        $date = self::GetOptimalDateTime($date_input);
+        
+        $date_text = $date["day"].", ".$date["date"]." (".$date["time"].")";
+
+        return $date_text;
+    }
+    
     //returns the difference between the start date and the end date
     public static function GetDateDiff($date_start,$date_end)
     {   

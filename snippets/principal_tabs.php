@@ -189,7 +189,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                         <p class="grey-text text-darken-2">Schedules</p>
 
                         <table class="table striped bordered" id="schedules_tab_list">
-                            <tr class="table-titles">
+                            <tr class="table-headers">
                                 <th>Title</th>
                                 <th>Teacher</th>
                                 <th>Classroom</th>
@@ -200,6 +200,68 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                             </tr>
 
                             <!--Table body contents-->
+                            <?php
+                                if($schedules && @$schedules->num_rows>0):
+                                    foreach($schedules as $schedule):
+                                        $schedule_id = $schedule["schedule_id"];
+                                        $teacher_id = $schedule["teacher_id"];
+                                        $teacher_found = DbInfo::GetTeacherById($teacher_id);
+
+                                        $classroom_id = $schedule["class_id"];
+                                        $classroom_found = DbInfo::ClassroomExists($classroom_id);
+
+                                        //Direct values
+                                        $schedule_title = $schedule["schedule_title"];
+                                        $schedule_date = $schedule["schedule_date"];
+                                        $schedule_date = EsomoDate::GetOptimalDateText($schedule_date);
+
+                                        $schedule_due_date = $schedule["due_date"];
+                                        $schedule_due_date = EsomoDate::GetOptimalDateText($schedule_due_date);
+
+                                        //Foreign key values
+                                        $schedule_teacher = "Unknown teacher";
+                                        if($teacher_found)#If the teacher was found in the database
+                                        {
+                                            $schedule_teacher = $teacher_found["first_name"]." ".$teacher_found["last_name"];
+                                        }
+                                        $schedule_classroom = "Uknown classroom";
+                                        if($classroom_found)#If the classroom was found in the database
+                                        {
+                                            $schedule_classroom = $classroom_found["class_name"];
+                                        }
+                                        
+                                        $schedule_status = "";
+
+                                        //If the schedule has been attended
+                                        if($schedule["attended_schedule"])
+                                        {   
+                                            $schedule_status = "Done";
+                                        }
+                                        else
+                                        {
+                                            $schedule_status = "Unattended";
+                                        }
+                            ?>
+                            <tr>
+                                <td><?php echo $schedule_title;?></td>
+                                <td><?php echo $schedule_teacher;?></td>
+                                <td><?php echo $schedule_classroom;?></td>
+                                <td><?php echo $schedule_date;?></td>
+                                <td><?php echo $schedule_due_date;?></td>
+                                <td><?php echo $schedule_status;?></td>
+                                <td>
+                                    <a href="javascript:void(0)" data-schedule-id="<?php echo $schedule_id;?>" class="principal_view_schedule" title="View schedule (<?php echo $schedule_title;?>)"><i class="material-icons">visibility</i></a>
+                                    <a href="javascript:void(0)" data-ass-id="<?php echo $schedule_id;?>" class=" principal_comment_on_schedule" title="Comments for <?php echo $schedule_title;?>"><i class="material-icons lime-text">comment</i></a>
+                                </td>
+                            </tr>
+                            <?php
+                                    endforeach;
+                                else:#No schedules found
+                            ?>
+                            <tr><td colspan="7">No schedules were found for the specified time period</td></tr>
+                            <?php
+                                endif;
+                            ?>
                         </table>
                         
                     </div>
@@ -207,7 +269,107 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 
                 <!--Principal assignments tab-->
                 <div class="row main-tab" id="principalAssignmentsTab">
-                    Principal Assignments tab
+                    <div class="col s12 m6 right">
+                        <?php
+                            AddTimeframeDropdown("assignments_timeframe");
+                        ?>
+                    </div>
+                    <div class="col s12 divider"></div><br>
+                    <div class="col s12">
+                        <p class="grey-text text-darken-2">Assignments</p>
+
+                        <table class="table striped bordered" id="schedules_tab_list">
+                            <tr class="table-headers">
+                                <th>Title</th>
+                                <th>Teacher</th>
+                                <th>Classroom</th>
+                                <th>Date sent</th>
+                                <th>Due date</th>
+                                <th>Submissions</th>
+                                <th>Graded</th>
+                                <th>Unreturned</th>
+                                <th>Action</th>
+                            </tr>
+
+                            <!--Table body contents-->
+                            <?php
+                                if($assignments && @$assignments->num_rows>0):
+
+                                    foreach($assignments as $ass):
+                                        $ass_id = $ass["ass_id"];
+
+                                        $ass_title = $ass["ass_title"];
+
+                                        $teacher_id = $ass["teacher_id"];
+                                        $teacher_found = DbInfo::GetTeacherById($teacher_id);
+
+                                        $classroom_id = $schedule["class_id"];
+                                        $classroom_found = DbInfo::ClassroomExists($classroom_id);
+
+                                        //Foreign key values
+                                        $ass_teacher = "Unknown teacher";
+                                        if($teacher_found)#If the teacher was found in the database
+                                        {
+                                            $ass_teacher = $teacher_found["first_name"]." ".$teacher_found["last_name"];
+                                        }
+                                        $ass_classroom = "Unknown classroom";
+                                        if($classroom_found)#If the classroom was found in the database
+                                        {
+                                            $ass_classroom = $classroom_found["class_name"];
+                                        }
+
+                                        $ass_date_sent = $ass["date_sent"];
+                                        $ass_date_sent = EsomoDate::GetOptimalDateText($ass_date_sent);
+
+                                        $ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id);
+                                        
+                                        
+
+                                        $ass_submission_count = $graded_submission_count = $unreturned_submission_count = 0;
+
+                                        //If assignment submissions for this assignment were found
+                                        if($ass_submissions && @$ass_submissions->num_rows>0)
+                                        {
+                                            $graded_submissions = DbInfo::GetGradedAssSubBasedOnAss($ass_submissions);
+                                            $unreturned_submissions = DbInfo::GetUnreturnedAssSubBasedOnAss($ass_submissions);
+
+                                            //Assignment submissions count
+                                            $ass_submission_count = $ass_submissions->num_rows;
+                                            $graded_submission_count = count($graded_submissions);
+                                            $unreturned_submission_count = count($unreturned_submission);
+                                        }
+
+/*                                <th>Submissions</th>
+                                <th>Graded</th>
+                                <th>Unreturned</th>*/
+                                        $ass_date_due = $ass["due_date"];
+                                        $ass_date_due = EsomoDate::GetOptimalDateText($ass_date_due);
+                                        
+                            ?>
+                            <tr>
+                                <td title="Assignment title"><?php echo $ass_title;?></td>
+                                <td title="Teacher that sent the assignment"><?php echo $ass_teacher;?></td>
+                                <td title="Classroom the assignment was sent to"><?php echo $ass_classroom;?></td>
+                                <td title="Date the assignment was sent"><?php echo $ass_date_sent;?></td>
+                                <td title="Due date of the assignment"><?php echo $ass_date_due;?></td>
+                                <td title="Number of submissions received from students for this assignment"><?php echo $ass_submission_count;?></td>
+                                <td title="Number of submissions that were graded and returned by the teacher"><?php echo $graded_submissions;?></td>
+                                <td title="Number of submissions that have not yet been graded/returned by the teacher"><?php echo $unreturned_submissions;?></td>
+                                <td>
+                                    <a href="javascript:void(0)" data-schedule-id="<?php echo $schedule_id;?>" class="principal_view_ass" title="View assignment (<?php echo $schedule_title;?>)"><i class="material-icons">visibility</i></a>
+                                </td>
+                            </tr>
+                            <?php
+                                    endforeach;
+                                else:#No schedules found
+                            ?>
+                            <tr><td colspan="9">No assignments were found for the specified time period</td></tr>
+                            <?php
+                                endif;
+                            ?>
+                        </table>
+                        
+                    </div>
                 </div>
                 
                 <!--Principal student grades tab-->
