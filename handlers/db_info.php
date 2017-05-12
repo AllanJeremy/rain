@@ -5,6 +5,15 @@ include_once(realpath(dirname(__FILE__) . "/../handlers/error_handler.php")); #P
 require_once (realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Allows connection to database
 require_once(realpath(dirname(__FILE__). "/../handlers/date_handler.php")); #Handles date related functions
 
+//Time constants for use in switch statements dealing with timeframes
+const ALL_TIME = "all";
+const TODAY = "today";
+const YESTERDAY = "yesterday";
+const LAST_7_DAYS = "last7days";
+const THIS_MONTH = "this_month";
+const LAST_MONTH = "last_month";
+const LAST_30_DAYS = "last30days";
+
 #USED TO RETRIEVE INFORMATION FROM THE DATABASE
 class DbInfo
 {
@@ -1880,6 +1889,21 @@ class DbInfo
         return self::GetAssSubsBasedOnAss($assignments,false);
     }
 
+    //Get number text ~ rounds off number after 1000 to show shorter version eg. 1K instead of 1000
+    public static function GetNumberText($number)
+    {
+        $num_text = "";
+        if($number>=1000)
+        {
+            $num_text = round(($number/1000),2)."K";
+        }
+        else
+        {
+            $num_text = $number;
+        }
+
+        return $num_text;
+    }
 };#END OF CLASS
 
 /*
@@ -2381,6 +2405,135 @@ if(isset($_GET['action'])) {
             $comments = DbInfo::GetAssSubmissionComments($submission_id);
 
             echo json_encode($comments);
+
+        break;
+
+        //Principal Section ajax requests
+        case "UpdateScheduleOverview":#Update schedule overview
+            //---------------------------------------------------------------------
+            $timeframe = $_GET["timeframe"];
+
+            //If the timeframe provided is valid
+            if(isset($timeframe) && !empty($timeframe))
+            {
+                $schedules = false;
+                switch($timeframe)
+                {
+                    case ALL_TIME:
+                        $schedules = DbInfo::GetAllSchedules();
+                    break;
+                    case TODAY:
+                        $schedules = DbInfo::GetTodaySchedules();
+                    break;
+                    case YESTERDAY:
+                        $schedules = DbInfo::GetYesterdaySchedules();
+                    break;
+                    case LAST_7_DAYS:
+                        $schedules = DbInfo::Get7DaySchedules();
+                    break;
+                    case THIS_MONTH:
+                        $schedules = DbInfo::GetThisMonthSchedules();
+                    break;
+                    case LAST_MONTH:
+                        $schedules = DbInfo::GetLastMonthSchedules();
+                    break;
+                    case LAST_30_DAYS:
+                        $schedules = DbInfo::GetLast30DaysSchedules();
+                    break;
+                    default:
+                        echo "Invalid timeframe provided";
+                    break;
+                }
+                //---------------------------------------------------------------------
+                
+                $total_schedule_count = $done_schedule_count = $unattended_schedule_count = 0;
+                if($schedules && @$schedules->num_rows>0)
+                {
+                    $total_schedule_count = $schedules->num_rows;
+                    
+                    //Returns an array that contains associative arrays corresponding to db records
+                    $done_schedules = DbInfo::GetDoneSchedules($schedules);
+                    $unattended_schedules = DbInfo::GetUnattendedSchedules($schedules);
+
+                    $done_schedule_count = count($done_schedules);
+                    $unattended_schedule_count = count($unattended_schedules);
+                }
+                $data = array("total_schedule_count"=>$total_schedule_count,"done_schedules"=>$done_schedule_count,"unattended_schedule_count"=>$unattended_schedule_count);
+
+                echo json_encode($data);
+
+            }
+            else
+            {
+                echo "Failed to retrieve timeframe";
+            }
+        break;
+
+        case "UpdateAssignmentOverview": 
+            $timeframe = $_GET["timeframe"];
+
+            //If the timeframe provided is valid
+            if(isset($timeframe) && !empty($timeframe))
+            {
+                $assignments = false;
+                switch($timeframe)
+                {
+                    case ALL_TIME:
+                        $assignments = DbInfo::GetAllAssignments();
+                    break;
+                    case TODAY:
+                        $assignments = DbInfo::GetTodayAssignments();
+                    break;
+                    case YESTERDAY:
+                        $assignments = DbInfo::GetYesterdayAssignments();
+                    break;
+                    case LAST_7_DAYS:
+                        $assignments = DbInfo::Get7DayAssignments();
+                    break;
+                    case THIS_MONTH:
+                        $assignments = DbInfo::GetThisMonthAssignments();
+                    break;
+                    case LAST_MONTH:
+                        $assignments = DbInfo::GetLastMonthAssignments();
+                    break;
+                    case LAST_30_DAYS:
+                        $assignments = DbInfo::GetLast30DaysAssignments();
+                    break;
+                    default:
+                        echo "Invalid timeframe provided";
+                    break;
+                }
+                //---------------------------------------------------------------------
+
+                $total_ass_sent = $total_ass_subs = $total_graded_ass_subs = $total_unreturned_subs = 0;
+
+                if($assignments && @$assignments->num_rows>0)
+                {
+                    $total_ass_sent = $assignments->num_rows;
+
+                    $ass_subs = DbInfo::GetMultipleAssSubmissions($assignments);
+                    $graded_subs = DbInfo::GetGradedAssSubmissions($assignments);
+                    
+                    $total_ass_subs = count($ass_subs);
+                    $total_graded_ass_subs = count($graded_subs);
+                    $total_unreturned_subs = DbInfo::GetUngradedAssSubmissions($assignments);
+                }
+                $data = array("total_ass_sent"=>$total_ass_sent,"total_ass_subs"=>$total_ass_subs,"total_graded_ass_subs"=>$total_graded_ass_subs,"total_unreturned_subs"=>$total_unreturned_subs);
+
+                echo json_encode($data);
+            }
+            else
+            {
+                echo "Failed to retrieve timeframe";
+            }
+
+        break;
+
+        case "UpdateScheduleTabStats": 
+
+        break;
+
+        case "UpdateAssignmentTabStats": 
 
         break;
 

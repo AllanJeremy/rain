@@ -2,22 +2,6 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resources class. Handles all resource related operations
 
-//Get number text ~ rounds off number after 1000 to show shorter version eg. 1K instead of 1000
- function GetNumberText($number)
- {
-     $num_text = "";
-    if($number>=1000)
-    {
-        $num_text = round(($number/1000),2)."K";
-    }
-    else
-    {
-        $num_text = $number;
-    }
-
-    return $num_text;
- }
-
  function AddTimeframeDropdown($id="")
  {
      $id_attr = "";
@@ -35,6 +19,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
         <option value="last7days" selected>Last 7 days</option>
         <option value="this_month">This month</option>
         <option value="last_month">Last month</option>
+        <option value="last30days">Last 30 days</option>
     </select>
 </div>
 <?php
@@ -102,7 +87,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                     </div>
                                 </div>
 
-                                <!--Assignment Tips-->
+                                <!--Schedule Tips-->
                                 <div class="card col s12 blue-grey lighten-4">
                                     <div class="card-content">
                                         <p class="center blue-grey-text text-darken-2"><b>Quick Tip</b><br>Unattended schedules are schedules that were not marked as attended by teachers.</p>               
@@ -181,7 +166,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 <div class="row main-tab" id="principalSchedulesTab">
                     <div class="col s12 m6 right">
                         <?php
-                            AddTimeframeDropdown("schedules_timeframe");
+                            AddTimeframeDropdown("schedules_tab_timeframe");
                         ?>
                     </div>
                     <div class="col s12 divider"></div><br>
@@ -271,7 +256,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 <div class="row main-tab" id="principalAssignmentsTab">
                     <div class="col s12 m6 right">
                         <?php
-                            AddTimeframeDropdown("assignments_timeframe");
+                            AddTimeframeDropdown("assignments_tab_timeframe");
                         ?>
                     </div>
                     <div class="col s12 divider"></div><br>

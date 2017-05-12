@@ -4,7 +4,8 @@ $(document).ready(function (z) {
     /*Superuser validation*/
     var db_handler_path = "handlers/db_handler.php";
     var db_info_path = "handlers/db_info.php";
-
+    var toast_time = 4000;
+    
     //Returns true if empty and false if not empty
     function IsEmpty(value)
     {
@@ -787,4 +788,122 @@ $(document).ready(function (z) {
             Materialize.toast(error_message,toast_time);
         }
     });
+
+    /*PRINCIPAL SECTION ~ STATISTICS CODE*/
+    //Update schedule overview
+    function UpdateScheduleOverview(timeframe)
+    {
+        $.get(db_info_path,{"action":"UpdateScheduleOverview","timeframe":timeframe},function(response,status){
+            try
+            {
+                var json = JSON.parse(response);
+                
+                //If the JSON is valid
+                if(json)
+                {
+                    $("#stats_total_schedules").text(json["total_schedule_count"]);
+                    $("#stats_done_schedules").text(json["done_schedules"]);
+                    $("#stats_unattended_schedules").text(json["unattended_schedules"]);
+                }
+                else
+                {
+                    console.log("Could not retrieve JSON information for this timeframe");
+                }
+            }
+            catch(e)
+            {
+                Materialize.toast("Failed to update records to match timeframe",toast_time);
+                console.log("Failed to parse JSON in timeframe ajax request.");
+            }
+
+        });
+    }
+
+    //Stats overview ~ Schedule overview timeframe change
+    $("#schedule_overview_timeframe").change(function(){
+        var timeframe = $(this).val();
+        UpdateScheduleOverview(timeframe);
+    });
+    
+    //Update assignment overview
+    function UpdateAssignmentOverview(timeframe)
+    {
+        $.get(db_info_path,{"action":"UpdateAssignmentOverview","timeframe":timeframe},function(response,status){
+            try
+            {
+                var json = JSON.parse(response);
+
+                //If the JSON is valid
+                if(json)
+                {
+                    $("#stats_total_ass_sent").text(json["total_ass_sent"]);
+                    $("#stats_total_ass_subs").text(json["total_ass_subs"]);
+                    $("#stats_total_graded_ass_subs").text(json["total_graded_ass_subs"]);
+                }
+                else
+                {
+                    console.log("Could not retrieve JSON information for this timeframe");
+                }
+            }
+            catch(e)
+            {
+                Materialize.toast("Failed to update records to match timeframe",toast_time);
+                console.log("Failed to parse JSON in timeframe ajax request.");
+            }
+        });
+    }
+
+    //Stats overview ~ Assignment overview timeframe change
+    $("#ass_overview_timeframe").change(function(){
+        var timeframe = $(this).val();
+
+        UpdateAssignmentOverview(timeframe);
+    });
+
+
+    //Update schedule tab stats
+    function UpdateScheduleTabStats($table,timeframe)
+    {
+        $.get(db_info_path,{"action":"UpdateScheduleTabStats","timeframe":timeframe},function(response,status){
+            try
+            {
+                var json = JSON.parse(response);
+                
+                
+            }
+            catch(e)
+            {
+                Materialize.toast("Failed to update records to match timeframe",toast_time);
+                console.log("Failed to parse JSON in timeframe ajax request.");
+            }
+        });
+    }
+
+    //Schedule tab ~ schedule tab timeframe change
+    $("#schedules_tab_timeframe").change(function(){
+        var timeframe = $(this).val();
+    });
+
+    //Update assignment overview
+    function UpdateAssignmentTabStats($table,timeframe)
+    {
+        $.get(db_info_path,{"action":"UpdateAssignmentTabStats","timeframe":timeframe},function(response,status){
+            try
+            {
+                var json = JSON.parse(response);
+                
+            }
+            catch(e)
+            {
+                Materialize.toast("Failed to update records to match timeframe",toast_time);
+                console.log("Failed to parse JSON in timeframe ajax request.");
+            }
+        });
+    }
+    //Assignment tab ~ assignment tab timeframe change
+    $("#assignments_tab_timeframe").change(function(){
+        var timeframe = $(this).val();
+        UpdateAssignmentOverview(timeframe)
+    });
+
 }); // end of document ready
