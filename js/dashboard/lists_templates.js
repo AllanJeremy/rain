@@ -543,13 +543,14 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += "<li class='col s12 m6 pad-8 ass-submission-container'>";
+        templateOutput += "<li class='col s12 m6 pad-8 ass-submission-item'>";
         templateOutput += '<span class="student-name">' + obj.name + '</span>';
         templateOutput += '<span class="chip">'+obj.grade+' / '+obj.maxgrade+'</span><br>';
-        templateOutput += "<div class='input-field inline comment'>";
-        templateOutput += "<input type='text' placeholder='comment' class='js-comment-bar browser-default normal' name='comment'>";
+        templateOutput += "<div class='input-field inline comment' data-submission-id='" + obj.id + "' data-id='" + obj.id + "'>";
+        templateOutput += "<input type='text' placeholder='comment' class='js-comment-bar browser-default normal longer' name='comment'>";
         templateOutput += "<label for='comment'><i class='material-icons'>comment</i></label><br>";
-        templateOutput += "<a class='right btn-inline js-get-comments' data-root-hook='ass_submission' href='javascript:void(0)'>all comments</a>";
+        templateOutput += "<a class='left btn-inline js-get-comments' data-root-hook='ass_submission' href='javascript:void(0)'>all</a>";
+        templateOutput += "<a class='right btn-inline js-add-comment' data-root-hook='ass_submission' href='javascript:void(0)'>send</a>";
         templateOutput += '</div>';
         templateOutput += '</li>';
 

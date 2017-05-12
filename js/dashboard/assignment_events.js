@@ -697,6 +697,7 @@ var AssignmentEvents = function (userInfo) {
                             student_data = $self.parent('span').siblings(".student-name"),
                             max_grade = $grade_input.attr("max"),
                             ass_sub_data = {
+                                'id': sub_id,
                                 'name': student_data[0].outerHTML.split('|')[0],
                                 'grade': grade,
                                 'maxgrade': max_grade

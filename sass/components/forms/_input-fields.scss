@@ -43,7 +43,12 @@ input.browser-default {
         height: 2rem !Important;
         line-height: 2rem;
         max-width: 240px;
+
+        &.longer {
+            width: 120% !Important;
+        }
     }
+
 
     &.auto {
         height: 2rem !Important;

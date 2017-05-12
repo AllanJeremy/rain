@@ -91,13 +91,14 @@ var CommentsEvents = function (userInfo) {
                     break;
             }
 
+            console.log($_Q);
             Modals_Events.loadCommentModal(modal_id, $_Q, comment_type, title, modal_body, comment_enabled, extrainfo);
 
             $('.modal#' + modal_id).openModal({dismissible: false});
             console.log('opening modal clicked');
 
             $.get('handlers/db_info.php', {'action' : call, 'id' : parseInt($_Q)}, function (resultData) {
-                console.log(resultData);
+                //console.log(resultData);
 
                 if (resultData === false) {//No comments found
                         modal_body += '';
@@ -113,7 +114,7 @@ var CommentsEvents = function (userInfo) {
                             resultData['comments'][i]['poster_link'] = 'javascript:void(0)';
                         }
 
-                        console.log(resultData['comments'][i]);
+                        //console.log(resultData['comments'][i]);
 
                             modal_body += Lists_Templates.commentList(resultData['comments'][i], self);
 
@@ -128,7 +129,7 @@ var CommentsEvents = function (userInfo) {
 
                 }
 
-                console.log(modal_body);
+                //console.log(modal_body);
 
             }, 'json');
 
@@ -146,15 +147,16 @@ var CommentsEvents = function (userInfo) {
                 action = $this.attr('data-root-hook'),
                 call = '',
                 modalId = $this.parents('.modal').attr('id'),
-                id = $this.parents('.input-field.comment').attr('data-id'), //id of the comment
+                $_Q = $this.parents('.input-field.comment').attr('data-id'), //id of the comment
                 comment = $this.parents('.input-field.comment').find('input.js-comment-bar').val(),
                 date,
-                tempCommentId = '__' + id + '_' + Materialize.guid(),//two dashes means it is a temporary value added. The next value is the schedule\assignment id.
+                tempCommentId = '__' + $_Q + '_' + Materialize.guid(),//two dashes means it is a temporary value added. The next value is the schedule\assignment id.
                 commentEl,
                 commentfail_errormessage = 'Commenting failed',
                 commentsListHook = $('.modal#' + modalId).find('.modal-content');
 
-            console.log(id, comment + ', , ' + action);
+            console.log(modalId);
+            console.log($_Q, comment + ', , ' + action);
             if (comment === '') {
                 console.log('empty input');
                 return;
@@ -179,7 +181,7 @@ var CommentsEvents = function (userInfo) {
 
             console.log(call);
 
-            $.post('handlers/comment_handler.php', {'action' : call, 'id' : id, 'comment' : comment}, function (resultData) {
+            $.post('handlers/comment_handler.php', {'action' : call, 'id' : parseInt($_Q), 'comment' : comment}, function (resultData) {
                 console.log(resultData);
                 if(resultData) { //if it returns true
                     date = moment().fromNow();
@@ -192,16 +194,19 @@ var CommentsEvents = function (userInfo) {
                         'date':date
                     };
 
-                    commentEl = Lists_Templates.commentList(commentData, true);
+                    if(modalId !== undefined) {
 
-                    console.log(commentsListHook.outerHeight(true));
-                    //Scroll to the bottom of the div to see the latest comment posted
-                    commentsListHook.animate({
-                        scrollTop : commentsListHook.outerHeight(true)
-                    }, 300);
+                        commentEl = Lists_Templates.commentList(commentData, true);
 
-                    commentsListHook.append(commentEl);
+                        console.log(commentsListHook.outerHeight(true));
+                        //Scroll to the bottom of the div to see the latest comment posted
+                        commentsListHook.animate({
+                            scrollTop : commentsListHook.outerHeight(true)
+                        }, 300);
 
+                        commentsListHook.append(commentEl);
+
+                    }
                 } else {
                     Materialize.toast(commentfail_errormessage, 5000, '', function () {
                         console.log('toast on schedule commenting');

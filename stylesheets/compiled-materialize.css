@@ -6687,13 +6687,17 @@ input.browser-default.normal {
   line-height: 2rem;
   max-width: 240px;
 }
-/* line 48, ../sass/components/forms/_input-fields.scss */
+/* line 47, ../sass/components/forms/_input-fields.scss */
+input.browser-default.normal.longer {
+  width: 120% !Important;
+}
+/* line 53, ../sass/components/forms/_input-fields.scss */
 input.browser-default.auto {
   height: 2rem !Important;
   line-height: 2rem;
   width: auto;
 }
-/* line 54, ../sass/components/forms/_input-fields.scss */
+/* line 59, ../sass/components/forms/_input-fields.scss */
 input.browser-default.modal-comment {
   width: 300px !Important;
   height: 3rem !Important;
@@ -6701,13 +6705,13 @@ input.browser-default.modal-comment {
   line-height: 3rem;
 }
 @media only screen and (max-width: 600px) {
-  /* line 54, ../sass/components/forms/_input-fields.scss */
+  /* line 59, ../sass/components/forms/_input-fields.scss */
   input.browser-default.modal-comment {
     width: calc(100% - 44px) !important;
   }
 }
 
-/* line 66, ../sass/components/forms/_input-fields.scss */
+/* line 71, ../sass/components/forms/_input-fields.scss */
 input:not([type]),
 input[type=text],
 input[type=password],
@@ -6735,7 +6739,7 @@ textarea.materialize-textarea {
   box-sizing: content-box;
   transition: all 0.3s;
 }
-/* line 96, ../sass/components/forms/_input-fields.scss */
+/* line 101, ../sass/components/forms/_input-fields.scss */
 input:not([type]):disabled, input:not([type])[readonly="readonly"],
 input[type=text]:disabled,
 input[type=text][readonly="readonly"],
@@ -6764,7 +6768,7 @@ textarea.materialize-textarea[readonly="readonly"] {
   color: rgba(0, 0, 0, 0.26);
   border-bottom: 1px dotted rgba(0, 0, 0, 0.26);
 }
-/* line 103, ../sass/components/forms/_input-fields.scss */
+/* line 108, ../sass/components/forms/_input-fields.scss */
 input:not([type]):disabled + label, input:not([type])[readonly="readonly"] + label,
 input[type=text]:disabled + label,
 input[type=text][readonly="readonly"] + label,
@@ -6792,7 +6796,7 @@ textarea.materialize-textarea:disabled + label,
 textarea.materialize-textarea[readonly="readonly"] + label {
   color: rgba(0, 0, 0, 0.26);
 }
-/* line 109, ../sass/components/forms/_input-fields.scss */
+/* line 114, ../sass/components/forms/_input-fields.scss */
 input:not([type]):focus:not([readonly]),
 input[type=text]:focus:not([readonly]),
 input[type=password]:focus:not([readonly]),
@@ -6809,7 +6813,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   border-bottom: 1px solid #d8b759;
   box-shadow: 0 1px 0 0 #d8b759;
 }
-/* line 115, ../sass/components/forms/_input-fields.scss */
+/* line 120, ../sass/components/forms/_input-fields.scss */
 input:not([type]):focus:not([readonly]) + label,
 input[type=text]:focus:not([readonly]) + label,
 input[type=password]:focus:not([readonly]) + label,
@@ -6825,7 +6829,7 @@ input[type=search]:focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #d8b759;
 }
-/* line 120, ../sass/components/forms/_input-fields.scss */
+/* line 125, ../sass/components/forms/_input-fields.scss */
 input:not([type]).valid, input:not([type]):focus.valid,
 input[type=text].valid,
 input[type=text]:focus.valid,
@@ -6854,7 +6858,7 @@ textarea.materialize-textarea:focus.valid {
   border-bottom: 1px solid #4CAF50;
   box-shadow: 0 1px 0 0 #4CAF50;
 }
-/* line 127, ../sass/components/forms/_input-fields.scss */
+/* line 132, ../sass/components/forms/_input-fields.scss */
 input:not([type]).valid + label:after, input:not([type]):focus.valid + label:after,
 input[type=text].valid + label:after,
 input[type=text]:focus.valid + label:after,
@@ -6884,7 +6888,7 @@ textarea.materialize-textarea:focus.valid + label:after {
   color: #4CAF50;
   opacity: 1;
 }
-/* line 135, ../sass/components/forms/_input-fields.scss */
+/* line 140, ../sass/components/forms/_input-fields.scss */
 input:not([type]).invalid, input:not([type]):focus.invalid,
 input[type=text].invalid,
 input[type=text]:focus.invalid,
@@ -6913,7 +6917,7 @@ textarea.materialize-textarea:focus.invalid {
   border-bottom: 1px solid #F44336;
   box-shadow: 0 1px 0 0 #F44336;
 }
-/* line 142, ../sass/components/forms/_input-fields.scss */
+/* line 147, ../sass/components/forms/_input-fields.scss */
 input:not([type]).invalid + label:after, input:not([type]):focus.invalid + label:after,
 input[type=text].invalid + label:after,
 input[type=text]:focus.invalid + label:after,
@@ -6943,7 +6947,7 @@ textarea.materialize-textarea:focus.invalid + label:after {
   color: #F44336;
   opacity: 1;
 }
-/* line 150, ../sass/components/forms/_input-fields.scss */
+/* line 155, ../sass/components/forms/_input-fields.scss */
 input:not([type]).validate + label,
 input[type=text].validate + label,
 input[type=password].validate + label,
@@ -6960,7 +6964,7 @@ textarea.materialize-textarea.validate + label {
   width: 100%;
   pointer-events: none;
 }
-/* line 156, ../sass/components/forms/_input-fields.scss */
+/* line 161, ../sass/components/forms/_input-fields.scss */
 input:not([type]) + label:after,
 input[type=text] + label:after,
 input[type=password] + label:after,
@@ -6982,42 +6986,42 @@ textarea.materialize-textarea + label:after {
   transition: .2s opacity ease-out, .2s color ease-out;
 }
 
-/* line 167, ../sass/components/forms/_input-fields.scss */
+/* line 172, ../sass/components/forms/_input-fields.scss */
 .input-field {
   position: relative;
   margin-top: 1rem;
 }
-/* line 169, ../sass/components/forms/_input-fields.scss */
+/* line 174, ../sass/components/forms/_input-fields.scss */
 .input-field.inline {
   display: inline-block;
   vertical-align: middle;
   margin-left: 5px;
 }
-/* line 174, ../sass/components/forms/_input-fields.scss */
+/* line 179, ../sass/components/forms/_input-fields.scss */
 .input-field.inline input,
 .input-field.inline .select-dropdown {
   margin-bottom: 1rem;
 }
-/* line 183, ../sass/components/forms/_input-fields.scss */
+/* line 188, ../sass/components/forms/_input-fields.scss */
 .input-field.comment input:not(.modal-comment) + label {
   top: 0.3rem;
   left: 0;
 }
-/* line 189, ../sass/components/forms/_input-fields.scss */
+/* line 194, ../sass/components/forms/_input-fields.scss */
 .input-field.comment label.active {
   transform: translateY(0%) !important;
   margin-left: 8px;
 }
-/* line 197, ../sass/components/forms/_input-fields.scss */
+/* line 202, ../sass/components/forms/_input-fields.scss */
 .input-field.col label {
   left: 0.75rem;
 }
-/* line 201, ../sass/components/forms/_input-fields.scss */
+/* line 206, ../sass/components/forms/_input-fields.scss */
 .input-field.col .prefix ~ label,
 .input-field.col .prefix ~ .validate ~ label {
   width: calc(100% - 3rem - 1.5rem);
 }
-/* line 210, ../sass/components/forms/_input-fields.scss */
+/* line 215, ../sass/components/forms/_input-fields.scss */
 .input-field label {
   color: #9e9e9e;
   position: absolute;
@@ -7026,23 +7030,23 @@ textarea.materialize-textarea + label:after {
   cursor: text;
   transition: .2s ease-out;
 }
-/* line 219, ../sass/components/forms/_input-fields.scss */
+/* line 224, ../sass/components/forms/_input-fields.scss */
 .input-field label.active {
   font-size: 0.8rem;
   transform: translateY(-140%);
 }
-/* line 226, ../sass/components/forms/_input-fields.scss */
+/* line 231, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix {
   position: absolute;
   width: 3rem;
   font-size: 2rem;
   transition: color .2s;
 }
-/* line 232, ../sass/components/forms/_input-fields.scss */
+/* line 237, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix.active {
   color: #d8b759;
 }
-/* line 235, ../sass/components/forms/_input-fields.scss */
+/* line 240, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ input,
 .input-field .prefix ~ textarea,
 .input-field .prefix ~ label,
@@ -7052,19 +7056,19 @@ textarea.materialize-textarea + label:after {
   width: 92%;
   width: calc(100% - 3rem);
 }
-/* line 245, ../sass/components/forms/_input-fields.scss */
+/* line 250, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ label {
   margin-left: 3rem;
 }
 @media only screen and (max-width: 992px) {
-  /* line 248, ../sass/components/forms/_input-fields.scss */
+  /* line 253, ../sass/components/forms/_input-fields.scss */
   .input-field .prefix ~ input {
     width: 86%;
     width: calc(100% - 3rem);
   }
 }
 @media only screen and (max-width: 600px) {
-  /* line 255, ../sass/components/forms/_input-fields.scss */
+  /* line 260, ../sass/components/forms/_input-fields.scss */
   .input-field .prefix ~ input {
     width: 80%;
     width: calc(100% - 3rem);
@@ -7072,29 +7076,29 @@ textarea.materialize-textarea + label:after {
 }
 
 /* Search Field */
-/* line 265, ../sass/components/forms/_input-fields.scss */
+/* line 270, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] {
   display: block;
   line-height: inherit;
   padding-left: 4rem;
   width: calc(100% - 4rem);
 }
-/* line 271, ../sass/components/forms/_input-fields.scss */
+/* line 276, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search]:focus {
   background-color: #fff;
   border: 0;
   box-shadow: none;
   color: #444;
 }
-/* line 277, ../sass/components/forms/_input-fields.scss */
+/* line 282, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search]:focus + label i, .input-field input[type=search]:focus ~ .mdi-navigation-close, .input-field input[type=search]:focus ~ .material-icons {
   color: #444;
 }
-/* line 284, ../sass/components/forms/_input-fields.scss */
+/* line 289, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] + label {
   left: 1rem;
 }
-/* line 288, ../sass/components/forms/_input-fields.scss */
+/* line 293, ../sass/components/forms/_input-fields.scss */
 .input-field input[type=search] ~ .mdi-navigation-close, .input-field input[type=search] ~ .material-icons {
   position: absolute;
   top: 0;
@@ -7105,7 +7109,7 @@ textarea.materialize-textarea + label:after {
   transition: .3s color;
 }
 
-/* line 299, ../sass/components/forms/_input-fields.scss */
+/* line 304, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar {
   border: 1px solid #e8e8e8;
   padding-left: 36px;
@@ -7114,28 +7118,28 @@ input[type=text].js-comment-bar {
   width: auto;
 }
 
-/* line 307, ../sass/components/forms/_input-fields.scss */
+/* line 312, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar:focus {
   height: 2.4rem;
   background-color: #f1f1f1;
 }
-/* line 311, ../sass/components/forms/_input-fields.scss */
+/* line 316, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar:focus + label {
   display: table-caption;
 }
-/* line 316, ../sass/components/forms/_input-fields.scss */
+/* line 321, ../sass/components/forms/_input-fields.scss */
 input[type=text].js-comment-bar:focus ~ i, input[type=text].js-comment-bar:focus ~ i.material-icons {
   font-size: 36px;
 }
 
 /* Textarea */
-/* line 325, ../sass/components/forms/_input-fields.scss */
+/* line 330, ../sass/components/forms/_input-fields.scss */
 textarea {
   width: 100%;
   height: 3rem;
   background-color: transparent;
 }
-/* line 330, ../sass/components/forms/_input-fields.scss */
+/* line 335, ../sass/components/forms/_input-fields.scss */
 textarea.materialize-textarea {
   overflow-y: hidden;
   /* prevents scroll bar flash */
@@ -7145,7 +7149,7 @@ textarea.materialize-textarea {
   min-height: 3rem;
 }
 
-/* line 339, ../sass/components/forms/_input-fields.scss */
+/* line 344, ../sass/components/forms/_input-fields.scss */
 .hiddendiv {
   display: none;
   white-space: pre-wrap;
@@ -7157,18 +7161,18 @@ textarea.materialize-textarea {
 }
 
 /* Autocomplete */
-/* line 349, ../sass/components/forms/_input-fields.scss */
+/* line 354, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content {
   margin-top: -15px;
   display: block;
   opacity: 1;
   position: static;
 }
-/* line 356, ../sass/components/forms/_input-fields.scss */
+/* line 361, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content li .highlight {
   color: #444;
 }
-/* line 358, ../sass/components/forms/_input-fields.scss */
+/* line 363, ../sass/components/forms/_input-fields.scss */
 .autocomplete-content li img {
   height: 40px;
   width: 40px;

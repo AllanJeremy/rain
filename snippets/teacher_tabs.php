@@ -463,13 +463,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                      | read
                                                                 </a>
                                                                 <br>
-                                                                <div class="input-field inline comment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-comment-type="ass_submission">
-                                                                    <input data-user-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                <div class="input-field inline comment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-id="<?php echo $ass_sub['submission_id']; ?>">
+                                                                    <input data-user-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal longer" name="comment">
                                                                     <label for="comment">
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
                                                                     <br>
-                                                                    <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all comments</a>
+                                                                    <a class='right btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
+                                                                    <a class='left btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
                                                                 </div>
                                                                 <span class="right">
                                                                     <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
@@ -525,15 +526,16 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                         $student_name = $student["full_name"];
                                                                     }
                                                                     ?>
-                                                                    <li class="container col s12 m6 ass-submission-container">
+                                                                    <li class="container col s12 m6 ass-submission-item">
                                                                         <span class="student-name"><?php echo $student_name." (Adm No. $student_adm_no) "?> </span>
                                                                         <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
-                                                                        <div class="input-field inline comment">
+                                                                        <div class="input-field inline comment" data-id="<?php echo $sub['submission_id'] ?>" data-submission-id="<?php echo $sub['submission_id'] ?>">
                                                                             <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
                                                                             <label for="comment">
                                                                                 <i class="material-icons">comment</i>
                                                                             </label>
                                                                             <br>
+                                                                            <a class='right btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
                                                                             <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
                                                                         </div>
                                                                     </li>
