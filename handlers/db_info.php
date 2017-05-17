@@ -1664,11 +1664,14 @@ class DbInfo
         return self::GetRecordsInTimeframe("schedules","schedule_date",$start_date,$end_date);
      }
     
-    #Get the current day's schedules
+    #Get the current day's schedules [HACK ~ TO FIND A GENUINE WORKING SOLUTION]
     public static function GetTodaySchedules()
     {
-        $today = EsomoDate::GetCurrentDate();
-        $schedules = self::GetSchedulesInTimeframe($today,$today);
+        // $today = EsomoDate::GetCurrentDate();
+        $yesterday = EsomoDate::GetYesterday();
+        $tomorrow = EsomoDate::GetTomorrow();
+
+        $schedules = self::GetSchedulesInTimeframe($yesterday,$tomorrow);
 
         return $schedules;
     }
@@ -1766,11 +1769,14 @@ class DbInfo
         return self::GetRecordsInTimeframe("assignments","date_sent",$start_date,$end_date);
     }
 
-    #Get the current day's assignments
+    #Get the current day's assignments [HACK ~ TO FIND A GENUINE WORKING SOLUTION]
     public static function GetTodayAssignments()
     {
-        $today = EsomoDate::GetCurrentDate();
-        $assignments = self::GetAssignmentsInTimeframe($today,$today);
+        // $today = EsomoDate::GetCurrentDate();
+        $yesterday = EsomoDate::GetYesterday();
+        $tomorrow = EsomoDate::GetTomorrow();
+
+        $assignments = self::GetAssignmentsInTimeframe($yesterday,$tomorrow);
 
         return $assignments;
     }
