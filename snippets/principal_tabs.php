@@ -43,7 +43,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <?php
                                     AddTimeframeDropdown("schedule_overview_timeframe");
 
-                                    $schedules = DbInfo::Get7DaySchedules();
+                                    $schedules = DbInfo::Get7DaySchedules();#Default timeframe of schedules to get 
+
                                     $total_schedule_count = $done_schedule_count = $unattended_schedule_count = 0;
                                     if($schedules && @$schedules->num_rows>0)
                                     {
@@ -52,8 +53,6 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                         //Returns an array that contains associative arrays corresponding to db records
                                         $done_schedules = DbInfo::GetDoneSchedules($schedules);
                                         $unattended_schedules = DbInfo::GetUnattendedSchedules($schedules);
-                                        // var_dump($done_schedules);
-                                        // var_dump($unattended_schedules);
 
                                         $done_schedule_count = count($done_schedules);
                                         $unattended_schedule_count = count($unattended_schedules);
@@ -108,7 +107,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <?php
                                     AddTimeframeDropdown("ass_overview_timeframe");
 
-                                    $assignments = DbInfo::Get7DayAssignments();
+                                    $assignments = DbInfo::Get7DayAssignments();#Default timeframe of assignments to get
+
                                     $total_ass_sent = $total_ass_subs = $total_graded_ass_subs = 0;
 
                                     if($assignments && @$assignments->num_rows>0)
@@ -227,7 +227,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                             $schedule_status = "Unattended";
                                         }
                             ?>
-                            <tr>
+                            <tr class="schedule-table-list-row" data-schedule-id="<?php echo $schedule_id;?>">
                                 <td><?php echo $schedule_title;?></td>
                                 <td><?php echo $schedule_teacher;?></td>
                                 <td><?php echo $schedule_classroom;?></td>
@@ -236,14 +236,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <td><?php echo $schedule_status;?></td>
                                 <td>
                                     <a href="javascript:void(0)" data-schedule-id="<?php echo $schedule_id;?>" class="principal_view_schedule" title="View schedule (<?php echo $schedule_title;?>)"><i class="material-icons">visibility</i></a>
-                                    <a href="javascript:void(0)" data-ass-id="<?php echo $schedule_id;?>" class=" principal_comment_on_schedule" title="Comments for <?php echo $schedule_title;?>"><i class="material-icons lime-text">comment</i></a>
+                                    <a href="javascript:void(0)" data-schedule-id="<?php echo $schedule_id;?>" class=" principal_comment_on_schedule" title="Comments for <?php echo $schedule_title;?>"><i class="material-icons lime-text">comment</i></a>
                                 </td>
                             </tr>
                             <?php
                                     endforeach;
                                 else:#No schedules found
                             ?>
-                            <tr><td colspan="7">No schedules were found for the specified time period</td></tr>
+                            <tr class="schedule-table-list-row"><td colspan="7">No schedules were found for the specified time period</td></tr>
                             <?php
                                 endif;
                             ?>
@@ -263,7 +263,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                     <div class="col s12">
                         <p class="grey-text text-darken-2">Assignments</p>
 
-                        <table class="table striped bordered" id="schedules_tab_list">
+                        <table class="table striped bordered" id="ass_tab_list">
                             <tr class="table-headers">
                                 <th>Title</th>
                                 <th>Teacher</th>
@@ -331,7 +331,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                         $ass_date_due = EsomoDate::GetOptimalDateText($ass_date_due);
                                         
                             ?>
-                            <tr>
+                            <tr class="ass-table-list-row" data-ass-id="<?php echo $ass_id;?>" >
                                 <td title="Assignment title"><?php echo $ass_title;?></td>
                                 <td title="Teacher that sent the assignment"><?php echo $ass_teacher;?></td>
                                 <td title="Classroom the assignment was sent to"><?php echo $ass_classroom;?></td>
@@ -341,14 +341,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                 <td title="Number of submissions that were graded and returned by the teacher"><?php echo $graded_submission_count;?></td>
                                 <td title="Number of submissions that have not yet been graded/returned by the teacher"><?php echo $unreturned_submission_count;?></td>
                                 <td>
-                                    <a href="javascript:void(0)" data-schedule-id="<?php echo $ass_id;?>" class="principal_view_ass" title="View assignment (<?php echo $ass_title;?>)"><i class="material-icons">visibility</i></a>
+                                    <a href="javascript:void(0)" data-ass-id="<?php echo $ass_id;?>" class="principal_view_ass" title="View assignment (<?php echo $ass_title;?>)"><i class="material-icons">visibility</i></a>
                                 </td>
                             </tr>
                             <?php
                                     endforeach;
                                 else:#No schedules found
                             ?>
-                            <tr><td colspan="9">No assignments were found for the specified time period</td></tr>
+                            <tr class="ass-table-list-row"><td colspan="9">No assignments were found for the specified time period</td></tr>
                             <?php
                                 endif;
                             ?>

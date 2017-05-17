@@ -860,50 +860,207 @@ $(document).ready(function (z) {
         UpdateAssignmentOverview(timeframe);
     });
 
+    //Get the row to be displayed when no assignments are found
+    function GetPrincipalMissingScheduleRowHtml()
+    {
+        var row_html = '';
+        
+        row_html += '<tr class="schedule-table-list-row"><td colspan="7">No schedules were found for the specified time period</td></tr>';
+
+        return row_html;
+    }
+
+    //Get Schedule tab table row data [REFACTOR TO list_templates]
+    function GetPrincipalScheduleRowHtml(data)
+    {
+        /*Expected data indices
+            schedule_title,
+            schedule_teacher,
+            schedule_classroom,
+            schedule_date (formatted),
+            schedule_due_date (formatted).
+            schedule_status
+            schedule_id
+            comment_count
+         */
+        var row_html="";
+
+        row_html += '<tr class="schedule-table-list-row" data-schedule-id="'+data["schedule_id"]+'">';
+        row_html += '<td>'+data["schedule_title"]+'</td>';
+        row_html += '<td>'+data["schedule_teacher"]+'</td>';
+        row_html += '<td>'+data["schedule_classroom"]+'</td>';
+        row_html += '<td>'+data["schedule_date"]+'</td>';
+        row_html += '<td>'+data["schedule_due_date"]+'</td>';
+        row_html += '<td>'+data["schedule_status"]+'</td>';
+        row_html += '<td>';
+        row_html += '<a href="javascript:void(0)" data-schedule-id="'+data["schedule_id"]+'" class="principal_view_schedule" title="View schedule ('+data["schedule_title"]+')"><i class="material-icons">visibility</i></a>';
+        row_html += '<a href="javascript:void(0)" data-schedule-id="'+data["schedule_id"]+'" class=" principal_comment_on_schedule" title="Comments for '+data["schedule_title"]+'"><i class="material-icons lime-text">comment</i></a>';
+        row_html += '</td>';
+        row_html += '<tr>';
+
+        return row_html;
+    }
+
+    //Clear all body rows from the principal schedule section table (provided as parameter)
+    function ClearPrincipalScheduleRows($table)
+    {
+        //Clear all the existing table body rows
+        $table.find(".schedule-table-list-row").remove();
+    }
 
     //Update schedule tab stats
     function UpdateScheduleTabStats($table,timeframe)
     {
+
         $.get(db_info_path,{"action":"UpdateScheduleTabStats","timeframe":timeframe},function(response,status){
+
+            //Rows to add ~ will be appended to the end of the table            
+            var rows_to_add = '';
+            ClearPrincipalScheduleRows($table);
+            
+            //Try parsing the response as JSON data
             try
             {
                 var json = JSON.parse(response);
                 
-                
+                //If the JSON is valid
+                if(json)
+                {
+                    var cur_row = '';
+
+                    //Get all the rows to be added based on data provided
+                    for (var i=0; i<json.length; i++)
+                    {
+                        cur_row = GetPrincipalScheduleRowHtml(json[i]);
+                        rows_to_add += cur_row;//Add the current row to the rows to add
+                    }
+                }   
+                else
+                {
+                    rows_to_add = GetPrincipalMissingScheduleRowHtml();
+                }
             }
-            catch(e)
+            catch(e)//Catch the exception thrown if parsing JSON fails
             {
-                Materialize.toast("Failed to update records to match timeframe",toast_time);
-                console.log("Failed to parse JSON in timeframe ajax request.");
+                rows_to_add = GetPrincipalMissingScheduleRowHtml();
+                console.log("Could not retrieve JSON information for this schedule timeframe");
             }
+            finally
+            {
+                //Append the rows to add to the end of the table
+                $table.append(rows_to_add); 
+            }
+
         });
     }
 
     //Schedule tab ~ schedule tab timeframe change
     $("#schedules_tab_timeframe").change(function(){
         var timeframe = $(this).val();
+        var $table = $("table#schedules_tab_list");
+
+        UpdateScheduleTabStats($table,timeframe);
     });
+
+    //Get the row to be displayed when no assignments are found
+    function GetPrincipalMissingAssRowHtml()
+    {
+        var row_html = '';
+        
+        row_html += '<tr class="ass-table-list-row"><td colspan="9">No assignments were found for the specified time period</td></tr>';
+
+        return row_html;
+    }
+
+    //Get assignment row html [REFACTOR TO list_templates]
+    function GetPrincipalAssRowHtml(data)
+    {
+        /*Expected data indices
+            ass_title,
+            ass_teacher,
+            ass_classroom,
+            ass_date_sent,
+            ass_date_due,
+            ass_submission_count,
+            returned_submission_count,
+            unreturned_submission_count,
+            ass_id
+        */
+        var row_html = '';
+
+        row_html += '<tr class="ass-table-list-row" data-ass-id="'+data["ass_id"]+'">';
+        row_html += '<td title="Assignment title">'+data["ass_title"]+'</td>';
+        row_html += '<td title="Teacher that sent the assignment">'+data["ass_teacher"]+'</td>';
+        row_html += '<td title="Classroom the assignment was sent to">'+data["ass_classroom"]+'</td>';
+        row_html += '<td title="Date the assignment was sent">'+data["ass_date_sent"]+'</td>';
+        row_html += '<td title="Due date of the assignment">'+data["ass_date_due"]+'</td>';
+        row_html += '<td title="Number of submissions received from students for this assignment">'+data["ass_submission_count"]+'</td>';
+        row_html += '<td title="Number of submissions that were graded and returned by the teacher">'+data["returned_submission_count"]+'</td>';
+        row_html += '<td title="Number of submissions that have not yet been graded/returned by the teacher">'+data["unreturned_submission_count"]+'</td>';
+        row_html += '<td>';
+        row_html += '<a href="javascript:void(0)" data-ass-id="'+data["ass_id"]+'" class="principal_view_ass" title="View assignment ('+data["ass_title"]+')"><i class="material-icons">visibility</i></a>';
+        row_html += '</td>';
+        row_html += '</tr>';
+
+        return row_html;
+    }
+
+    //Clear all body rows from the principal assignment section table (provided as parameter)
+    function ClearPrincipalAssRows($table)
+    {
+        //Clear all the existing table body rows
+        $table.find(".ass-table-list-row").remove();
+    }
 
     //Update assignment overview
     function UpdateAssignmentTabStats($table,timeframe)
     {
         $.get(db_info_path,{"action":"UpdateAssignmentTabStats","timeframe":timeframe},function(response,status){
+            
+            //Rows to add ~ will be appended to the end of the table            
+            var rows_to_add = '';
+            
+            //Clear all the existing table body rows
+            ClearPrincipalAssRows($table);
+
+            //Try parsing the response as JSON data
             try
             {
                 var json = JSON.parse(response);
-                
+
+                if(json)
+                {
+                    var cur_row = '';
+                    for (var i=0; i<json.length; i++)
+                    {
+                        cur_row = GetPrincipalAssRowHtml(json[i]);
+                        rows_to_add += cur_row;
+                    }
+                }
+                else
+                {
+                    rows_to_add = GetPrincipalMissingAssRowHtml();
+                }
             }
-            catch(e)
+            catch(e)//Catch the exception thrown if parsing JSON fails
             {
-                Materialize.toast("Failed to update records to match timeframe",toast_time);
-                console.log("Failed to parse JSON in timeframe ajax request.");
+                rows_to_add = GetPrincipalMissingAssRowHtml();
+                console.log("Could not retrieve JSON information for this assignment timeframe");
             }
+            finally
+            {
+                //Append the rows to add to the end of the table
+                $table.append(rows_to_add); 
+            }
+
         });
     }
-    //Assignment tab ~ assignment tab timeframe change
+    //Assignment tab ~ assignment tab timeframe chabnge
     $("#assignments_tab_timeframe").change(function(){
         var timeframe = $(this).val();
-        UpdateAssignmentOverview(timeframe)
+        var $table = $("table#ass_tab_list");
+        
+        UpdateAssignmentTabStats($table,timeframe);
     });
 
 }); // end of document ready
