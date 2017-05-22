@@ -1608,6 +1608,7 @@ if(isset($_POST['action'])) {
                     $result = true;
                 }
             }
+            //$failed_files = ['file' => 'ddd'];
 
             if(count($failed_files) > 0) {//If inserting the data to the database is true, upload file
                 echo json_encode(['failed_files' => $failed_files, 'status' => false]);

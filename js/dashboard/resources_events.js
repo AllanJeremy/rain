@@ -117,6 +117,7 @@ var ResourcesEvents = function () {
 
             var files = document.forms['createResourcesForm']['resources'].files,
                 filesdescription = '', subjectid,
+                $This = $(this),
                 DATA = [];
             console.log(files);
 
@@ -174,6 +175,13 @@ var ResourcesEvents = function () {
                     console.log("Cool");
                     console.log(returndata);
                     //$('#uploadResource').closeModal();
+                    if (returndata === '') {
+                        $This.trigger('click');
+
+                        console.log('retrying');
+                        return (false);
+
+                    }
 
                     var failedfiles = jQuery.parseJSON(returndata);
 

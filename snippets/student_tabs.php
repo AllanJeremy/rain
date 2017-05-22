@@ -103,6 +103,7 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                         <h5 class="center-align valign grey-text " id="noAssignmentMessage">You have done all the assignments.<br>Keep it up!</h5>
                     </div>
                 <?php
+
                     endif;
                 ?> 
                     
@@ -110,6 +111,18 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
 
                 <!--Sent assignments-->
                 <div class="row main-tab" id="sentAssignmentsTab">
+                    <?php
+/*
+                if($assignments):
+                    foreach($assignments as $assignment):
+                            if(!$assignment["sent"]):
+                                var_dump($assignment);
+                            endif;
+                    endforeach;
+                            endif;
+*/
+                    ?>
+
                     <div class="col card-col" data-assignment-id="">
                         <div class="card white">
                             <div class="card-content">
