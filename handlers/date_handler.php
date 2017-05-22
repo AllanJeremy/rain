@@ -23,6 +23,9 @@ interface EsomoDateFunctions
     #Return yesterday in db format ~ returns date yesterday
     public static function GetYesterday();
 
+    #Return yesterday in db format ~ returns date tomorrow
+    public static function GetTomorrow();
+    
     #Return yesterday in db format ~ returns date 7 days ago
     public static function Get7DaysAgo();
 
@@ -259,6 +262,15 @@ class EsomoDate implements EsomoDateFunctions
     public static function GetYesterday()
     {
         return self::GetDayDiff(1)->format(EsomoDate::DB_DATE_FORMAT);
+    }
+
+    // Return yesterday in db format ~ returns date yesterday
+    public static function GetTomorrow()
+    {
+        $today =  new DateTime(self::GetCurrentDate());
+        
+        $tomorrow = $today->modify('+1 day');
+        return $tomorrow->format(EsomoDate::DB_DATE_FORMAT);
     }
 
     // Return yesterday in db format ~ returns date 7 days ago

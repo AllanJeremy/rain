@@ -885,13 +885,13 @@ class DbInfo
     }
 
     #Get graded/returned assignment submissions
-    public static function GetGradedAssSubBasedOnAss($submmissions)
+    public static function GetGradedAssSubBasedOnAss($submissions)
     {
         return self::GetAssSubReturnedStatus($submissions,true);
     }
 
     #Get ungraded/unreturned assignment submissions
-    public static function GetUnreturnedAssSubBasedOnAss($submmissions)
+    public static function GetUnreturnedAssSubBasedOnAss($submissions)
     {
         return self::GetAssSubReturnedStatus($submissions,false);
     }
@@ -1664,11 +1664,14 @@ class DbInfo
         return self::GetRecordsInTimeframe("schedules","schedule_date",$start_date,$end_date);
      }
     
-    #Get the current day's schedules
+    #Get the current day's schedules [HACK ~ TO FIND A GENUINE WORKING SOLUTION]
     public static function GetTodaySchedules()
     {
-        $today = EsomoDate::GetCurrentDate();
-        $schedules = self::GetSchedulesInTimeframe($today,$today);
+        // $today = EsomoDate::GetCurrentDate();
+        $yesterday = EsomoDate::GetYesterday();
+        $tomorrow = EsomoDate::GetTomorrow();
+
+        $schedules = self::GetSchedulesInTimeframe($yesterday,$tomorrow);
 
         return $schedules;
     }
@@ -1766,11 +1769,14 @@ class DbInfo
         return self::GetRecordsInTimeframe("assignments","date_sent",$start_date,$end_date);
     }
 
-    #Get the current day's assignments
+    #Get the current day's assignments [HACK ~ TO FIND A GENUINE WORKING SOLUTION]
     public static function GetTodayAssignments()
     {
-        $today = EsomoDate::GetCurrentDate();
-        $assignments = self::GetAssignmentsInTimeframe($today,$today);
+        // $today = EsomoDate::GetCurrentDate();
+        $yesterday = EsomoDate::GetYesterday();
+        $tomorrow = EsomoDate::GetTomorrow();
+
+        $assignments = self::GetAssignmentsInTimeframe($yesterday,$tomorrow);
 
         return $assignments;
     }
@@ -2419,6 +2425,8 @@ if(isset($_GET['action'])) {
             if(isset($timeframe) && !empty($timeframe))
             {
                 $schedules = false;
+
+                //TODO: [REFACTOR THIS CODE INTO A FUNCTION since it is reused]
                 switch($timeframe)
                 {
                     case ALL_TIME:
@@ -2478,6 +2486,8 @@ if(isset($_GET['action'])) {
             if(isset($timeframe) && !empty($timeframe))
             {
                 $assignments = false;
+                
+                //TODO: [REFACTOR THIS CODE INTO A FUNCTION since it is reused]
                 switch($timeframe)
                 {
                     case ALL_TIME:
@@ -2532,11 +2542,256 @@ if(isset($_GET['action'])) {
         break;
 
         case "UpdateScheduleTabStats": 
+            $timeframe = $_GET["timeframe"];
+
+            //If the timeframe provided is valid
+            if(isset($timeframe) && !empty($timeframe))
+            {
+                $schedules = false;
+
+                //TODO: [REFACTOR THIS CODE INTO A FUNCTION since it is reused]
+                switch($timeframe)
+                {
+                    case ALL_TIME:
+                        $schedules = DbInfo::GetAllSchedules();
+                    break;
+                    case TODAY:
+                        $schedules = DbInfo::GetTodaySchedules();
+                    break;
+                    case YESTERDAY:
+                        $schedules = DbInfo::GetYesterdaySchedules();
+                    break;
+                    case LAST_7_DAYS:
+                        $schedules = DbInfo::Get7DaySchedules();
+                    break;
+                    case THIS_MONTH:
+                        $schedules = DbInfo::GetThisMonthSchedules();
+                    break;
+                    case LAST_MONTH:
+                        $schedules = DbInfo::GetLastMonthSchedules();
+                    break;
+                    case LAST_30_DAYS:
+                        $schedules = DbInfo::GetLast30DaysSchedules();
+                    break;
+                    default:
+                        echo "Invalid timeframe provided";
+                    break;
+                }
+                //---------------------------------------------------------------------
+
+                /*Expected data indices
+                    schedule_title,
+                    schedule_teacher,
+                    schedule_classroom,
+                    schedule_date (formatted),
+                    schedule_due_date (formatted).
+                    schedule_status
+                    schedule_id
+                    comment_count
+                */
+
+                #If schedules were found
+                if($schedules && @$schedules->num_rows>0)
+                {
+                    $data = array();#Will store all the schedules' data
+
+                    $schedule_info = array("schedule_title"=>"","schedule_teacher"=>"","schedule_classroom"=>"","schedule_date"=>"","schedule_due_date"=>"","schedule_status"=>"","schedule_id"=>"","comment_count"=>"");
+
+                    //Foreach schedule ~ set the schedule info
+                    foreach($schedules as $schedule)
+                    {
+                        $schedule_id = $schedule["schedule_id"];
+
+                        //Set foreign key based variables
+                        #Schedule teacher
+                        $schedule_teacher = "Unknown teacher";
+
+                        if($teacher_found = DbInfo::GetTeacherById($schedule["teacher_id"]))
+                        {
+                            $schedule_teacher = $teacher_found["first_name"] . " " . $teacher_found["last_name"];
+                        }
+
+                        #Schedule Classroom
+                        $schedule_classroom = "Unknown classroom";
+
+                        if($classroom_found = DbInfo::ClassroomExists($schedule["class_id"]))
+                        {
+                            $schedule_classroom = $classroom_found["class_name"];
+                        }
+                        
+                        #If the schedule has been attended
+                        $schedule_status = null;
+                        if($schedule["attended_schedule"])
+                        {   
+                            $schedule_status = "Done";
+                        }
+                        else
+                        {
+                            $schedule_status = "Unattended";
+                        }
+
+                        $schedule_comment_count = 0;
+                        #Schedule comments
+                        if($schedule_comments = DbInfo::GetScheduleComments($schedule_id) && @$schedule_comments->num_rows>0)
+                        {
+                            $schedule_comment_count = $schedule_comments->num_rows;
+                        }
+                        
+                        //TODO : Get this data
+                        $schedule_info["schedule_title"] = $schedule["schedule_title"];
+                        $schedule_info["schedule_teacher"] = $schedule_teacher;
+                        $schedule_info["schedule_classroom"] = $schedule_classroom;
+                        $schedule_info["schedule_date"] = EsomoDate::GetOptimalDateText($schedule["schedule_date"]);
+                        $schedule_info["schedule_due_date"] = EsomoDate::GetOptimalDateText($schedule["due_date"]);
+                        $schedule_info["schedule_status"] = $schedule_status;
+                        $schedule_info["schedule_id"] = $schedule["schedule_id"];
+                        $schedule_info["comment_count"] = $schedule_comment_count;
+
+                        #Add the schedule info to the data array
+                        array_push($data,$schedule_info);
+                    }
+
+                    echo json_encode($data);#Echo the data as json data
+                }
+                else
+                {
+                    echo "\nNo schedules found in this timeframe";
+                }
+
+            }
+            else
+            {
+                echo "Failed to retrieve timeframe";
+            }
 
         break;
 
         case "UpdateAssignmentTabStats": 
+            $timeframe = $_GET["timeframe"];
 
+            //If the timeframe provided is valid
+            if(isset($timeframe) && !empty($timeframe))
+            {
+                $assignments = false;
+
+                //TODO: [REFACTOR THIS CODE INTO A FUNCTION since it is reused]
+                switch($timeframe)
+                {
+                    case ALL_TIME:
+                        $assignments = DbInfo::GetAllAssignments();
+                    break;
+                    case TODAY:
+                        $assignments = DbInfo::GetTodayAssignments();
+                    break;
+                    case YESTERDAY:
+                        $assignments = DbInfo::GetYesterdayAssignments();
+                    break;
+                    case LAST_7_DAYS:
+                        $assignments = DbInfo::Get7DayAssignments();
+                    break;
+                    case THIS_MONTH:
+                        $assignments = DbInfo::GetThisMonthAssignments();
+                    break;
+                    case LAST_MONTH:
+                        $assignments = DbInfo::GetLastMonthAssignments();
+                    break;
+                    case LAST_30_DAYS:
+                        $assignments = DbInfo::GetLast30DaysAssignments();
+                    break;
+                    default:
+                        echo "Invalid timeframe provided";
+                    break;
+                }
+                //---------------------------------------------------------------------
+
+                /*Expected data indices
+                    ass_title,
+                    ass_teacher,
+                    ass_classroom,
+                    ass_date_sent,
+                    ass_date_due,
+                    ass_submission_count,
+                    returned_submission_count,
+                    unreturned_submission_count,
+                    ass_id
+                */
+                #If assignments were found
+                if($assignments && @$assignments->num_rows>0)
+                {
+                    $data = array();#Will store all the schedules' data
+
+                    $ass_info = array("ass_title"=>"","ass_teacher"=>"","ass_classroom"=>"","ass_date_sent"=>"","ass_date_due"=>"","ass_submission_count"=>"","unreturned_submission_count"=>"","unreturned_submission_count"=>"","ass_id"=>"");
+
+                    //Foreach assignment ~ set the assignment info
+                    foreach($assignments as $ass)
+                    {
+                        $ass_id = $ass["ass_id"];
+                        $teacher_id = $ass["teacher_id"];
+
+                        //Set foreign key based variables
+                        #Assignment teacher
+                        $ass_teacher = "Unknown teacher";
+
+                        if($teacher_found = DbInfo::GetTeacherById($teacher_id))
+                        {
+                            $ass_teacher = $teacher_found["first_name"] . " " . $teacher_found["last_name"];
+                        }
+
+                        #Assignment Classroom
+                        $ass_classroom = "Unknown classroom";
+
+                        if($classroom_found = DbInfo::ClassroomExists($ass["class_id"]))
+                        {
+                            $ass_classroom = $classroom_found["class_name"];
+                        }
+
+                        #Returned and unreturned assignment submission count
+                        $returned_ass_submission_count = $unreturned_ass_submission_count = $ass_submission_count = 0;
+                        
+                        #If the assignment submissions were found
+                        if($ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id) && @$ass_submissions->num_rows>0)
+                        {
+                            $ass_submission_count = $ass_submissions->num_rows;
+                        }
+                        
+                        #If the returned assignment submissions were found
+                        if($returned_ass_submissions = DbInfo::GetGradedAssSubBasedOnAss($ass_submissions) && count($returned_ass_submissions)>0)
+                        {
+                            $returned_ass_submission_count = $returned_ass_submissions->num_rows;
+                        }
+
+                        #If the unreturned assignment submissions were found
+                        if($unreturned_ass_submissions = DbInfo::GetUnreturnedAssSubBasedOnAss($ass_submissions) && count($unreturned_ass_submissions)>0)
+                        {
+                            $unreturned_ass_submission_count = $unreturned_ass_submissions->num_rows;
+                        }
+
+
+                        //TODO : Get this data
+                        $ass_info["ass_title"] = $ass["ass_title"];
+                        $ass_info["ass_teacher"] = $ass_teacher;
+                        $ass_info["ass_classroom"] = $ass_classroom;
+                        $ass_info["ass_date_sent"] = EsomoDate::GetOptimalDateText($ass["date_sent"]);
+                        $ass_info["ass_date_due"] = EsomoDate::GetOptimalDateText($ass["due_date"]);
+                        $ass_info["ass_submission_count"] = $ass_submission_count;
+                        $ass_info["returned_submission_count"] = $returned_ass_submission_count;
+                        $ass_info["unreturned_submission_count"] = $unreturned_ass_submission_count;
+                        $ass_info["ass_id"] = $ass_id;
+
+                        #Add the assignment info to the data array
+                        array_push($data,$ass_info);
+                    }
+                    echo json_encode($data);#Echo the data as json data
+                }
+                else
+                {
+                    echo "\nNo assignments found for this timeframe";
+                }
+            }
+            else
+            {
+                echo "Failed to retrieve timeframe";
+            }
         break;
 
         default:
