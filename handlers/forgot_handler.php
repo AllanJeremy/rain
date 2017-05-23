@@ -2,6 +2,8 @@
 
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Connection to the database
 require_once (realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Allows connection to database
+require_once (realpath(dirname(__FILE__) . "/../handlers/email_handler.php")); #Allows connection to database
+require_once (realpath(dirname(__FILE__) . "/../classes/mail_generator.php")); #Allows connection to database
 
 function validateEmail() {
 
@@ -48,9 +50,11 @@ function validateEmail() {
             $tmp_token = $encrypt;
             $tmp_link = 'http://localhost/gits/esomo-upgrade/reset.php?enc='.$encrypt.'&action=reset';
             $tmp_token_destroy = 'TOKEN DESTROYED';
-            $email_from = 'idfinder254@gmail.com';//<== update the email address
-            $email_subject = "Brookhurst e-Learning helper";
+
+            $from = 'idfinder254@gmail.com';//<== update the email address
             $to = $tmp_email;
+
+            $email_data = EsomoMailGenerator::RecoverAccountPassword($tmp_first_name,$to,$from,$cc="",$bcc="",$tmp_link);
 
 
 
@@ -78,8 +82,6 @@ function validateEmail() {
 
                     echo json_encode(array('status'=>2));
                 } else {
-                    require_once(realpath(dirname(__FILE__) . "/../classes/class.smtp.php")); #Connection to the stmp for mail
-                    require_once (realpath(dirname(__FILE__) . "/../classes/class.phpmailer.php")); #Allows connection to phpmailer
 
                     $query = "INSERT INTO recovery(token,temp_password,acc_email,acc_type) VALUES (?,?,?,?)";
                     if($stmt = $dbCon->prepare($query))
@@ -87,31 +89,16 @@ function validateEmail() {
                         $stmt->bind_param('ssss',$tmp_token,$tmp_password,$tmp_email,$tmp_acc_type);
                         $stmt->execute();
 
+                        $result = EmailHandler::SendPasswordRecoveryEmail($email_data);
+                        //var_dump($result);
 
-                        $mail = new PHPMailer;
-                        $mail->isSMTP();
-                        $mail->SMTPDebug = 0;
-                        $mail->Debugoutput = 'html';
-                        $mail->Host = 'ssl://smtp.gmail.com';
-                        $mail->Port = 465;
-                        $mail->SMTPSecure = 'ssl';
-                        $mail->SMTPAuth = true;
-                        $mail->Username = "idfinder254@gmail.com";
-                        $mail->Password = "MWAURAMUCHIRI";
-                        $mail->setFrom($email_from, 'Brookhurst eLearning buddy');
-                        $mail->addAddress($to, $tmp_first_name);
-                        $mail->Subject = "Hey ".$tmp_first_name."\n";
-                        $mail->Body    = 'We received a request to change your password for your Brookhurst account. Click this link : '.$tmp_link;
-                        $mail->IsHTML(true);
-
-                        if (!$mail->send()) {
-                            //echo "Mailer Error: " . $mail->ErrorInfo;
-//                            echo json_encode(array('status'=>8));
-                            removeRecoveryData($dbCon,$tmp_email,$tmp_acc_type);
-                        } else {
+                        if ($result) {
                             echo json_encode(array('status'=>1));
-                            //header('location: sent.php');
+
                             exit;
+                        } else {
+                            //echo "Mailer Error: " . $mail->ErrorInfo;
+                            removeRecoveryData($dbCon,$tmp_email,$tmp_acc_type);
                         }
                     } else {
                     echo json_encode(array('status'=>4));

@@ -27,6 +27,7 @@ class EsomoMailGenerator
             "message"=>$message,
             "to"=>$email_to,
             "from"=>self::NO_REPLY_EMAIL,
+            "attachments"=>null,
             "cc"=>$cc,
             "bcc"=>$bcc
         );
@@ -60,6 +61,36 @@ class EsomoMailGenerator
     {
         $mail_generated = self::NewAccountEmail($first_name,$last_name,$username,"student",$email_to,$cc,$bcc);
         return $mail_generated;
+    }
+
+    //New School account created
+    public static function NewSchoolLicenceActivation($first_name,$last_name,$username,$email_to="",$cc="",$bcc="")
+    {
+
+        $subject = "Rain E-Learning | Problem report";
+        $message = "<h4>Problem reported by ".$user_info["full_name"]."(Account type : ".$user_info["account_type"].") on ".$today."</h4>";
+        $message .= "<p><b>Section : </b>".$report_section."</p>";
+        $message .= "<p><b>Specifically : </b>".$specific_section."</p>";
+        $message .= "<p><b>Details </b><br>".ucfirst($problem_details)."<p>";
+
+        $non_html_message = "\nProblem reported by ".$user_info["full_name"]." on ".$today."";
+        $non_html_message .= "\nSection : ".$report_section;
+        $non_html_message .= "\nSpecifically : ".$specific_section;
+        $non_html_message .= "\nDetails \n".ucfirst($problem_details);
+
+        $email_data = array(
+            "from"=>self::DEV_EMAILS,
+            "to"=>self::DEV_EMAILS,
+            "subject"=>$subject,
+            "message"=>$message,
+            "alt_message"=>$non_html_message,
+            "attachments"=>null,
+            "cc"=>self::DEV_EMAILS,
+            "bcc"=>self::DEV_EMAILS
+        );
+
+        #Return the email data ~ can be used by phpmailer
+        return $email_data;
     }
 
     //Report problem email
@@ -103,6 +134,7 @@ class EsomoMailGenerator
             "subject"=>$subject,
             "message"=>$message,
             "alt_message"=>$non_html_message,
+            "attachments"=>null,
             "cc"=>self::DEV_EMAILS,
             "bcc"=>self::DEV_EMAILS
         );
@@ -110,4 +142,35 @@ class EsomoMailGenerator
         #Return the email data ~ can be used by phpmailer
         return $email_data;
     }
+
+    //Report problem email
+    public static function RecoverAccountPassword($first_name,$to,$from,$cc="",$bcc="",$tmp_link)
+    {
+
+        $subject = "Hey ".$first_name."\n";
+
+        $message = "<h4>We received a request to change your password for your Brookhurst account.</h4>";
+        $message .= "<h4>Click this link : ".$tmp_link."</h4>";
+
+        $non_html_message = "\nWe received a request to change your password for your Brookhurst account.";
+        $non_html_message .= "\nClick this link : ".$tmp_link;
+
+        $email_data = array(
+            "from"=>$from,
+            "to"=>$to,
+            "address_name"=>$first_name,
+            "subject"=>$subject,
+            "message"=>$message,
+            "alt_message"=>$non_html_message,
+            "attachments"=>null,
+            "cc"=>$cc,
+            "bcc"=>$bcc
+        );
+
+        #Return the email data ~ can be used by phpmailer
+        return $email_data;
+
+    }
+
+
 }

@@ -1,11 +1,12 @@
 <?php
 require_once(realpath(dirname(__FILE__) ."/../handlers/db_connect.php"));
 require_once(realpath(dirname(__FILE__) ."/../handlers/date_handler.php"));
+require_once(realpath(dirname(__FILE__) ."/../handlers/email_handler.php"));
 
 /*This class controls tracking of the system's performance and minimal feedback*/
 class EsomoTracker
 {
-    const DEV_EMAILS = "aj.dev254@gmail.com";
+    const DEV_EMAILS = "aj.dev254@gmail.com, gramwauu@gmail.com";
     const FROM_EMAIL = "aj.cgeek@gmail.com";#TODO ~ Change this email
 
     public static $ip;
@@ -54,24 +55,37 @@ class EsomoTracker
         {         
             //Try sending the details of the installation location to our emails
             //Headers for html email
-            $headers[] = 'MIME-Version: 1.0';
-            $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+            $email_data = array(
+                "from"=>self::FROM_EMAIL,
+                "to"=>self::DEV_EMAILS,
+                "address_name"=> 'Rain Developers',
+                "subject"=>$subject,
+                "message"=>$message,
+                "alt_message"=> ' ',
+                "attachments"=>null,
+                "cc"=>self::FROM_EMAIL
+            );
 
-            // Additional headers
-            $headers[] = 'To: '.self::DEV_EMAILS;
-            $headers[] = 'From: '.self::FROM_EMAIL;
-            $headers[] = 'Cc: '.self::FROM_EMAIL;
+            $result = EmailHandler::SendInstallationDetails($email_data);
 
-            $send_status = mail($to, $subject, $message, implode("\r\n", $headers));
-
-            if($send_status)
-            {
-                echo "<p class='grey-text'>Sent html mail</p>";#TODO [debug] ~ remove
-            }
-            else
-            {
-                echo "<p class='grey-text'>Failed to send html mail</p>";#TODO [debug] ~ remove
-            }
+//            $headers[] = 'MIME-Version: 1.0';
+//            $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+//
+//            // Additional headers
+//            $headers[] = 'To: '.self::DEV_EMAILS;
+//            $headers[] = 'From: '.self::FROM_EMAIL;
+//            $headers[] = 'Cc: '.self::FROM_EMAIL;
+//
+//            $send_status = mail($to, $subject, $message, implode("\r\n", $headers));
+//
+//            if($send_status)
+//            {
+//                echo "<p class='grey-text'>Sent html mail</p>";#TODO [debug] ~ remove
+//            }
+//            else
+//            {
+//                echo "<p class='grey-text'>Failed to send html mail</p>";#TODO [debug] ~ remove
+//            }
             
         }
         catch(Exception $e)
