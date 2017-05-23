@@ -152,14 +152,16 @@
                         var data = {
                             "report_section":$("#report_section").val(),
                             "report_specific":$("#report_specific").val(),
-                            "report_message":$("#report_message").text()
+                            "report_message":$("#report_message").val()
                         };
+                        console.log(data);
+                        console.log();
 
                         var SUPPORT_EMAIL = "support@rain.co.ke";//TODO: Change or acquire this email
 
                         //AJAX request
-                        $.post("handlers/db_handler.php",{"action":"ReportProblem","data":data},function(response,status){
-                            if(response == "1" || response=="true")
+                        $.post("handlers/email_handler.php",{"action":"ReportProblem","data":data},function(response,status){
+                            if(response == 1 || response==true)
                             {
                                 Materialize.toast("Successfully reported the problem. Thanks for your feedback",2500);
                             }
@@ -167,7 +169,7 @@
                             {
                                 Materialize.toast("Failed to report the problem. Server side error: If the problem persists, contact support ("+SUPPORT_EMAIL+")",2500);
                             }
-                        });
+                        }, 'json');
                     }
                     else
                     {

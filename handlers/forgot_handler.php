@@ -3,7 +3,7 @@
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #Connection to the database
 require_once (realpath(dirname(__FILE__) . "/../handlers/session_handler.php")); #Allows connection to database
 require_once (realpath(dirname(__FILE__) . "/../handlers/email_handler.php")); #Allows connection to database
-require_once (realpath(dirname(__FILE__) . "/../classes/mail_generator.php")); #Allows connection to database
+//require_once (realpath(dirname(__FILE__) . "/../classes/mail_generator.php")); #Allows connection to database
 
 function validateEmail() {
 

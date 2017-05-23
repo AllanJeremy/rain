@@ -7,7 +7,7 @@ class EsomoMailGenerator
 {
     /*Constants*/
 
-    const DEV_EMAILS = "aj.dev254@gmail.com,gramwauu@gmail.com";
+    const DEV_EMAILS = "gramwauu@gmail.com";
     const ACCOUNTS_CONTACT_EMAIL = "account@rain.co.ke";#TODO: Change this to a valid email
     const NO_REPLY_EMAIL = "noreply@rain.co.ke";
 
@@ -26,7 +26,8 @@ class EsomoMailGenerator
             "subject"=>$subject,
             "message"=>$message,
             "to"=>$email_to,
-            "from"=>self::NO_REPLY_EMAIL,
+            "address_name"=> $first_name,
+            "from"=>self::DEV_EMAILS,
             "attachments"=>null,
             "cc"=>$cc,
             "bcc"=>$bcc
@@ -81,6 +82,7 @@ class EsomoMailGenerator
         $email_data = array(
             "from"=>self::DEV_EMAILS,
             "to"=>self::DEV_EMAILS,
+            "address_name"=> 'Rain Developer',
             "subject"=>$subject,
             "message"=>$message,
             "alt_message"=>$non_html_message,
@@ -131,6 +133,7 @@ class EsomoMailGenerator
         $email_data = array(
             "from"=>self::DEV_EMAILS,
             "to"=>self::DEV_EMAILS,
+            "address_name"=> 'Rain Developer',
             "subject"=>$subject,
             "message"=>$message,
             "alt_message"=>$non_html_message,

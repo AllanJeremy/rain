@@ -1953,18 +1953,17 @@ if(isset($_POST['action'])) {
         
         //Report problem
         case "ReportProblem":
-            $data = $_POST["data"];
-            require_once("../classes/mail_generator.php");#Generates emails
-
-            $email = EsomoMailGenerator::ReportProblemEmail($data,$user_info);#TODO: Generate email here
-
-            #Ensure that required fields are set ~ if not, echo an error message and end execution of the section
-            if (empty(data["report_section"]) || empty(data["report_message"]))
-            {
-                echo "0 ~ Invalid data provided";
-                // return false;#Consider trying this incase the break does not break out of the case
-                break;#Stop running the rest of the case code
-            }
+//            $data = $_POST["data"];
+//
+//            $email = EsomoMailGenerator::ReportProblemEmail($data,$user_info);#TODO: Generate email here
+//
+//            #Ensure that required fields are set ~ if not, echo an error message and end execution of the section
+//            if (empty(data["report_section"]) || empty(data["report_message"]))
+//            {
+//                echo "0 ~ Invalid data provided";
+//                // return false;#Consider trying this incase the break does not break out of the case
+//                break;#Stop running the rest of the case code
+//            }
 
             
             /*
