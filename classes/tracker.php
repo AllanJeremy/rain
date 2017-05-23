@@ -6,7 +6,7 @@ require_once(realpath(dirname(__FILE__) ."/../handlers/email_handler.php"));
 /*This class controls tracking of the system's performance and minimal feedback*/
 class EsomoTracker
 {
-    const DEV_EMAILS = "aj.dev254@gmail.com, gramwauu@gmail.com";
+    const DEV_EMAILS = "aj.dev254@gmail.com";
     const FROM_EMAIL = "aj.cgeek@gmail.com";#TODO ~ Change this email
 
     public static $ip;

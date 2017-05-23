@@ -1,3 +1,16 @@
+<?php
+    require_once("handlers/session_handler.php");
+    require_once("handlers/global_init_handler.php");
+
+    #If user is not logged in, they will be redirected to this file
+    $redirectPath = "login.php";
+
+    //If statement that determines whether content can be viewed
+    if (MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn()):
+
+
+?>
+
 <!DOCTYPE html>
 
 <html lang="en" >
@@ -22,15 +35,7 @@
     <body class="side-nav-page grey lighten-5">
 
         <?php 
-            require_once("handlers/session_handler.php");
-            require_once("handlers/global_init_handler.php");
 
-            #If user is not logged in, they will be redirected to this file
-            $redirectPath = "login.php";
-
-            //If statement that determines whether content can be viewed
-            if (MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn()):
-               
                 //Account type - from session variable storing the account type of the currently logged in user
                 $snippet_folder = "snippets/";#folder that contains snippets
 
@@ -178,13 +183,6 @@
         <?php
             include_once("./snippets/site_footer.php");
         ?>
-        
-        <?php
-            else:#redirect user to the login page
-                header('Location:'.$redirectPath);
-            endif;#end the main if statement
-        ?>
-        
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
         <script type="text/javascript" src="js/moment.js"></script>
@@ -349,5 +347,16 @@
         </script>
         <script type="text/javascript" src="js/test_functions.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
     </body>
 </html>
+        <?php
+            else:#redirect user to the login page
+                header('Location: '.$redirectPath);
+        exit;
+            endif;#end the main if statement
+
+        ?>
+

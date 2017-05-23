@@ -1,3 +1,12 @@
+<?php
+require_once("handlers/session_handler.php"); #Access session functions
+
+$redirectPath = "index.php"; #if user is logged in, redirect them to this file
+
+//Only show the contents of the login page if no user is logged in
+if (!(MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn())):
+
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="login-bg">
@@ -16,7 +25,6 @@
     <body>
 
     <?php
-        require_once("handlers/session_handler.php"); #Access session functions
 
         $superusers = DbInfo::GetAllSuperusers();
 
@@ -34,10 +42,10 @@
     <script>alert("Successfully created the first superuser account")</script>
 <?php
         endif;
-        $redirectPath = "index.php"; #if user is logged in, redirect them to this file
+        //$redirectPath = "index.php"; #if user is logged in, redirect them to this file
 
         //Only show the contents of the login page if no user is logged in
-        if (!(MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn())):
+        //if (!(MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn())):
     ?>
         <header>
         </header>
@@ -147,13 +155,7 @@
         </main>
         <footer>
         </footer>
-        
-        <?php
-            else:
-                header("Location:".$redirectPath);
-            endif;
-            require_once("handlers/login_handler.php");
-        ?>
+
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
 <!--        <script type="text/javascript" src="js/main.js"></script>-->
@@ -179,3 +181,9 @@
         </script>
     </body>
 </html>
+        <?php
+            else:
+                header("Location:".$redirectPath);
+            endif;
+            require_once("handlers/login_handler.php");
+        ?>
