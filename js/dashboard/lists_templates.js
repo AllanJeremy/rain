@@ -33,14 +33,14 @@ var Lists_Templates = function () {
         templateOutput += '<span class="card-title">' + obj.classroomtitle + '</span>';
         templateOutput += '<p>Number of students: ';
         templateOutput += '<span class="php-data">' + obj.totalstudents;
-        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#!" >';
+        templateOutput += ' <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="javascript:void(0)" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
         templateOutput += '</p>';
         templateOutput += '<p>Assignments sent: ';
         templateOutput += '<span class="php-data">' + obj.assignmentnumbers;
-        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#!" >';
+        templateOutput += ' <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="javascript:void(0)" >';
         templateOutput += '<i class="material-icons">info</i>';
         templateOutput += '</a>';
         templateOutput += '</span>';
@@ -147,7 +147,7 @@ var Lists_Templates = function () {
         templateOutput +=  obj.duedate + '</span></p>';
         templateOutput += '</div>';
         templateOutput += '<div class="card-action">';
-        templateOutput += '<p class="">Submitted assignments: <a href="#!" >' + obj.totalsubmitted + '</a></p>';
+        templateOutput += '<p class="">Submitted assignments: <a href="javascript:void(0)" >' + obj.totalsubmitted + '</a></p>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';
         
@@ -245,9 +245,9 @@ var Lists_Templates = function () {
     this.scheduleInfo = function (obj) {
 
         var templateOutput = '',
-            text = obj.schedule_objectives.replace(/,/g, '.<br>');
+            prop;
 
-        obj.schedule_objectives = text;
+        //obj.schedule_objectives = text;
 
         templateOutput += '<div class="scheduledata">';
         templateOutput += '<div class="row">';
@@ -271,7 +271,17 @@ var Lists_Templates = function () {
         templateOutput += '<div class="col s12">';
         templateOutput += '<h6 class="grey-text">Objectives</h6>';
         templateOutput += '<div class="col s8 divider"></div>';
-        templateOutput += '<p>' + obj.schedule_objectives + '</p>';
+        templateOutput += '<p>';
+
+        for (prop in obj.schedule_objectives){
+
+            templateOutput += obj.schedule_objectives[prop];
+            templateOutput += '<br>';
+
+        }
+
+        templateOutput += '</p>';
+
         if (obj.attended_schedule === 0) {
 
             templateOutput += '</div></div><br><div class="row"><a class="btn" id="attendedScheduleFromModal">Mark attended<i class="material-icons right">done</i></a></div></div>';
@@ -308,7 +318,7 @@ var Lists_Templates = function () {
 
         }
         
-        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
+        templateOutput += '<a href="javascript:void(0)" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         
@@ -354,8 +364,8 @@ var Lists_Templates = function () {
         templateOutput += '</div></div>';
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
-        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-red btn-flat">close</a>';
-        templateOutput += '<a href="#!" id="uploadResource" class=" modal-action waves-effect waves-green btn disabled"><i class="material-icons left">&#xE2C6;</i>upload</a>';
+        templateOutput += '<a href="javascript:void(0)" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-red btn-flat">close</a>';
+        templateOutput += '<a href="javascript:void(0)" id="uploadResource" class=" modal-action waves-effect waves-green btn disabled"><i class="material-icons left">&#xE2C6;</i>upload</a>';
         templateOutput += '</div>';
         templateOutput += '</div>';
 
@@ -470,7 +480,7 @@ var Lists_Templates = function () {
         templateOutput += obj.templateBody;
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
-        templateOutput += '<a href="#!" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
+        templateOutput += '<a href="javascript:void(0)" id="modalFooterCloseAction" class=" modal-action modal-close waves-effect waves-green btn-flat">close</a>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         
@@ -661,8 +671,8 @@ var Lists_Templates = function () {
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer row">';
         templateOutput += '<div class="col s12 m6"><div class="progress modal-progress"><div class="determinate ' + colorClass + '" style="width:' + obj.progressWidth + ';"><span class=" ' + textColorClass + ' ">' + obj.progressWidth + '</span></div></div></div>';
-        templateOutput += '<div class="col m3 s6"><a href="#!" id="modalFooterCloseAction" class="right modal-action modal-close waves-effect waves-red red-text btn-flat">close</a></div>';
-        templateOutput += '<div class="col m3 s6"><a href="#!" id="modalFooterActionAdd" class="right modal-action modal-close waves-effect waves-green btn">' + obj.modal_action + '</a></div>';
+        templateOutput += '<div class="col m3 s6"><a href="javascript:void(0)" id="modalFooterCloseAction" class="right modal-action modal-close waves-effect waves-red red-text btn-flat">close</a></div>';
+        templateOutput += '<div class="col m3 s6"><a href="javascript:void(0)" id="modalFooterActionAdd" class="right modal-action modal-close waves-effect waves-green btn">' + obj.modal_action + '</a></div>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         templateOutput += '</div>';
@@ -841,9 +851,8 @@ var Lists_Templates = function () {
         templateOutput += '<td>' + obj.scheduledescription + '</td>';
         templateOutput += '<td class="right-align">' + obj.scheduledatetime + '</td>';
         templateOutput += '<td class="right-align schedule-action" width="120">';
-        templateOutput += '<a class="btn-icon" id="attendedSchedule" href="javascript:void(0)"><i class="material-icons">done</i></a>';
-        templateOutput += '<a class="btn-icon' + ((obj.scheduletype === 'done') ? 'hide' : '') + '" href="javascript:void(0)" id="openSchedule">';
-        templateOutput += '<i class="material-icons">expand_more</i></a>';
+        templateOutput += '<a class="btn-icon js-open-schedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
+        templateOutput += ((obj.scheduletype === 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon js-attended-schedule" href="javascript:void(0)"><i class="material-icons">done</i></a>');
         templateOutput += '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
         templateOutput += '</td>';
         
@@ -893,31 +902,31 @@ var Lists_Templates = function () {
             
             if (j === c && j === 1) {
                 //if the first page is active
-                templateOutput += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
-                templateOutput += '<li class="active"><a href="#!">' + obj.c + '</a></li>';
+                templateOutput += '<li class="disabled"><a href="javascript:void(0)"><i class="material-icons">chevron_left</i></a></li>';
+                templateOutput += '<li class="active"><a href="javascript:void(0)">' + obj.c + '</a></li>';
             
             } else if (c === 1 && j !== 1) {
                 //if the first page is not active
-                templateOutput += '<li ><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
-                templateOutput += '<li class="waves-effect"><a href="#!">' + obj.c + '</a></li>';
+                templateOutput += '<li ><a href="javascript:void(0)"><i class="material-icons">chevron_left</i></a></li>';
+                templateOutput += '<li class="waves-effect"><a href="javascript:void(0)">' + obj.c + '</a></li>';
                 
             } else if (j === c) {
                 //The current active page
-                templateOutput += '<li class="active"><a href="#!">' + obj.c + '</a></li>';
+                templateOutput += '<li class="active"><a href="javascript:void(0)">' + obj.c + '</a></li>';
                 
             } else if (j === obj.pages && c === j) {
                 //if the last page is active
-                templateOutput += '<li class="active"><a href="#!">' + obj.c + '</a></li>';
-                templateOutput += '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                templateOutput += '<li class="active"><a href="javascript:void(0)">' + obj.c + '</a></li>';
+                templateOutput += '<li class="disabled"><a href="javascript:void(0)"><i class="material-icons">chevron_right</i></a></li>';
             
             } else if (c === obj.pages && j !== obj.pages) {
                 //if the last page is not active
-                templateOutput += '<li class="waves-effect"><a href="#!">' + obj.c + '</a></li>';
-                templateOutput += '<li ><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                templateOutput += '<li class="waves-effect"><a href="javascript:void(0)">' + obj.c + '</a></li>';
+                templateOutput += '<li ><a href="javascript:void(0)"><i class="material-icons">chevron_right</i></a></li>';
                 
             } else {
                 //Page not active
-                templateOutput += '<li class="waves-effect"><a href="#!">' + obj.c + '</a></li>';
+                templateOutput += '<li class="waves-effect"><a href="javascript:void(0)">' + obj.c + '</a></li>';
             }
             
         }
@@ -938,7 +947,7 @@ var Lists_Templates = function () {
         templateOutput += '<li>';
         templateOutput += obj.text;
         templateOutput += ((obj.isSubtopic === false) ? '' : '<span class="tiny-info">ST</span>');
-        templateOutput += ((obj.removable === false) ? '' : '<span class="right "><a class="mini-link btn-icon no-padding" href="#!">remove</a></span>');
+        templateOutput += ((obj.removable === false) ? '' : '<span class="right "><a class="mini-link btn-icon no-padding" href="javascript:void(0)">remove</a></span>');
         templateOutput += '</li>';
 
         return templateOutput;
@@ -991,10 +1000,10 @@ var Lists_Templates = function () {
 
                 if (i === 'Previous') {
 
-                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="javascript:void(0)" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat " href="javascript:void(0)" title="read the previous schedule in the list" id="moreScheduleCard' + i + '"><i class="material-icons left">navigate_before</i>previous schedule</a>';
                 } else if (i === 'Next') {
 
-                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat transparent" href="javascript:void(0)" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
+                    templateOutput += '<a style=" padding-left: 12px; padding-right: 12px; " class=" disabled text-lighten-1 modal-action left btn btn-flat " href="javascript:void(0)" title="read the next schedule in the list" id="moreScheduleCard' + i + '">next schedule<i class="material-icons right">navigate_' + i.toLowerCase() + '</i></a>';
 
                 } else if (i === 'Delete') {
 
@@ -1090,6 +1099,41 @@ var Lists_Templates = function () {
         templateOutput += '<div class="section grey lighten-2 center">';
         templateOutput += '<h5 class="center grey-text text-darken-1">No resources were found.<br><br>Once resources are uploaded they will appear here</h5>';
         templateOutput += '</div>';
+
+        return templateOutput;
+
+    };
+
+    //-------------------------
+
+    this.scheduleActionButton = function (eventClass, icon) {
+        var templateOutput = '';
+
+        templateOutput += '<a class="btn-icon ' + eventClass + '" href="javascript:void(0)"><i class="material-icons">';
+        templateOutput += icon;
+        templateOutput += '</i></a>';
+
+        return templateOutput;
+
+    };
+
+    //-------------------------
+
+    this.scheduleDummyData = function (dataType) {
+        var templateOutput = '';
+
+        templateOutput += "<tr class='js-dummy-schedule-data'><td>We can't find any " + dataType + " schedule</td><td>--</td><td>--</td><td>--</td></tr>";
+
+        return templateOutput;
+
+    };
+
+    //-------------------------
+
+    this.scheduleListObjective = function (str) {
+        var templateOutput = '';
+
+        templateOutput += '<li>' + str + '<span class="right "><a class="mini-link btn-icon no-padding" href="javascript:void(0)">remove</a></span></li>';
 
         return templateOutput;
 

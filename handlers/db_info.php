@@ -1309,8 +1309,8 @@ class DbInfo
                     echo '<td>'.$val['schedule_description'].'</td>';
                     echo '<td class="right-align" >'.$val['due_date'].'</td>';
                     echo '<td class="right-align schedule-action" width="120">';
-                    echo '<a class="btn-icon"  id="openSchedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
-                    echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>');
+                    echo '<a class="btn-icon js-open-schedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
+                    echo (($type == 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon js-attended-schedule" href="javascript:void(0)"><i class="material-icons">done</i></a>');
                     echo '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
                     echo '</td>';
                     echo '</tr>';
@@ -1334,9 +1334,8 @@ class DbInfo
                 echo '<td>'.$list['schedule_description'].'</td>';
                 echo '<td class="right-align" >'.$list['due_date'].'</td>';
                 echo '<td class="right-align schedule-action" width="120">';
-                echo '<a class="btn-icon"  id="openSchedule" href="#!"><i class="material-icons">expand_more</i></a>';
-                echo '<a class="btn-icon '.(($type == 'done') ? 'hide' : '').'" id="attendedSchedule" href="javascript:void(0)"><i class="material-icons">done</i></a>';
-                echo (($type == 'done') ? '<a class="btn-icon" id="unmarkdoneSchedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '');
+                echo '<a class="btn-icon js-open-schedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
+                echo (($type == 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon js-attended-schedule" href="javascript:void(0)"><i class="material-icons">done</i></a>');
                 echo '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
                 echo '</td>';
                 echo '</tr>';
@@ -1361,33 +1360,33 @@ class DbInfo
                 if ($v == 1 && $active == 1) {
                     #start
 
-                    echo '<li class="disabled"><a id="goToLeftPage" href="#!"><i class="material-icons">chevron_left</i></a></li>';
+                    echo '<li class="disabled"><a id="goToLeftPage" href="javascript:void(0)"><i class="material-icons">chevron_left</i></a></li>';
 
                 } elseif ($v == 1 && $active != 1) {
 
-                    echo '<li ><a id="goToLeftPage" href="#!"><i class="material-icons">chevron_left</i></a></li>';
+                    echo '<li ><a id="goToLeftPage" href="javascript:void(0)"><i class="material-icons">chevron_left</i></a></li>';
 
                 }
 
                 if ($v == $active) {
                     #active-page
 
-                    echo '<li class="active"><a href="#!">'.$v.'</a></li>';
+                    echo '<li class="active"><a href="javascript:void(0)">'.$v.'</a></li>';
 
                 } else {
 
-                    echo '<li class="waves-effect"><a href="#!">'.$v.'</a></li>';
+                    echo '<li class="waves-effect"><a href="javascript:void(0)">'.$v.'</a></li>';
 
                 }
 
                 if ($v == $numberOfTbody && $active == $numberOfTbody) {
                     #end
 
-                    echo '<li class="disabled"><a id="goToRightPage" href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                    echo '<li class="disabled"><a id="goToRightPage" href="javascript:void(0)"><i class="material-icons">chevron_right</i></a></li>';
 
                 } elseif ($v == $numberOfTbody && $active != $numberOfTbody) {
 
-                    echo '<li ><a id="goToRightPage" href="#!"><i class="material-icons">chevron_right</i></a></li>';
+                    echo '<li ><a id="goToRightPage" href="javascript:void(0)"><i class="material-icons">chevron_right</i></a></li>';
 
                 }
 
@@ -1395,16 +1394,11 @@ class DbInfo
 
 
 
-        } elseif($numberOfTbody == 1 && $active == 1) {
-
-            echo '<li class="disabled"><a id="goToLeftPage" href="#!"><i class="material-icons">chevron_left</i></a></li>';
-            echo '<li class="active"><a href="#!">'.$numberOfTbody.'</a></li>';
-            echo '<li class="disabled"><a id="goToRightPage" href="#!"><i class="material-icons">chevron_right</i></a></li>';
-            echo '</ul>';
-
         } else {
 
-            echo '<li class="waves-effect"><a href="#!">'.$numberOfTbody.'</a></li>';
+            echo '<li class="disabled"><a id="goToLeftPage" href="javascript:void(0)"><i class="material-icons">chevron_left</i></a></li>';
+            echo '<li class="active"><a href="javascript:void(0)">'.$numberOfTbody.'</a></li>';
+            echo '<li class="disabled"><a id="goToRightPage" href="javascript:void(0)"><i class="material-icons">chevron_right</i></a></li>';
             echo '</ul>';
 
         }

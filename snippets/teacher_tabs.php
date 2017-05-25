@@ -81,15 +81,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <span class="card-title"><?php echo $classroom['class_name'] ?></span>
                                     <p>Number of students:
                                         <span class="php-data"><?php echo $student_count; ?>  
-                                            <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="#!
-                                            " >
+                                            <a id="openStudentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of students in this classroom" href="javascript:void(0)" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
                                     </p>
                                     <p>Assignments sent:
                                         <span class="php-data"><?php echo $ass_count;?>
-                                            <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="#!" >
+                                            <a id="openAssignmentsClassList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Number of assignments sent to this classroom" href="javascript:void(0)" >
                                                 <i class="material-icons">info</i>
                                             </a>
                                         </span> 
@@ -98,8 +97,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <p>Stream:  <span class="php-data"><?php echo $stream_name ?></span></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#!" id="editClassroom">Edit</a>
-                                    <a href="#!" >View</a>
+                                    <a href="javascript:void(0)" id="editClassroom">Edit</a>
+                                    <a href="javascript:void(0)" >View</a>
 <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
                                 </div>
                             </div>
@@ -253,8 +252,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 </span></p>
                             </div>
                             <div class="card-action">
-                                <a href="#!" class="js-edit-assignment">Edit</a>
-                                <a href="#!" class="right">Call Back</a>
+                                <a href="javascript:void(0)" class="js-edit-assignment">Edit</a>
+                                <a href="javascript:void(0)" class="right">Call Back</a>
     <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
                             </div>
                         </div>
@@ -267,7 +266,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p>Class:
                                 <span class="php-data">
                                     <?php echo $ass_class_name; ?>  
-                                    <a id="openSentAssignmentList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Classroom the assignment was sent to" href="#!" >
+                                    <a id="openSentAssignmentList" class="orange-text text-accent-1 tooltipped" data-position="right" data-delay="50" data-tooltip="Classroom the assignment was sent to" href="javascript:void(0)" >
                                         <i class="material-icons">info</i>
                                     </a>
                                 </span> 
@@ -459,7 +458,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                     <?php echo $student_name;?>
                                                                     <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span>
                                                                 </a>
-                                                                <a href="javascript::void(0);" target="_blank" class="grey-text text-lighten-2">
+                                                                <a href="javascript::void(0)" target="_blank" class="js-view-ass-submission grey-text text-lighten-2">
                                                                      | read
                                                                 </a>
                                                                 <br>
@@ -469,8 +468,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
                                                                     <br>
-                                                                    <a class='right btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
-                                                                    <a class='left btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
+                                                                    <a class=' btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
+                                                                    <a class=' btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
                                                                 </div>
                                                                 <span class="right">
                                                                     <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
@@ -601,7 +600,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             </span>
                             </a>
                             
-                            <a class="btn-icon right hide" href="#!" id="closeScheduleForm">
+                            <a class="btn-icon right hide" href="javascript:void(0)" id="closeScheduleForm">
                                 <i class="material-icons">close</i>
                             </a>
                         </div>
@@ -667,7 +666,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             <input id="objectivesInput" class="materialize-textarea">
                                             <div class="row no-margin">
                                                 <div class="col s4">
-                                                    <a class="btn-flat mini-link" id="addNewScheduleObjective" href="#!">Add</a>
+                                                    <a class="btn-flat mini-link" id="addNewScheduleObjective" href="javascript:void(0)">Add</a>
                                                 </div>
                                                 <div class="col s8 input-field" id="selectContainerHook">
                                                     <?php
@@ -771,10 +770,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p class="grey-text">Pending schedules</p>
                         </div>
                         <div class="col s7 ">
-                            <a class=" right btn-icon" href="#!" id="showAllPendingSchedules">
+                            <a class=" right btn-icon" href="javascript:void(0)" id="showAllPendingSchedules">
                                 <i class="material-icons">done_all</i>
                             </a>
-                            <a class=" right btn-icon" href="#!" id="showAllPendingSchedules">
+                            <a class=" right btn-icon" href="javascript:void(0)" id="showAllPendingSchedules">
                                 <i class="material-icons">search</i>
                             </a>
                         </div>
@@ -817,9 +816,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $active = 1;
                             $type = 'pending';
                             $listdata = '1';
+                            $noDataMessage = "<tbody data-tbody-number='0' ><tr class='js-dummy-schedule-data'><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
 
-                                if ($i == 0) {
-                                    echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                            if ($i == 0) {
+                                    echo $noDataMessage;
                                 } else {
 
 
@@ -830,7 +830,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 }
                             } else {
 
-                                echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                echo $noDataMessage;
+
                             }
 
                             ?>
@@ -860,10 +861,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p class="grey-text">Schedules attended</p>
                         </div>
                         <div class="col s7">
-                            <a class="btn-icon right hide" href="#!" id="showAllDoneSchedules">
+                            <a class="btn-icon right hide" href="javascript:void(0)" id="showAllDoneSchedules">
                                 <i class="material-icons">expand_more</i>
                             </a>
-                            <a class="btn-icon right" href="#!" id="showAllDoneSchedules">
+                            <a class="btn-icon right" href="javascript:void(0)" id="showAllDoneSchedules">
                                 <i class="material-icons">search</i>
                             </a>
                         </div>
@@ -901,9 +902,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $active = 1;
                             $type = 'done';
                             $listdata = '1';
+                            $noDataMessage = "<tbody data-tbody-number='0' ><tr class='js-dummy-schedule-data'><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
 
                                 if ($i == 0) {
-                                    echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                    echo $noDataMessage;
                                 } else {
 
                                     $listdata = $attendedSchedulesData;
@@ -912,7 +914,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 }
                             } else {
 
-                                echo "<tbody data-tbody-number='noData' ><tr><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                                echo $noDataMessage;
                             }
 
                             ?>

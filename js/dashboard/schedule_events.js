@@ -40,9 +40,7 @@ var ScheduleEvents = function (userInfo) {
     var openScheduleForm = function () {
         
         $('#schedulesTab #scheduleCreateFormContainer').slideUp();
-        
-        console.log('ScheduleFormHidden');
-        
+
         $('main').on('click', 'a#openScheduleForm', function (e) {
             e.preventDefault();
         
@@ -61,8 +59,6 @@ var ScheduleEvents = function (userInfo) {
     };
     
     var closeScheduleForm = function () {
-        
-        console.log('ScheduleFormHidden');
 
         $('main').on('click', 'a#closeScheduleForm', function (e) {
             e.preventDefault();
@@ -90,8 +86,6 @@ var ScheduleEvents = function (userInfo) {
     };
         
     var submitSchedule = function () {
-        
-        console.log('Submitting schedule form');
 
         $('main').on('click', '#scheduleCreateFormContainer a#submitNewSchedule', function (e) {
             e.preventDefault();
@@ -104,22 +98,26 @@ var ScheduleEvents = function (userInfo) {
             
             $('#scheduleCreateFormContainer ul#objectivesList').children('li').children('span').remove();
             var scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li');
-            var scheduleobjectivesformatted = '';
+            var scheduleobjectivesformatted = '{';
             var scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val();
             var scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val();
             var scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val();
             var scheduleguidid = Materialize.guid();
+            var l = 0;
 
             scheduleobjectives.each(function (i, e) {
                
                 console.log(e.innerHTML);
                 
+                scheduleobjectivesformatted += '"ob_' + l +'":"';
                 scheduleobjectivesformatted += e.innerHTML;
-                scheduleobjectivesformatted += ',';
+                scheduleobjectivesformatted += '",';
                 
+                l++;
             });
-            
-            //scheduleobjectives.join(',');
+            scheduleobjectivesformatted = scheduleobjectivesformatted.slice(0,-1);
+
+            scheduleobjectivesformatted += '}';
 
             console.log(scheduletitle);
             console.log(scheduleobjectivesformatted);
@@ -165,19 +163,6 @@ var ScheduleEvents = function (userInfo) {
 
                             $('a#closeScheduleForm').trigger('click');
 
-                            /*
-                            $('#scheduleCreateFormContainer').slideUp('600', function () {
-
-                                $('#createScheduleCont').removeClass('z-depth-1');
-                                $('#createScheduleCont').removeClass('blue');
-                                $('#createScheduleCont').removeClass('lighten-5');
-
-                                $('a#closeScheduleForm').addClass('hide');
-                                $('a#openScheduleForm').removeClass('hide');
-
-                            });
-                            */
-                            
                             //Prepend the new schedule to Pending schedule list
                             
                             var pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').find('tbody:first');
@@ -243,8 +228,6 @@ var ScheduleEvents = function (userInfo) {
 
     var updateSchedule = function () {
 
-        console.log('updating schedule form');
-
         $('main').on('click', '#scheduleCreateFormContainer a#updateSchedule', function (e) {
             e.preventDefault();
 
@@ -265,10 +248,14 @@ var ScheduleEvents = function (userInfo) {
 
                 console.log(e.innerHTML);
 
+                scheduleobjectivesformatted += '"';
                 scheduleobjectivesformatted += e.innerHTML;
-                scheduleobjectivesformatted += ',';
+                scheduleobjectivesformatted += '",';
 
             });
+            scheduleobjectivesformatted = scheduleobjectivesformatted.split('').pop().join();
+            scheduleobjectivesformatted += '}';
+
 
             console.log(scheduletitle);
             console.log(scheduleobjectivesformatted);
@@ -342,12 +329,22 @@ var ScheduleEvents = function (userInfo) {
 
     var updatePagination = function (str1, str2, str3, str4, str5) {
 
+        /*
+        *str1 = the table that the pagination is appended
+        *str2 = the paginated element in the table, usually is <tbody>
+        *str3 = the table id
+        *str4 = maximum number of list items per tbody
+        *str5 = direction in which to update, either forward or backwards
+                    Forward is when a new list item is added to a tbody
+                    Backward is when a list item has been removed from a tbody
+        *
+        */
         var tablehook = str1,
             child = str2,
             tableid = str3,
             listlimit = str4,
             direction = str5,
-            toMove = '';
+            toMove = ''; //List item to be moved to the next/previous tbody
 
         if (direction === 'forward') {//Excess list is carried to the next tbody
 
@@ -393,7 +390,7 @@ var ScheduleEvents = function (userInfo) {
 
                         toMove = '';
 
-                        $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last').before('<li class="waves-effect"><a href="#!">' + next + '</a></li>');
+                        $('ul[data-table-target=' + tableid.substring(1,tableid.length) + ']').children('li:last').before('<li class="waves-effect"><a href="javascript:void(0)">' + next + '</a></li>');
 
                     }
                 }
@@ -480,8 +477,6 @@ var ScheduleEvents = function (userInfo) {
     };
 
     var tableNavigate = function () {
-
-        console.log('Adding navigation function init');
 
         $('main').on('click', 'ul.pagination li', function (e) {
         
@@ -630,9 +625,7 @@ var ScheduleEvents = function (userInfo) {
     };
     
     var addObjective = function () {
-        
-        console.log('Adding Objectives function init');
-        
+
         $('main').on('click', '#scheduleCreateFormContainer a#addNewScheduleObjective', function (e) {
             
             e.preventDefault();
@@ -663,7 +656,6 @@ var ScheduleEvents = function (userInfo) {
     };
 
     var addObjectiveFromSubtopics = function () {
-        console.log('Adding objectives from list of topics init');
 
         var teacherClassroomids = $('#scheduleCreateFormContainer select#schedule_classroom').children('option:not(:disabled)').map(function () {
             return this.value;
@@ -702,9 +694,7 @@ var ScheduleEvents = function (userInfo) {
     };
 
     var removeObjective = function () {
-        
-        console.log('Removing Objectives function init');
-        
+
         $('main').on('click', '#scheduleCreateFormContainer ul#objectivesList li a', function (e) {
             
             e.preventDefault();
@@ -781,9 +771,7 @@ var ScheduleEvents = function (userInfo) {
     };
     
     var updateSubTopicDropdown = function () {
-        
-        console.log('Choose a classroom first, for a list of topics to appear');
-        
+
         $('main').on('change', '#scheduleCreateFormContainer select#schedule_classroom', function (e) {
             e.preventDefault();
             var selectedClassroomId = $('#scheduleCreateFormContainer select#schedule_classroom').val();
@@ -845,13 +833,15 @@ var ScheduleEvents = function (userInfo) {
                 data.due_time_only_formatted = moment(data.due_date).format('h:mm A');
 
                 //Format objective list
-                data.schedule_objectives = data.schedule_objectives.split(',').forEach(function (i) {
+                data.schedule_objectives = JSON.parse(data.schedule_objectives);
+
+                for(i = 0; i < data.schedule_objectives.length; i++) {
                     if (i !== '') {
 
-                        scheduleobjectives += '<li>' + i + '<span class="right "><a class="mini-link btn-icon no-padding" href="#!">remove</a></span></li>';
+                        scheduleobjectives += Lists_Templates.scheduleListObjective(data.schedule_objectives[i]);
                     }
 
-                });
+                };
 
                 console.log(scheduleobjectives);
 
@@ -891,7 +881,7 @@ var ScheduleEvents = function (userInfo) {
 
             var self = $(this), re,
                 scheduleid = self.parents('.modal').attr('id').split('_').pop(),
-                toastMessage = '<p class="white-text" data-ref-schedule-id="' + scheduleid + '">Preparing to delete schedule  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
+                toastMessage = '<p class="white-text" data-ref-schedule-id="' + scheduleid + '">Preparing to delete schedule  <a href="javascript:void(0)" class="bold" id="toastUndoAction" >UNDO</a></p>';
 
             self.parents('.modal').find('a#attendedScheduleFromModal').length === 0 ? re = 'attendedScheduleTable' : re = 'pendingScheduleTable';
 
@@ -944,31 +934,32 @@ var ScheduleEvents = function (userInfo) {
         *   7. Update pagination
         */
 
-        $('main').on('click', 'a#attendedSchedule, a#attendedScheduleFromModal', function(e) {
+        $('main').on('click', 'a.js-attended-schedule, a#attendedScheduleFromModal', function(e) {
             e.preventDefault();
 
             var parentEl, scheduleid,
                 anchor = $(this), modalid,
+                title,
                 attendedScheduleHook = $('#schedulesTab table#attendedScheduleTable').children('tbody:first');
 
-            if (anchor.attr('id') === 'attendedSchedule') {
-                parentEl = anchor.parents('tr');
-                scheduleid = parentEl.attr('data-schedule-id');
-
-                console.log('marking done...');
-
-            } else {
+            if (anchor.attr('id') === 'attendedScheduleFromModal') {
                 modalid = anchor.parents('.modal').attr('id');
                 scheduleid = modalid.split('_').pop();
                 parentEl = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]');
 
                 console.log('marking done from modal...');
 
+            } else {
+                parentEl = anchor.parents('tr');
+                scheduleid = parentEl.attr('data-schedule-id');
+
+                console.log('marking done...');
+
             }
 
+            title = parentEl.find('td:first')[0].innerText;
 
             console.log(parentEl);
-
 
             $.post("classes/schedule_class.php", {
                     "action" : "MarkAttendedSchedule",
@@ -982,24 +973,17 @@ var ScheduleEvents = function (userInfo) {
                     console.log(attendedScheduleHook);
 
                     //Add .new-class for the animation
-                    //replace the done link with udone
+                    //replace the done link with undone
                     //Prepend to attended schedule
                     //Remove the schedule from the pending schedules' table.
                     parentEl.addClass('new-class');
-                    parentEl.find('a#attendedSchedule').replaceWith('<a class="btn-icon" id="unmarkdoneSchedule" href="#!"><i class="material-icons">undo</i></a>');
+                    parentEl.find('a.js-attended-schedule').replaceWith(Lists_Templates.scheduleActionButton('js-unmark-done-schedule', 'undo'));
                     console.log(parentEl[0].outerHTML);
 
+                    attendedScheduleHook.find('tr.js-dummy-schedule-data').remove();
                     attendedScheduleHook.prepend(parentEl[0].outerHTML);
 
                     parentEl.remove();
-
-                    if ($('#schedulesTab table#pendingScheduleTable').children('tbody').length === 1 && $('#schedulesTab table#pendingScheduleTable').children('tbody:first').find('tr').length === 0) {
-                        //If there're no schedules, append a dummy;
-                        $('#schedulesTab table#pendingScheduleTable').children('tbody:first').prepend("<tr><td>There's no pending schedule</td><td>--</td><td>--</td><td>--</td></tr>");
-                        $('#schedulesTab table#pendingScheduleTable').children('tbody:first').attr('data-tbody-number', 'noData');
-
-                    }
-
 
                     if (modalid !== '') {
 
@@ -1014,6 +998,21 @@ var ScheduleEvents = function (userInfo) {
                     updatePagination('#schedulesTab table#attendedScheduleTable', 'tbody', '#attendedScheduleTable', 6, 'forward');
                     updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', 6, 'backward');
 
+                    if ($('#schedulesTab table#pendingScheduleTable').children('tbody').length === 1 && $('#schedulesTab table#pendingScheduleTable').children('tbody:first').find('tr').length === 0) {
+                        //If there're no schedules, append a dummy;
+                        $('#schedulesTab table#pendingScheduleTable').children('tbody:first').prepend(Lists_Templates.scheduleDummyData('pending'));
+
+                    }
+
+                    Materialize.toast('Schedule <span class="php-data">' + title + '</span> marked attended!', 2000, 'green-text name text-lighten-4', function() {
+
+                    });
+
+                } else {
+                    Materialize.toast("Can't mark schedule <span class='php-data'>" + title + "</span> as attended", 2000, 'red-text name text-lighten-4', function() {
+
+                    });
+
                 }
             }, 'json');
             return(false);
@@ -1022,12 +1021,15 @@ var ScheduleEvents = function (userInfo) {
 
     var unmarkAttendedSchedule = function () {
 
-        $('main').on('click', 'a#unmarkdoneSchedule', function(e) {
+        $('main').on('click', 'a.js-unmark-done-schedule', function(e) {
             e.preventDefault();
 
             var parentEl = $(this).parents('tr'),
+                parentTable = parentEl.parents('table'),
                 scheduleid = parentEl.attr('data-schedule-id'),
-                pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').children('tbody:first').find('tr:first');
+                title = parentEl.find('td:first')[0].innerText,
+                pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').children('tbody:first');
+
 
             console.log(scheduleid);
 
@@ -1046,9 +1048,10 @@ var ScheduleEvents = function (userInfo) {
                     console.log(parentEl);
 
                     parentEl.addClass('new-class');
-                    parentEl.find('a#unmarkdoneSchedule').replaceWith('<a class="btn-icon" id="attendedSchedule" href="#!"><i class="material-icons">done</i></a>');
+                    parentEl.find('a.js-unmark-done-schedule').replaceWith(Lists_Templates.scheduleActionButton('js-attended-schedule', 'done'));
 
-                    pendingScheduleHook.before(parentEl[0].outerHTML);
+                    pendingScheduleHook.find('tr.js-dummy-schedule-data').remove();
+                    pendingScheduleHook.prepend(parentEl[0].outerHTML);
 
                     parentEl.remove();
 
@@ -1056,6 +1059,20 @@ var ScheduleEvents = function (userInfo) {
                     //Backward update for attended table
                     updatePagination('#schedulesTab table#attendedScheduleTable', 'tbody', '#attendedScheduleTable', 6, 'backward');
                     updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', 6, 'forward');
+
+                    if(parentTable.children('tbody').length === 1 && parentTable.children('tbody').children('tr').length === 0) {
+                        parentTable.children('tbody:first').prepend(Lists_Templates.scheduleDummyData('attended'));
+
+                    }
+
+                Materialize.toast('Schedule <span class="php-data">' + title + '</span> unmarked attended!', 2000, 'white-text green lighten-2', function() {
+
+                    });
+
+                } else {
+                    Materialize.toast("Can't unmark schedule <span class='php-data'>" + title + "</span> as attended", 2000, 'white-text red lighten-2', function() {
+
+                    });
 
                 }
             }, 'json');
@@ -1066,7 +1083,7 @@ var ScheduleEvents = function (userInfo) {
 
     var openSchedule = function () {
 
-        $('main').on('click', 'a#openSchedule', function(e) {
+        $('main').on('click', 'a.js-open-schedule', function(e) {
             e.preventDefault();
 
             console.log('opening...');
@@ -1081,8 +1098,12 @@ var ScheduleEvents = function (userInfo) {
             $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : scheduleid }, function (data) {
 
                 console.log(data);
+                console.log(data.schedule_objectives);
 
+                data.schedule_objectives = jQuery.parseJSON(data.schedule_objectives);
                 data.due_date_formatted = moment(data.due_date).fromNow();
+
+                console.log(data);
 
                 var body = Lists_Templates.scheduleInfo(data);
 
@@ -1181,7 +1202,7 @@ var ScheduleEvents = function (userInfo) {
                 $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : previousattributeid }, function (data) {
 
                     console.log(data);
-
+                    data.schedule_objectives = jQuery.parseJSON(data.schedule_objectives);
                     data.due_date_formatted = moment(data.due_date).fromNow();
 
                     var body = Lists_Templates.scheduleInfo(data);
@@ -1230,7 +1251,7 @@ var ScheduleEvents = function (userInfo) {
                     $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : previousattributeid }, function (data) {
 
                         console.log(data);
-
+                        data.schedule_objectives = jQuery.parseJSON(data.schedule_objectives);
                         data.due_date_formatted = moment(data.due_date).fromNow();
 
                         var body = Lists_Templates.scheduleInfo(data);
@@ -1302,7 +1323,7 @@ var ScheduleEvents = function (userInfo) {
                 $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : nextattributeid }, function (data) {
 
                     console.log(data);
-
+                    data.schedule_objectives = jQuery.parseJSON(data.schedule_objectives);
                     data.due_date_formatted = moment(data.due_date).fromNow();
 
                     var body = Lists_Templates.scheduleInfo(data);
@@ -1354,7 +1375,7 @@ var ScheduleEvents = function (userInfo) {
                     $.get("handlers/db_info.php", {"action": "ScheduleExists", "schedule_id" : nextattributeid }, function (data) {
 
                         console.log(data);
-
+                        data.schedule_objectives = jQuery.parseJSON(data.schedule_objectives);
                         data.due_date_formatted = moment(data.due_date).fromNow();
 
                         var body = Lists_Templates.scheduleInfo(data);

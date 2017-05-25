@@ -1698,14 +1698,17 @@ if(isset($_POST['action'])) {
 
             $postData = json_decode($_POST['data']);
 
-            //var_dump($postData);
-
             $attachments = '';
             $result = array();
 
-            for($g = 0; $g < count($_FILES); $g++){
-                $attachments .= $_FILES['file-'.$g]['name'] . ',';
+            //var_dump($postData);
+            if (count($_FILES) > 0) {
+
+                for($g = 0; $g < count($_FILES); $g++){
+                    $attachments .= $_FILES['file-'.$g]['name'] . ',';
+                }
             }
+
 
             for($h = 0; $h < count($postData->classids); $h++) {
 
@@ -1726,9 +1729,13 @@ if(isset($_POST['action'])) {
                 array_push($result,$r);
             }
 
-            //Attempt uploading the files first
-            $uploader = new EsomoUploader();
-            $failed_files = $uploader->UploadFile('assignment');
+            if (count($_FILES) > 0) {
+                //Attempt uploading the files first
+                $uploader = new EsomoUploader();
+                $failed_files = $uploader->UploadFile('assignment');
+            } else {
+                $failed_files = array();
+            }
 
             $returnresult = array (
                 'failedFiles' => $failed_files,
@@ -1953,68 +1960,8 @@ if(isset($_POST['action'])) {
         
         //Report problem
         case "ReportProblem":
-//            $data = $_POST["data"];
-//
-//            $email = EsomoMailGenerator::ReportProblemEmail($data,$user_info);#TODO: Generate email here
-//
-//            #Ensure that required fields are set ~ if not, echo an error message and end execution of the section
-//            if (empty(data["report_section"]) || empty(data["report_message"]))
-//            {
-//                echo "0 ~ Invalid data provided";
-//                // return false;#Consider trying this incase the break does not break out of the case
-//                break;#Stop running the rest of the case code
-//            }
 
-            
-            /*
-                $email is an associative array, you can access its contents like so $email["parameter_name"]
-                ------------
-                PARAMETERS
-                ------------
-                $email["from"]
-                $email["to"]
-                $email["subject"]
-                $email["message"]
-                $email["alt_message"] ~ Non-html form of the message
-                $email["cc"]
-                $email["bcc"]
-            */
-            //Send the email here
-            /*COPY PASTED PHPMAILER CODE ~ INSERT VALID CODE HERE
-                NOTE: On success echo 'true' or '1' or true
-                and on fail echo anything else, error message, 0, whatever you want
-            */
-
-            /*require_once "vendor/autoload.php";
-
-            $mail = new PHPMailer;
-
-            $mail->From = "from@yourdomain.com";
-            $mail->FromName = "Full Name";
-
-            $mail->addAddress("recipient1@example.com", "Recipient Name");
-
-            //Provide file path and name of the attachments
-            $mail->addAttachment("file.txt", "File.txt");        
-            $mail->addAttachment("images/profile.png"); //Filename is optional
-
-            $mail->isHTML(true);
-
-            $mail->Subject = "Subject Text";
-            $mail->Body = "<i>Mail body in HTML</i>";
-            $mail->AltBody = "This is the plain text version of the email content";
-
-            if(!$mail->send()) 
-            {
-                echo "Mailer Error: " . $mail->ErrorInfo;
-            } 
-            else 
-            {
-                echo "Message has been sent successfully";
-            }
-            
-            */
-        break;
+            break;
         default:
             return null;
             break;
