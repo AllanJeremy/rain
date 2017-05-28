@@ -9,7 +9,7 @@ class EmailHandler
 {
 
     //Convenience - send email using phpMailer
-    protected static function EsomoSendEmail($data)
+    public static function EsomoSendEmail($data)
     {
         //var_dump($data);
 

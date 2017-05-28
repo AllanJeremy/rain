@@ -1357,6 +1357,10 @@ if(isset($_POST['action'])) {
     
     $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
 
+    //Mail related files
+    require_once("../classes/mail_generator.php");
+    require_once("email_handler.php");
+
     switch($_POST['action']) {
 
         case 'CreateStudentAccount': #Create a student account
@@ -1366,7 +1370,11 @@ if(isset($_POST['action'])) {
             $student = new Student();
             $create_status = $student->CreateStudentAccount($data);
 
-            echo $create_status;#Print out the create status for feedback handling by javascript
+            // //Generate email for the account created
+            // $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
+            // $email_status = EmailHandler::EsomoSendEmail($email);
+
+            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreateTeacherAccount': #Create a teacher account
@@ -1377,7 +1385,11 @@ if(isset($_POST['action'])) {
             $teacher = new Teacher();
             $create_status = $teacher->CreateTeacher($data);
 
-            echo $create_status;#Print out the create status for feedback handling by javascript
+            //Generate email for the account created
+            $email = EsomoMailGenerator::NewTeacherAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
+            $email_status = EmailHandler::EsomoSendEmail($email);
+
+            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreatePrincipalAccount': #Create a principal account
@@ -1399,7 +1411,11 @@ if(isset($_POST['action'])) {
                 $create_status = $principal->CreatePrincipal($data);
             }
 
-            echo $create_status;#Print out the create status for feedback handling by javascript
+            //Generate email for the account created
+            $email = EsomoMailGenerator::NewPrincipalAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
+            $email_status = EmailHandler::EsomoSendEmail($email);
+            
+            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreateSuperuserAccount': #Create a superuser account
@@ -1408,8 +1424,12 @@ if(isset($_POST['action'])) {
 
             $superuser = new Superuser();
             $create_status = $superuser->CreateSuperuser($data);
+            
+            //Generate email for the account created
+            $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
+            $email_status = EmailHandler::EsomoSendEmail($email);
 
-            echo $create_status;#Print out the create status for feedback handling by javascript
+            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'UpdateClassroomInfo':

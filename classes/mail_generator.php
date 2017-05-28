@@ -6,8 +6,8 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php"));
 class EsomoMailGenerator
 {
     /*Constants*/
-
-    const DEV_EMAILS = "gramwauu@gmail.com";
+    // gramwauu@gmail.com
+    const DEV_EMAILS = "aj.dev254@gmail.com";
     const ACCOUNTS_CONTACT_EMAIL = "account@rain.co.ke";#TODO: Change this to a valid email
     const NO_REPLY_EMAIL = "noreply@rain.co.ke";
 
@@ -18,13 +18,17 @@ class EsomoMailGenerator
         $today = EsomoDate::GetCurrentDate();
         $today = EsomoDate::GetOptimalDateText($today);
 
-        $subject = "Your E-Learning account has been successfully created";
-        $message = "<h3>Your E-Learning account has been successfully created</h3><p>Dear $first_name $last_name, your $acc_type account has been successfully been created.</p><p>To login to your account, use this information <br>username: $username <br>password: $password</p><p>Remember to change your password in the account section as soon as you login to ensure security of your account</p><b><b>Note: Do not share your password with anyone</b></p><br><p>If you believe that this account creation was a mistake, feel free to contact us at ".self::SUPERUSER_CONTACT_EMAIL." with the subject of the email being 'WRONG ACCOUNT CREATION'</p><p>Do not reply to this message. <i>This message was automatically generated on $today</i></p>";
+        $subject = "Rain E-Learning | Your E-Learning account has been successfully created";
+        $message = "<h3>Your E-Learning account has been successfully created</h3><p>Dear $first_name $last_name, your $acc_type account has been successfully been created.</p><p>To login to your account, use this information <br>Username: $username <br>Password: $username</p><p>Remember to change your password in the account section as soon as you login to ensure security of your account</p><b><b>Note: Do not share your password with anyone</b></p><br><p>If you believe that this account creation was a mistake, feel free to contact us at ".self::DEV_EMAILS." with the subject of the email being 'WRONG ACCOUNT CREATION'</p><p>Do not reply to this message. <i>This message was automatically generated on $today</i></p>";
+
+        $non_html_message = "\nYour E-Learning account has been successfully created<\nDear $first_name $last_name, your $acc_type account has been successfully been created.\nTo login to your account, use this information \nUsername: $username <br>Password: $username \nRemember to change your password in the account section as soon as you login to ensure security of your account \nNote: Do not share your password with anyone \nIf you believe that this account creation was a mistake, feel free to contact us at ".self::DEV_EMAILS." with the subject of the email being 'WRONG ACCOUNT CREATION' \nDo not reply to this message. \nThis message was automatically generated on $today\n";
 
         //Consider sending mail from within this function
         $mail_data = array(
             "subject"=>$subject,
             "message"=>$message,
+            "alt_message"=>$non_html_message,
+            "address_name"=> "'$first_name $last_name'",
             "to"=>$email_to,
             "address_name"=> $first_name,
             "from"=>self::DEV_EMAILS,
