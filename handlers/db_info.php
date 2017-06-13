@@ -1310,7 +1310,7 @@ class DbInfo
                     echo '<td class="right-align" >'.$val['due_date'].'</td>';
                     echo '<td class="right-align schedule-action" width="120">';
                     echo '<a class="btn-icon js-open-schedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
-                    echo (($type == 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon js-attended-schedule" href="javascript:void(0)"><i class="material-icons">done</i></a>');
+                    echo (($type == 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '');
                     echo '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
                     echo '</td>';
                     echo '</tr>';
@@ -1335,7 +1335,7 @@ class DbInfo
                 echo '<td class="right-align" >'.$list['due_date'].'</td>';
                 echo '<td class="right-align schedule-action" width="120">';
                 echo '<a class="btn-icon js-open-schedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
-                echo (($type == 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon js-attended-schedule" href="javascript:void(0)"><i class="material-icons">done</i></a>');
+                echo (($type == 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '');
                 echo '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
                 echo '</td>';
                 echo '</tr>';
@@ -2226,9 +2226,28 @@ if(isset($_GET['action'])) {
 
             $result = DbInfo::ScheduleExists($_GET['schedule_id']);
 
-            $num = 0;
+            $students_not_attended = array ();
 
-            //var_dump($result);
+            $students = json_decode($result['students_not_attended']);
+
+            foreach ($students as $student_not_attended) {
+
+                $student = DbInfo::StudentIdExists(/*(int)*/ $student_not_attended);
+
+                if($student != false) {
+
+                    $student_info = array (
+                        'id'=> $student['adm_no'],
+                        'name'=> $student['full_name']
+                    );
+
+                    array_push( $students_not_attended, $student_info );
+
+                }
+
+            }
+
+            $result['students_not_attended'] = $students_not_attended;
 
             if($result != null) {
 

@@ -26,7 +26,8 @@ var ScheduleEvents = function (userInfo) {
         addObjectiveFromSubtopics();            //done
         tableNavigate();                        //done
         nextPrevSchedule();                     //done
-        markStudentAttendancePerSchedule();     // - - -
+        markScheduleStudentAttendance();     // - - -
+        updateScheduleStudentAttendance();     // - - -
         markAllDone();          //Beta - version
         overdueScheduleReminder();              //Beta - version
         getPendingSchedules();  //Beta - version
@@ -138,7 +139,8 @@ var ScheduleEvents = function (userInfo) {
                     "scheduleobjectives" : scheduleobjectivesformatted,
                     "scheduleclassroom" : scheduleclassroom,
                     "duedate" : scheduleformatteddatetime,
-                    "guidid" : scheduleguidid
+                    "guidid" : scheduleguidid,
+                    "students_not_attended" : '{}'
                 }, function (result) {
                    
                     console.log(result);
@@ -239,21 +241,25 @@ var ScheduleEvents = function (userInfo) {
 
             $('#scheduleCreateFormContainer ul#objectivesList').children('li').children('span').remove();
             var scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li');
-            var scheduleobjectivesformatted = '';
+            var scheduleobjectivesformatted = '{';
             var scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val();
             var scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val();
             var scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val();
+            var l = 0;
 
             scheduleobjectives.each(function (i, e) {
 
                 console.log(e.innerHTML);
 
-                scheduleobjectivesformatted += '"';
+                scheduleobjectivesformatted += '"ob_' + l +'":"';
                 scheduleobjectivesformatted += e.innerHTML;
                 scheduleobjectivesformatted += '",';
 
+                l++;
+
             });
-            scheduleobjectivesformatted = scheduleobjectivesformatted.split('').pop().join();
+
+            scheduleobjectivesformatted = scheduleobjectivesformatted.slice(0,-1);
             scheduleobjectivesformatted += '}';
 
 
@@ -811,7 +817,7 @@ var ScheduleEvents = function (userInfo) {
             e.preventDefault();
 
             var scheduleid = $(this).parents('.modal').attr('id'),
-                scheduledata,
+                scheduledata, i,
                 scheduleobjectives = '';
 
             $('.modal#' + scheduleid ).closeModal();
@@ -835,15 +841,11 @@ var ScheduleEvents = function (userInfo) {
                 //Format objective list
                 data.schedule_objectives = JSON.parse(data.schedule_objectives);
 
-                for(i = 0; i < data.schedule_objectives.length; i++) {
-                    if (i !== '') {
+                for (i in data.schedule_objectives) {
 
-                        scheduleobjectives += Lists_Templates.scheduleListObjective(data.schedule_objectives[i]);
-                    }
+                    scheduleobjectives += Lists_Templates.scheduleListObjective(data.schedule_objectives[i]);
 
                 };
-
-                console.log(scheduleobjectives);
 
                 data.schedule_objectives = scheduleobjectives;
 
@@ -934,12 +936,13 @@ var ScheduleEvents = function (userInfo) {
         *   7. Update pagination
         */
 
-        $('main').on('click', 'a.js-attended-schedule, a#attendedScheduleFromModal', function(e) {
+        $('main').on('click', 'a.js-attended-schedule, a#attendedScheduleFromModal:not(.disabled)', function(e) {
             e.preventDefault();
 
             var parentEl, scheduleid,
                 anchor = $(this), modalid,
                 title,
+                studentsnotattended = anchor.parents('.modal').find('.js-students-not-attended').attr('data-students-not-attended'),
                 attendedScheduleHook = $('#schedulesTab table#attendedScheduleTable').children('tbody:first');
 
             if (anchor.attr('id') === 'attendedScheduleFromModal') {
@@ -947,7 +950,9 @@ var ScheduleEvents = function (userInfo) {
                 scheduleid = modalid.split('_').pop();
                 parentEl = $('#schedulesTab').find('tr[data-schedule-id="' + scheduleid + '"]');
 
+                console.log(studentsnotattended);
                 console.log('marking done from modal...');
+                //return;
 
             } else {
                 parentEl = anchor.parents('tr');
@@ -963,6 +968,7 @@ var ScheduleEvents = function (userInfo) {
 
             $.post("classes/schedule_class.php", {
                     "action" : "MarkAttendedSchedule",
+                    "studentsnotattended": studentsnotattended,
                     "scheduleid" : scheduleid
                 }, function (result) {
 
@@ -977,7 +983,8 @@ var ScheduleEvents = function (userInfo) {
                     //Prepend to attended schedule
                     //Remove the schedule from the pending schedules' table.
                     parentEl.addClass('new-class');
-                    parentEl.find('a.js-attended-schedule').replaceWith(Lists_Templates.scheduleActionButton('js-unmark-done-schedule', 'undo'));
+                    //parentEl.find('a.js-attended-schedule').replaceWith(Lists_Templates.scheduleActionButton('js-unmark-done-schedule', 'undo'));
+                    parentEl.find('a.js-open-schedule').after(Lists_Templates.scheduleActionButton('js-unmark-done-schedule', 'undo'));
                     console.log(parentEl[0].outerHTML);
 
                     attendedScheduleHook.find('tr.js-dummy-schedule-data').remove();
@@ -1048,7 +1055,8 @@ var ScheduleEvents = function (userInfo) {
                     console.log(parentEl);
 
                     parentEl.addClass('new-class');
-                    parentEl.find('a.js-unmark-done-schedule').replaceWith(Lists_Templates.scheduleActionButton('js-attended-schedule', 'done'));
+                    //parentEl.find('a.js-unmark-done-schedule').replaceWith(Lists_Templates.scheduleActionButton('js-attended-schedule', 'done'));
+                    parentEl.find('a.js-unmark-done-schedule').remove();
 
                     pendingScheduleHook.find('tr.js-dummy-schedule-data').remove();
                     pendingScheduleHook.prepend(parentEl[0].outerHTML);
@@ -1065,7 +1073,7 @@ var ScheduleEvents = function (userInfo) {
 
                     }
 
-                Materialize.toast('Schedule <span class="php-data">' + title + '</span> unmarked attended!', 2000, 'white-text green lighten-2', function() {
+                    Materialize.toast('Schedule <span class="php-data">' + title + '</span> unmarked attended!', 2000, 'white-text green lighten-2', function() {
 
                     });
 
@@ -1422,8 +1430,41 @@ var ScheduleEvents = function (userInfo) {
         });
     };
 
-    var markStudentAttendancePerSchedule = function () {
+    var markScheduleStudentAttendance = function () {
+        $('main').on('change', '.modal .js-students-not-attended input[type="checkbox"]:not(#attendanceListMarked)', function (e) {
 
+            //update on changing the option list if one had already checked done
+            $(this).parents('.js-students-not-attended').find('input#attendanceListMarked:checked').trigger('change');
+        });
+    };
+
+    var updateScheduleStudentAttendance = function () {
+        $('main').on('change', '.modal .js-students-not-attended input#attendanceListMarked', function (e) {
+
+            var selectedArrayResult, i, selectedJsonArrayFormat = {};
+
+            if ($('.modal .js-students-not-attended input#attendanceListMarked:checked').val() === '0') {//if checked done, update
+                $(this).parents('.modal').find('a#attendedScheduleFromModal').removeClass('disabled');
+
+                selectedArrayResult = $('.modal .js-students-not-attended').find('input[type="checkbox"]:checked:not(#attendanceListMarked)').map(function(){
+                    return $(this).attr('value');
+                }).get(); // <----
+
+                for (i in selectedArrayResult) {
+                    selectedJsonArrayFormat[i] = selectedArrayResult[i];
+                }
+
+                //console.log(selectedJsonArrayFormat);
+                selectedJsonArrayFormat = JSON.stringify(selectedJsonArrayFormat);
+                console.log(selectedJsonArrayFormat);
+
+                $(this).parents('.js-students-not-attended').attr('data-students-not-attended', selectedJsonArrayFormat);
+            } else {
+                $(this).parents('.modal').find('a#attendedScheduleFromModal').addClass('disabled');
+
+            }
+
+        });
     };
 
     var markAllDone = function () {

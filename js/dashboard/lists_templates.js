@@ -257,20 +257,20 @@ var Lists_Templates = function () {
         templateOutput += '<p>' + obj.schedule_title + '</p>';
         templateOutput += '</div><div class="col s5">';
         templateOutput += '<h6 class="grey-text">Due</h6>';
-        templateOutput += '<div class="col s8 divider"></div>';
+        templateOutput += '<div class="col s10 divider"></div>';
         templateOutput += '<p class="red-text">' + obj.due_date_formatted + '</p>';
         templateOutput += '<p class="grey-text">( ' + obj.due_date + ' )</p>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="row">';
-        templateOutput += '<div class="col s12">';
-        templateOutput += '<h6 class="grey-text">Description</h6>';
-        templateOutput += '<div class="col s8 divider"></div>';
-        templateOutput += '<p>' + obj.schedule_description + '</p>';
-        templateOutput += '</div></div>';
+        templateOutput += '<div class="col m7 s12">';
         templateOutput += '<div class="row">';
-        templateOutput += '<div class="col s12">';
+        templateOutput += '<h6 class="grey-text">Description</h6>';
+        templateOutput += '<div class="col s10 divider"></div>';
+        templateOutput += '<p>' + obj.schedule_description + '</p>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="row">';
         templateOutput += '<h6 class="grey-text">Objectives</h6>';
-        templateOutput += '<div class="col s8 divider"></div>';
+        templateOutput += '<div class="col s10 divider"></div>';
         templateOutput += '<p>';
 
         for (prop in obj.schedule_objectives){
@@ -281,14 +281,49 @@ var Lists_Templates = function () {
         }
 
         templateOutput += '</p>';
-
         if (obj.attended_schedule === 0) {
 
-            templateOutput += '</div></div><br><div class="row"><a class="btn" id="attendedScheduleFromModal">Mark attended<i class="material-icons right">done</i></a></div></div>';
+            templateOutput += '</div><br><div class="row"><a class="btn disabled" id="attendedScheduleFromModal">Mark attended<i class="material-icons right">done</i></a></div>';
+            templateOutput += '</div>';
+            templateOutput += '<div class="col m5 s12"><div data-students-not-attended="" class="row js-students-not-attended card-panel teal lighten-4">';
+            templateOutput += '<h5 class="card-title white-text php-data">Students not attended</h5>';
+            templateOutput += '<h6 class="grey-text text-darken-2">Mark students who did not attend the schedule</h6>';
+            templateOutput += '<div class="col grey darken-1 s8 divider"></div><br>';
+
+            for (prop in obj.students_not_attended){
+                console.log()
+                templateOutput += '<p class="no-margin">';
+                templateOutput += '<input type="checkbox" value="' + obj.students_not_attended[prop].id + '" id="student_' + obj.students_not_attended[prop].id + '" class="filled-in">';
+                templateOutput += '<label class="grey-text text-darken-2" for="student_' + obj.students_not_attended[prop].id + '">';
+                templateOutput += obj.students_not_attended[prop].name;
+                templateOutput += '</label></p>';
+
+            }
+
+            templateOutput += '<br><div class="col grey darken-1 s8 divider"></div><br>';
+            templateOutput += '<p class="margin-vert-8"><input type="checkbox" value="0" id="attendanceListMarked" class="filled-in"><label class="op-4 green-text text-darken-2" for="attendanceListMarked">Done</label></p>';
+            templateOutput += '</div></div>';
+
 
         } else {
 
-            templateOutput += '</div></div></div>';
+            templateOutput += '</div></div>';
+            templateOutput += '<div class="col m5 s12"><div data-students-not-attended="" class="row js-students-not-attended card-panel teal lighten-4">';
+            templateOutput += '<h5 class="card-title white-text php-data">Students not attended</h5>';
+            templateOutput += '<h6 class="grey-text text-darken-2">List of students who did not attend the schedule</h6>';
+            templateOutput += '<div class="col grey darken-1 s8 divider"></div>';
+            templateOutput += '<ol>';
+
+            for (prop in obj.students_not_attended){
+
+                templateOutput += '<li data-student-id="' + obj.students_not_attended[prop].id + '">';
+                templateOutput += obj.students_not_attended[prop].name;
+                templateOutput += '</li>';
+
+            }
+
+            templateOutput += '</ol>';
+            templateOutput += '</div></div>';
         }
 
         return templateOutput;
@@ -852,7 +887,7 @@ var Lists_Templates = function () {
         templateOutput += '<td class="right-align">' + obj.scheduledatetime + '</td>';
         templateOutput += '<td class="right-align schedule-action" width="120">';
         templateOutput += '<a class="btn-icon js-open-schedule" href="javascript:void(0)"><i class="material-icons">expand_more</i></a>';
-        templateOutput += ((obj.scheduletype === 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '<a class="btn-icon js-attended-schedule" href="javascript:void(0)"><i class="material-icons">done</i></a>');
+        templateOutput += ((obj.scheduletype === 'done') ? '<a class="btn-icon js-unmark-done-schedule" href="javascript:void(0)"><i class="material-icons">undo</i></a>' : '');
         templateOutput += '<a class="btn-icon js-get-comments" data-root-hook="schedule" href="javascript:void(0)"><i class="material-icons">comments</i></a>';
         templateOutput += '</td>';
         
