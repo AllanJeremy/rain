@@ -1374,7 +1374,7 @@ if(isset($_POST['action'])) {
             // $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
             // $email_status = EmailHandler::EsomoSendEmail($email);
 
-            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
+            echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreateTeacherAccount': #Create a teacher account
@@ -1389,7 +1389,7 @@ if(isset($_POST['action'])) {
             $email = EsomoMailGenerator::NewTeacherAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
             $email_status = EmailHandler::EsomoSendEmail($email);
 
-            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
+            echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreatePrincipalAccount': #Create a principal account
@@ -1415,7 +1415,7 @@ if(isset($_POST['action'])) {
             $email = EsomoMailGenerator::NewPrincipalAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
             $email_status = EmailHandler::EsomoSendEmail($email);
             
-            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
+            echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreateSuperuserAccount': #Create a superuser account
@@ -1428,8 +1428,8 @@ if(isset($_POST['action'])) {
             //Generate email for the account created
             $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
             $email_status = EmailHandler::EsomoSendEmail($email);
-
-            echo ($create_status && $email_status);#Print out the create status for feedback handling by javascript
+            
+            echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'UpdateClassroomInfo':
