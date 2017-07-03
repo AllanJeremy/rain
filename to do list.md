@@ -31,3 +31,11 @@
 **Any assignment is a link that opens a modal that contains:**
 - Students who have not submitted assignments
 - Students who have submitted assignments
+
+#Convert all sections to be get requests
+- domain/?p=pageName (For only nav tabs)
+- domain/?p=pageName&tab=tabName (For nav tabs and tabs)
+
+#Add htaccess to filter get requests
+- domain/pageName (For only nav tabs)
+- domain/pageName/tabName (For nav tabs and tabs)

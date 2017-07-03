@@ -1,3 +1,21 @@
+<?php
+/*
+Constants to be used by the superuser navigation. ~ names of the sections and tabs
+Note: SU is short for Superuser
+Naming convention being used it TypeOfTheConst_OwnerOfTheConst_NameOfTheConst
+*/
+
+//Sections
+const SECTION_SU_BASE = "dashboard";
+const SECTION_SU_STUDENTS = "students";
+const SECTION_SU_TEACHERS = "teachers";
+const SECTION_SU_PRINCIPALS = "princiapls";
+const SECTION_SU_SUPERUSERS = "superusers";
+
+
+?>
+
+
 <ul id="slide-out" class="side-nav fixed">
     <li>
         <div class="userView">
