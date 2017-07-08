@@ -13,7 +13,7 @@ const SECTION_PR_ASSIGNMENTS = "assignments";
 //Navigation active classes
 $stats_overview_class = $schedules_class = $ass_class = $resources_class = $account_class = "";
 
-global $pageTitle;
+global $pageTitle;#Get the global variable representing the page title
 switch($section)
 {
     case SECTION_PR_BASE:
@@ -30,11 +30,11 @@ switch($section)
     break;
     case SECTION_RESOURCES:
         $resources_class = SetClass(BASE_ACTIVE_CLASS);
-        $pageTitle = "RESOURCES";
+        $pageTitle = PAGE_TITLE_RESOURCES;
     break;
     case SECTION_ACCOUNT:
         $account_class = SetClass(BASE_ACTIVE_CLASS);
-        $pageTitle = "ACCOUNT";
+        $pageTitle = PAGE_TITLE_ACCOUNT;
     break;
 }
 
@@ -57,13 +57,13 @@ switch($section)
         </div>
     </li>
     <li <?php echo $stats_overview_class;?>>
-        <a href="<?php echo './?section='.SECTION_PR_BASE;?>">Stats overview</a>
+        <a href="<?php echo GetSectionLink(SECTION_PR_BASE);?>">Stats overview</a>
     </li>
     <li <?php echo $schedules_class;?>>
-        <a href="<?php echo './?section='.SECTION_PR_SCHEDULES;?>">Schedules</a>
+        <a href="<?php echo GetSectionLink(SECTION_PR_SCHEDULES);?>">Schedules</a>
     </li>
     <li <?php echo $ass_class;?>>
-        <a href="<?php echo './?section='.SECTION_PR_ASSIGNMENTS;?>">Assignments</a>
+        <a href="<?php echo GetSectionLink(SECTION_PR_ASSIGNMENTS);?>">Assignments</a>
     </li>
     <!--<ul class="collapsible collapsible-accordion hide">
         <li class="">
@@ -87,7 +87,7 @@ switch($section)
         <a href="#!" class="hide" id="teachers" data-activates="principalTeachersTab">Teachers</a>
     </li>-->
     <li <?php echo $resources_class;?>>
-        <a href="<?php echo './?section='.SECTION_RESOURCES;?>" class="">Resources</a>
+        <a href="<?php echo GetSectionLink(SECTION_RESOURCES);?>" class="">Resources</a>
     </li>
 
     <!--Chat and groups ~ Future feature-->
@@ -100,7 +100,7 @@ switch($section)
 
     <!--Account nav-->
     <li <?php echo $account_class;?>>
-        <a href="<?php echo './?section='.SECTION_ACCOUNT;?>" class="">Account</a>
+        <a href="<?php echo GetSectionLink(SECTION_ACCOUNT);?>" class="">Account</a>
     </li>
     <li>
         <div class="divider"></div>

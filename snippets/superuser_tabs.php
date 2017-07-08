@@ -7,6 +7,12 @@
 ?>
 
 <div class="container">
+
+<?php
+if(isset($section)):
+    switch($section):
+        case SECTION_SU_BASE:
+?>
     <div class="row main-tab" id="dashboardTab">
         <p class="grey-text">Account Information</p>
         <div class="divider"></div>
@@ -90,21 +96,47 @@
             </table>
         </div>
     </div>
+    <?php
+        break;
+        case SECTION_SU_STUDENTS:
+            $create_class = $import_class = $manage_class = "";
+            $default_tab = TAB_CREATE;
+
+            #If the current tab is set
+            if(isset($tab)):
+                switch($tab)
+                {
+                    case TAB_CREATE:
+                        $create_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                    case TAB_IMPORT:
+                        $import_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                    case TAB_MANAGE:
+                        $manage_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                }
+                
+    ?>
     <!---->
-    <div class="row main-tab" id="studentsTab">
+    <div class="row main-tab" >
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
             <li class="tab col s4">
-                <a href="#createStudent">Create</a>
+                <a target="_self" <?php echo $create_class;?> href="<?php echo GetSectionLink(SECTION_SU_STUDENTS,TAB_CREATE);?>">Create</a>
             </li>
             <li class="tab col s4">
-                <a  href="#importStudent" >Import</a>
+                <a target="_self" <?php echo $import_class;?> href="<?php echo GetSectionLink(SECTION_SU_STUDENTS,TAB_IMPORT);?>" >Import</a>
             </li>
             <li class="tab col s4">
-                <a class="active" href="#manageStudent" >Manage</a>
+                <a target="_self" <?php echo $manage_class;?> href="<?php echo GetSectionLink(SECTION_SU_STUDENTS,TAB_MANAGE);?>" >Manage</a>
             </li>
         </ul>
         </div>
+        <?php
+        switch($tab):
+            case TAB_CREATE:
+        ?>
         <div id="createStudent" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -144,6 +176,10 @@
                 </form>
             </div>
         </div>
+        <?php
+            break;
+            case TAB_IMPORT:
+        ?>
         <div id="importStudent" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -179,6 +215,10 @@
                 </form>
             </div>
         </div>
+        <?php
+            break;
+            case TAB_MANAGE:
+        ?>
         <div id="manageStudent" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -192,7 +232,7 @@
                     <form class="col s12" action="">
                         <div class="row">
                             <div class="input-field col m5 s12">
-                                <select id="student_bulk_action">
+                                <select id="student_bulk_action" >
                                     <option value="" disabled selected>Bulk action</option>
                                     <option value="super_student_delete">Delete Account(s)</option>
                                     <option value="super_student_reset">Reset Account(s)</option>
@@ -286,19 +326,52 @@
 
             </div>
         </div>
+        <?php
+            break;
+            default:
+        ?>
+    <script>window.location = "<?php echo GetSectionLink(SECTION_SU_STUDENTS,$default_tab);?>";</script>         
     </div>
+    <?php
+                endswitch;
+            else:#If the current tab is not set ~ Navigate to the default tab
+    ?>
+    <script>window.location = "<?php echo GetSectionLink(SECTION_SU_STUDENTS,$default_tab);?>";</script>
+    <?php
+    
+            endif;
+        break;
+        case SECTION_SU_TEACHERS:
+            $default_tab = TAB_CREATE;
+            if(isset($tab)):
+                $create_class = $manage_class= "";
+                switch($tab)
+                {
+                    case TAB_CREATE:
+                        $create_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                    case TAB_MANAGE:
+                        $manage_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                }
+    ?>
     <!---->
     <div class="row main-tab" id="teachersTab">
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
             <li class="tab col s6">
-                <a href="#createTeacher" class="active">Create</a>
+                <a target="_self" href="<?php echo GetSectionLink(SECTION_SU_TEACHERS,TAB_CREATE);?>" <?php echo $create_class;?>>Create</a>
             </li>
             <li class="tab col s6">
-                <a class="" href="#manageTeacher" >Manage</a>
+                <a target="_self" href="<?php echo GetSectionLink(SECTION_SU_TEACHERS,TAB_MANAGE);?>" <?php echo $manage_class;?>>Manage</a>
             </li>
         </ul>
         </div>
+
+        <?php
+            switch($tab):
+                case TAB_CREATE:
+        ?>
         <div id="createTeacher" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -351,6 +424,10 @@
                 </form>
             </div>
         </div>
+        <?php
+                break;
+                case TAB_MANAGE:
+        ?>
         <div id="manageTeacher" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -461,20 +538,52 @@
 
             </div>
         </div>
+        <?php
+                break;
+                default:
+        ?>
+    <script>window.location = "<?php echo GetSectionLink(SECTION_SU_TEACHERS,TAB_MANAGE);?>";</script>
+        <?php
+                endswitch;
+            else:#Tab is not set
+        ?>
+    <script>window.location = "<?php echo GetSectionLink(SECTION_SU_TEACHERS,$default_tab);?>";</script>
     </div>
     
+    <?php
+
+            endif;
+        break;
+        case SECTION_SU_PRINCIPALS:
+            $default_tab = TAB_CREATE;
+            if(isset($tab)):
+                $create_class = $manage_class= "";
+                switch($tab)
+                {
+                    case TAB_CREATE:
+                        $create_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                    case TAB_MANAGE:
+                        $manage_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                }
+    ?>
     <!--Superuser principal tab-->
     <div class="row main-tab" id="principalTab">
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
             <li class="tab col s6">
-                <a class="active" href="#createPrincipal">Create</a>
+                <a target="_self" <?php echo $create_class;?> href="<?php echo GetSectionLink(SECTION_SU_PRINCIPALS,TAB_CREATE);?>">Create</a>
             </li>
             <li class="tab col s6">
-                <a href="#managePrincipal" >Manage</a>
+                <a target="_self" <?php echo $manage_class;?> href="<?php echo GetSectionLink(SECTION_SU_PRINCIPALS,TAB_MANAGE);?>">Manage</a>
             </li>
         </ul>
         </div>
+        <?php
+            switch($tab):
+                case TAB_CREATE:
+        ?>
         <div id="createPrincipal" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -542,6 +651,10 @@
                 </form>
             </div>
         </div>
+        <?php
+                break;
+                case TAB_MANAGE:
+        ?>
         <div id="managePrincipal" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -617,20 +730,55 @@
                 </table>
             </div>
         </div>
+        <?php
+                break;
+            default:
+        ?>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_SU_PRINCIPALS,$default_tab);?>";</script>
+        <?php
+            endswitch;
+        ?>
     </div>
-
+    <?php
+            else:#Tab is not set
+    ?>
+    
+        <script>window.location = "<?php echo GetSectionLink(SECTION_SU_PRINCIPALS,$default_tab);?>";</script>
+    <?php
+            endif;
+        break;
+        case SECTION_SU_SUPERUSERS:
+            $default_tab = TAB_CREATE;
+            if(isset($tab)):
+                $create_class = $manage_class= "";
+                switch($tab)
+                {
+                    case TAB_CREATE:
+                        $create_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                    case TAB_MANAGE:
+                        $manage_class = SetClass(BASE_ACTIVE_CLASS);
+                    break;
+                }
+    ?>
     <!--Superuser superuser tab-->
     <div class="row main-tab" id="superuserTab">
         <div class="col s12 m10 offset-m1">
         <ul class="tabs">
             <li class="tab col s6">
-                <a href="#createSuperuser">Create</a>
+                <a target="_self" <?php echo $create_class;?> href="<?php echo GetSectionLink(SECTION_SU_SUPERUSERS,TAB_CREATE);?>">Create</a>
             </li>
             <li class="tab col s6">
-                <a class="active" href="#viewSuperuser" >View</a>
+                <a target="_self" <?php echo $manage_class;?> href="<?php echo GetSectionLink(SECTION_SU_SUPERUSERS,TAB_MANAGE);?>" >View</a>
             </li>
         </ul>
         </div>
+
+        <?php
+            $default_tab = TAB_CREATE;
+            switch($tab):
+                case TAB_CREATE:
+        ?>
         <div id="createSuperuser" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -692,6 +840,10 @@
                 </form>
             </div>
         </div>
+        <?php
+                break;
+                case TAB_MANAGE:
+        ?>
         <div id="viewSuperuser" class="col s12 offset-m1 m10 ">
             <div class="row">
                 <br>
@@ -786,22 +938,44 @@
                 </table>
             </div>
         </div>
+        <?php
+                break;
+                default:
+        ?>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_SU_SUPERUSERS,$default_tab);?>";</script>
+        <?php
+            endswitch;
+        ?>
     </div>
-
+        <?php
+            else:#tab is not set
+        ?>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_SU_SUPERUSERS,$default_tab);?>";</script>
+        <?php
+            endif;
+        break;
+        case SECTION_CHAT:
+    ?>
     <!--Superuser chat tab-->
     <!--<div class="row main-tab" id="superuserChatTab">
         <div class="col s12">
             <p>Chat section</p>
         </div>
     </div>-->
-
+    <?php
+        break;
+        case SECTION_GROUP:
+    ?>
     <!--Superuser group tab-->
     <!--<div class="row main-tab" id="superuserGroupsTab">
         <div class="col s12">
             <p>Group section</p>
         </div>
     </div> -->
-
+    <?php
+        break;
+        case SECTION_ACCOUNT:
+    ?>
     <!--Superuser account tab-->
     <div class="row main-tab" id="superuserAccountTab">
         <div class="row no-bottom-margin">
@@ -845,4 +1019,18 @@
             </div>
         </div>
     </div>
+<?php
+    break;
+    default:
+?>
+<script>window.location = "<?php echo GetSectionLink(SECTION_SU_BASE);?>";</script>
+<?php
+    endswitch;
+else:
+?>
+<script>window.location = "<?php echo GetSectionLink(SECTION_SU_BASE);?>";</script>
+<?php
+endif;
+?>
 </div>
+

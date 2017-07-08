@@ -3,7 +3,12 @@
     const SECTION_ACCOUNT = "account";
     const SECTION_RESOURCES = "resources";
     const SECTION_CHAT = "chat";
+    const SECTION_GROUP = "group";
 
+    //Global page titles
+    const PAGE_TITLE_ACCOUNT = "MY ACCOUNT";
+    const PAGE_TITLE_RESOURCES = "RESOURCES";
+    
     //Tabs that can be found in navigations
     const TAB_CREATE = "create";
     const TAB_MANAGE = "manage";
@@ -23,10 +28,7 @@
         //Section and tab variable references
         $section = &$_GET["section"];
         $tab = &$_GET["tab"];
-        
-
 ?>
-
 <!DOCTYPE html>
 
 <html lang="en" >
@@ -155,7 +157,7 @@
         <script type="text/javascript" src="js/dashboard/comments_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
         <script type="text/javascript" src="js/dashboard/test_events.js"></script>
-        <!--<script type="text/javascript" src="js/dashboard.js"></script>-->
+        <script type="text/javascript" src="js/dashboard.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/pace.js"></script>
         <script type="text/javascript" src="js/picker.time.js"></script>

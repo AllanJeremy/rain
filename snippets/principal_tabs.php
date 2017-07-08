@@ -451,12 +451,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                     break;
                     default:
                 ?>
-        <script>window.location = "<?php echo './?section='.SECTION_PR_BASE;?>";</script>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_PR_BASE);?>";</script>
         <?php
                 endswitch;
             else:#The section has not been specified ~ redirect to the main section
         ?>
-        <script>window.location = "<?php echo './?section='.SECTION_PR_BASE;?>";</script>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_PR_BASE);?>";</script>
         <?php
             endif;
         ?>

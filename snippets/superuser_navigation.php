@@ -9,9 +9,44 @@ Naming convention being used it TypeOfTheConst_OwnerOfTheConst_NameOfTheConst
 const SECTION_SU_BASE = "dashboard";
 const SECTION_SU_STUDENTS = "students";
 const SECTION_SU_TEACHERS = "teachers";
-const SECTION_SU_PRINCIPALS = "princiapls";
+const SECTION_SU_PRINCIPALS = "principals";
 const SECTION_SU_SUPERUSERS = "superusers";
 
+//Navigation active classes
+$dashboard_class = $students_class = $teachers_class = $principals_class = $superusers_class = $resources_class = $account_class = "";
+
+global $pageTitle;#Get the global variable representing the page title
+switch($section)
+{
+    case SECTION_SU_BASE:
+        $dashboard_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "DASHBOARD";
+    break;
+    case SECTION_SU_STUDENTS:
+        $students_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "STUDENT ACCOUNTS";
+    break;
+    case SECTION_SU_TEACHERS:
+        $teachers_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "TEACHER ACCOUNTS";
+    break;
+    case SECTION_SU_PRINCIPALS:
+        $principals_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "PRINCIPAL ACCOUNTS";
+    break;
+    case SECTION_SU_SUPERUSERS:
+        $superusers_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "SUPERUSER ACCOUNTS";
+    break;
+    case SECTION_RESOURCES:
+        $resources_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = PAGE_TITLE_RESOURCES;
+    break;
+    case SECTION_ACCOUNT:
+        $account_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = PAGE_TITLE_ACCOUNT;
+    break;
+}
 
 ?>
 
@@ -28,33 +63,33 @@ const SECTION_SU_SUPERUSERS = "superusers";
             <br>
         </div>
     </li>
-    <li class="active">
-        <a href="#!" id="dashboard" data-activates="dashboardTab" class="">Dashboard</a>
+    <li  <?php echo $dashboard_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_SU_BASE);?>" class="">Dashboard</a>
     </li>
-    <li class="">
-        <a href="#!" id="students" data-activates="studentsTab" class="">Students</a>
+    <li  <?php echo $students_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_SU_STUDENTS);?>"class="">Students</a>
     </li>
-    <li class="">
-        <a href="#!" id="teachers" data-activates="teachersTab" class="">Teachers</a>
+    <li  <?php echo $teachers_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_SU_TEACHERS);?>" class="">Teachers</a>
     </li>
-    <li class="">
-        <a href="#!" id="principal" data-activates="principalTab" class="">Principal</a>
+    <li  <?php echo $principals_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_SU_PRINCIPALS);?>" class="">Principal</a>
     </li>
-    <li class="">
-        <a href="#!" id="superuser" data-activates="superuserTab" class="">Superuser</a>
+    <li  <?php echo $superusers_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_SU_SUPERUSERS);?>" class="">Superuser</a>
     </li>
 
     <!--Chat and groups ~ Future feature-->
-    <li>
-        <a href="#!" class="hide" id="chat" data-activates="superuserChatTab">Chat</a>
+    <!--<li>
+        <a href="<?php echo GetSectionLink(SECTION_CHAT);?>" class="hide" id="chat" data-activates="superuserChatTab">Chat</a>
     </li>
     <li>
-        <a href="#!" class="hide" id="groups" data-activates="superuserGroupsTab">Groups</a>
-    </li>
+        <a href="<?php echo GetSectionLink(SECTION_GROUPS);?>" class="hide" id="groups" data-activates="superuserGroupsTab">Groups</a>
+    </li>-->
 
     <!--Account nav-->
-    <li>
-        <a href="#!" class="" id="account" data-activates="superuserAccountTab">Account</a>
+    <li <?php echo $account_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_ACCOUNT);?>" class="">Account</a>
     </li>
     <li>
         <div class="divider"></div>
