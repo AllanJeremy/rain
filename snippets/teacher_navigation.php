@@ -27,17 +27,17 @@ switch($section)
         $pageTitle = "CLASSROOMS";
     break;
     case SECTION_TR_ASS_CREATE:
-        $ass_class = SetClass(BASE_ACTIVE_CLASS);
+        $ass_class = BASE_ACTIVE_CLASS;
         $create_ass_class = SetClass(BASE_ACTIVE_CLASS);
         $pageTitle = "CREATE ASSIGNMENT";
     break;
     case SECTION_TR_ASS_SENT:
-        $ass_class = SetClass(BASE_ACTIVE_CLASS);
+        $ass_class = BASE_ACTIVE_CLASS;
         $sent_ass_class = SetClass(BASE_ACTIVE_CLASS);
         $pageTitle = "SENT ASSIGNMENTS";
     break;
     case SECTION_TR_ASS_SUBS:
-        $ass_class = SetClass(BASE_ACTIVE_CLASS);
+        $ass_class = BASE_ACTIVE_CLASS;
         $ass_sub_class = SetClass(BASE_ACTIVE_CLASS);
         $pageTitle = "ASSIGNMENT SUBMISSIONS";
     break;
@@ -46,17 +46,17 @@ switch($section)
         $pageTitle = "SCHEDULES";
     break;
     case SECTION_TR_TEST_CREATE:
-        $tests_class = SetClass(BASE_ACTIVE_CLASS);
+        $tests_class = BASE_ACTIVE_CLASS;
         $create_test_class = SetClass(BASE_ACTIVE_CLASS);
         $pageTitle = "CREATE A TEST";
     break;
     case SECTION_TR_TEST_VIEW_RESULTS:
-        $tests_class = SetClass(BASE_ACTIVE_CLASS);
+        $tests_class = BASE_ACTIVE_CLASS;
         $view_test_results_class = SetClass(BASE_ACTIVE_CLASS);
         $pageTitle = "VIEW TEST RESULTS";
     break;
     case SECTION_TR_TEST_TAKE:
-        $tests_class = SetClass(BASE_ACTIVE_CLASS);
+        $tests_class = BASE_ACTIVE_CLASS;
         $take_test_class = SetClass(BASE_ACTIVE_CLASS);
         $pageTitle = "TAKE TEST";
     break;
@@ -87,8 +87,8 @@ switch($section)
         <a href="<?php echo GetSectionLink(SECTION_TR_BASE);?>">Classrooms</a>
     </li>
     <ul class="collapsible collapsible-accordion" >
-        <li <?php echo $ass_class;?>>
-            <a class="collapsible-header">Assignments</a>
+        <li>
+            <a class="collapsible-header <?php echo $ass_class;?>">Assignments</a>
             <div class="collapsible-body">
                 <ul>
                     <li <?php echo $create_ass_class;?>>
@@ -108,8 +108,8 @@ switch($section)
         <a href="<?php echo GetSectionLink(SECTION_TR_SCHEDULES);?>">Schedules</a>
     </li>
     <ul class="collapsible collapsible-accordion">
-        <li <?php echo $tests_class;?>>
-            <a class="collapsible-header">Tests</a>
+        <li>
+            <a class="collapsible-header <?php echo $tests_class;?>">Tests</a>
             <div class="collapsible-body">
                 <ul>
                     <li <?php echo $create_test_class;?>>
@@ -124,19 +124,7 @@ switch($section)
                 </ul>
             </div>
         </li>
-        <!--<li class="hide">
-            <a class="collapsible-header">Grades</a>
-            <div class="collapsible-body">
-                <ul>
-                    <li class="">
-                        <a href="" id="mySubjectGrades" data-activates="mySubjectGradesTab" class="">My subject grades</a>
-                    </li>
-                    <li>
-                        <a href="" id="gradeBook" data-activates="gradeBookTab" class="">Gradebook</a>
-                    </li>
-                </ul>
-            </div>
-        </li>-->
+
     </ul>
 
     <li <?php echo $resources_class;?>>
