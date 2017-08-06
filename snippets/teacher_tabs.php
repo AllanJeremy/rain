@@ -304,7 +304,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     else:#no assignments were found
                 ?>
                     <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                        <h5 class="center-align valign grey-text " id="noSentAssignmentMessage">You haven't sent any assignments yet.<br><br><br><a class="btn btn-flat" id="createClassroom">Create one</a></h5>
+                        <h5 class="center-align valign grey-text " id="noSentAssignmentMessage">You haven't sent any assignments yet.<br><br><br><a class="btn btn-flat" href="./?section=create-assignment">Create one</a></h5>
                     </div>
                 <?php
                     endif;
@@ -1324,8 +1324,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     </div>
                     <div class="row">
                         <br>
-                        <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                            <h6 class="center-align valign grey-text " id="changePasswordMessage">
+                        <div class="col s12 valign-wrapper grey lighten-3">
+                            <h6 class=" margin-vert-16 center-align valign grey-text " id="changePasswordMessage">
                                 Change your password here
                                 <br>
                                 Note : Passwords must be at least 8 characters long

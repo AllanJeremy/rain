@@ -2226,12 +2226,24 @@ if(isset($_GET['action'])) {
 
             $result = DbInfo::ScheduleExists($_GET['schedule_id']);
 
+            $classroom_details = DbInfo::ClassroomExists($result['class_id']);
+            $subject_details =DbInfo::GetSubjectById($classroom_details['subject_id']);
+            $classroom_students = array ();
+
+            foreach ($classroom_student as $classroom_student) {
+
+            }
+
+            $result['class_name'] = $classroom_details['class_name'];
+            $result['class_subject_name'] = $subject_details['subject_name'];
+            $result['students_in_classroom'] = DbInfo::GetArrayFromList($classroom_details['student_ids']);
+            $result['class_color'] = $classroom_details['classes'];
+
             $students_not_attended = array ();
 
             $students = json_decode($result['students_not_attended']);
 
             foreach ($students as $student_not_attended) {
-
                 $student = DbInfo::StudentIdExists(/*(int)*/ $student_not_attended);
 
                 if($student != false) {
