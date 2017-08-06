@@ -290,12 +290,12 @@ var Lists_Templates = function () {
             templateOutput += '<h6 class="grey-text text-darken-2">Mark students who did not attend the schedule</h6>';
             templateOutput += '<div class="col grey darken-1 s8 divider"></div><br>';
 
-            for (prop in obj.students_not_attended){
-                console.log()
+            for (prop in obj.students_in_classroom){
+                console.log();
                 templateOutput += '<p class="no-margin">';
-                templateOutput += '<input type="checkbox" value="' + obj.students_not_attended[prop].id + '" id="student_' + obj.students_not_attended[prop].id + '" class="filled-in">';
-                templateOutput += '<label class="grey-text text-darken-2" for="student_' + obj.students_not_attended[prop].id + '">';
-                templateOutput += obj.students_not_attended[prop].name;
+                templateOutput += '<input type="checkbox" value="' + obj.students_in_classroom[prop].id + '" id="student_' + obj.students_in_classroom[prop].id + '" class="filled-in">';
+                templateOutput += '<label class="grey-text text-darken-2" for="student_' + obj.students_in_classroom[prop].id + '">';
+                templateOutput += obj.students_in_classroom[prop].name;
                 templateOutput += '</label></p>';
 
             }
