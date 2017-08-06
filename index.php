@@ -184,7 +184,7 @@
                 belowOrigin: false, // Displays dropdown below the button
                 alignment: 'right' // Displays dropdown with edge aligned to the left of button
             });
-            $('.mobile-button-collapse').sideNav();
+
             //Ensure labels don't overlap text fields
             Materialize.updateTextFields();//doesn't work
             $('.datepicker').pickadate({

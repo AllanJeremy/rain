@@ -870,6 +870,7 @@ var ScheduleEvents = function (userInfo) {
             $('a#updateSchedule').removeClass('hide');
 
             $('a#openScheduleForm').trigger('click');
+            $(window).scrollTop(0);
 
             return(false);
 
