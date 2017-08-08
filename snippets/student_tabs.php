@@ -384,6 +384,32 @@ about how you came to achieve this.</p>
                         </div>
 
                     </div>
+                    <div class="row js-new-account-alert-card">
+                        <div class="col s12">
+
+                            <div class="card horizontal" style="
+                            background-color: #6A1B9A;
+                        ">
+                              <div class="card-image" style="/* max-height: 300px; *//* width: auto; *//* overflow: hidden; *//* display: block; */">
+                                <img src="images/stairway.jpg" style="
+                            height: 100%;
+                            width: 100%;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                              </div>
+                              <div class="card-stacked">
+                                <div class="card-content">
+
+                                <h3 class="header white-text">Welcome Gabriel</h3><h5 class="white-text php-data">Vulnerable account.</h5><p class="white-text">Gabriel your username is your password, change your password in this tab
+                        to secure your account.</p></div>
+                                <div class="card-action">
+                                  <a href="#">Help me</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
                     <div class="row">
                         <br>
                         <div class="col s12 no-data-message valign-wrapper grey lighten-3">

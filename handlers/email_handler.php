@@ -21,9 +21,9 @@ class EmailHandler
         $mail->Port = 465;
         $mail->SMTPSecure = 'ssl';
         $mail->SMTPAuth = true;
-        $mail->Username = "idfinder254@gmail.com";
-        $mail->Password = "MWAURAMUCHIRI";
-        $mail->setFrom("idfinder254@gmail.com", 'Brookhurst eLearning buddy');
+        $mail->Username = "#########@gmail.com";
+        $mail->Password = "###########";
+        $mail->setFrom("##########@gmail.com", 'Brookhurst eLearning buddy');
         $mail->addAddress($data['to'], $data['address_name']);
         $mail->Subject = $data['subject'];
 
