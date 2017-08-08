@@ -661,11 +661,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             "name" => $classroom['class_name']
                                                         );
 
+                                                        $subjectId = $classroom['subject_id'];
+                                                        $streamId = $classroom['stream_id'];
+
+                                                        $subject = DBInfo::GetSubjectById($subjectId);
+                                                        $stream = DBInfo::GetStreamById($streamId);
+
                                                         //print_r($newResult);
-                                                        echo '<option value="'.$newResult["id"].'">'.$newResult["name"].'</option>';
-                                                        
-                                                        $subject = $classroom['subject_id'];
-                                                        $stream = $classroom['stream_id'];
+                                                        echo '<option data-stream-name="'.$stream['stream_name'].'" data-subject-name="'.$subject['subject_name'].'" value="'.$newResult["id"].'">'.$newResult["name"].'</option>';
+
                                                         
                                                     }
                                                 }
@@ -674,9 +678,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             </select>
                                             <label>Choose classroom for the schedule</label>
                                             
-                                            <div id="extraClassroomInfo" class="row no-margin">
-                                                <p class="col s6 php-data left"  id="ClassroomSubject">Subject: <span></span></p>
-                                                <p class="col s6 php-data right-align" id="ClassroomStream">Stream: <span></span></p>
+                                            <div id="extraClassroomSelectInfo" class="row no-margin">
+                                                <p class="col s6 php-data left ">Subject: <span class="js-classroom-subject"></span></p>
+                                                <p class="col s6 php-data right-align">Stream: <span class="js-classroom-stream"></span></p>
                                             </div>
                                         </div>
                                         <div class="input-field col m5 s10 push-s1 push-m1 " id="descriptionFormPanel">
