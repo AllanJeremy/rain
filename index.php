@@ -99,7 +99,7 @@
                 # show the side navigation for respective account types
                 include_once($snippet_folder . $accType."_navigation.php");
             ?>
-            <nav class="top-nav z-depth-0">
+            <nav class="top-nav ">
                 <div class="container ">
                     <div class="nav-wrapper ">
                         <div class="row no-bottom-margin">
