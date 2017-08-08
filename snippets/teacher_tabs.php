@@ -8,8 +8,20 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 <?php 
     $user_info = MySessionHandler::GetLoggedUserInfo();
     $loggedInTeacherId = $user_info["user_id"];
+
+    if(isset($section) && !empty($section)):
+        $subjects_found = DbInfo::GetAllSubjects();
+        //Get all assignments that belong to the logged in teacher
+        $assignments = DbInfo::GetSpecificTeacherAssignments($loggedInTeacherId);
+        $assignments = DbInfo::ReverseResult($assignments);
+        $classrooms = DbInfo::GetSpecificTeacherClassrooms($loggedInTeacherId);
 ?>           
             <div class="container">
+            
+            <?php
+                switch($section):
+                    case SECTION_TR_BASE:
+            ?>
                 <!--CLASSROOMS SECTION-->
                 <div class="row main-tab" id="classroomTab">
                     
@@ -41,7 +53,6 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <br>
                     
                     <?php
-                        $classrooms = DbInfo::GetSpecificTeacherClassrooms($loggedInTeacherId);
                         if ($classrooms):   
                      ?>
                     <div class="row" id="classroomCardList">
@@ -121,10 +132,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 
                 <!--ASSIGNMENTS SECTION-->
                 <?php
-                    //Get all assignments that belong to the logged in teacher
-                    $assignments = DbInfo::GetSpecificTeacherAssignments($loggedInTeacherId);
-                    $assignments = DbInfo::ReverseResult($assignments);
-                ?>  
+                    break;
+                    case SECTION_TR_ASS_CREATE:#Create assignments
+                ?>
+                <!--Create assignment-->
                 <div class="row main-tab" id="createAssignmentsTab">
                     <br>
                     <br>
@@ -184,6 +195,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     </div>
                 </div>
 
+                <?php
+                    break;
+                    case SECTION_TR_ASS_SENT:#Sent assignments
+                ?>
                 <!--Sent assignments-->
                 <div class="row main-tab" id="sentAssignmentsTab">
                 <?php
@@ -289,13 +304,17 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     else:#no assignments were found
                 ?>
                     <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                        <h5 class="center-align valign grey-text " id="noSentAssignmentMessage">You haven't sent any assignments yet.<br><br><br><a class="btn btn-flat" id="createClassroom">Create one</a></h5>
+                        <h5 class="center-align valign grey-text " id="noSentAssignmentMessage">You haven't sent any assignments yet.<br><br><br><a class="btn btn-flat" href="./?section=create-assignment">Create one</a></h5>
                     </div>
                 <?php
                     endif;
                 ?>   
                 </div>
 
+                <?php
+                    break;
+                    case SECTION_TR_ASS_SUBS:#Assignment submissions
+                ?>
                 <!--Submitted assignments-->
                 <div class="row main-tab" id="submittedAssignmentsTab">  
                     <?php
@@ -580,7 +599,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <!--No classrooms were found-->
                     <div>
                         <p>No classroom was found. You can create one is the classroom section</p>
-                        <a class="btn btn-flat">CREATE CLASSROOM</a>
+                        <a class="btn btn-flat" href="<?php echo GetSectionLink(SECTION_TR_BASE);?>">CREATE CLASSROOM</a>
                     </div>
                     <?php
                         endif;
@@ -588,6 +607,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                 </div>
 
+                <?php
+                    break;
+                    case SECTION_TR_SCHEDULES:#Create assignments
+                        //Messages to be shown incase of no data
+                        $noPendingSchedulesMessage = "<tbody data-tbody-number='0' ><tr class='js-dummy-schedule-data'><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                        
+                        $noAttendedSchedulesMessage = "<tbody data-tbody-number='0' ><tr class='js-dummy-schedule-data'><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+                ?>
                 <!--SCHEDULE SECTION-->
                 <div class="row main-tab" id="schedulesTab">
                     
@@ -634,11 +661,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             "name" => $classroom['class_name']
                                                         );
 
+                                                        $subjectId = $classroom['subject_id'];
+                                                        $streamId = $classroom['stream_id'];
+
+                                                        $subject = DBInfo::GetSubjectById($subjectId);
+                                                        $stream = DBInfo::GetStreamById($streamId);
+
                                                         //print_r($newResult);
-                                                        echo '<option value="'.$newResult["id"].'">'.$newResult["name"].'</option>';
-                                                        
-                                                        $subject = $classroom['subject_id'];
-                                                        $stream = $classroom['stream_id'];
+                                                        echo '<option data-stream-name="'.$stream['stream_name'].'" data-subject-name="'.$subject['subject_name'].'" value="'.$newResult["id"].'">'.$newResult["name"].'</option>';
+
                                                         
                                                     }
                                                 }
@@ -647,9 +678,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             </select>
                                             <label>Choose classroom for the schedule</label>
                                             
-                                            <div id="extraClassroomInfo" class="row no-margin">
-                                                <p class="col s6 php-data left"  id="ClassroomSubject">Subject: <span></span></p>
-                                                <p class="col s6 php-data right-align" id="ClassroomStream">Stream: <span></span></p>
+                                            <div id="extraClassroomSelectInfo" class="row no-margin">
+                                                <p class="col s6 php-data left ">Subject: <span class="js-classroom-subject"></span></p>
+                                                <p class="col s6 php-data right-align">Stream: <span class="js-classroom-stream"></span></p>
                                             </div>
                                         </div>
                                         <div class="input-field col m5 s10 push-s1 push-m1 " id="descriptionFormPanel">
@@ -816,10 +847,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $active = 1;
                             $type = 'pending';
                             $listdata = '1';
-                            $noDataMessage = "<tbody data-tbody-number='0' ><tr class='js-dummy-schedule-data'><td>We can't find any pending schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
 
                             if ($i == 0) {
-                                    echo $noDataMessage;
+                                    echo $noPendingSchedulesMessage;
                                 } else {
 
 
@@ -830,7 +860,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 }
                             } else {
 
-                                echo $noDataMessage;
+                                echo $noPendingSchedulesMessage;
 
                             }
 
@@ -902,10 +932,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             $active = 1;
                             $type = 'done';
                             $listdata = '1';
-                            $noDataMessage = "<tbody data-tbody-number='0' ><tr class='js-dummy-schedule-data'><td>We can't find any attended schedule</td><td>--</td><td>--</td><td>--</td></tr></tbody>";
+
 
                                 if ($i == 0) {
-                                    echo $noDataMessage;
+                                    echo $noAttendedSchedulesMessage;
                                 } else {
 
                                     $listdata = $attendedSchedulesData;
@@ -914,7 +944,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 }
                             } else {
 
-                                echo $noDataMessage;
+                                echo $noAttendedSchedulesMessage;
                             }
 
                             ?>
@@ -940,10 +970,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 </div>
                 <!--TESTS SECTION-->
                 <?php
-                    include_once("classes/test.php");#Include the test class
-                    $subjects_found = DbInfo::GetAllSubjects();
+                    break;
+                    case SECTION_TR_TEST_CREATE:#Create a test
+                        include_once("classes/test.php");#Include the test class
                 ?>
-<div class="container">
                 <!--Create a test-->
                 <div class="row main-tab" id="createTestTab">
 
@@ -1036,6 +1066,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     </div>
                 </div>
 
+                <?php
+                    break;
+                    case SECTION_TR_TEST_VIEW_RESULTS:#View student test results
+                    #TODO: Check the functionality of this section and polish it
+                        include_once("classes/test.php");#Include the test class
+                ?>
                 <!--Test results-->
                 <div class="container row main-tab" id="viewStudentsTestResultTab">
                     <?php
@@ -1121,6 +1157,11 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     ?>
                 </div>
 
+                <?php
+                    break;
+                    case SECTION_TR_TEST_TAKE:#Take a test
+                        include_once("classes/test.php");#Include the test class
+                ?>
                 <!--Take a test-->
                 <div class="row main-tab" id="takeTestTab">
                     <?php
@@ -1211,7 +1252,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <?php
                         else: # Could not find the tests
                     ?>
-                        <p>Could not retrieve your tests</p>
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h6 class="center-align valign grey-text " id="testResultsMessage">
+                            No tests were found
+                            <a class="btn btn-flat" href="<?php echo GetSectionLink(SECTION_TR_TEST_CREATE);?>">CREATE ONE</a>
+                        </h6>
+
+                    </div>
                     <?php
                         endif;
 
@@ -1220,6 +1267,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     ?>
                 </div>
 
+                <?php
+                    break;
+                    case SECTION_RESOURCES:#Resources
+                ?>
                 <!--RESOURCES SECTION-->
                 <div class="row main-tab" id="teacherResourcesTab">
                     <div class="col s12 tab-header">
@@ -1264,30 +1315,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     </div>
                 </div>
 
-                <!--GRADES SECTION-->
-                <div class="row main-tab" id="mySubjectGradesTab">
-                    myGrades tab
-                </div>
-
-                <!--GRADEBOOK SECTION-->
-                <div class="row main-tab" id="gradeBookTab">
-                    gradeBook tab
-                </div>
-
-                <!--CHAT SECTION-->
-                <div class="row main-tab" id="teacherChatTab">
-                    <div class="col s12">
-                        <p>Chat section</p>
-                    </div>
-                </div>
-
-                <!--GROUPS SECTION-->
-                <div class="row main-tab" id="teacherGroupsTab">
-                    <div class="col s12">
-                        <p>Groups section</p>
-                    </div>
-                </div>
-
+                <?php
+                    break;
+                    case SECTION_ACCOUNT:#Account
+                ?>
                 <!--ACCOUNT SECTION-->
                 <div class="row main-tab" id="teacherAccountTab">
                     <div class="row no-bottom-margin">
@@ -1324,8 +1355,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <div class="row">
 
                         <br>
-                        <div class="col s12 no-data-message valign-wrapper grey lighten-3">
-                            <h6 class="center-align valign grey-text " id="changePasswordMessage">
+                        <div class="col s12 valign-wrapper grey lighten-3">
+                            <h6 class=" margin-vert-16 center-align valign grey-text " id="changePasswordMessage">
                                 Change your password here
                                 <br>
                                 Note : Passwords must be at least 8 characters long
@@ -1357,5 +1388,18 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         </div>
                     </div>
                 </div>
-                                
-            </div>
+                <?php
+                    break;
+                    default:#Any other option
+                ?>
+<script>window.location = "<?php echo GetSectionLink(SECTION_TR_BASE);?>";</script>
+            <?php
+                endswitch;
+            ?>
+<?php
+    else:#No section was provided
+?>
+<script>window.location = "<?php echo GetSectionLink(SECTION_TR_BASE);?>";</script>
+<?php
+    endif;#End check for if it exists
+?>

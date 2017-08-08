@@ -2226,12 +2226,32 @@ if(isset($_GET['action'])) {
 
             $result = DbInfo::ScheduleExists($_GET['schedule_id']);
 
+            $classroom_details = DbInfo::ClassroomExists($result['class_id']);
+            $subject_details =DbInfo::GetSubjectById($classroom_details['subject_id']);
+            $classroom_students = DbInfo::GetArrayFromList($classroom_details['student_ids']);
+
+            $students_in_classroom = array ();
             $students_not_attended = array ();
+
+            foreach ($classroom_students as $classroom_student_id) {
+                $student = DbInfo::StudentIdExists($classroom_student_id);
+
+                if($student != false) {
+
+                    $student_info = array (
+                        'id'=> $student['adm_no'],
+                        'name'=> $student['full_name']
+                    );
+
+                    array_push( $students_in_classroom, $student_info );
+
+                }
+
+            }
 
             $students = json_decode($result['students_not_attended']);
 
             foreach ($students as $student_not_attended) {
-
                 $student = DbInfo::StudentIdExists(/*(int)*/ $student_not_attended);
 
                 if($student != false) {
@@ -2247,6 +2267,10 @@ if(isset($_GET['action'])) {
 
             }
 
+            $result['class_name'] = $classroom_details['class_name'];
+            $result['class_subject_name'] = $subject_details['subject_name'];
+            $result['class_color'] = $classroom_details['classes'];
+            $result['students_in_classroom'] = $students_in_classroom;
             $result['students_not_attended'] = $students_not_attended;
 
             if($result != null) {

@@ -173,13 +173,10 @@ var ScheduleEvents = function (userInfo) {
                                 "schedulename": data.schedule_title,
                                 "scheduledescription": data.schedule_description,
                                 "scheduleobjectives": data.schedule_objectives,
-                                "scheduleclass": $('#scheduleCreateFormContainer #extraClassroomInfo p#ClassroomSubject').find('span').text(),
                                 "scheduledatetime": moment(data.due_date).fromNow(),
                                 "scheduleid": data.schedule_id,
                                 "scheduletype": 'pending'
                             };
-
-                            console.log(scheduledata.scheduleclass);
 
                             console.log(scheduledata);
 
@@ -719,55 +716,26 @@ var ScheduleEvents = function (userInfo) {
         $('main').on('change', '#scheduleCreateFormContainer select#schedule_classroom', function (e) {
             e.preventDefault();
         
-            var selectedteacherClassroomid = $('#scheduleCreateFormContainer select#schedule_classroom').find('option:selected:not(:disabled)').val(),
-                streamid = '',
-                subjectid = '',
-                subjectHook = $('#scheduleCreateFormContainer #extraClassroomInfo p#ClassroomSubject'),
-                streamHook = $('#scheduleCreateFormContainer #extraClassroomInfo p#ClassroomStream');
+            var selectedteacherClassroomHook = $('#scheduleCreateFormContainer select#schedule_classroom').find('option:selected:not(:disabled)'),
+                selectedteacherClassroomid = selectedteacherClassroomHook.val(),
+                streamName = selectedteacherClassroomHook.attr('data-stream-name'),
+                subjectName = selectedteacherClassroomHook.attr('data-subject-name'),
+                subjectHook = $('#scheduleCreateFormContainer #extraClassroomSelectInfo .js-classroom-subject'),
+                streamHook = $('#scheduleCreateFormContainer #extraClassroomSelectInfo .js-classroom-stream');
                 
             console.log(subjectHook.length);
             console.log(streamHook.length);
             
-            //gets data about the classroom
+            //if the classroom has valid id
             if(selectedteacherClassroomid != 'null') {
                 
-                $.get('handlers/db_info.php', {"action": "ClassroomExists", "class_id": selectedteacherClassroomid}, function (data) {
-
-                    subjectid = data.subject_id;
-                    streamid = data.stream_id;
-
-                    //gets data about the subject of the selected classroom
-                    $.get('handlers/db_info.php', {"action": "GetSubjectById", "subject_id": subjectid}, function (subjectdata) {
-
-                        var subjectName = subjectdata.name;
-
-                        subjectHook.find('span').remove();
-                        subjectHook.append('<span>' + subjectName + '</span>');
-
-                    }, 'json');
-
-                    //gets data about the stream of the selected classroom
-                    $.get('handlers/db_info.php', {"action": "GetStreamById", "stream_id": streamid}, function (streamdata) {
-
-                        var streamName = streamdata.name;
-                        console.log(streamName);
-
-                        streamHook.find('span').remove();
-                        streamHook.append('<span>' + streamName + '</span>');
-
-                    }, 'json');
-
-                    console.log(selectedteacherClassroomid);
-
-                }, 'json');
+                subjectHook.html(subjectName);
+                streamHook.html(streamName);
 
             } else {
 
-                subjectHook.find('span').remove();
-                subjectHook.append('<span> </span>');
-
-                streamHook.find('span').remove();
-                streamHook.append('<span> </span>');
+                subjectHook.html('');
+                streamHook.html('');
 
             }
 
@@ -870,6 +838,7 @@ var ScheduleEvents = function (userInfo) {
             $('a#updateSchedule').removeClass('hide');
 
             $('a#openScheduleForm').trigger('click');
+            $(window).scrollTop(0);
 
             return(false);
 

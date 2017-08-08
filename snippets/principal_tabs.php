@@ -30,6 +30,15 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                 <!--<p class="grey-text">Assignments (overview headers)</p>
                 <div class="divider"></div>
                 <br>-->
+       
+        <?php
+            if(isset($section)):
+        ?>
+           
+        <?php
+                switch($section):
+                    case SECTION_PR_BASE:
+        ?>
                 <!--Principal stats overview tab-->
                 <div class="row main-tab" id="statsOverviewTab">
 
@@ -46,7 +55,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                                     $schedules = DbInfo::Get7DaySchedules();#Default timeframe of schedules to get 
 
                                     $total_schedule_count = $done_schedule_count = $unattended_schedule_count = 0;
-                                    if($schedules && @$schedules->num_rows>0)
+                                    if(@$schedules && @$schedules->num_rows>0)
                                     {
                                         $total_schedule_count = $schedules->num_rows;
                                         
@@ -111,7 +120,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
 
                                     $total_ass_sent = $total_ass_subs = $total_graded_ass_subs = 0;
 
-                                    if($assignments && @$assignments->num_rows>0)
+                                    if(@$assignments && @$assignments->num_rows>0)
                                     {
                                         $total_ass_sent = $assignments->num_rows;
 
@@ -161,7 +170,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                         </div>
                     </div>
                 </div>
-                
+                <?php
+                    break;
+                    case SECTION_PR_SCHEDULES:
+                ?>
                 <!--Principal schedules tab-->
                 <div class="row main-tab" id="principalSchedulesTab">
                     <div class="col s12 m6 right">
@@ -186,7 +198,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
 
                             <!--Table body contents-->
                             <?php
-                                if($schedules && @$schedules->num_rows>0):
+                                if(@$schedules && @$schedules->num_rows>0):
                                     foreach($schedules as $schedule):
                                         $schedule_id = $schedule["schedule_id"];
                                         $teacher_id = $schedule["teacher_id"];
@@ -251,7 +263,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                         
                     </div>
                 </div>
-                
+                <?php
+                    break;
+                    case SECTION_PR_ASSIGNMENTS:
+                ?>
                 <!--Principal assignments tab-->
                 <div class="row main-tab" id="principalAssignmentsTab">
                     <div class="col s12 m6 right">
@@ -278,7 +293,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
 
                             <!--Table body contents-->
                             <?php
-                                if($assignments && @$assignments->num_rows>0):
+                                if(@$assignments && @$assignments->num_rows>0):
 
                                     foreach($assignments as $ass):
                                         $ass_id = $ass["ass_id"];
@@ -357,27 +372,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                     </div>
                 </div>
                 
-                <!--Principal student grades tab-->
-                <!--<div class="row main-tab" id="principalStudentGradesTab">
-                    Principal Student Grades tab
-                </div>-->
-                
-                <!--Principal gradebook tab-->
-                <!--<div class="row main-tab" id="principalGradebookTab">
-                    Principal Gradebook tab
-                </div>-->
-                
-                <!--Principal students tab-->
-                <!--<div class="row main-tab" id="principalStudentsTab">
-                    <p class="grey-text">Students</p>
-                    <div class="divider"></div><br>
-                </div>-->
-                
-                <!--Principal teachers tab-->
-                <!--<div class="row main-tab" id="principalTeachersTab">
-                    <p class="grey-text">Teachers</p>
-                    <div class="divider"></div><br>
-                </div>-->
+                <?php
+                    break;
+                    case SECTION_RESOURCES:
+                ?>
                 <!--Principal resources tab-->
                 <div class="row main-tab" id="principalResourcesTab">
                     <?php
@@ -393,17 +391,19 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                         }     
                     ?>
                 </div>
-                
+                <?php
+                    break;
+                    case SECTION_CHAT:
+                ?>
                 <!--Principal chat tab-->
                 <!--<div class="row main-tab" id="principalChatTab">
                     Principal Chat tab
                 </div>-->
 
-                <!--Principal groups tab-->
-                <!--<div class="row main-tab" id="principalGroupsTab">
-                    Principal Groups tab
-                </div>-->
-                
+                <?php
+                    break;
+                    case SECTION_ACCOUNT:
+                ?>
                 <!--Principal account tab-->
                 <div class="row main-tab" id="principalAccountTab">
                     <div class="row no-bottom-margin">
@@ -447,5 +447,17 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Resour
                         </div>
                     </div>
                 </div>
-                
+                <?php
+                    break;
+                    default:
+                ?>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_PR_BASE);?>";</script>
+        <?php
+                endswitch;
+            else:#The section has not been specified ~ redirect to the main section
+        ?>
+        <script>window.location = "<?php echo GetSectionLink(SECTION_PR_BASE);?>";</script>
+        <?php
+            endif;
+        ?>
             </div>

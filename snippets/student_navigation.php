@@ -1,3 +1,53 @@
+<?php
+/*
+Constants to be used by the teacher navigation. ~ names of the sections and tabs
+Note: TR is short for Teacher
+Naming convention being used it TypeOfTheConst_OwnerOfTheConst_NameOfTheConst
+*/
+
+//Sections
+const SECTION_ST_BASE = "received-assignments";
+const SECTION_ST_ASS_SENT = "sent-assignments";
+const SECTION_ST_TEST_TAKE = "take-test";
+const SECTION_ST_TEST_RESULTS = "test-results";
+
+
+//Navigation active classes
+$ass_class = $received_ass_class = $sent_ass_class = $tests_class = $take_test_class = $test_results_class = $resources_class = $account_class = "";
+
+global $pageTitle;#Get the global variable representing the page title
+switch($section)
+{
+    case SECTION_ST_BASE:
+        $ass_class = BASE_ACTIVE_CLASS;
+        $received_ass_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "RECEIVED ASSIGNMENTS";
+    break;
+    case SECTION_ST_ASS_SENT:
+        $ass_class = BASE_ACTIVE_CLASS;
+        $sent_ass_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "SENT ASSIGNMENTS";
+    break;
+    case SECTION_ST_TEST_TAKE:
+        $tests_class = BASE_ACTIVE_CLASS;
+        $take_test_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "TAKE A TEST";
+    break;
+    case SECTION_ST_TEST_RESULTS:
+        $tests_class = BASE_ACTIVE_CLASS;
+        $test_results_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "VIEW TEST RESULTS";
+    break;
+    case SECTION_RESOURCES:
+        $resources_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = PAGE_TITLE_RESOURCES;
+    break;
+    case SECTION_ACCOUNT:
+        $account_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = PAGE_TITLE_ACCOUNT;
+    break;
+}
+?>
 <ul id="slide-out" class="side-nav fixed">
     <li>
         <div class="userView">
@@ -8,62 +58,42 @@
         </div>
     </li>
     <ul class="collapsible collapsible-accordion">
-        <li class="">
-            <a class="collapsible-header active">Assignments</a>
+        <li>
+            <a class="collapsible-header <?php echo $ass_class;?>">Assignments</a>
             <div class="collapsible-body">
                 <ul>
-                    <li class="active">
-                        <a id="recievedAssignments" data-activates="recievedAssignmentsTab" class="active-bar " href="">Received assignments</a>
+                    <li <?php echo $received_ass_class;?>>
+                        <a href="<?php echo GetSectionLink(SECTION_ST_BASE);?>">Received assignments</a>
                     </li>
-                    <li>
-                        <a hidden="" id="sentAssignments" data-activates="sentAssignmentsTab" class="" href="">Sent assignments</a>
+                    <li <?php echo $sent_ass_class;?>>
+                        <a href="<?php echo GetSectionLink(SECTION_ST_ASS_SENT);?>">Sent assignments</a>
                     </li>
                 </ul>
             </div>
         </li>
-        <li class="">
-            <a class="collapsible-header waves-effect">Tests</a>
+        <li>
+            <a class="collapsible-header waves-effect <?php echo $tests_class;?>">Tests</a>
             <div class="collapsible-body">
                 <ul>
-                    <li class="">
-                        <a class="" id="takeATest" data-activates="takeATestTab" href="">Take a test</a>
+                    <li <?php echo $take_test_class;?>>
+                        <a href="<?php echo GetSectionLink(SECTION_ST_TEST_TAKE);?>">Take a test</a>
                     </li>
-                    <li>
-                        <a href="" id="testResults" data-activates="testResultsTab" class="">Test results</a>
+                    <li <?php echo $test_results_class;?>>
+                        <a href="<?php echo GetSectionLink(SECTION_ST_TEST_RESULTS);?>">Test results</a>
                     </li>
                 </ul>
             </div>
         </li>
-        <li class="hide">
-            <a class="collapsible-header waves-effect waves-light">Grades</a>
-            <div class="collapsible-body">
-                <ul>
-                    <li class="">
-                        <a href="" id="myGrades" data-activates="myGradesTab" class="">My grades</a>
-                    </li>
-                    <li>
-                        <a href="" id="gradeBook" data-activates="gradeBookTab" class="">Gradebook</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
+
     </ul>
     
-    <li>
-        <a href="#!" class="" id="resources" data-activates="studentResourcesTab">Resources</a>
-    </li>
-
-    <!--Chat and groups ~ Future feature-->
-    <li>
-        <a href="#!" class="hide" id="chat" data-activates="studentChatTab">Chat</a>
-    </li>
-    <li>
-        <a href="#!" class="hide" id="groups" data-activates="studentGroupsTab">Groups</a>
+    <li <?php echo $resources_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_RESOURCES);?>">Resources</a>
     </li>
 
     <!--Account nav-->
-    <li>
-        <a href="#!" class="" id="account" data-activates="studentAccountTab">Account</a>
+    <li <?php echo $account_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_ACCOUNT);?>">Account</a>
     </li>
 
     <li>

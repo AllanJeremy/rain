@@ -1,3 +1,45 @@
+<?php
+/*
+Constants to be used by the principal navigation. ~ names of the sections and tabs
+Note: PR is short for Principal
+Naming convention being used it TypeOfTheConst_OwnerOfTheConst_NameOfTheConst
+*/
+
+//Sections
+const SECTION_PR_BASE = "stats-overview";
+const SECTION_PR_SCHEDULES = "schedules";
+const SECTION_PR_ASSIGNMENTS = "assignments";
+
+//Navigation active classes
+$stats_overview_class = $schedules_class = $ass_class = $resources_class = $account_class = "";
+
+global $pageTitle;#Get the global variable representing the page title
+switch($section)
+{
+    case SECTION_PR_BASE:
+        $stats_overview_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "STATS OVERVIEW";
+    break;
+    case SECTION_PR_SCHEDULES:
+        $schedules_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "SCHEDULES";
+    break;
+    case SECTION_PR_ASSIGNMENTS:
+        $ass_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = "ASSIGNMENTS";
+    break;
+    case SECTION_RESOURCES:
+        $resources_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = PAGE_TITLE_RESOURCES;
+    break;
+    case SECTION_ACCOUNT:
+        $account_class = SetClass(BASE_ACTIVE_CLASS);
+        $pageTitle = PAGE_TITLE_ACCOUNT;
+    break;
+}
+
+?>
+
 <ul id="slide-out" class="side-nav fixed">
     <li>
         <div class="userView">
@@ -14,38 +56,38 @@
             <br>
         </div>
     </li>
-    <li class="active">
-        <a href="#" id="statsOverview" data-activates="statsOverviewTab">Stats overview</a>
+    <li <?php echo $stats_overview_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_PR_BASE);?>">Stats overview</a>
     </li>
-    <li class="">
-        <a href="#" id="schedules" data-activates="principalSchedulesTab">Schedules</a>
+    <li <?php echo $schedules_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_PR_SCHEDULES);?>">Schedules</a>
     </li>
-    <li class="">
-        <a href="#" id="assignments" data-activates="principalAssignmentsTab">Assignments</a>
+    <li <?php echo $ass_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_PR_ASSIGNMENTS);?>">Assignments</a>
     </li>
-    <ul class="collapsible collapsible-accordion hide">
+    <!--<ul class="collapsible collapsible-accordion hide">
         <li class="">
             <a class="collapsible-header">Grades</a>
             <div class="collapsible-body">
                 <ul>
                     <li class="">
-                        <a href=""  id="studentGrades" data-activates="principalStudentGradesTab" class="">Student grades</a>
+                        <a href=""  id="studentGrades" class="">Student grades</a>
                     </li>
                     <li>
-                        <a href=""  id="gradeBook" data-activates="principalGradebookTab" class="">Gradebook</a>
+                        <a href=""  id="gradeBook" class="">Gradebook</a>
                     </li>
                 </ul>
             </div>
         </li>
-    </ul>
+    </ul>-->
     <!--<li>
         <a href="#!" class="hide" id="students" data-activates="principalStudentsTab">Students</a>
     </li>
     <li>
         <a href="#!" class="hide" id="teachers" data-activates="principalTeachersTab">Teachers</a>
     </li>-->
-    <li>
-        <a href="#!" class="" id="resources" data-activates="principalResourcesTab">Resources</a>
+    <li <?php echo $resources_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_RESOURCES);?>" class="">Resources</a>
     </li>
 
     <!--Chat and groups ~ Future feature-->
@@ -57,8 +99,8 @@
     </li>
 
     <!--Account nav-->
-    <li>
-        <a href="#!" class="" id="account" data-activates="principalAccountTab">Account</a>
+    <li <?php echo $account_class;?>>
+        <a href="<?php echo GetSectionLink(SECTION_ACCOUNT);?>" class="">Account</a>
     </li>
     <li>
         <div class="divider"></div>

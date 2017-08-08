@@ -245,7 +245,8 @@ var Lists_Templates = function () {
     this.scheduleInfo = function (obj) {
 
         var templateOutput = '',
-            prop;
+            prop,
+            classColor = obj.class_color.split(' ');
 
         //obj.schedule_objectives = text;
 
@@ -255,7 +256,20 @@ var Lists_Templates = function () {
         templateOutput += '<h6 class="grey-text">Name</h6>';
         templateOutput += '<div class="col s10 divider"></div>';
         templateOutput += '<p>' + obj.schedule_title + '</p>';
-        templateOutput += '</div><div class="col s5">';
+        templateOutput += '<div class="row">';
+        templateOutput += '<div class="col s6 no-padding">';
+        templateOutput += '<h6 class="grey-text">Class</h6>';
+        templateOutput += '<div class="col s10 divider"></div>';
+        templateOutput += '<p>' + obj.class_name + '</p>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="col s6 no-padding">';
+        templateOutput += '<h6 class="grey-text">Subject</h6>';
+        templateOutput += '<div class="col s10 divider"></div>';
+        templateOutput += '<p>' + obj.class_subject_name + '</p>';
+        templateOutput += '</div>';
+        templateOutput += '</div>';
+        templateOutput += '</div>';
+        templateOutput += '<div class="col s5">';
         templateOutput += '<h6 class="grey-text">Due</h6>';
         templateOutput += '<div class="col s10 divider"></div>';
         templateOutput += '<p class="red-text">' + obj.due_date_formatted + '</p>';
@@ -285,17 +299,17 @@ var Lists_Templates = function () {
 
             templateOutput += '</div><br><div class="row"><a class="btn disabled" id="attendedScheduleFromModal">Mark attended<i class="material-icons right">done</i></a></div>';
             templateOutput += '</div>';
-            templateOutput += '<div class="col m5 s12"><div data-students-not-attended="" class="row js-students-not-attended card-panel teal lighten-4">';
+            templateOutput += '<div class="col m5 s12"><div data-students-not-attended="" class="row js-students-not-attended card-panel ' + classColor[0] + ' lighten-3">';
             templateOutput += '<h5 class="card-title white-text php-data">Students not attended</h5>';
             templateOutput += '<h6 class="grey-text text-darken-2">Mark students who did not attend the schedule</h6>';
             templateOutput += '<div class="col grey darken-1 s8 divider"></div><br>';
 
-            for (prop in obj.students_not_attended){
-                console.log()
+            for (prop in obj.students_in_classroom){
+                console.log();
                 templateOutput += '<p class="no-margin">';
-                templateOutput += '<input type="checkbox" value="' + obj.students_not_attended[prop].id + '" id="student_' + obj.students_not_attended[prop].id + '" class="filled-in">';
-                templateOutput += '<label class="grey-text text-darken-2" for="student_' + obj.students_not_attended[prop].id + '">';
-                templateOutput += obj.students_not_attended[prop].name;
+                templateOutput += '<input type="checkbox" value="' + obj.students_in_classroom[prop].id + '" id="student_' + obj.students_in_classroom[prop].id + '" class="filled-in">';
+                templateOutput += '<label class="grey-text text-darken-2" for="student_' + obj.students_in_classroom[prop].id + '">';
+                templateOutput += obj.students_in_classroom[prop].name;
                 templateOutput += '</label></p>';
 
             }
@@ -308,7 +322,7 @@ var Lists_Templates = function () {
         } else {
 
             templateOutput += '</div></div>';
-            templateOutput += '<div class="col m5 s12"><div data-students-not-attended="" class="row js-students-not-attended card-panel teal lighten-4">';
+            templateOutput += '<div class="col m5 s12"><div data-students-not-attended="" class="row js-students-not-attended card-panel ' + classColor[0] + ' lighten-3">';
             templateOutput += '<h5 class="card-title white-text php-data">Students not attended</h5>';
             templateOutput += '<h6 class="grey-text text-darken-2">List of students who did not attend the schedule</h6>';
             templateOutput += '<div class="col grey darken-1 s8 divider"></div>';

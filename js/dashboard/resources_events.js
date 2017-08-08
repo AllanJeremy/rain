@@ -117,8 +117,9 @@ var ResourcesEvents = function () {
 
             var files = document.forms['createResourcesForm']['resources'].files,
                 filesdescription = '', subjectid,
-                $This = $(this),
-                DATA = [];
+                $This = $(this), failedfiles,
+                DATA = [],
+                uploadSuccess = '<p class="';
             console.log(files);
 
             //ajax
@@ -181,11 +182,39 @@ var ResourcesEvents = function () {
                         console.log('retrying');
                         return (false);
 
+                    } else {
+                        failedfiles = jQuery.parseJSON(returndata);
+
+                        //if success
+                        if(failedfiles.status) {
+                            $('.num-progress').html('Upload successful');
+                            Materialize.toast('<p class="white-text">Upload successful</p>', 1200, 'green accent-3', function (s) {
+                                setTimeout(function () {
+                                    location.reload();
+
+                                }, 800);
+
+                            });
+
+                        } else {
+
+                            if(failedfiles.failed_files.length > 0) {
+                                //File didn't upload
+                                //Probably there was an error
+                                $('.num-progress').html('Upload error<br>Check if you have any errors on the files list.');
+
+                            } else {
+                                $('.num-progress').html('Upload error<br>');
+
+                            }
+                            $('.num-progress').removeClass('secondary-text-color').addClass('red-text text-accent-1');
+                            $('.progress.js-progress-bar .determinate').addClass('red accent-3');
+                        }
                     }
 
-                    var failedfiles = jQuery.parseJSON(returndata);
 
                     console.log(failedfiles);
+                    console.log(failedfiles.failed_files.length);
 
                 },
                 error: function (e) {
@@ -308,7 +337,7 @@ var ResourcesEvents = function () {
                     //Subject id was not changed, so no need for appending card
                     $('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
                 } else {
-                    //subject id was updated.
+                    //subject id was updated. APPEND CAR TO THE RIGHT ROW
                     $('.tr_res_container[data-res-id=' + res_id + ']').attr('data-subject-id', returndata.subject_id);
                     $('.tr_res_container[data-res-id=' + res_id + ']').addClass('new-class');
                     $('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
@@ -412,8 +441,10 @@ var ResourcesEvents = function () {
             if(Percentage >= 100)
             {
 
-                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html(Percentage + '%');
-                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .num-progress').addClass('hide');
+                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html('100%');
+                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').css({
+                    width : '100%'
+                });
 
                 // process completed
             }

@@ -1,4 +1,20 @@
 <?php
+    //Global sections
+    const SECTION_ACCOUNT = "account";
+    const SECTION_RESOURCES = "resources";
+    const SECTION_CHAT = "chat";
+    const SECTION_GROUP = "group";
+
+    //Global page titles
+    const PAGE_TITLE_ACCOUNT = "MY ACCOUNT";
+    const PAGE_TITLE_RESOURCES = "RESOURCES";
+    
+    //Tabs that can be found in navigations
+    const TAB_CREATE = "create";
+    const TAB_MANAGE = "manage";
+    const TAB_IMPORT = "import";
+    const TAB_VIEW = "view";
+    
     require_once("handlers/session_handler.php");
     require_once("handlers/global_init_handler.php");
 
@@ -8,9 +24,11 @@
     //If statement that determines whether content can be viewed
     if (MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn()):
 
-
+        //Constants for the tabs and sections
+        //Section and tab variable references
+        $section = &$_GET["section"];
+        $tab = &$_GET["tab"];
 ?>
-
 <!DOCTYPE html>
 
 <html lang="en" >
@@ -77,7 +95,11 @@
         ?>
 
         <header>
-            <nav class="top-nav z-depth-0">
+            <?php
+                # show the side navigation for respective account types
+                include_once($snippet_folder . $accType."_navigation.php");
+            ?>
+            <nav class="top-nav ">
                 <div class="container ">
                     <div class="nav-wrapper ">
                         <div class="row no-bottom-margin">
@@ -87,80 +109,17 @@
                                 </a>
                             </div>
                             <div class="col s8">
-                                <a class="page-title center-align" id="pageTitle">
-                                    
-                                    
-                                    <?php
-
-                                    //Setting the active page title according to the account type
-                                    //Hiding the search icon according to the account type
-                                    switch ($accType) {
-                                            
-                                        case "student":
-                                            require_once("classes/student.php");
-                                            
-                                            $student = new Student();#object to access student functions
-
-                                            $pageTitle = 'Received assignments';
-                                            $searchBar = '';
-                                            
-                                            echo $pageTitle;
-                                            
-                                            break;
-                                        case "teacher":
-                                            require_once("classes/teacher.php");
-
-                                            $teacher = new Teacher();#object to access teacher functions
-
-                                            $pageTitle = 'Classrooms';
-                                            $searchBar = '';
-                                            
-                                            echo $pageTitle;
-                                            
-                                            break;
-                                        case "principal":
-                                            require_once("classes/principal.php");
-                                            
-                                            $principal = new Principal();#object to access principal functions
-
-                                            $pageTitle = 'Stats overview';
-                                            $searchBar = '';
-                                            
-                                            echo $pageTitle;
-                                            
-                                            break;
-                                        case "superuser":
-                                            $pageTitle = 'Dashboard';
-                                            $searchBar = 'hide';
-                                            
-                                            echo $pageTitle;
-                                            
-                                            break;
-                                        default:
-                                            $pageTitle = 'Dashboard';
-                                            $searchBar = '';
-                                            
-                                            echo $pageTitle;
-                                    }
-                                    
-                                    ?>
-                                </a>
+                                <a class="page-title center-align" id="pageTitle"><?php echo ucwords(@$pageTitle);?></a>
                             </div>
-                            <div class="col s2 <?php echo $searchBar; ?>">
+                            <!--<div class="col s2 <?php echo $searchBar; ?>">
                                 <a class="right-align" href="#!searchBar">
                                     <i class="material-icons">search</i>
                                 </a>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
             </nav>
-
-            <?php
-                # show the side navigation for respective account types
-                include_once($snippet_folder . $accType."_navigation.php");
-            ?>
-
         </header>
         <main>
             <br>
@@ -225,7 +184,7 @@
                 belowOrigin: false, // Displays dropdown below the button
                 alignment: 'right' // Displays dropdown with edge aligned to the left of button
             });
-            $('.mobile-button-collapse').sideNav();
+
             //Ensure labels don't overlap text fields
             Materialize.updateTextFields();//doesn't work
             $('.datepicker').pickadate({

@@ -59,7 +59,7 @@ class EsomoResource
                 <div class="card-content">
                     <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                         <div class="resource-details-container">
-                            <p>Description: <?php echo empty($res_description) ? '<span class="grey-text">Not written</span>' : $res_description; ?></p>
+                            <p><span class="grey-text">Description: </span> <?php echo empty($res_description) ? '<span class="grey-text">Not written</span>' : $res_description; ?></p>
                         </div>
                     <h6 class="grey-text uppercase text-lighten-2 "><?php echo explode(".",explode("/",$res_found['file_type'])
                                                                                               [count(explode("/",$res_found['file_type'])) - 1]
@@ -97,14 +97,16 @@ class EsomoResource
 
                 if($resources):
      ?>
-        <div class='row subject-group' data-subject-group="<?php echo $subject_id; ?>">
-            <div class="col s8">
-                <h5 class="grey-text text-darken-2 s8 col"><?php echo $subject["subject_name"];?></h5>
-            </div>
-            <div class="col s4">
-                <a class="js-minimize-subject-resources btn-icon right" href="#!" >
-                    <i class="material-icons">expand_more</i>
-                </a>
+        <div class='subject-group' data-subject-group="<?php echo $subject_id; ?>">
+            <div class='row no-margin'>
+                <div class="col s8">
+                    <h5 class="grey-text text-darken-2 s8 col"><?php echo $subject["subject_name"];?></h5>
+                </div>
+                <div class="col s4">
+                    <a class="js-minimize-subject-resources btn-icon right" href="#!" >
+                        <i class="material-icons">expand_more</i>
+                    </a>
+                </div>
             </div>
      <?php
                     echo "<div class='row subject-group-body'>";
@@ -171,7 +173,7 @@ class EsomoResource
                         <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>
                         <div class="">
                             <div class="resource-details-container">
-                                <p>Description: <span class="js-res-description"><?php echo empty($res_description) ? '--' : $res_description; ?></span></p>
+                                <p><span class="grey-text">Description: </span> <span class="js-res-description"><?php echo empty($res_description) ? '--' : $res_description; ?></span></p>
 <!--                                <a class="btn btn-flat viewResourceDetails " href="javascript:void(0)">RESOURCE DETAILS</a>-->
                             </div>
                             <h6 class="grey-text uppercase text-lighten-1"><?php echo explode(".",explode("/",$res_found['file_type'])
@@ -183,7 +185,7 @@ class EsomoResource
                     </div>
                     <div class="card-action">
                         <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="" href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
+                    <a class="" href="resourcesViewer.php?" data-href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
                     <a <?php echo $res_edit_btn_properties?> href="javascript:void(0)">EDIT</a>
                     </div>
 
@@ -220,15 +222,17 @@ class EsomoResource
                     #if the resources were found for the specific subject
                     if($resources):
     ?>
-        <div class='row subject-group' data-subject-group="<?php echo $subject_id; ?>">
+        <div class='subject-group' data-subject-group="<?php echo $subject_id; ?>">
 <!--        <h4 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h4>-->
-            <div class="col s8">
-                <h5 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h5>
-            </div>
-            <div class="col s4">
-                <a class="js-minimize-subject-resources btn-icon right" href="#!" id="">
-                    <i class="material-icons">expand_more</i>
-                </a>
+            <div class='row no-margin'>
+                <div class="col s8">
+                    <h5 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h5>
+                </div>
+                <div class="col s4">
+                    <a class="js-minimize-subject-resources btn-icon right" href="#!" id="">
+                        <i class="material-icons">expand_more</i>
+                    </a>
+                </div>
             </div>
             <?php
                         echo "<div class='row subject-group-body'>";

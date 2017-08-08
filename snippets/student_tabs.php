@@ -11,16 +11,19 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                 <div class="divider"></div>
                 <br>-->
                
-                <!--ASSIGNMENTS SECTION-->
-                <?php
-                    $loggedInStudentId = $_SESSION["student_adm_no"];
-                    
-                    //Get all assignments that belong to the logged in teacher
-                    $assignments = DbInfo::GetAllStudentAssignments($loggedInStudentId);
-                    // var_dump($assignments);
-                ?>  
+            <!--ASSIGNMENTS SECTION-->
+            <?php
+                $loggedInStudentId = $_SESSION["student_adm_no"];
+                
+                //Get all assignments that belong to the logged in teacher
+                $assignments = DbInfo::GetAllStudentAssignments($loggedInStudentId);
+                // var_dump($assignments);
+                if(isset($section)):
+                    switch($section):
+                        case SECTION_ST_BASE:
+            ?>  
+                <!--Received assignments-->
                 <div class="row main-tab" id="recievedAssignmentsTab">
-
                 <?php
                     if($assignments):
                         foreach($assignments as $assignment):
@@ -109,6 +112,10 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                     
                 </div>
 
+                <?php
+                        break;
+                        case SECTION_ST_ASS_SENT:
+                ?>
                 <!--Sent assignments-->
                 <div class="row main-tab" id="sentAssignmentsTab">
                     <?php
@@ -159,9 +166,15 @@ about how you came to achieve this.</p>
                         </div>
                     </div>
                 </div>
+
+                <?php
+                        break;
+                        case SECTION_ST_TEST_TAKE:
+                ?>
+                <!--Take test-->
                 <div class="row main-tab" id="takeATestTab">
                     <div class="row">
-                        <h5 class="grey-text text-darken-1">Tests Avalilable</h5>
+                        <h5 class="grey-text text-darken-1">Tests Available</h5>
                     </div>
                     
                     <div class="divider"></div>
@@ -176,6 +189,7 @@ about how you came to achieve this.</p>
                         #Get all subjects
                         $subjects = DbInfo::GetAllSubjects();
                     if($subjects):
+                        $count = 0;
                         foreach($subjects as $subject):
                             $tests = DbInfo::GetTestsBySubjectId($subject["subject_id"]);
                             if($tests):
@@ -229,17 +243,30 @@ about how you came to achieve this.</p>
                     </div>
                     <div class="divider"></div>
                     <?php
+                            else:#No tests were found
+                                if($count == 0):
+                    ?>
+                    <div class="col s12 no-data-message valign-wrapper grey lighten-3">
+                        <h5 class="center-align valign grey-text " id="noAssignmentMessage">No tests available. When tests are added, they will appear here.</h5>
+                    </div>
+                    <?php
+                                endif;
                             endif;#if tests found
+                            $count++;
                         endforeach;
                         
                     else:#if subjects were not found
                     ?>
-                        <p>Could not retrieve subjects</p>
+                        <p class="red-text">Could not retrieve subjects</p>
                     <?php
                     endif;#if subjects found
                     ?>
                 </div>
 
+                <?php
+                        break;
+                        case SECTION_ST_TEST_RESULTS:
+                ?>
                 <!--Test results-->
                 <div class="row main-tab" id="testResultsTab">
                     <?php
@@ -325,16 +352,10 @@ about how you came to achieve this.</p>
                     ?>
                 </div>
 
-                <!--Grades-->
-                <div class="row main-tab" id="myGradesTab">
-                    <p>Your grades will be displayed here</p>
-                </div>
-
-                <!--Gradebooks-->
-                <div class="row main-tab" id="gradeBookTab">
-                    <p>Your Grade books will be displayed here</p>
-                </div>
-               
+                <?php
+                        break;
+                        case SECTION_RESOURCES:
+                ?>
                 <!--Resources-->
                 <div class="row main-tab" id="studentResourcesTab">
                     <?php
@@ -351,16 +372,10 @@ about how you came to achieve this.</p>
                     ?>
                 </div>
 
-                <!--Chat-->
-                <!--<div class="row main-tab" id="studentChatTab">
-                    <p>Chat will be displayed here</p>
-                </div>-->
-                
-                <!--Groups-->
-                <!--<div class="row main-tab" id="studentChatTab">
-                    <p>Groups will be displayed here</p>
-                </div>-->
-
+                <?php
+                        break;
+                        case SECTION_ACCOUNT:
+                ?>
                 <!--Account-->
                 <div class="row main-tab" id="studentAccountTab">
                     <div class="row no-bottom-margin">
@@ -432,11 +447,23 @@ about how you came to achieve this.</p>
                 </div>
                 <br>
                 <?php
+                        break;
+                        default:
+                ?>
+                <script>window.location = "<?php echo GetSectionLink(SECTION_ST_BASE);?>";</script>
+                <?php
+                        endswitch;
+                    else:#No section specified
+                ?>
+                <script>window.location = "<?php echo GetSectionLink(SECTION_ST_BASE);?>";</script>
+                <?php
                     /*ACCOUNT SECTION LOGIC*/
                     //check if the passwords are set
                     //check if the passwords are within the accepted length
                     //check if the passwords match
                     //check if the old password is the valid old password
                     //if all these tests are valid, change the password
+
+                    endif;
                 ?>
             </div>

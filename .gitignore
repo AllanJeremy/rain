@@ -4,4 +4,4 @@
 new.css
 uploads/*
 /.vscode/*
-/handlers/db_connect.php
+handlers/db_connect.php

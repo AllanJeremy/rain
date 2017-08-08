@@ -1,0 +1,8 @@
+#Turn the rewrite engine on
+
+#Rewrite rule for index.php
+
+#Rewrite rule for index.php?section=xxx
+RewriteRule ^/([0-9a-zA-Z]+) index.php?section=$1 [NC,L]
+
+#Rewrite rule for index.php?section=xxx&tab=xxx
