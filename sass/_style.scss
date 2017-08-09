@@ -199,6 +199,115 @@ footer.example {
 /********************
   Index Page Styles
 ********************/
+// custom styled horizontal bar
+header.horizontal-navigation {
+    display: block;
+    position: relative;
+    z-index: 420;
+    background-color: color("green", "lighten-3");
+
+    .header-bg {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-position: center;
+        background-size: cover;
+        opacity: .54;
+        z-index: 1;
+    }
+
+    nav.top-nav {
+        box-shadow: none;
+
+        .nav-wrapper {
+            z-index: 4;
+        }
+
+        background-color: transparent !Important;
+        z-index: 4;
+    }
+
+    > .page-title {
+        padding: 14px 24px;
+        text-transform: none !Important;
+        position:relative;
+        display: inline-block;
+        z-index: 3;
+        &:after {
+            content: '';
+            position: absolute;
+            width: 110%;
+            height: 2px;
+            background-color: #fff;
+            left: -14px;
+            bottom: 12px;
+        }
+    }
+
+    ul.horizontal-nav {
+        z-index: 5;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin: 0;
+        width: 100%;
+        position: relative;
+        background-color: rgba(0,0,0,.27);
+        overflow-x: auto;
+        overflow-y: visible;
+
+        li {
+            flex-grow: 0;
+            flex-shrink: 1;
+            width: 164px;
+            text-align: center;
+            display: inline-block;
+            background-color: rgba(0,0,0,0);
+            color: #fff;
+            cursor: pointer;
+            transition: all .3s linear;
+
+            &:hover {
+                background-color: rgba(0,0,0,.27);
+
+            }
+
+            &.active {
+                border-bottom: 3px solid $primary-color;
+                color: $primary-color;
+
+                a {
+                    color: $primary-color;
+
+                }
+            }
+
+            > a {
+                display: block;
+                padding: 16px;
+                color: #fff;
+
+            }
+
+            ul.dropdown-content {
+                color: #000;
+
+                li > a {
+
+                    color: color('brookhurst-theme-secondary', 'base');
+
+                    &:hover {
+                        color: #fff;
+                        background-color: color('brookhurst-theme-secondary', 'lighten-1');
+                    }
+                }
+
+            }
+        }
+    }
+}
+
 
 // custom styled sidebar
 ul.side-nav.fixed li.logo {
@@ -279,34 +388,35 @@ ul.side-nav.fixed {
   margin-bottom: 32px;
 }
 
-nav.top-nav {
-  height: 64px;
-  line-height: 64px;
-  background-color: lighten(color("shades", "black"), 13%);
-  box-shadow: none;
+header:not(.horizontal-navigation) {
+    nav.top-nav {
+      height: 64px;
+      line-height: 64px;
+      background-color: lighten(color("shades", "black"), 13%);
+      box-shadow: none;
 
-    i.material-icons {
-        height: 64px;
-        line-height: 64px;
-    }
-    a {
-        line-height: 64px;
-        
-        &.page-title {
-          font-size: 22px;
-          font-weight: 300;
-          text-transform: uppercase;
+        i.material-icons {
+            height: 64px;
+            line-height: 64px;
+        }
+        a {
+            line-height: 64px;
+
+            &.page-title {
+              font-size: 22px;
+              font-weight: 300;
+              text-transform: uppercase;
+            }
+        }
+        @media #{$medium-and-down} {
+            height: auto;
+            position: fixed;
+            z-index: 420;
+            box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+
         }
     }
-    @media #{$medium-and-down} {
-        height: auto;
-        position: fixed;
-        z-index: 420;
-        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
-
-    }
 }
-
 @media #{$medium-and-down} {
   nav .nav-wrapper {
     text-align: center;

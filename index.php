@@ -6,8 +6,8 @@
     const SECTION_GROUP = "group";
 
     //Global page titles
-    const PAGE_TITLE_ACCOUNT = "MY ACCOUNT";
-    const PAGE_TITLE_RESOURCES = "RESOURCES";
+    const PAGE_TITLE_ACCOUNT = "My account";
+    const PAGE_TITLE_RESOURCES = "Resources";
     
     //Tabs that can be found in navigations
     const TAB_CREATE = "create";
@@ -50,24 +50,30 @@
         
     </head>
 
-    <body class="side-nav-page grey lighten-5">
+    <body class="<!--side-nav-page--> grey lighten-5">
 
         <?php 
 
                 //Account type - from session variable storing the account type of the currently logged in user
                 $snippet_folder = "snippets/";#folder that contains snippets
-
+                $headerImageUrl = "";
                 $accType="";
+                $accountName ="";
+                $logoutLink = "";
                 //Determine what type of account is logged in and set accType to the appropriate value
                 if(MySessionHandler::AdminIsLoggedIn())
                 {
                     $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
-
-
+                    $accountName = $_SESSION["admin_username"];
+                    $headerImageUrl = "images/stairway.jpg";
+                    $logoutLink = "?action=admin_logout";
                 }
                 else if(MySessionHandler::StudentIsLoggedIn())
                 {
+                    $logoutLink = "?action=student_logout";
                     $accType = "student";#corresponds with file name prefix
+                    $accountName = $_SESSION["student_username"];
+                    $headerImageUrl = "";
                 }
 
                 //Check to see if the logout action has been triggered
@@ -94,32 +100,27 @@
                 }
         ?>
 
-        <header>
-            <?php
-                # show the side navigation for respective account types
-                include_once($snippet_folder . $accType."_navigation.php");
-            ?>
+        <header class="horizontal-navigation z-depth-1">
+
             <nav class="top-nav ">
                 <div class="container ">
                     <div class="nav-wrapper ">
-                        <div class="row no-bottom-margin">
-                            <div class="col s2">
-                                <a href="#" data-activates="slide-out" class="mobile-button-collapse full hide-on-large-only">
-                                    <i class="material-icons">reorder</i>
-                                </a>
-                            </div>
-                            <div class="col s8">
-                                <a class="page-title center-align" id="pageTitle"><?php echo ucwords(@$pageTitle);?></a>
-                            </div>
-                            <!--<div class="col s2 <?php echo $searchBar; ?>">
-                                <a class="right-align" href="#!searchBar">
-                                    <i class="material-icons">search</i>
-                                </a>
-                            </div>-->
-                        </div>
+<!--                        <a href="#" class="brand-logo">Logo</a>-->
+                        <ul class="right ">
+                            <li><a class="account-name" href="#"><?php echo $accountName; ?></a></li>
+                            <li><a href="#!searchBar">Search</a></li>
+                            <li><a href="<?php echo $logoutLink; ?>">Log out</a></li>
+                        </ul>
+
                     </div>
                 </div>
             </nav>
+            <?php
+                # show the side navigation for respective account types
+                include_once($snippet_folder . $accType."_horizontal_navigation.php");
+            ?>
+
+            <div class="header-bg" style="background-image:url('<?php echo $headerImageUrl; ?>');"></div>
         </header>
         <main>
             <br>
