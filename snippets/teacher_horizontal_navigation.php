@@ -73,6 +73,7 @@ switch($section)
 <h4 class="page-title light white-text" id="pageTitle">
     <?php echo ucwords(@$pageTitle);?>
 </h4>
+<div class="horizontal-overflow-wrapper">
 <ul id="slide-out" class="horizontal-nav fixed">
     <li <?php echo $classrooms_class;?>>
         <a href="<?php echo GetSectionLink(SECTION_TR_BASE);?>">Classrooms</a>
@@ -117,3 +118,5 @@ switch($section)
         <a href="<?php echo GetSectionLink(SECTION_RESOURCES);?>">Resources</a>
     </li>
 </ul>
+</div>
+

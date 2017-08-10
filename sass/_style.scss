@@ -200,11 +200,26 @@ footer.example {
   Index Page Styles
 ********************/
 // custom styled horizontal bar
+.horizontal-overflow-wrapper {
+    position: relative;
+    min-height: 56px;
+    overflow-y: visible;
+    z-index: 66;
+
+    .horizontal-nav {
+        position: static !Important;
+    }
+}
+
 header.horizontal-navigation {
     display: block;
     position: relative;
     z-index: 420;
     background-color: color("green", "lighten-3");
+
+    + main {
+        margin-top: 48px;
+    }
 
     .header-bg {
         position: absolute;
@@ -255,7 +270,6 @@ header.horizontal-navigation {
         position: relative;
         background-color: rgba(0,0,0,.27);
         overflow-x: auto;
-        overflow-y: visible;
 
         li {
             flex-grow: 0;

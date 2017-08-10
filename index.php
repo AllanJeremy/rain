@@ -123,7 +123,6 @@
             <div class="header-bg" style="background-image:url('<?php echo $headerImageUrl; ?>');"></div>
         </header>
         <main>
-            <br>
             <?php
                 #show respective tabs for the respective account type
                 include_once($snippet_folder . $accType.'_tabs.php');
