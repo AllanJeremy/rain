@@ -142,21 +142,34 @@
         <?php
             include_once("./snippets/site_footer.php");
         ?>
-        <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
-        <script type="text/javascript" src="js/materialize.js"></script>
-        <script type="text/javascript" src="js/moment.js"></script>
-<!--        <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>-->
-        <script type="text/javascript" src="js/dashboard/result.js"></script>
-        <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
-        <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
-        <script type="text/javascript" src="js/dashboard/modals_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/resources_events.js"></script>
+        <?php
+
+        switch($section)
+        {
+            case SECTION_TR_BASE:
+                echo '<script type="text/javascript" src="js/dashboard/classroom_events.js"></script>';
+            break;
+            case SECTION_TR_ASS_CREATE:
+            case SECTION_TR_ASS_SENT:
+            case SECTION_TR_ASS_SUBS:
+                echo '<script type="text/javascript" src="js/dashboard/assignment_events.js"></script>';
+            break;
+            case SECTION_TR_SCHEDULES:
+                echo '<script type="text/javascript" src="js/dashboard/schedule_events.js"></script>';
+                break;
+            case SECTION_TR_TEST_CREATE:
+            case SECTION_TR_TEST_VIEW_RESULTS:
+            case SECTION_TR_TEST_TAKE:
+                echo '<script type="text/javascript" src="js/dashboard/test_events.js"></script>';
+            break;
+            case SECTION_RESOURCES:
+                echo '<script type="text/javascript" src="js/dashboard/resources_events.js"></script>';
+                break;
+        }
+        ?>
+
         <script type="text/javascript" src="js/dashboard/comments_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
-        <script type="text/javascript" src="js/dashboard/test_events.js"></script>
         <script type="text/javascript" src="js/dashboard.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/pace.js"></script>
