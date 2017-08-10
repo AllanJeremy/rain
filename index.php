@@ -107,8 +107,8 @@
                     <div class="nav-wrapper ">
 <!--                        <a href="#" class="brand-logo">Logo</a>-->
                         <ul class="right ">
-                            <li><a class="account-name" href="#"><?php echo $accountName; ?></a></li>
-                            <li><a href="#!searchBar">Search</a></li>
+                            <li><a class="account-name" href="?section=account"><?php echo $accountName; ?></a></li>
+                            <li class="hide"><a href="#!searchBar">Search</a></li>
                             <li><a href="<?php echo $logoutLink; ?>">Log out</a></li>
                         </ul>
 

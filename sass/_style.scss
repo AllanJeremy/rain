@@ -270,8 +270,9 @@ header.horizontal-navigation {
         position: relative;
         background-color: rgba(0,0,0,.27);
         overflow-x: auto;
+        overflow-y: hidden;
 
-        li {
+        > li {
             flex-grow: 0;
             flex-shrink: 1;
             width: 164px;
@@ -281,6 +282,7 @@ header.horizontal-navigation {
             color: #fff;
             cursor: pointer;
             transition: all .3s linear;
+            border-bottom: 3px solid rgba(0,0,0,.27);
 
             &:hover {
                 background-color: rgba(0,0,0,.27);
@@ -301,7 +303,22 @@ header.horizontal-navigation {
                 display: block;
                 padding: 16px;
                 color: #fff;
+                position: relative;
 
+                i {
+                    padding: 16px 4px;
+                    position: absolute;
+                    top: 0;
+                    right: 8px;
+                    margin: 0;
+
+                    @media #{$small-and-down} {
+                        right: -8px;
+                    }
+                    @media #{$medium-only} {
+                        right: 0px;
+                    }
+                }
             }
 
             ul.dropdown-content {

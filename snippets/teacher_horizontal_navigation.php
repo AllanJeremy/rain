@@ -79,8 +79,9 @@ switch($section)
         <a href="<?php echo GetSectionLink(SECTION_TR_BASE);?>">Classrooms</a>
     </li>
     <li>
-        <a class="center dropdown-button <?php echo $ass_class;?>" data-beloworigin="true" href="#" data-activates="assDropDown">
+        <a class="center dropdown-button <?php echo $ass_class;?>" data-beloworigin="false" href="#" data-activates="assDropDown">
         Assignments
+            <i class="material-icons ">&#xE5C5;</i>
         </a>
         <ul id="assDropDown" class="dropdown-content">
             <li <?php echo $create_ass_class;?>>
@@ -98,8 +99,9 @@ switch($section)
         <a href="<?php echo GetSectionLink(SECTION_TR_SCHEDULES);?>">Schedules</a>
     </li>
     <li>
-        <a class="center dropdown-button <?php echo $tests_class;?>" data-beloworigin="true" href="#" data-activates="testsDropDown">
+        <a class="center dropdown-button <?php echo $tests_class;?>" data-beloworigin="false" href="#" data-activates="testsDropDown">
         Tests
+            <i class="material-icons ">&#xE5C5;</i>
         </a>
         <ul id="testsDropDown" class="dropdown-content">
             <li <?php echo $create_test_class;?>>
