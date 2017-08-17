@@ -216,10 +216,9 @@ class DbInfo
             #if records could be found
             if($select_result->num_rows > 0)
             {
-                
                 foreach($select_result as $result)
                 {
-                    return $select_result;#return the records
+                    return $result;#return the records
                 }
             }   
             else #if no records were found

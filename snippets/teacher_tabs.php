@@ -1328,6 +1328,13 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p class="grey-text">Your account</p>
                         </div>
                     </div>
+
+                    
+                    <?php
+                    /* TODO: CONSIDER MAKING ACCOUNTS A "SNIPPET ON ITS OWN FOR EASIER FUTURE MANAGEMENT" - Split the section into a recyclable separate sub-module */    
+                        //If the current password is equal to the username ~ vulnerable account
+                        if ($user_info["using_original_pass"]):
+                    ?>
                     <div class="row js-new-account-alert-card">
                         <div class="col s12">
 
@@ -1345,19 +1352,21 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                               <div class="card-stacked">
                                 <div class="card-content">
 
-                                <h3 class="header white-text">Welcome Gabriel</h3><h5 class="white-text php-data">Vulnerable account.</h5><p class="white-text">Gabriel your username is your password, change your password in this tab
+                                <h3 class="header white-text">Welcome <?php echo $user_info["first_name"]?></h3><h5 class="white-text php-data">Vulnerable account.</h5><p class="white-text"><?php echo $user_info["first_name"]?>, your username is your password, change your password in this tab
                         to secure your account.</p></div>
                                 <div class="card-action">
-                                  <a href="#">Help me</a>
+                                  <a href="#change-password">Help me</a>
                                 </div>
                               </div>
                             </div>
                           </div>
                     </div>
+                    <?php
+                        endif;
+                    ?>
                     <div class="row">
-
                         <br>
-                        <div class="col s12 valign-wrapper grey lighten-3">
+                        <div class="col s12 valign-wrapper grey lighten-3" id="change-password">
                             <h6 class=" margin-vert-16 center-align valign grey-text " id="changePasswordMessage">
                                 Change your password here
                                 <br>
