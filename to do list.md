@@ -1,16 +1,17 @@
-1. Comment system                               DONE
+1. Comment system                               [DONE]
 2. Assignment       - edit                      V1.1.0
                     - callback                  V1.1.0
-                    - submit assignment         DONE
-                    - doing assignment          DONE
-3. Account                                      DONE
+                    - submit assignment         [DONE]
+                    - doing assignment          [DONE]
+3. Account                                      [DONE]
 4. Statistics                                   [TODO]
-5. Superuser validation                         DONE
+5. Superuser validation                         [DONE]
 
 //
-6. Test results                                 DONE
+6. Test results                                 [DONE]
 7. Test skipped questions                       V1.1.1
-8. Mark student attendance in schedules V1.1.0
+8. Mark student attendance in schedules V1.1.0 [DONE]
+9. Display feedback for when time consuming tasks occur such as upload
 
 **Principal statistics**
 
@@ -33,9 +34,26 @@
 - Students who have submitted assignments
 
 #Convert all sections to be get requests
-- domain/?p=pageName (For only nav tabs)
-- domain/?p=pageName&tab=tabName (For nav tabs and tabs)
+- domain/?p=pageName (For only nav tabs) [DONE]
+- domain/?p=pageName&tab=tabName (For nav tabs and tabs) [DONE]
 
 #Add htaccess to filter get requests
 - domain/pageName (For only nav tabs)
 - domain/pageName/tabName (For nav tabs and tabs)
+
+
+#FEEDBACK
+These are the areas that need some form of feedback to let the user know something is happening. Suggested: toast that is shown until the process is done eg. "Creating classroom" or progress bar
+
+##Areas that need the feedback (Progress bar or equivalent)
+###Teacher section
+- Create classroom [teacher]
+- Create assignment - consider adding upload modal with progress similar to resources one
+- Add schedule
+- Create test
+- Upload Resources [DONE]
+- Update password
+- Submit assignment
+- Submit test
+- Forgot -> reset password process (suggest creating a success page, and a fail page [I'll do it - AJ])
+
