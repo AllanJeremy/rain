@@ -19,7 +19,7 @@
 
         <br><div class="row container marg-vert-16"><br>
         <div class="col s12 m6 offset-m3 z-depth-4 forgot-form-bar white pad-16">
-          <h3 class="grey-text text-darken-3 bold">Recover your password here</h3>
+          <h3 class="grey-text text-darken-3 bold">Recover your password</h3>
           <br>
           <form class='form-inline' action="handlers/forgot_handler.php" method="post" id="recoveryForm">
             <p class="grey-text text-darken-2"><b>Step 1: </b> Enter your email address and we will send you an email with details on recovering your password</p>
@@ -42,8 +42,7 @@
             <button type='submit' class="btn btn-default action-color" id="recovery-btn" name="submit" >RECOVER</button>
           </form>
           <br>
-          <br>
-          <span class="grey-text text-darken-2">*When nothing happens, it means the email does not exist*</span>
+
           <div class="js-form-results form-results" id="resultDiv">
           <br>
           <h3 class="grey-text text-lighten-3 bold">Recover your password here</h3>
