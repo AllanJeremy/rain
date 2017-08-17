@@ -320,7 +320,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     <?php
                         if($classrooms):
                     ?>
-                    <div class="row" id="classroomCardsContainer">
+                    <div class="col l3 s12" id="classroomCardsContainer">
 
                         <?php
                             $count=0;#Iterator for the foreach loop below (looping through classrooms)
@@ -338,7 +338,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 $count++;#increment the iterator named $count
                         ?>
                         <!--CARD_TEMPLATE_START-->
-                        <div class="col s12 m6 l4 card-col ass-classroom-card <?php echo $selected_class;?>" data-content-trigger="<?php echo $container_id;?>">
+                        <div class="col s12 m6 l12 card-col ass-classroom-card <?php echo $selected_class;?>" data-content-trigger="<?php echo $container_id;?>">
                             <div class=" card tiny  <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" >
                                 <div class="card-content row">
                                     <span class="card-title white-text truncate col s8">
@@ -354,7 +354,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         ?>
                         
                     </div>
-                    <div class="divider"></div>
+                    <div class="hide divider"></div>
 
                     <?php
                         //Find assignments sent to each classroom
@@ -368,7 +368,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             #assignments in this classroom
                             $ass_in_classroom = DbInfo::GetTeacherAssInClass($class_id,$loggedInTeacherId);
                     ?>
-                        <div class="row classroom-ass-container hide" id="<?php echo $container_id;?>">
+                        <div class="col l9 s12 classroom-ass-container hide" id="<?php echo $container_id;?>">
+                            <div class="row">
                     <?php
                             //If there are any assignments in the classroom, display them, if not display appropriate message
                             if($ass_in_classroom):
@@ -590,6 +591,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             endif;
                             ?>
                         </div>
+                    </div>
                     <?php
                     //Close row assignment container class-ass-container
 

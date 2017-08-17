@@ -167,7 +167,7 @@ class EsomoResource
             }
                 /*Note : assumption is that only teachers will be using the resource_id, for editing*/
         ?>      
-            <div class="col s12 m6 l4">
+            <div class="col s12 m6 l3">
                 <div class="card white tr_res_container" data-res-id="<?php echo $res_id?>" data-subject-id="<?php echo $res_subject_id?>">
                     <div class="card-content">
                         <span class="card-title truncate" title="<?php echo $res_name;?>"><?php echo $res_name;?></span>

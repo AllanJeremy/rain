@@ -107,9 +107,21 @@
                     <div class="nav-wrapper ">
 <!--                        <a href="#" class="brand-logo">Logo</a>-->
                         <ul class="right ">
-                            <li><a class="account-name" href="?section=account"><?php echo $accountName; ?></a></li>
+                            <li>
+                                <a data-beloworigin="true" href="#" data-activates="accDropDown" class="account-name dropdown-button with-photo" >
+                                    <span class="profile-photo"></span>
+                                    <?php echo $accountName; ?>
+                                </a>
+                                <ul id="accDropDown" class="dropdown-content">
+                                    <li>
+                                        <a href="?section=account">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo $logoutLink; ?>">Log out</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="hide"><a href="#!searchBar">Search</a></li>
-                            <li><a href="<?php echo $logoutLink; ?>">Log out</a></li>
                         </ul>
 
                     </div>

@@ -794,7 +794,36 @@ $height: auto;
     }
 }
 
+.account-name {
+    position: relative;
 
+    &.with-photo {
+        padding-left: 66px;
+
+        .profile-photo {
+            left: 15px;
+        }
+
+    }
+
+    .profile-photo {
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+        margin-right: 8px;
+        line-height: auto;
+        background-color: lighten($primary-color, 54%);
+        content: '';
+        display: inline-block;
+        position: absolute;
+        left: -36px;
+        top: 14px;
+        background-repeat: no-repeat;
+        background-position: center;
+        overflow: hidden;
+        background-size: cover;
+    }
+}
 
 
 

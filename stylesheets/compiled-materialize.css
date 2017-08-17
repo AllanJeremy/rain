@@ -10926,3 +10926,34 @@ input:-webkit-autofill:active {
 .form-results.active.failed {
   background-color: #9e9e9e !Important;
 }
+
+/* line 797, ../sass/_style.scss */
+.account-name {
+  position: relative;
+}
+/* line 800, ../sass/_style.scss */
+.account-name.with-photo {
+  padding-left: 66px;
+}
+/* line 803, ../sass/_style.scss */
+.account-name.with-photo .profile-photo {
+  left: 15px;
+}
+/* line 809, ../sass/_style.scss */
+.account-name .profile-photo {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  margin-right: 8px;
+  line-height: auto;
+  background-color: #f0b4ba;
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: -36px;
+  top: 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+  background-size: cover;
+}
