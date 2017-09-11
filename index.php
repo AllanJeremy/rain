@@ -141,7 +141,7 @@
         </main>
         <?php
             include_once("./snippets/site_footer.php");
-        var_dump($section);
+        //var_dump($section);
         ?>
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
@@ -151,11 +151,10 @@
         <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
         <script type="text/javascript" src="js/dashboard/forms_templates.js"></script>
         <script type="text/javascript" src="js/dashboard/modals_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>
-        <script type="text/javascript" src="js/dashboard/resources_events.js"></script>
-<!--
+<!--        <script type="text/javascript" src="js/dashboard/classroom_events.js"></script>-->
+<!--        <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>-->
+<!--        <script type="text/javascript" src="js/dashboard/schedule_events.js"></script>-->
+<!--        <script type="text/javascript" src="js/dashboard/resources_events.js"></script>-->
         <?php
 //        if ($accType != 'student') {
 
@@ -163,29 +162,31 @@
             {
 //                case SECTION_TR_BASE:
                 case 'classrooms':
+                    echo '<script type="text/javascript" src="js/dashboard/classroom_events.js"></script>';
                 break;
 //                case SECTION_TR_ASS_CREATE:
-                case 'create-assignments':
+                case 'create-assignment':
                 case 'sent-assignments':
                 case 'assignment-submissions':
+                case 'received-assignments':
                     echo '<script type="text/javascript" src="js/dashboard/assignment_events.js"></script>';
                 break;
 //                case SECTION_TR_SCHEDULES:
                 case 'schedules':
                     echo '<script type="text/javascript" src="js/dashboard/schedule_events.js"></script>';
                     break;
-                case SECTION_TR_TEST_CREATE:
-                case SECTION_TR_TEST_VIEW_RESULTS:
-                case SECTION_TR_TEST_TAKE:
+                case 'create-test':
+                case 'test-results':
+                case 'take-test':
                     echo '<script type="text/javascript" src="js/dashboard/test_events.js"></script>';
+                    echo '<script type="text/javascript" src="js/test_functions.js"></script>';
                 break;
-                case SECTION_RESOURCES:
+                case 'resources':
                     echo '<script type="text/javascript" src="js/dashboard/resources_events.js"></script>';
                     break;
             }
 //        }
         ?>
--->
 
         <script type="text/javascript" src="js/dashboard/comments_events.js"></script>
         <script type="text/javascript" src="js/dashboard/events.js"></script>
@@ -336,7 +337,7 @@
         }
         
         </script>
-        <script type="text/javascript" src="js/test_functions.js"></script>
+
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 

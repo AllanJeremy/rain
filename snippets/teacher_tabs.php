@@ -1333,7 +1333,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             background-color: #6A1B9A;
                         ">
                               <div class="card-image" style="/* max-height: 300px; *//* width: auto; *//* overflow: hidden; *//* display: block; */">
-                                <img src="images/stairway.jpg" style="
+                                <img onloadeddata="console.log('dff')" src="images/account-new.jpg" style="
                             height: 100%;
                             width: 100%;
                             position: relative;
