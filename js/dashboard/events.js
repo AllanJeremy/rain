@@ -31,6 +31,15 @@ var Events = function () {
 
     };
 
+    $this.__construct_Student = function (userInfo) {
+
+//        ResourcesEvents = new ClassroomEvents();
+//        AssignmentEvents = new AssignmentEvents(userInfo);
+//        ScheduleEvents = new ScheduleEvents(userInfo);
+        console.log('student ready');
+
+    };
+
     var getUserInfo = function () {
 
         var $req =  $.ajax({
@@ -62,9 +71,9 @@ var Events = function () {
                 $this.__construct_Admin(userInfo);
             } else {
 
-                console.log('Student account. Construct admin events for the page.');
+                console.log('Student account. Construct student events for the page.');
                 $this.__construct(userInfo);
-//                $this.__construct_Student(userInfo);
+                $this.__construct_Student(userInfo);
 
                 return;
             }

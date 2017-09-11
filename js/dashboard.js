@@ -14,7 +14,7 @@ var Dashboard = function () {
 
         Events = new Events();
         Result = new Result();
-        Tests = new Tests();
+//        Tests = new Tests();
         
         //loadTestCard();
         
