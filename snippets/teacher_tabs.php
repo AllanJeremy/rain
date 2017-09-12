@@ -137,9 +137,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 ?>
                 <!--Create assignment-->
                 <div class="row main-tab" id="createAssignmentsTab">
-                    <br>
-                    <br>
-                    <div class="container assignment-doc">
+                    <div class="container col s12 l8 m10 push-l2 push-m1 assignment-doc">
                         <br>
                         <form action="" id="createAssignmentForm" class="row" enctype="multipart/form-data" method="POST">
                             <div class=" input-field col s12 ">
@@ -620,7 +618,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <!--SCHEDULE SECTION-->
                 <div class="row main-tab" id="schedulesTab">
                     
-                    <div class="row no-bottom-margin" id="createScheduleCont">
+                    <div class="col s12 m10 push-m1 no-bottom-margin" id="createScheduleCont">
                         <br>
                         <div class="col s11 right pull-s1">
                             <a class="btn btn-flat right" id="openScheduleForm"><span class="hide-on-small-only">Add a schedule</span>
@@ -798,7 +796,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         </div>
                     </div>
                     <br>
-                    <div class="row no-bottom-margin" id="pendingScheduleCont">
+                    <div class="col s12 l10 push-l1" id="pendingScheduleCont">
                         <div class="col s5">
                             <p class="grey-text">Pending schedules</p>
                         </div>
@@ -888,7 +886,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                         </div>
                     </div>
-                    <div class="row no-bottom-margin" id="attendedScheduleCont">
+                    <div class="col s12 l10 push-l1" id="attendedScheduleCont">
                         <div class="col s5">
                             <p class="grey-text">Schedules attended</p>
                         </div>
@@ -1274,7 +1272,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     case SECTION_RESOURCES:#Resources
                 ?>
                 <!--RESOURCES SECTION-->
-                <div class="row main-tab" id="teacherResourcesTab">
+                <div class=" row main-tab" id="teacherResourcesTab">
                     <div class="col s12 tab-header">
                         <div class="row no-bottom-margin">
                             <div class="col s5">
@@ -1328,7 +1326,10 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p class="grey-text">Your account</p>
                         </div>
                     </div>
-                    <div class="row js-new-account-alert-card">
+                    <?php
+                    if ($user_info['using_original_pass']) :
+                    ?>
+                    <div class="row js-new-account-alert-card ">
                         <div class="col s12">
 
                             <div class="card horizontal" style="
@@ -1354,6 +1355,9 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             </div>
                           </div>
                     </div>
+                    <?php
+                    endif;
+                    ?>
                     <div class="row">
 
                         <br>

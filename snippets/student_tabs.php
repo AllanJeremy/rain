@@ -384,6 +384,9 @@ about how you came to achieve this.</p>
                         </div>
 
                     </div>
+                    <?php
+                    if ($user_info['using_original_pass']) :
+                    ?>
                     <div class="row js-new-account-alert-card">
                         <div class="col s12">
 
@@ -410,6 +413,9 @@ about how you came to achieve this.</p>
                             </div>
                           </div>
                     </div>
+                    <?php
+                    endif;
+                    ?>
                     <div class="row">
                         <br>
                         <div class="col s12 no-data-message valign-wrapper grey lighten-3">

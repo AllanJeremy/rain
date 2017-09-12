@@ -70,10 +70,10 @@
                 }
                 else if(MySessionHandler::StudentIsLoggedIn())
                 {
-                    $logoutLink = "?action=student_logout";
                     $accType = "student";#corresponds with file name prefix
                     $accountName = $_SESSION["student_username"];
                     $headerImageUrl = "";
+                    $logoutLink = "?action=student_logout";
                 }
 
                 //Check to see if the logout action has been triggered

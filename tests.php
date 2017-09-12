@@ -87,8 +87,8 @@
                                 elseif(isset($test_id)&& (!isset($edit_flag) || (htmlspecialchars($edit_flag)!="1"))):
                             ?>
                             <div class="col s2">
-                                <a class="tooltipped" data-position="right" data-delay="50" data-tooltip="Back to take tests" href="./#takeATest">
-                                    <i class="material-icons" href="./#takeATest">arrow_back</i>
+                                <a class="tooltipped" data-position="right" data-delay="50" data-tooltip="Back to take tests" href=".?section=take-test">
+                                    <i class="material-icons">arrow_back</i>
                                 </a>
                             </div>
                             <div class="col s8">
