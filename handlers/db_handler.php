@@ -35,7 +35,6 @@ class DbHandler extends DbInfo
                 $reset_stmt->bind_param("si",$new_password,$acc_id);
 
                 return($reset_stmt->execute());#run the query to reset the account
-
             }
             else #failed to prepare the query for data retrieval
             {
@@ -90,7 +89,7 @@ class DbHandler extends DbInfo
             break;
 
             default:#Admin account type `POSSIBLY HACKABLE, CONSIDER prepareing the account_type as well
-                $update_query = "UPDATE admin_accounts SET password=? WHERE account_type=".htmlspecialchars($account_type);
+                $update_query = "UPDATE admin_accounts SET password=? WHERE account_type='".htmlspecialchars($account_type)."'";
                 $admin_acc = DbInfo::GetAdminById($acc_id,$account_type);
 
                 //If the admin account can be found
@@ -103,13 +102,13 @@ class DbHandler extends DbInfo
                     if(!$old_pass_valid)
                     {
                         echo "<p>Wrong old password provided</p>";
-                        return false;
+                        return 0;
                     }
                 }
                 else #Admin account could not be found ~ return false
                 {
                     echo "<p>Admin account you requested could not be found</p>";
-                    return false;
+                    return 0;
                 }
         }
 
@@ -124,9 +123,9 @@ class DbHandler extends DbInfo
 
             return $update_status;
         }
-        else #Failed to update the
+        else #Failed to prepare the query
         {
-            return null;
+            return 0;
         }
     }
 
