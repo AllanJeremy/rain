@@ -54,6 +54,10 @@
   -o-animation: pace-spinner 400ms linear infinite;
   animation: pace-spinner 400ms linear infinite;
 }
+.pace.modal .pace-activity {
+  border-top-color: #d8b759;
+  border-left-color: #d8b759;
+}
 
 @-webkit-keyframes pace-spinner {
   0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }

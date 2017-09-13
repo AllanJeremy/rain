@@ -418,6 +418,80 @@ var ClassroomEvents = function () {
     };
     
     //----------------------------
+    var getAllSubjects = function () {
+        return $.ajax({
+            url: "handlers/db_handler.php",
+            type: 'GET',
+            data: {"action" : "GetAllSubjects"}
+        }, 'json');
+    };
+
+    //----------------------------
+    var getAllStreams = function () {
+        return $.ajax({
+            url: "handlers/db_handler.php",
+            type: 'GET',
+            data: {"action" : "GetAllStreams"}
+        }, 'json');
+    };
+
+    //----------------------------
+
+    var subjectOptions = function (result) {
+        var output = '',
+            count = 0,
+            optgroup = new Array(),
+            totalOutput = '',
+            obj;
+        result = JSON.parse(result);
+
+        for (var key in result) {
+            if ( typeof optgroup[result[key].category] !== 'string' ) {
+                optgroup[result[key].category] = Forms_Templates.formSelectTemplate(result[key]);
+
+            } else {
+                output = Forms_Templates.formSelectTemplate(result[key]);
+                optgroup[result[key].category] += output;
+
+            }
+        }
+
+        output += '';
+        obj = {
+            category : '',
+            categorylist : ''
+        };
+
+        for (var i in optgroup) {
+
+            obj.category = i;
+            obj.categorylist = optgroup[i];
+
+            totalOutput += Forms_Templates.formOptgroupTemplate(obj);
+
+        }
+        totalOutput +='';
+
+        return totalOutput;
+
+    };
+
+    //----------------------------
+
+    var streamOptions = function (result) {
+        var totalOutput = '';
+        result = JSON.parse(result);
+
+        for(var u in result) {
+
+            totalOutput += Forms_Templates.formSelectTemplate(result[u]);
+
+        }
+
+        return totalOutput;
+    };
+
+    //----------------------------
     
     var createClassroom = function () {
         
@@ -426,128 +500,93 @@ var ClassroomEvents = function () {
         //load modal template
         //append form template to modal template
         //open modal
-        
-        $('a#createClassroom').click(function (e) {
+        $('a#createClassroom:not(.disabled)').click(function (e) {
             e.preventDefault();
-            
+
             Modals_Events.cleanOutModals();//remove any modal if exists
-            
             console.log('fetching form template');
-            
-            var totalOutput = '';
-            
-            $.get("handlers/db_info.php", {"action" : "GetAllSubjects"}, function (result) {
-                
-                console.log('creating a subjects dropdown.');
-                
-                //loop
-                //arranging a select template accoding to subject category
-                
-                var output = '';
-                var count = 0;
 
-                var optgroup = new Array();
-                
-                for (var key in result) {
+            var totalOutput = '',
+//                $this = $(this),
+                SubjectOptions = '',
+                SubjectHook = '',
+                StreamOptions = '',
+                StreamHook = '';
 
-                    if ( typeof optgroup[result[key].category] !== 'string' ) {
-                        
-                        optgroup[result[key].category] = Forms_Templates.formSelectTemplate(result[key]);
-                        
-                    } else {
-                        
-                        output = Forms_Templates.formSelectTemplate(result[key]);
+            if($(this).hasClass('disabled')) {
+                return false;
+            }
 
-                        optgroup[result[key].category] += output;
-                        
-                    }
+            $(this).addClass('disabled');
+            console.log($(this));
+
+            var formTemplateVars = {
+                subjectoptions: SubjectOptions,
+                streamoptions: StreamOptions
+
+            };
+
+            var formTemplate = Forms_Templates.createClassroomForm(formTemplateVars);
+
+            //variables for the modal
+            var template = {
+                modalId: 'createNewClassRoom',
+                templateHeader: 'Create a new Classroom',
+                templateBody: formTemplate,
+                modalActionType: 'type="submit"',
+                modalActionTypeText: 'Create classroom'
+            };
+
+            //load the modal in the DOM
+            $('main').append(Lists_Templates.modalTemplate(template));
+
+            $(this).attr('data-target', template.modalId);
+
+            $('#' + template.modalId).openModal({dismissible:false});
+
+            console.log('modal create classroom form created.');
+
+            $.when(getAllSubjects(), getAllStreams()).done(function (eSub, eStr) {
+                console.log(eSub);
+                SubjectOptions = subjectOptions(eSub[0]);
+                StreamOptions = streamOptions(eStr[0]);
+
+                if(formTemplateVars.streamoptions === '') {
+                    //append the options
+                    console.log('Appending select options');
+
+                    $('.modal#' + template.modalId + ' form#createNewClassroomForm select#newClassroomStream').append(StreamOptions);
+                    $('.modal#' + template.modalId + ' form#createNewClassroomForm select#newClassroomSubject').append(SubjectOptions);
 
                 }
 
-                output += '';
+                Materialize.updateTextFields();//doesn't work
+                $('select').material_select();
+            });
 
-                var totalOutput = '';
-                
-                var obj = {
-                    category : '',
-                    categorylist : ''
-                };
-                
-                for (var i in optgroup) {
-                    console.log(i);
-                    
-                    obj.category = i;
-                    obj.categorylist = optgroup[i];
-                    
-                    totalOutput += Forms_Templates.formOptgroupTemplate(obj);
-                    
+            $(this).removeClass('disabled');
+
+            /*
+            $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').bind('blur', function (e) {
+
+                var ifExistsResult = searchIfClassNameExists($(this).val());
+
+                console.log('blur');
+
+                if (ifExistsResult === 1) {
+                    //exists
+                    //append warning to that input
+                    var warningText = '<p class="orange-text text-accent-1 col s9">Classroom ' + $(this).val() + 'exists, continue?</p><a class="btn btn-flat>Okay</a>"';
+
+                    $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').parent().append(warningText);
+
                 }
 
-                totalOutput +='';
+            });
+            */
 
-                $.get("handlers/db_info.php", {"action" : "GetAllStreams"}, function (result2) {
-
-                    var totalOutput2 = '';
-                    
-                    for(var u in result2) {
-                        
-                        totalOutput2 += Forms_Templates.formSelectTemplate(result2[u]);
-                        
-                    }
-                    //get list of subjects
-                    var formTemplateVars = {
-                        subjectoptions: totalOutput,
-                        streamoptions: totalOutput2
-
-                    };
-
-                    var formTemplate = Forms_Templates.createClassroomForm(formTemplateVars);
-
-                    //variables for the modal
-                    var template = {
-                        modalId: 'createNewClassRoom',
-                        templateHeader: 'Create a new Classroom',
-                        templateBody: formTemplate,
-                        modalActionType: 'type="submit"',
-                        modalActionTypeText: 'Create classroom'
-                    };
-
-                    //load the modal in the DOM
-                    $('main').append(Lists_Templates.modalTemplate(template));
-
-                    $('select').material_select();
-
-                    $(this).attr('data-target', template.modalId);
-
-                    $('#' + template.modalId).openModal({dismissible:false});
-
-                    console.log('modal create classroom form created.');
-
-                    /*
-                    $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').bind('blur', function (e) {
-
-                        var ifExistsResult = searchIfClassNameExists($(this).val());
-
-                        console.log('blur');
-
-                        if (ifExistsResult === 1) {
-                            //exists
-                            //append warning to that input
-                            var warningText = '<p class="orange-text text-accent-1 col s9">Classroom ' + $(this).val() + 'exists, continue?</p><a class="btn btn-flat>Okay</a>"';
-
-                            $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').parent().append(warningText);
-
-                        }
-
-                    });
-                    */
-
-                }, 'json');
-
-            }, 'json');
-            
+            return (false);
         });
-        
     };
     
     //------------------------------
@@ -567,44 +606,41 @@ var ClassroomEvents = function () {
             
             console.log('submit event handler ready');
             
-            var str1 = $('.modal#createNewClassRoom').attr('id');
+            var str1 = $('.modal#createNewClassRoom').attr('id'),
+                str2 = $('#classroomCardList .card-col').first().attr('data-classroom-id'),//Get the class-id of the latest card then add +1
+                classes = $('.modal#createNewClassRoom .card-color-list input[type="radio"]:checked').parent().children('label').attr('class'),
+                newClassTitle = $('.modal#createNewClassRoom input#newClassroomName').val(),
+                newClass_stream = $('.modal#createNewClassRoom select#newClassroomStream').val(),
+                newClass_subject = $('.modal#createNewClassRoom select#newClassroomSubject').val(),
+                newClass_streamname = $('.modal#createNewClassRoom select#newClassroomStream').find('option:selected:not(:disabled)').text(),
+                newClass_subjectname = $('.modal#createNewClassRoom select#newClassroomSubject').find('option:selected:not(:disabled)').text(),
+                $this = $(this);
             
-            var str2 = $('#classroomCardList .card-col').first().attr('data-classroom-id');//Get the class-id of the latest card then add +1
-            
-            var classes = $('.modal#createNewClassRoom .card-color-list input[type="radio"]:checked').parent().children('label').attr('class');
-            var newClassTitle = $('.modal#createNewClassRoom input#newClassroomName').val();
-            var newClass_stream = $('.modal#createNewClassRoom select#newClassroomStream').val();
-            var newClass_subject = $('.modal#createNewClassRoom select#newClassroomSubject').val();
-            var newClass_streamname = $('.modal#createNewClassRoom select#newClassroomStream').find('option:selected:not(:disabled)').text();
-            var newClass_subjectname = $('.modal#createNewClassRoom select#newClassroomSubject').find('option:selected:not(:disabled)').text();
+            $this.unbind('click');
+            console.log($this);
 
             console.log($('.modal#createNewClassRoom .students').attr('data-total-students'));
             console.log(classes);
 
             if (typeof classes === 'undefined') {
-                
+                //if color was not chosen
                 classes = 'cyan darken-4';
-                
             }
             
             if (typeof $('.modal#createNewClassRoom .students').attr('data-selected-students') === 'undefined') {
             
                 var studentsToAdd = 0;
-
             } else {
 
                 var studentsToAdd = $('.modal#createNewClassRoom .students').attr('data-selected-students');
-
             }
 
             if (typeof $('.modal#createNewClassRoom .students').attr('data-total-students') === 'undefined') {
 
                 var totalStudents = 0;
-
             } else {
 
                 var totalStudents = $('.modal#createNewClassRoom .students').attr('data-total-students');
-
             }
             
             console.log('class title: ' + newClassTitle);
@@ -638,9 +674,8 @@ var ClassroomEvents = function () {
 
                     if (result === 'true') {
 
-                        var classroomTab = $('#classroomTab #classroomCardList');
-                        
-                        var Result = Lists_Templates.classRoomCard(formResults);
+                        var classroomTab = $('#classroomTab #classroomCardList'),
+                            Result = Lists_Templates.classRoomCard(formResults);
 
                         if ( $('#classroomTab .no-data-message').length > 0 ) {
                             
@@ -651,82 +686,42 @@ var ClassroomEvents = function () {
                             //recall classroomTab after appending
                             classroomTab = $('#classroomTab #classroomCardList');
 
-                            /*
-
-                            var $main = $("main"),  
-                            
-                            ajaxLoad = function(html) {
-                                
-                                document.title = html
-                                    .match(/<div>(.*?)<\/div>/)[0]
-                                    .trim()
-                                    .decodeHTML();
-
-                                init();
-                            },
-
-                            loadPage = function(href) {
-                                $main.load(href + " main>*", ajaxLoad);
-                            };
-                            
-                            var href = '#classroomCardList';
-                            
-                            loadPage(href);
-                            
-                            */
-
                             classroomTab.prepend(Result);
-                            
                         } else {
                             
                             classroomTab.prepend(Result);
-                            
                         }
-                        
 
                         $('.tooltipped').tooltip({delay: 50});
                         
                         //masonryGridInit();
                     
                     } else {
-                        
                         console.log('waiting');
                     
                     }
                     
                 }, 'text');
 
+                console.log(request.status);
             } else {
             
                 console.log('empty form. Unable to create the class');
 
                 $('#' + str1).closeModal();
                 
-                var errorMessage = '<span class="red-text name text-lighten-5">Error in creating the classroom. Kindly see if you have filled all inputs.</span>';
+                var errorMessage = '<span class="white-text name ">Error in creating the classroom. Kindly see if you have filled all inputs.</span>';
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
-                Materialize.toast(errorMessage, 5000, '', function () {
+                Materialize.toast(errorMessage, 5000, 'red accent-3', function () {
                     Modals_Events.cleanOutModals();
                 });
-                
             }
-            
-            //var validationResult = validateInputs('createNewClassroomForm');
 
-            //if (validationResult) {
-             
-            //this.createClassroomCard();
-        
             $('#' + str1).closeModal();
            
             Modals_Events.cleanOutModals();
 
-            //} else {
-
-              //  console.log('empty somewhere')
-           
-            //}
-    
         });
 
     };
@@ -748,9 +743,11 @@ var ClassroomEvents = function () {
             
             e.preventDefault();
             
-            var self = $(this);
-            
-            /*1*/var classroomId = self.parents('.card-col').attr('data-classroom-id');
+            var self = $(this), resultData = '',
+                totalOutput = '', SubjectOptions = '',
+                SubjectHook = '', StreamOptions = '',
+                StreamHook = '', activeInputId = '',
+            /*1*/classroomId = self.parents('.card-col').attr('data-classroom-id');
             
             self.parents('.card-col').attr('data-classroom-id');
             
@@ -761,182 +758,107 @@ var ClassroomEvents = function () {
                 console.log(typeof classroomData);
 
                 if (classroomData !== 'null') {
-                    
-                    var resultData = '';
 
                     resultData = classroomData;
-
+                    activeInputId = resultData.classes;
                     localStorage.setItem("cardColor", resultData.classes);
                     localStorage.setItem("selectedStudents", resultData.student_ids);
                     localStorage.setItem("cardId", classroomId);
 
-                    /*3*/self.parents('.card').removeClass(resultData.classes);
-
-                    /*3*/self.parents('.card').addClass('grey z-depth-4 to-edit');
+                    /*3*/self.parents('.card').removeClass(resultData.classes)
+                        .addClass('grey z-depth-4 to-edit');
 
                     Modals_Events.cleanOutModals();//remove any modal if exists
 
                     console.log(resultData);
-
                     console.log('fetching form template');
 
-                    var totalOutput = '';
+                    //get list of subjects
+                    var formTemplateVars = {
+                        subjectoptions: SubjectOptions,
+                        streamoptions: StreamOptions
 
-                    $.get("handlers/db_info.php", {"action" : "GetAllSubjects"}, function (result) {
+                    },
+                        formTemplate = Forms_Templates.editClassroomForm(formTemplateVars);
 
-                        console.log('creating a subjects dropdown.');
+                    //variables for the modal
+                    var template = {
+                        classes: resultData.classes,
+                        modalId: 'editClassRoom',
+                        templateHeader: 'Edit Classroom',
+                        templateBody: formTemplate,
+                        modalActionType: 'type="submit"',
+                        modalActionTypeText: 'Update classroom',
+                        extraActions: Lists_Templates.editExtraFooterActions({
+                            "Delete" : true,
+                            "Archive" : true,
+                            "Reload" : false
+                        })
+                    };
 
-                        //loop
-                        //arranging a select template accoding to subject category
+                    //load the modal in the DOM
+                    $('main').append(Lists_Templates.modalTemplate(template));
 
-                        var output = '';
-                        var count = 0;
+                    $(this).attr('data-target', template.modalId);
 
-                        var optgroup = new Array();
+                    $('#' + template.modalId).openModal({dismissible:false});
 
-                        for (var key in result) {
+                    $.when(getAllSubjects(), getAllStreams()).done(function (eSub, eStr) {
+                        console.log(eSub);
+                        console.log('creating a dropdowns.');
+                        SubjectOptions = subjectOptions(eSub[0]);
+                        StreamOptions = streamOptions(eStr[0]);
 
-                            if ( typeof optgroup[result[key].category] !== 'string' ) {
+                        if(formTemplateVars.streamoptions === '' && $('.modal#' + template.modalId).length > 0) {
+                            //append the options
+                            console.log('Appending select options');
 
-                                optgroup[result[key].category] = Forms_Templates.formSelectTemplate(result[key]);
-
-                            } else {
-
-                                output = Forms_Templates.formSelectTemplate(result[key]);
-
-                                optgroup[result[key].category] += output;
-
-                            }
-
-                        }
-
-                        output += '';
-
-                        var totalOutput = '';
-
-                        var obj = {
-                            category : '',
-                            categorylist : ''
-                        };
-
-                        for (var i in optgroup) {
-
-                            //console.log(i);
-
-                            obj.category = i;
-                            obj.categorylist = optgroup[i];
-
-                            totalOutput += Forms_Templates.formOptgroupTemplate(obj);
+                            $('.modal#' + template.modalId + ' form#editClassroomForm select#editClassroomStream')
+                                .append(StreamOptions)[0].value = resultData.stream_id;
+                            $('.modal#' + template.modalId + ' form#editClassroomForm select#editClassroomSubject')
+                                .append(SubjectOptions)[0].value = resultData.subject_id;
 
                         }
 
+                        $('select').material_select();
+                    });
 
-                        totalOutput +='';
+                    activeInputId = activeInputId.split(' darken-4')[0].split('-').join('');
+                    //load current class data to the form
+                    console.log(activeInputId);
+                    console.log(resultData.classes);
+                    console.log($('main .modal#' + template.modalId + ' .card-color-list input#' + activeInputId));
 
-                        $.get("handlers/db_info.php", {"action" : "GetAllStreams"}, function (result2) {
+                    $('main .modal#' + template.modalId + ' .card-color-list input#' + activeInputId).prop('checked', true);
 
-                            var totalOutput2 = '';
+                    $('main .modal#' + template.modalId + ' input#editClassroomName').val(resultData.class_name);
 
-                            for(var u in result2) {
+                    Materialize.updateTextFields();
 
-                                totalOutput2 += Forms_Templates.formSelectTemplate(result2[u]);
+                    $('.dropdown-button').dropdown({
+                        hover: false,
+                        alignment: 'bottom',
+                        constrain_width: false, // Does not change width of dropdown to that of the activator
+                        gutter: 300,
+                        belowOrigin: false
+                    });
 
-                            }
-                            
-                            //get list of subjects
-                            var formTemplateVars = {
-                                subjectoptions: totalOutput,
-                                streamoptions: totalOutput2
+                    console.log('modal edit classroom form created.');
 
-                            };
+                    if(resultData.student_ids) {
 
-                            var formTemplate = Forms_Templates.editClassroomForm(formTemplateVars);
+                        console.log('dd');
 
-                            //variables for the modal
-                            var template = {
-                                classes: resultData.classes,
-                                modalId: 'editClassRoom',
-                                templateHeader: 'Edit Classroom',
-                                templateBody: formTemplate,
-                                modalActionType: 'type="submit"',
-                                modalActionTypeText: 'Update classroom',
-                                extraActions: Lists_Templates.editExtraFooterActions({
-                                    "Delete" : true,
-                                    "Archive" : true,
-                                    "Reload" : false
-                                })
-                            };
+                        var previouslySelectedStudents = resultData.student_ids,
+                            totalSelected = previouslySelectedStudents.split(',').length - 1;
 
-                            //load the modal in the DOM
-                            $('main').append(Lists_Templates.modalTemplate(template));
+                        $('#' + template.modalId + ' .student-list')
+                            .append('<div class="col s12 brookhurst-theme-primary previous students lighten-2 card-panel " data-total-students="'
+                                    + totalSelected + '" data-selected-students="'
+                                    + previouslySelectedStudents + '"><p class="white-text php-data">A total of '
+                                    + totalSelected + ' student' + ( (totalSelected > 1) ? 's are' : ' is' ) + ' in the classroom. </p> <p><a id="removeStudentsFromClassroom" class="btn btn-small ' + ( (totalSelected < 1) ? 'disabled hide' : '' ) + '"> Remove students</a></p><br></div>');
 
-                            $('select').material_select();
-
-                            $(this).attr('data-target', template.modalId);
-
-                            $('#' + template.modalId).openModal({dismissible:false});
-
-                            //load current class data to the form
-                            console.log(resultData.classes);
-
-                            $('main .modal#' + template.modalId + ' .card-color-list label.' + resultData.classes).parent().children('input[type="radio"]').prop('checked', true);
-
-                            $('main .modal#' + template.modalId + ' input#editClassroomName').val(resultData.class_name);
-
-                            $('main .modal#' + template.modalId + ' select#editClassroomStream').val(resultData.stream_id);
-
-                            $('main .modal#' + template.modalId + ' select#editClassroomSubject').val(resultData.subject_id);
-
-                            Materialize.updateTextFields();
-
-                            $('.dropdown-button').dropdown({
-                                hover: false,
-                                alignment: 'bottom',
-                                constrain_width: false, // Does not change width of dropdown to that of the activator
-                                gutter: 300,
-                                belowOrigin: false
-                            });
-
-                            console.log('modal edit classroom form created.');
-
-                            if(resultData.student_ids) {
-
-                                console.log('dd');
-                                
-                                var previouslySelectedStudents = resultData.student_ids;
-
-                                var totalSelected = previouslySelectedStudents.split(',').length - 1;
-
-                                $('#' + template.modalId + ' .student-list')
-                                    .append('<div class="col s12 brookhurst-theme-primary previous students lighten-2 card-panel " data-total-students="'
-                                            + totalSelected + '" data-selected-students="' 
-                                            + previouslySelectedStudents + '"><p class="white-text php-data">A total of ' 
-                                            + totalSelected + ' student' + ( (totalSelected > 1) ? 's are' : ' is' ) + ' in the classroom. </p> <p><a id="removeStudentsFromClassroom" class="btn btn-small ' + ( (totalSelected < 1) ? 'disabled hide' : '' ) + '"> Remove students</a></p><br></div>');
-
-                            }
-
-                            /*
-                            $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').bind('blur', function (e) {
-
-                                var ifExistsResult = searchIfClassNameExists($(this).val());
-
-                                console.log('blur');
-
-                                if (ifExistsResult === 1) {
-                                    //exists
-                                    //append warning to that input
-                                    var warningText = '<p class="orange-text text-accent-1 col s9">Classroom ' + $(this).val() + ' exists, continue?</p><a class="btn btn-flat>Okay</a>"';
-
-                                    $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').parent().append(warningText);
-
-                                }
-
-                            });
-                            */
-
-                        }, 'json');
-
-                    }, 'json');
+                    }
 
                 } else {
                     
@@ -968,18 +890,16 @@ var ClassroomEvents = function () {
             e.preventDefault();
             
             /*1*/
-            var self = $(this);
-            
-            var str1 = $('.modal#editClassRoom').attr('id');
-            
-            var str2 = Materialize.guid();//Generate class-id
-            
-            var classes = $('.modal#editClassRoom .card-color-list input[type="radio"]:checked').parent().children('label').attr('class');
-            var newClassTitle = $('.modal#editClassRoom input#editClassroomName').val();
-            var newClass_stream = $('.modal#editClassRoom select#editClassroomStream').val();
-            var newClass_subject = $('.modal#editClassRoom select#editClassroomSubject').val();
-            var newClass_streamname = $('.modal#editClassRoom select#editClassroomStream').find('option:selected:not(:disabled)').text();
-            var newClass_subjectname = $('.modal#editClassRoom select#editClassroomSubject').find('option:selected:not(:disabled)').text();
+            var self = $(this),
+                str1 = $('.modal#editClassRoom').attr('id'),
+                str2 = Materialize.guid();//Generate class-id
+
+            var classes = $('.modal#editClassRoom .card-color-list input[type="radio"]:checked').parent().children('label').attr('class'),
+                newClassTitle = $('.modal#editClassRoom input#editClassroomName').val(),
+                newClass_stream = $('.modal#editClassRoom select#editClassroomStream').val(),
+                newClass_subject = $('.modal#editClassRoom select#editClassroomSubject').val(),
+                newClass_streamname = $('.modal#editClassRoom select#editClassroomStream').find('option:selected:not(:disabled)').text(),
+                newClass_subjectname = $('.modal#editClassRoom select#editClassroomSubject').find('option:selected:not(:disabled)').text();
 
             if (typeof classes === 'undefined') {
                 
