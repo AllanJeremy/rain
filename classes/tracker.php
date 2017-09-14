@@ -112,7 +112,7 @@ class EsomoTracker
                 'X-Mailer: PHP/' . phpversion();
 
             //Send log stating that the message sending was completed
-            mail($to,$subject,"Installation tracking complete",$headers);
+            // mail($to,$subject,"Installation tracking complete",$headers);
 
             
         }

@@ -13,7 +13,7 @@ if (!defined('DB_PASSWORD'))
 {	define('DB_PASSWORD','');  }
 
 if (!defined('DB_NAME'))
-{	define('DB_NAME','esomo_upgrade');  }
+{	define('DB_NAME','rain');  }
 
 if(!isset($dbCon))//makes sure we don't open multiple connections
 {
