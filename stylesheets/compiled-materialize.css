@@ -10207,8 +10207,6 @@ h5 > span {
 
 /* line 102, ../sass/_style.scss */
 [class*="-title"].truncate:hover {
-  text-indent: -100%;
-  text-align: right !Important;
   transition-timing-function: cubic-bezier(0, 0, 0.53, 0.99);
   transition-duration: 1.7s;
 }

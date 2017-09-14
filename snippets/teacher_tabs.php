@@ -1220,16 +1220,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="col s12 m6 l4 take_test_container" data-test-id="<?php echo $test_id;?>">
                             <div class="card blue-grey darken-1">
                                 <div class="card-content white-text">
-                                    <div class="row">
-                                        <div class="col s6">
-                                            <span class="card-title"><a href="javascript:void(0)" class="btn-floating editTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">settings</i></a></span>
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            <span class="card-title">
-                                                <a href="javascript:void(0)" class="btn-floating red deleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">delete</i></a>
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <a href="javascript:void(0)" class="editTest tooltipped btn-icon" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>">
+                                        <i class="material-icons">settings</i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="red-text text-accent-3 btn-icon deleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>">
+                                        <i class="material-icons">delete</i>
+                                    </a>
                                     <span class="card-title truncate takeTestTitle"><?php echo $test["test_title"];?></span>
                                     <p>Subject: <span class="php-data"><?php echo $subject["subject_name"];?></span></p>
                                     <p>Questions: <span class="php-data"><?php echo $test["number_of_questions"]?></span></p>
