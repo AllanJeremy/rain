@@ -148,7 +148,7 @@ var Forms_Templates = function () {
         templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="blue"/><label for="blue" class="blue darken-4"></label></p>';
         templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="pink"/><label for="pink" class="pink darken-4"></label></p>';
         templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="orange"/><label for="orange" class="orange darken-4"></label></p>';
-        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="blueGrey"/><label for="blueGrey" class="blue-grey darken-4"></label></p>';
+        templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="bluegrey"/><label for="bluegrey" class="blue-grey darken-4"></label></p>';
         templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="green"/><label for="green" class="green darken-4"></label></p>';
         templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="purple"/><label for="purple" class="purple darken-4"></label></p>';
         templateOutput += '<p class="col m1 s2" ><input name="card_color" type="radio" id="lime"/><label for="lime" class="lime darken-4"></label></p>';

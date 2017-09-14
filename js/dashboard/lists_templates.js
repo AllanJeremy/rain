@@ -1190,6 +1190,20 @@ var Lists_Templates = function () {
 
     //-------------------------
 
+    this.subjectsSelectOptions = function () {
+        var templateOutput = '';
+
+        templateOutput += '<optgroup label="sciences"><option value="1">Mathematics</option><option value="5">Physics</option><option value="6">Biology</option><option value="7">Chemistry</option></optgroup>';
+        templateOutput += '<optgroup label="languages"><option value="3">Kiswahili</option><option value="4">French</option><option value="9">Literature</option></optgroup>';
+        templateOutput += '<optgroup label="humanities"><option value="8">Religion</option><option value="13">History</option></optgroup>';
+        templateOutput += '<optgroup label="extras"><option value="14">Art and Design</option><option value="15">ICT</option><option value="16">Physical Education</option><option value="17">Music</option><option value="18">Business studies</option></optgroup>';
+
+        return templateOutput;
+
+    };
+
+    //-------------------------
+
     this.construct();
     
 };

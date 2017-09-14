@@ -182,6 +182,72 @@ var Dashboard = function () {
 
     //-------------
     
+    var getAllSubjects = function () {
+        var Subjects = $.ajax({
+            url: "handlers/db_handler.php",
+            type: 'GET'
+        });
+
+        Subjects.done(function (val) {
+            console.log(val);
+
+            return val;
+        });
+
+//        $.get("handlers/db_info.php", {"action" : "GetAllSubjects"}, function (result) {
+//
+//                console.log('creating a subjects dropdown.');
+//
+//                //loop
+//                //arranging a select template accoding to subject category
+//
+//                var output = '',
+//                    count = 0,
+//                    optgroup = new Array(),
+//                    key,
+//                    totalOutput = '',
+//                    obj,
+//                    i;
+//
+//                for (key in result) {
+//
+//                    if ( typeof optgroup[result[key].category] !== 'string' ) {
+//
+//                        optgroup[result[key].category] = Forms_Templates.formSelectTemplate(result[key]);
+//
+//                    } else {
+//
+//                        output = Forms_Templates.formSelectTemplate(result[key]);
+//
+//                        optgroup[result[key].category] += output;
+//
+//                    }
+//
+//                }
+//
+//                output += '';
+//
+//
+//                obj = {
+//                    category : '',
+//                    categorylist : ''
+//                };
+//
+//                for (i in optgroup) {
+//                    console.log(i);
+//
+//                    obj.category = i;
+//                    obj.categorylist = optgroup[i];
+//
+//                    totalOutput += Forms_Templates.formOptgroupTemplate(obj);
+//
+//                }
+//
+//                totalOutput +='';
+//
+//            , 'json'});
+    };
+
     this.__construct();
     
 };

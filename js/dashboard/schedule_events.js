@@ -1171,7 +1171,7 @@ var ScheduleEvents = function (userInfo) {
 
             if (previousattribute !== null) {
 
-                previousattributeid = previousattribute.attributes[0].nodeValue;
+                previousattributeid = previousattribute.attributes['data-schedule-id'].nodeValue;
 
                 console.log('previous schedule id: ' + previousattributeid);
 
@@ -1220,7 +1220,7 @@ var ScheduleEvents = function (userInfo) {
 
                     previoustbody = previoustbody[0].previousElementSibling;
 
-                    previousattributeid = previoustbody.lastElementChild.attributes[0].nodeValue;
+                    previousattributeid = previoustbody.lastElementChild.attributes['data-schedule-id'].nodeValue;
 
                     console.log(previousattributeid);
 
@@ -1292,7 +1292,7 @@ var ScheduleEvents = function (userInfo) {
 
             if (nextattribute !== null) {
 
-                nextattributeid = nextattribute.attributes[0].nodeValue;
+                nextattributeid = nextattribute.attributes['data-schedule-id'].nodeValue;
 
                 console.log('next schedule id: ' + nextattributeid);
 
@@ -1344,7 +1344,7 @@ var ScheduleEvents = function (userInfo) {
 
                     nexttbody = nexttbody[0].nextElementSibling;
 
-                    nextattributeid = nexttbody.firstElementChild.attributes[0].nodeValue;
+                    nextattributeid = nexttbody.firstElementChild.attributes['data-schedule-id'].nodeValue;
 
                     console.log(nextattributeid);
 

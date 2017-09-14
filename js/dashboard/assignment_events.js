@@ -453,16 +453,7 @@ var AssignmentEvents = function (userInfo) {
 
             console.log(hook.attr('class'));
             
-            var hookType = hook.attr('class');
-            
-            hookType = hookType.split('col').join('')
-                .split('s12').join('')
-                .split('input-field').join('')
-                .split(' ').join('');
-            
-            console.log(hookType);
-            
-            if(hookType === 'student-list') {//classroom form
+            if(hook.hasClass('student-list')) {//classroom form
                 if ($('.modal#editClassRoom .students').length > 0) {
 
                     var previousTotal = $('.modal#editClassRoom .students').attr('data-total-students');
@@ -491,7 +482,7 @@ var AssignmentEvents = function (userInfo) {
                     
                 }
                 
-            } else if(hookType === 'classroom-list') {//student form
+            } else if(hook.hasClass('classroom-list')) {//student form
 
                 if ($('.modal#editAssignment .classrooms').length > 0) {
 

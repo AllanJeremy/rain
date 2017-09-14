@@ -238,7 +238,8 @@ class DbInfo
         {
             if($teachers = self::GetAdminById($acc_id,$acc_type="teacher"))
             {
-                if($teachers->num_rows>0)
+
+                if(isset($students->num_rows) && $teachers->num_rows>0)
                 {
                     foreach($teachers as $teacher)
                     {

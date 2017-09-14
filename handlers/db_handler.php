@@ -94,7 +94,7 @@ class DbHandler extends DbInfo
 
                 //If the admin account can be found
                 if($admin_acc)
-                {   
+                {
                     //Check if the old password provided matches the admin password in the database
                     $old_pass_valid = PasswordEncrypt::Verify($old_pass,$admin_acc["password"]);
 
@@ -120,7 +120,7 @@ class DbHandler extends DbInfo
 
             $update_stmt->bind_param("s",$new_password);
             $update_status = $update_stmt->execute();
-            
+
             return $update_status;
         }
         else #Failed to prepare the query

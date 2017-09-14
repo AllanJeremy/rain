@@ -137,9 +137,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 ?>
                 <!--Create assignment-->
                 <div class="row main-tab" id="createAssignmentsTab">
-                    <br>
-                    <br>
-                    <div class="container assignment-doc">
+                    <div class="container col s12 l8 m10 push-l2 push-m1 assignment-doc">
                         <br>
                         <form action="" id="createAssignmentForm" class="row" enctype="multipart/form-data" method="POST">
                             <div class=" input-field col s12 ">
@@ -620,7 +618,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                 <!--SCHEDULE SECTION-->
                 <div class="row main-tab" id="schedulesTab">
                     
-                    <div class="row no-bottom-margin" id="createScheduleCont">
+                    <div class="col s12 m10 push-m1 no-bottom-margin" id="createScheduleCont">
                         <br>
                         <div class="col s11 right pull-s1">
                             <a class="btn btn-flat right" id="openScheduleForm"><span class="hide-on-small-only">Add a schedule</span>
@@ -798,7 +796,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         </div>
                     </div>
                     <br>
-                    <div class="row no-bottom-margin" id="pendingScheduleCont">
+                    <div class="col s12 l10 push-l1" id="pendingScheduleCont">
                         <div class="col s5">
                             <p class="grey-text">Pending schedules</p>
                         </div>
@@ -888,7 +886,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                         </div>
                     </div>
-                    <div class="row no-bottom-margin" id="attendedScheduleCont">
+                    <div class="col s12 l10 push-l1" id="attendedScheduleCont">
                         <div class="col s5">
                             <p class="grey-text">Schedules attended</p>
                         </div>
@@ -1222,16 +1220,12 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="col s12 m6 l4 take_test_container" data-test-id="<?php echo $test_id;?>">
                             <div class="card blue-grey darken-1">
                                 <div class="card-content white-text">
-                                    <div class="row">
-                                        <div class="col s6">
-                                            <span class="card-title"><a href="javascript:void(0)" class="btn-floating editTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">settings</i></a></span>
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            <span class="card-title">
-                                                <a href="javascript:void(0)" class="btn-floating red deleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>"><i class="material-icons">delete</i></a>
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <a href="javascript:void(0)" class="editTest tooltipped btn-icon" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_edit_test?>" data-test-id="<?php echo $test['test_id']?>">
+                                        <i class="material-icons">settings</i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="red-text text-accent-3 btn-icon deleteTest tooltipped" data-position="top" data-delay="50" data-tooltip="<?php echo $tt_delete_test?>" data-test-id="<?php echo $test['test_id']?>">
+                                        <i class="material-icons">delete</i>
+                                    </a>
                                     <span class="card-title truncate takeTestTitle"><?php echo $test["test_title"];?></span>
                                     <p>Subject: <span class="php-data"><?php echo $subject["subject_name"];?></span></p>
                                     <p>Questions: <span class="php-data"><?php echo $test["number_of_questions"]?></span></p>
@@ -1274,7 +1268,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                     case SECTION_RESOURCES:#Resources
                 ?>
                 <!--RESOURCES SECTION-->
-                <div class="row main-tab" id="teacherResourcesTab">
+                <div class=" row main-tab" id="teacherResourcesTab">
                     <div class="col s12 tab-header">
                         <div class="row no-bottom-margin">
                             <div class="col s5">
@@ -1328,10 +1322,8 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p class="grey-text">Your account</p>
                         </div>
                     </div>
-
-                    
                     <?php
-                    /* TODO: CONSIDER MAKING ACCOUNTS A "SNIPPET ON ITS OWN FOR EASIER FUTURE MANAGEMENT" - Split the section into a recyclable separate sub-module */    
+                    /* TODO: CONSIDER MAKING ACCOUNTS A "SNIPPET ON ITS OWN FOR EASIER FUTURE MANAGEMENT" - Split the section into a recyclable separate sub-module */
                         //If the current password is equal to the username ~ vulnerable account
                         if ($user_info["using_original_pass"]):
                     ?>
@@ -1355,18 +1347,18 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                 <h3 class="header white-text">Welcome <?php echo $user_info["first_name"]?></h3><h5 class="white-text php-data">Vulnerable account.</h5><p class="white-text"><?php echo $user_info["first_name"]?>, your username is your password, change your password in this tab
                         to secure your account.</p></div>
                                 <div class="card-action">
-                                  <a href="#change-password">Help me</a>
+                                  <a href="#changePassword">Help me</a>
                                 </div>
                               </div>
                             </div>
                           </div>
                     </div>
                     <?php
-                        endif;
+                    endif;
                     ?>
                     <div class="row">
                         <br>
-                        <div class="col s12 valign-wrapper grey lighten-3" id="change-password">
+                        <div class="col s12 valign-wrapper grey lighten-3" id="changePassword">
                             <h6 class=" margin-vert-16 center-align valign grey-text " id="changePasswordMessage">
                                 Change your password here
                                 <br>

@@ -70,20 +70,22 @@ switch($section)
     break;
 }
 ?>
-<h4 class="page-title light white-text" id="pageTitle">
-    <?php echo ucwords(@$pageTitle);?>
-</h4>
+<div class="_s12 container">
+    <h4 class="page-title light white-text" id="pageTitle">
+        <?php echo ucwords(@$pageTitle);?>
+    </h4>
+</div>
 <div class="horizontal-overflow-wrapper">
 <ul id="slide-out" class="horizontal-nav fixed">
     <li <?php echo $classrooms_class;?>>
         <a href="<?php echo GetSectionLink(SECTION_TR_BASE);?>">Classrooms</a>
     </li>
-    <li>
+    <li class="<?php echo $ass_class;?>">
         <a class="center dropdown-button <?php echo $ass_class;?>" data-beloworigin="true" href="#" data-activates="assDropDown">
         Assignments
             <i class="material-icons ">&#xE5C5;</i>
         </a>
-        <ul id="assDropDown" class="dropdown-content">
+        <ul id="assDropDown" class="dropdown-content ">
             <li <?php echo $create_ass_class;?>>
                 <a href="<?php echo GetSectionLink(SECTION_TR_ASS_CREATE);?>">Create</a>
             </li>
@@ -98,7 +100,7 @@ switch($section)
     <li <?php echo $schedules_class;?>>
         <a href="<?php echo GetSectionLink(SECTION_TR_SCHEDULES);?>">Schedules</a>
     </li>
-    <li>
+    <li class="<?php echo $tests_class;?>">
         <a class="center dropdown-button <?php echo $tests_class;?>" data-beloworigin="true" href="#" data-activates="testsDropDown">
         Tests
             <i class="material-icons ">&#xE5C5;</i>
@@ -115,7 +117,6 @@ switch($section)
             </li>
         </ul>
     </li>
-
     <li <?php echo $resources_class;?>>
         <a href="<?php echo GetSectionLink(SECTION_RESOURCES);?>">Resources</a>
     </li>
