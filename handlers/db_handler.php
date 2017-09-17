@@ -148,7 +148,7 @@ class DbHandler extends DbInfo
                 $reset_stmt->bind_param("sis",$new_password,$acc_id,$acc_type);
 
                 $reset_status = ($reset_stmt->execute());#run the query to reset the account
-   
+
                 return $reset_status;
             }
             else #failed to prepare the query for data retrieval
@@ -170,13 +170,13 @@ class DbHandler extends DbInfo
         {
             return self::ResetAdminAccount($acc_id,"teacher");
         }
-        
+
         #Reset the password of an principal account : takes principal acc_id as a parameter : convenience function
         public static function ResetPrincipalAccount($acc_id)
         {
             return self::ResetAdminAccount($acc_id,"principal");
         }
-    
+
         #Reset the password of an superuser account : takes superuser acc_id as a parameter : convenience function
         public static function ResetSuperuserAccount($acc_id)
         {
@@ -195,7 +195,7 @@ class DbHandler extends DbInfo
         $prepare_error = "Couldn't prepare query to reset the student account. <br><br> Technical information : ";
 
         $delete_query = "DELETE FROM student_accounts WHERE student_accounts.acc_id=?";
-        
+
         if($student = DbInfo::GetStudentByAccId($acc_id))#if the student exists: $student can be used to print info on deleted account
         {
             if($delete_stmt = $dbCon->prepare($delete_query))
@@ -227,9 +227,9 @@ class DbHandler extends DbInfo
     {
         global $dbCon;#db connection string (mysqli object)
         $prepare_error = "Couldn't prepare query to reset the admin (" . $acc_type . ") account. <br><br> Technical information : ";
-        
+
         $delete_query = "DELETE FROM admin_accounts WHERE admin_accounts.acc_id=? AND admin_accounts.account_type=?";
-        
+
         if($admin = self::GetAdminById($acc_id,$acc_type))#if the admin exists : $admin can be used to print info on deleted account
         {
             if($delete_stmt = $dbCon->prepare($delete_query))
@@ -258,13 +258,13 @@ class DbHandler extends DbInfo
         {
             return self::DeleteAdminAccount($acc_id,"teacher");
         }
-        
+
         #Delete a teacher account : takes teacher acc_id as a parameter : convenience function
         public static function DeletePrincipalAccount($acc_id)
         {
             return self::DeleteAdminAccount($acc_id,"principal");
         }
-        
+
         #Delete a teacher account : takes teacher acc_id as a parameter : convenience function
         public static function DeleteSuperuserAccount($acc_id)
         {
@@ -281,7 +281,7 @@ class DbHandler extends DbInfo
 public static function DeleteBasedOnSingleProperty($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  delete based on single property query. <br>Technical information :")
 {
     global $dbCon;#Connection string mysqli object
-        
+
     $delete_query = "DELETE FROM $table_name WHERE $column_name=?";
 
     if($delete_stmt = $dbCon->prepare($delete_query))
@@ -314,14 +314,14 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
     public static function UpdateClassroomInfo($class_id,$class_name,$stream_id,$subject_id,$student_ids,$classes)
     {
         global $dbCon;#Connection string mysqli object
-        
+
         if(DbInfo::ClassroomExists($class_id))#if the classroom exists - safety check
         {
             $update_query = "UPDATE classrooms SET class_name=?, student_ids=?, stream_id=?, subject_id=?, classes=? WHERE class_id=?";
             if($update_stmt = $dbCon->prepare($update_query))
             {
                 $update_stmt->bind_param("ssiisi",$class_name,$student_ids,$stream_id,$subject_id,$classes,$class_id);
-                
+
                 if($update_stmt->execute())
                 {
                     return 'true';#successfully updated the classroom details
@@ -345,7 +345,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
     #Delete Classroom : returns true on success | false on fail | null if query couldn't execute
     public static function DeleteClassroom($class_id)
     {
-        
+
         #if the classroom exists - safety check
         if(DbInfo::ClassroomExists($class_id))
         {
@@ -354,7 +354,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
         else
         {
             echo 'false';
-        }       
+        }
     }
 
 /*
@@ -363,7 +363,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 -----------------------------------------------------------------------------------------
 */
     //Update Assignment information
-    public static function UpdateAssignmentInfo($args=array(    
+    public static function UpdateAssignmentInfo($args=array(
             "ass_id"=>0,
             "teacher_id"=>0,
             "ass_title"=>"",
@@ -424,7 +424,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             {
                 return null;
             }
-            
+
         }
     }
 
@@ -445,7 +445,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
         else
         {
             return false;
-        }       
+        }
     }
 /*
 -----------------------------------------------------------------------------------------
@@ -465,7 +465,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             if($update_stmt = $dbCon->prepare($update_query))
             {
                 $update_stmt->bind_param("sisii",$attachments,$submitted,$submission_text,$submission_id,$student_id);
-                
+
                 if($update_stmt->execute())
                 {
                     return true;#successfully updated the assignment submission
@@ -488,7 +488,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             if($update_stmt = $dbCon->prepare($update_query))
             {
                 $update_stmt->bind_param("ssisii",$submission_title,$attachments,$submitted,$submission_text,$student_id,$ass_id);
-                
+
                 #create assignment submission query ran successfully
                 if($update_stmt->execute())
                 {
@@ -503,9 +503,9 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             {
                 return null;
             }
-            
-        }   
-    }    
+
+        }
+    }
 
     #Delete Assignment : returns true on success | false on fail | null if query couldn't execute
     public static function DeleteAssignmentSubmission($submission_id)
@@ -518,21 +518,21 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
         else
         {
             return false;
-        }    
+        }
     }
-    
+
 /*
 -----------------------------------------------------------------------------------------
-                        UPDATING  COMMENTS - CONVENIENCE FUNCTIONS 
+                        UPDATING  COMMENTS - CONVENIENCE FUNCTIONS
 -----------------------------------------------------------------------------------------
-*/  
-protected static function UpdateComment($table_name,$comment_id,$comment_text)
+*/
+protected static function UpdateComment($comment_category,$comment_id,$comment_text)
 {
     global $dbCon;
 
     $prepare_error="Error preparing  update comment query. <br>Technical information :";#error shown when preparing the query fails
 
-    $update_query = "UPDATE $table_name SET comment_text=? WHERE comment_id=?";
+    $update_query = "UPDATE comments SET comment_text=? WHERE comment_id=? AND comment_category=$comment_category";
 
     if($update_stmt = $dbCon->prepare($update_query))
     {
@@ -559,13 +559,13 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 -----------------------------------------------------------------------------------------
                               UPDATING AND DELETING ASSIGNMENT COMMENTS
 -----------------------------------------------------------------------------------------
-*/  
+*/
     #Teacher update ass. comment
     public static function UpdateAssComment($comment_id,$comment_text)
     {
-        return self::UpdateComment("ass_comments",$comment_id,$comment_text);
+        return self::UpdateComment("assignment",$comment_id,$comment_text);
     }
-    
+
     #Teacher delete ass. comment
     public static function DeleteAssComment($comment_id)
     {
@@ -576,11 +576,11 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 -----------------------------------------------------------------------------------------
                     UPDATING AND DELETING ASSIGNMENT SUBMISSION COMMENTS
 -----------------------------------------------------------------------------------------
-*/  
+*/
     #Teacher update ass. submission comment
     public static function UpdateAssSubmissionComment($comment_id,$comment_text)
     {
-        return self::UpdateComment("ass_submission_comments",$comment_id,$comment_text);
+        return self::UpdateComment("ass_submission",$comment_id,$comment_text);
     }
 
     #Teacher delete ass. submission comment
@@ -619,7 +619,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 else
                 {
                     return $dbCon->error;
-                } 
+                }
         }
         else
         {
@@ -636,13 +636,13 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             return
             (
                 self::DeleteBasedOnSingleProperty("schedules","schedule_id",$schedule_id,"i") && #delete the schedule
-                self::DeleteBasedOnSingleProperty("schedule_comments","schedule_id",$schedule_id,"i") #delete the schedule comments               
+                self::DeleteBasedOnSingleProperty("schedule_comments","schedule_id",$schedule_id,"i") #delete the schedule comments
             );
         }
         else
         {
             return false;
-        }       
+        }
     }
 /*
 -----------------------------------------------------------------------------------------
@@ -652,7 +652,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     #Teacher update sch. comment
     public static function UpdateScheduleComment($comment_id,$comment_text)
     {
-        return self::UpdateComment("schedule_comments",$comment_id,$comment_text);
+        return self::UpdateComment("schedule",$comment_id,$comment_text);
     }
     #Teacher delete sch. comment
     public static function DeleteScheduleComment($comment_id)
@@ -714,7 +714,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     {
         global $dbCon;#Connection string mysqli object
         $test = DbInfo::TestExists($update_data["test_id"]);
-        
+
 
         if($test)#if the test exists - safety check
         {
@@ -740,7 +740,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                 if($update_stmt->execute())
                 {
                     // echo "<p>Successfully updated the test</p>";
-                    return true;                    
+                    return true;
                 }
                 else
                 {
@@ -774,13 +774,13 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
                     foreach($questions as $question)
                     {
                         //Delete all the answers to the currently looped question in the database
-                        $delete_answers = self::DeleteBasedOnSingleProperty("test_answers","question_id",$question["question_id"],"i"); 
-                    }       
+                        $delete_answers = self::DeleteBasedOnSingleProperty("test_answers","question_id",$question["question_id"],"i");
+                    }
                         //Delete the questions
                     $delete_questions = self::DeleteBasedOnSingleProperty("test_questions","test_id",$test_id,"i"); #delete the test questions
                 }
-                
-                /*  Note : 
+
+                /*  Note :
                     The test submissions will be retained as reference for test performance even after the test has been deleted.
                     Students and teachers can still view their results even if the test is deleted
                 */
@@ -789,7 +789,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
         else
         {
             return false;
-        }       
+        }
     }
 /*
 -----------------------------------------------------------------------------------------
@@ -1166,7 +1166,7 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
             #get the DateInterval representing the amount of time elapsed
             $time_elapsed = EsomoTimer::GetTimeElapsed($test,$user_info);
             $time_elapsed = (int)($time_elapsed->format("%s"));#get the number of minutes elapsed
-            
+
             //Update some result values
             $grade_info = GradeHandler::GetGradeInfo($total_marks,$max_grade);
 
@@ -1324,16 +1324,16 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
     //Delete resource from database
     public static function DeleteResource($resource_id)
     {
-        
+
         $resource = DbInfo::ResourceExists($resource_id);
-        
+
         if($resource)
         {
             $uploader = new EsomoUploader();
             $del_resource = self::DeleteBasedOnSingleProperty("resources","resource_id",$resource_id,"i");
-            
+
             $del_resource_file = $uploader->DeleteResourceFile($resource["resource_name"]);
-            
+
             return ($del_resource && $del_resource_file);#return the status based on whether or not it could delete the resource or not.
         }
         else #failed to find the resource
@@ -1351,9 +1351,9 @@ protected static function UpdateComment($table_name,$comment_id,$comment_text)
 */
 
 if(isset($_POST['action'])) {
-    
+
     sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
-    
+
     $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
 
     //Mail related files
@@ -1413,7 +1413,7 @@ if(isset($_POST['action'])) {
             //Generate email for the account created
             $email = EsomoMailGenerator::NewPrincipalAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
             $email_status = EmailHandler::EsomoSendEmail($email);
-            
+
             echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
@@ -1423,16 +1423,16 @@ if(isset($_POST['action'])) {
 
             $superuser = new Superuser();
             $create_status = $superuser->CreateSuperuser($data);
-            
+
             //Generate email for the account created
             $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
             $email_status = EmailHandler::EsomoSendEmail($email);
-            
+
             echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'UpdateClassroomInfo':
-            
+
             $args = array(
                 'class_id' => $_POST['classroomid'],
                 'class_name' => $_POST['classroomtitle'],
@@ -1440,21 +1440,21 @@ if(isset($_POST['action'])) {
                 'subject_id' => $_POST['classroomsubject'],
                 'classes' => $_POST['classes']
             );
-            
+
             if(isset($_POST['studentids'])) {
-                
+
                 $args['student_ids'] = $_POST['studentids'];
-                
+
             } else {
-                
+
                 $args['student_ids'] = 0;
-                
+
             }
-            
+
             $result = DbHandler::UpdateClassroomInfo($args['class_id'],$args['class_name'],$args['stream_id'],$args['subject_id'],$args['student_ids'],$args['classes']);
-            
+
             echo $result;
-            
+
             break;
         case 'UpdateScheduleInfo':
 
@@ -1474,20 +1474,20 @@ if(isset($_POST['action'])) {
 
             break;
         case 'RemoveStudent':
-            
-            
+
+
             //Remove a student
             break;
         case 'DeleteClassroom':
-          
+
             $class_id = $_POST['classroomid'];
-            
+
             if(isset($class_id)) {
-                
+
                 $result = DbHandler::DeleteClassroom($class_id);
-            
+
                 echo $result;
-                
+
             }
 
             break;
@@ -1509,7 +1509,7 @@ if(isset($_POST['action'])) {
             $test_data = &$_POST["test_data"];
             echo DbHandler::CreateTest($test_data);
         break;
-        
+
         //Delete a test
         case 'DeleteTest':
             $test_id = &$_POST["test_id"];
@@ -1522,7 +1522,7 @@ if(isset($_POST['action'])) {
             {
                 echo "<p>Failed to fully delete the test. <br><b>View Debug</b> for more info</p>";
             }
-            
+
 
         //Delete question answer
         case 'DeleteQuestionAnswer':
@@ -1537,7 +1537,7 @@ if(isset($_POST['action'])) {
                 }
             }
         break;
-        
+
         //Update the test
         case 'UpdateEditTest':
             $edit_data = ($_POST["data"]);
@@ -1601,11 +1601,11 @@ if(isset($_POST['action'])) {
 
             //Attempt uploading the files first
             $uploader = new EsomoUploader();
-            $failed_files = $uploader->UploadFile('resource');     
-            
+            $failed_files = $uploader->UploadFile('resource');
+
             $file_name = "";
 
-            for($f = 0; $f < count($data); $f++) 
+            for($f = 0; $f < count($data); $f++)
             {
                 $is_failed_file = in_array($f,$failed_files);
                 $result = false;
@@ -1976,7 +1976,7 @@ if(isset($_POST['action'])) {
 
             echo $update_status;
         break;
-        
+
         //Report problem
         case "ReportProblem":
 
@@ -1989,10 +1989,3 @@ if(isset($_POST['action'])) {
 } else {
     return null;
 }
-
-
-
-
-
-
-

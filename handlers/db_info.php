@@ -71,7 +71,7 @@ class DbInfo
         {
             $stmt->bind_param("s",$username_input);
             $stmt->execute();#retrieve records from the database
-        
+
             $result = $stmt->get_result();
 
             //If we found any records
@@ -118,7 +118,7 @@ class DbInfo
         return self::GetAllRecordsFromTable("student_accounts");
     }
 
-//Gets all records from the admin_accounts table and returns them if the query was successful, returns null if query failed and false if no records were found - 
+//Gets all records from the admin_accounts table and returns them if the query was successful, returns null if query failed and false if no records were found -
     private static function GetAllAdminRecordsFromTable($acc_type)
     {
         global $dbCon;#database connection
@@ -126,12 +126,12 @@ class DbInfo
         $select_query = "SELECT * FROM admin_accounts WHERE account_type='$acc_type'";
 
         $result = $dbCon->query($select_query);#run the query, returns false if it fails
-    
+
         if ($result->num_rows == 0)#if the number of students found was 0, return false
         {
             return false;
         }
-        return $result;        
+        return $result;
     }
 
         #Get all teachers
@@ -143,7 +143,7 @@ class DbInfo
         #Get all principals
         public static function GetAllPrincipals()
         {
-            return self::GetAllAdminRecordsFromTable("principal"); 
+            return self::GetAllAdminRecordsFromTable("principal");
         }
 
         #Get all superusers
@@ -170,13 +170,13 @@ class DbInfo
         {
             $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%) OR first_name=LIKE(%?%) OR last_name=LIKE(%?%)";
         }
-        
+
         elseif ($filters["adm_no"])#if adm_no is checked as a filter - value is not the default false
         {
-            
+
             if(!$filters["first_name"] && !$filters["last_name"])
             {
-                $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%)"; 
+                $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%)";
             }
             if ($filters["first_name"])
             {
@@ -189,14 +189,14 @@ class DbInfo
         }
         elseif ($filters["first_name"])#first name and/or last name but no adm_no
         {
-            $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%) OR first_name=LIKE(%?%) OR last_name=LIKE(%?%)";            
+            $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%) OR first_name=LIKE(%?%) OR last_name=LIKE(%?%)";
         }
         elseif ($filters["last_name"])#last name only
         {
-            $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%) OR first_name=LIKE(%?%) OR last_name=LIKE(%?%)";            
+            $search_query = "SELECT * FROM student_accounts WHERE adm_no=LIKE(%?%) OR first_name=LIKE(%?%) OR last_name=LIKE(%?%)";
         }
-        
-    }    
+
+    }
 
     //Get single admin account by ID , default acc type is teacher but this can be passed in as different parameter
     protected static function GetAdminById($acc_id,$acc_type="teacher")#protected to avoid random calls which may lead to typos
@@ -205,7 +205,7 @@ class DbInfo
         $select_query = "SELECT * FROM admin_accounts WHERE acc_id=? AND account_type=?";
 
         $prepare_error = "Couldn't prepare query to retrieve admin account information by id. <br><br> Technical information : ";
-        
+
         if($select_stmt = $dbCon->prepare($select_query))
         {
             $select_stmt->bind_param("is",$acc_id,$acc_type);
@@ -220,7 +220,7 @@ class DbInfo
                 {
                     return $result;#return the records
                 }
-            }   
+            }
             else #if no records were found
             {
                 return false;
@@ -257,7 +257,7 @@ class DbInfo
                 return self::GetAdminById($acc_id,$acc_type="teacher");
             }
         }
-    
+
         #Get principal account by ID : convenience function
         public static function GetPrincipalById($acc_id)
         {
@@ -269,7 +269,7 @@ class DbInfo
         {
             return self::GetAdminById($acc_id,$acc_type="superuser");
         }
-    
+
     //Get single student account by ID
     public static function GetStudentByAccId($acc_id)
     {
@@ -281,7 +281,7 @@ class DbInfo
             {
                 return $student;
             }
-       } 
+       }
        else
        {
            return $students;
@@ -292,7 +292,7 @@ class DbInfo
 ----------------------------------------------------------------------------------------------------------*/
 
     //Checks if a single property exists. Private function - only used as convenience by other functions
-    private static function SinglePropertyExists($table_name,$column_name,$prop_name,$prop_type,$prepare_error="Error preparing  info query. <br>Technical information :")#prop type is string used for bind_params
+    private static function SinglePropertyExists($table_name,$column_name,$prop_name,$prop_type="i",$prepare_error="Error preparing  info query. <br>Technical information :")#prop type is string used for bind_params
     {
         global $dbCon;
 
@@ -300,14 +300,14 @@ class DbInfo
         if ($select_stmt = $dbCon->prepare($select_query))
         {
             $select_stmt->bind_param($prop_type,$prop_name);
-            
+
             if($select_stmt->execute())
             {
                 $result = $select_stmt->get_result();
                 if($result->num_rows>0)#found records
                 {
                     return $result;
-                }   
+                }
                 else
                 {
                     return false;
@@ -336,7 +336,7 @@ class DbInfo
             {
                 return $student;
             }
-       } 
+       }
        else
        {
            return $students;
@@ -365,7 +365,7 @@ class DbInfo
         if ($select_stmt = $dbCon->prepare($select_query))
         {
             $select_stmt->bind_param($prop_type,$prop_name,$acc_type);
-            
+
             if($select_stmt->execute())
             {
                 $result = $select_stmt->get_result();
@@ -373,7 +373,7 @@ class DbInfo
                 if($result->num_rows>0)#found records
                 {
                     return $result;
-                }   
+                }
                 else
                 {
                     return $result;
@@ -397,13 +397,13 @@ class DbInfo
     {
         return self::SingleAdminPropertyExists("admin_accounts","staff_id",$admin_staff_id,"is",$acc_type);
     }
-    
+
         #Check if the teacher staff_id exists
         public static function TeacherStaffIdExists($admin_staff_id)
         {
             return self::AdminStaffIdExists($admin_staff_id,"teacher");
         }
-        
+
         #Check if the principal staff_id exists
         public static function PrincipalStaffIdExists($admin_staff_id)
         {
@@ -415,7 +415,7 @@ class DbInfo
         {
             return self::AdminStaffIdExists($admin_staff_id,"superuser");
         }
-    
+
 
     //Check if an admin account with that username exists
     protected static function AdminUsernameExists($admin_username,$acc_type)
@@ -428,19 +428,19 @@ class DbInfo
         {
             return self::AdminUsernameExists($admin_username,"teacher");
         }
-        
+
         #Check if the principal username exists
         public static function PrincipalUsernameExists($admin_username)
         {
             return self::AdminUsernameExists($admin_username,"principal");
         }
-        
+
         #Check if the superuser username exists
         public static function SuperuserUsernameExists($admin_username)
         {
             return self::AdminUsernameExists($admin_username,"superuser");
         }
-    
+
     //Check if an admin account with that email address exists
     protected static function AdminEmailExists($admin_email,$acc_type)
     {
@@ -464,8 +464,8 @@ class DbInfo
         {
             return self::AdminEmailExists($admin_email,"superuser");
         }
- 
-/*----------------------------------------------------------------------------------------------------------*/    
+
+/*----------------------------------------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------------------------------------
                     TEACHER ACCOUNT  - CLASSROOM | ASSIGNMENT | SCHEDULES | TESTS  FUNCTIONS
@@ -514,11 +514,11 @@ class DbInfo
             #Check if the student exists in the student array
         }
     }
-       
+
     //Checks if the assignment with the given id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function AssignmentExists($ass_id)
     {
-        
+
         if($assignments = self::SinglePropertyExists("assignments","ass_id",$ass_id,"i"))
         {
             if($assignments->num_rows > 0 )
@@ -567,9 +567,9 @@ class DbInfo
     {
         global $dbCon;
 
-        $select_query = "SELECT * FROM ass_submissions  
+        $select_query = "SELECT * FROM ass_submissions
         INNER JOIN assignments
-        ON ass_submissions.ass_id = assignments.ass_id 
+        ON ass_submissions.ass_id = assignments.ass_id
         WHERE ass_submissions.returned=1 AND assignments.teacher_id = $teacher_id";
 
         if($select_result = $dbCon->query($select_query))
@@ -587,9 +587,9 @@ class DbInfo
     {
         global $dbCon;
 
-        $select_query = "SELECT * FROM ass_submissions  
+        $select_query = "SELECT * FROM ass_submissions
         INNER JOIN assignments
-        ON ass_submissions.ass_id = assignments.ass_id 
+        ON ass_submissions.ass_id = assignments.ass_id
         WHERE ass_submissions.returned=0 AND assignments.teacher_id = $teacher_id";
 
         if($select_result = $dbCon->query($select_query))
@@ -624,7 +624,7 @@ class DbInfo
             return self::SinglePropertyExists("schedules","schedule_id",$schedule_id,"i");
         }
     }
-    
+
     //Checks if the schedule with the given guid_id exists, returns true on success | false if no records found | null if query couldn't execute
     public static function ScheduleExistsByGuid($guid_id)
     {
@@ -673,24 +673,24 @@ class DbInfo
     {
         return self::SinglePropertyExists("schedules","teacher_id",$teacher_acc_id,"i");
     }
-    
+
     #Get specific teacher tests - returns tests on success | false if no records found | null if query couldn't execute
     public static function GetSpecificTeacherTests($teacher_acc_id)
     {
         return self::SinglePropertyExists("tests","teacher_id",$teacher_acc_id,"i");
     }
 
-/*----------------------------------------------------------------------------------------------------------*/    
+/*----------------------------------------------------------------------------------------------------------*/
     #Get all subjects - returns subjects on success | false if no records found | null if query couldn't execute
     public static function GetAllSubjects()
     {
-        return self::GetAllRecordsFromTable("subjects");        
+        return self::GetAllRecordsFromTable("subjects");
     }
 
     #Get all streams - returns streams on success | false if no records found | null if query couldn't execute
     public static function GetAllStreams()
     {
-        return self::GetAllRecordsFromTable("streams");        
+        return self::GetAllRecordsFromTable("streams");
     }
 
 /*----------------------------------------------------------------------------------------------------------
@@ -707,8 +707,8 @@ class DbInfo
      public static function GetAllAssignments()
     {
         return self::GetAllRecordsFromTable("assignments");
-    }   
-    
+    }
+
     #Get all schedules - returns schedules on success | false if no records found | null if query couldn't execute
     public static function GetAllSchedules()
     {
@@ -774,7 +774,7 @@ class DbInfo
                               array_push($classrooms_found,$classroom);#add the classroom to the found classrooms
                           }
                       }
-                  } 
+                  }
               }
 
             #Return the classroom found if the array is not empty, otherwise return false
@@ -785,13 +785,13 @@ class DbInfo
             else
             {
                 return false;
-            }     
+            }
         }
         else
         {
             return self::GetAllClassrooms();
         }
-        
+
     }
 
     #Get all assignments sent to the student with the student id of student_id
@@ -799,19 +799,19 @@ class DbInfo
     {
         //TODO Add implementation - look for a way of using convenience functions
 
-        //Get the student classrooms and check for assignments that 
+        //Get the student classrooms and check for assignments that
         if($classrooms = self::GetAllStudentClassrooms($student_id))
         {
-            
+
             $assignments_found = array();#the assignments found
             foreach($classrooms as $classroom)
             {
-                
+
                 $cur_class_id = $classroom["class_id"];
-            
+
                 if($assignments = self::GetAllAssignments())
-                {    
-                    foreach($assignments as $assignment)#for every assignment 
+                {
+                    foreach($assignments as $assignment)#for every assignment
                     {
                         // $assignment_submitted = self::GetAssSubmissionsByAssId($assignment["ass_id"]);
 
@@ -839,8 +839,8 @@ class DbInfo
             else
             {
                 return false;
-            }    
-            
+            }
+
         }#end of classroom check
         else#no classrooms found
         {
@@ -853,7 +853,7 @@ class DbInfo
     {
         return self::SinglePropertyExists("ass_submissions","student_id",$student_id,"i");#if the student id exists in the ass_submissions table
     }
-    
+
     #Get assignment submission by ass_id
     public static function GetAssSubmissionsByAssId($ass_id)
     {
@@ -900,9 +900,9 @@ class DbInfo
                    COMMENTS - ASSIGNMENTS, ASSIGNMENT SUBMISSIONS & SCHEDULES
 ----------------------------------------------------------------------------------------------------------*/
     #Check if comment exists in a $table | return the comment if it does, false if it doesn't and null if prepare failed
-    public static function CommentExists($table_name,$comment_id)
+    public static function CommentExists($comment_id)
     {
-        if($comments = self::SinglePropertyExists($table_name,"comment_id",$comment_id,"i"))
+        if($comments = self::SinglePropertyExists("comments","comment_id",$comment_id,"i"))
         {
             if($comments->num_rows > 0)
             {
@@ -922,76 +922,13 @@ class DbInfo
         }
     }
 
-    //Get comment data and return it
-    private static function GetCommentData($comments,$comment_type)
-    {
-        $comment_list = array();
-        $comment_data = array("comment_type"=>$comment_type,"comments"=>$comment_list);
-        
-        //If comments were available
-        if(@$comments && $comments->num_rows>0)
-        {
-            $cur_comment = array("comment_id"=>"","poster_name"=>"","poster_type"=>"","poster_link"=>"","poster_id"=>"","comment_text"=>"","date"=>"","time"=>"");
-
-            //For each comment
-            foreach($comments as $comment)
-            {
-                $cur_comment["comment_id"] = $comment["comment_id"];
-                $cur_comment["poster_name"] = $comment["commentor_name"];
-                $cur_comment["poster_type"] = $comment["commentor_type"];
-                $cur_comment["poster_link"] = $comment["commentor_link"];
-                $cur_comment["poster_id"] = $comment["commentor_id"];
-                $cur_comment["comment_text"] = $comment["comment_text"];
-
-                $date_info = EsomoDate::GetDateInfo($comment["date_sent"]);
-                
-                //Format the date and time into a usable format eg. (Fri,April 28, 2017)
-                $date = $date_info["days"].", ".$date_info["months"]." ".$date_info["days"].", ".$date_info["years"];
-                $time = $date_info["hours"].":".$date_info["minutes"];
-                
-                $cur_comment["date"] = $date;
-                $cur_comment["time"] = $time;
-                
-                array_push($comment_data["comments"],$cur_comment);
-            }
-            //var_dump($comment_data);
-            return $comment_data;
-        }
-        else
-        {
-            return $comments;
-        }
-    }
-    #Get assignment comments
-    public static function GetAssComments($ass_id)
-    {
-        $comments = self::SinglePropertyExists("ass_comments","ass_id",$ass_id,"i");
-        
-        return self::GetCommentData($comments,"ass_comments");
-    }
-
-    #Get assignment submissions comments
-    public static function GetAssSubmissionComments($submission_id)
-    {
-        $comments = self::SinglePropertyExists("ass_submission_comments","submission_id",$submission_id,"i");
-
-        return self::GetCommentData($comments,"ass_submission_comments");
-    }
-
-    #Get schedule comments
-    public static function GetScheduleComments($schedule_id)
-    {
-        $comments = self::SinglePropertyExists("schedule_comments","schedule_id",$schedule_id,"i");
-//        var_dump($comments);
-        return self::GetCommentData($comments,"schedule_comments");
-    }
 /*----------------------------------------------------------------------------------------------------------
                     TESTS AND ANSWERS
 ----------------------------------------------------------------------------------------------------------*/
     #Get all tests - returns tests on success | false if no records found | null if query couldn't execute
     public static function GetAllTests()
     {
-        return self::GetAllRecordsFromTable("tests");        
+        return self::GetAllRecordsFromTable("tests");
     }
 
     #Get tests by subject ids
@@ -1005,7 +942,7 @@ class DbInfo
     {
         return self::SinglePropertyExists("test_questions","test_id",$test_id,"i");
     }
-    
+
     //TODO Ensure that question_index is always unique to every question in any given test
     //If a question exists in a test
     public static function TestQuestionExists($test_id,$question_index)
@@ -1166,7 +1103,7 @@ class DbInfo
     public static function GetSkippedQuestions($test_id,$user_info)
     {
         global $dbCon;
-        
+
         $select_query = "SELECT * FROM test_submissions WHERE test_id=? AND taker_id=? AND taker_type=? AND skipped=1";
         if($select_stmt = $dbCon->prepare($select_query))
         {
@@ -1182,7 +1119,7 @@ class DbInfo
                 {
                     return false;
                 }
-                
+
             }
             else #failed to execute query
             {
@@ -1275,7 +1212,7 @@ class DbInfo
         }
     }
 /*----------------------------------------------------------------------------------------------------------
-                    EXTRA FUNCTIONALITY 
+                    EXTRA FUNCTIONALITY
 ----------------------------------------------------------------------------------------------------------*/
     //Reverses a mysqli_result and returns an array with the values reversed
     public static function Paginate($listdata,$paginationtype, $numberperrows, $active, $type) {
@@ -1410,23 +1347,23 @@ class DbInfo
         $result_array = array();
         #foreach result item found
         if(isset($mysqli_result) && $mysqli_result)
-        {   
+        {
             foreach($mysqli_result as $result)
             {
-                array_push($result_array,$result);            
+                array_push($result_array,$result);
             }
         }
         else
         {
             return false;
-        }        
+        }
 
         $array_length = count($result_array);
 
         $reversed_array = array();
         for($i=($array_length-1); $i>=0; $i--)
         {
-            array_push($reversed_array,$result_array[$i]); 
+            array_push($reversed_array,$result_array[$i]);
         }
 
         return $reversed_array;
@@ -1436,7 +1373,7 @@ class DbInfo
     public static function GetArrayFromList($list_var)
     {
         $the_array  = explode(",",$list_var);
-        
+
         array_pop($the_array);#removes the last value in the array since it will always be blank
 
         return $the_array;
@@ -1453,13 +1390,13 @@ class DbInfo
             {
                 return $subject;
             }
-       } 
+       }
        else
        {
            return self::SinglePropertyExists("subjects","subject_id",$subject_id,"i");
        }
     }
-    
+
     //Get a stream by its id, returns the first instance of the subject found on success, false on fail and null on query prepare error
     public static function GetStreamById($stream_id)
     {
@@ -1471,7 +1408,7 @@ class DbInfo
             {
                 return $stream;
             }
-       } 
+       }
        else
        {
            return self::SinglePropertyExists("streams","stream_id",$stream_id,"i");
@@ -1498,7 +1435,7 @@ class DbInfo
 
     //Get the number of assignments in a certain class - specific to a teacher
     public static function GetTeacherAssInClass($class_id,$teacher_acc_id)
-    {   
+    {
         if($assignments = self::GetSpecificTeacherAssignments($teacher_acc_id))
         {
             $assignments_found=array();
@@ -1511,7 +1448,7 @@ class DbInfo
                     array_push($assignments_found,$assignment);
                 }
             }
-            
+
             return $assignments_found;#return the array containing the assignments found - keys same as mysqli_result
         }
         else
@@ -1522,7 +1459,7 @@ class DbInfo
 
     //Get the number of assignments in a certain class - all assignments in the given classroom
     public static function GetAssignmentsInClass($class_id)
-    {   
+    {
         if($assignments = self::GetAllAssignments())
         {
             $assignments_found=array();
@@ -1535,7 +1472,7 @@ class DbInfo
                     array_push($assignments_found,$assignment);
                 }
             }
-            
+
             return $assignments_found;#return the array containing the assignments found - keys same as mysqli_result
         }
         else
@@ -1544,20 +1481,20 @@ class DbInfo
         }
     }
 
-    #Get all the students that are not in a classroom 
+    #Get all the students that are not in a classroom
     public static function GetAllStudentsNotInClass($class_id)
     {
         //Get classroom
         if($classroom = self::ClassroomExists($class_id))
         {
             $students_not_in_class = array();
-            
+
             $student_ids_array = self::GetArrayFromList($classroom["student_ids"]);#list of the students that are in the list
             if($students = self::GetAllStudents())
             {
                 // var_dump($student_ids_array);
                 foreach($students as $student)#for every student
-                {   
+                {
                     #If we don't find the admission number in the array for the classroom, then add the student'
                     if(array_search($student["adm_no"],$student_ids_array) === false)
                     {
@@ -1595,7 +1532,7 @@ class DbInfo
         $resources = self::GetAllRecordsFromTable("resources");
         return $resources;
      }
-        
+
      //Get all resources that have a certain subject_id
      public static function GetResourcesBySubject($subject_id)
      {
@@ -1657,7 +1594,7 @@ class DbInfo
      {
         return self::GetRecordsInTimeframe("schedules","schedule_date",$start_date,$end_date);
      }
-    
+
     #Get the current day's schedules [HACK ~ TO FIND A GENUINE WORKING SOLUTION]
     public static function GetTodaySchedules()
     {
@@ -1669,7 +1606,7 @@ class DbInfo
 
         return $schedules;
     }
-    
+
     #Get yesterday's schedules
     public static function GetYesterdaySchedules()
     {
@@ -1700,7 +1637,7 @@ class DbInfo
 
         return $schedules;
     }
-    
+
     #Get last month schedules
     public static function GetLastMonthSchedules()
     {
@@ -1749,7 +1686,7 @@ class DbInfo
     {
         return self::GetScheduleAttendance($schedules,true);
     }
-    
+
     #Get unattended schedules
     public static function GetUnattendedSchedules($schedules)
     {
@@ -1774,7 +1711,7 @@ class DbInfo
 
         return $assignments;
     }
-    
+
     #Get yesterday's assignments
     public static function GetYesterdayAssignments()
     {
@@ -1805,7 +1742,7 @@ class DbInfo
 
         return $assignments;
     }
-    
+
     #Get last month assignments
     public static function GetLastMonthAssignments()
     {
@@ -1917,35 +1854,35 @@ class DbInfo
 if(isset($_GET['action'])) {
     $user_info = MySessionHandler::GetLoggedUserInfo();#store the logged in user info anytime an AJAX call is made
     sleep(1);//Sleep for  ashort amount of time, to reduce odds of a DDOS working.
-    
+
     switch($_GET['action']) {
         case 'StudentIdExists':
-            
+
             $std_id = $_GET['adm_no'];
-        
+
             $result = DbInfo::StudentIdExists($std_id);
-            
+
             echo json_encode($result);
-            
+
             break;
         case 'GetSpecificTeacherClassrooms':
-            
+
             $teacher_acc_id = $_SESSION['admin_acc_id'];
-            
+
             $result = DbInfo::GetSpecificTeacherClassrooms($teacher_acc_id);
-            
+
             $num = 0;
-            
-            
-            
+
+
+
             foreach ($result as $row) {
 
                 $subject_id = $row['subject_id'];
                 $stream_id = $row['stream_id'];
-                
+
                 $subjectname = DBInfo::GetSubjectById($subject_id);
                 $streamname = DBInfo::GetStreamById($stream_id);
-                
+
                 $newResult = array(
                     "id" => $row['class_id'],
                     "subject" => $subjectname['subject_name'],
@@ -1953,107 +1890,107 @@ if(isset($_GET['action'])) {
                     "selectedStudents" => $row['student_ids'],
                     "name" => $row['class_name']
                 );
-                
+
                 $arrayResult[$num] = $newResult;
-                
+
                 $num += 1;
-                
+
                 //echo $num;
-                
+
             }
-            
+
             echo json_encode($arrayResult);
-            
+
             break;
         case 'GetAllStudentsInClass':
-            
+
             $class_id = $_GET['class_id'];
-        
+
             $result = DbInfo::GetAllStudentsInClass($class_id);
-            
+
             echo $result;
-            
+
             break;
         case 'GetTeacherAssInClass':
-            
+
             $class_id = $_GET['class_id'];
             $teacher_acc_id = $_SESSION['admin_acc_id'];
-            
+
             $result = DbInfo::GetTeacherAssInClass($class_id,$teacher_acc_id);
-            
+
             echo $result;
-            
+
             break;
         case 'GetAssignmentsInClass':
-            
+
             $class_id = $_GET['class_id'];
-            
+
             $result = $DBInfo::GetAssignmentsInClass($class_id);
-            
+
             echo $result;
-            
+
             break;
         case 'getAllTeachers':
-            
+
             $result = DbInfo::getAllTeachers();
-            
+
             return $result;
-            
+
             break;
         case 'ClassroomExists':
-            
+
             $result = DbInfo::ClassroomExists($_GET['class_id']);
-            
+
             $num = 0;
-            
+
             //var_dump($result);
-            
+
             if($result != null) {
-              
+
                 echo json_encode($result);
 
             } else {
-                
+
                 $result = 'null';
-            
+
                 echo json_encode($result);
                 //echo 'null';
-                
+
             }
-            
+
             break;
         case 'GetAllStudents':
             $result = DbInfo::GetAllStudents();
-            
+
             $num = 0;
-            
+
             foreach ($result as $row) {
-                
+
                 $newResult = array(
                     "id" => $row['adm_no'],
                     "name" => $row['full_name']
                 );
-                
+
                 $arrayResult[$num] = $newResult;
-                
+
                 $num += 1;
-                
+
                 //echo $num;
-                
+
             }
-            
+
             echo json_encode($arrayResult);
-            
+
             break;
         case 'GetAllStudentsNotInClass':
             $class_id = $_GET['class_id'];
-            
+
             //echo $class_id;
-            
+
             $result="";
             if($students_found = DbInfo::GetAllStudentsNotInClass($class_id))
             {
-                
+
                 $num = 0;
 
                 foreach ($students_found as $student) {
@@ -2061,9 +1998,9 @@ if(isset($_GET['action'])) {
                         "id" => $student['adm_no'],
                         "name" => $student['full_name']
                     );
-                    
+
                     $arrayResult[$num] = $newResult;
-                    
+
                     $num += 1;
                 }
                 echo json_encode($arrayResult);
@@ -2072,7 +2009,7 @@ if(isset($_GET['action'])) {
             }
             else
             {
-                
+
                 $result = DbInfo::GetAllStudents();
 
                 $num = 0;
@@ -2094,93 +2031,93 @@ if(isset($_GET['action'])) {
 
                 echo json_encode($arrayResult);
 
-                
+
             }
 
-            
+
         break;
         case 'GetAllStreams':
-            
+
             $result = DbInfo::GetAllStreams();
-            
+
             $num = 0;
-            
+
             foreach ($result as $row) {
-                
+
                 $newResult = array(
                     "value" => $row['stream_id'],
                     "name" => $row['stream_name']
                 );
-                
+
                 $arrayResult[$num] = $newResult;
-                
+
                 $num += 1;
-                
+
                 //echo $num;
-                
+
             }
-            
+
             echo json_encode($arrayResult);
-            
+
             break;
         case 'GetAllSubjects':
-            
+
             $result = DbInfo::GetAllSubjects();
-            
+
             $num = 0;
-            
+
             foreach ($result as $row) {
-                
+
                 $newResult = array(
                     "value" => $row['subject_id'],
                     "category" => $row['subject_category'],
                     "name" => $row['subject_name']
                 );
-                
+
                 $arrayResult[$num] = $newResult;
-                
+
                 $num += 1;
-                
+
                 //echo $num;
-                
+
             }
 
             echo json_encode($arrayResult);
-            
+
             break;
         case 'GetSubjectById':
-            
+
             $result = DbInfo::GetSubjectById($_GET['subject_id']);
-            
+
             $num = 0;
-            
+
             $newResult = array(
                 "id" => $result['subject_id'],
                 "category" => $result['subject_category'],
                 "name" => $result['subject_name']
             );
-            
+
             echo json_encode($newResult);
-            
+
             break;
         case 'GetStreamById':
-            
+
             $result = DbInfo::GetStreamById($_GET['stream_id']);
-            
+
             $num = 0;
-            
+
             $newResult = array(
                 "id" => $result['stream_id'],
                 "name" => $result['stream_name']
             );
-            
+
             echo json_encode($newResult);
-            
+
             break;
         case 'GetTopicBySubjectId':
-            
+
             $result = DbInfo::GetTopicBySubjectId($_GET['subject_id']);
-            
+
             echo $subject_id;
             var_dump($result);
 
@@ -2191,7 +2128,7 @@ if(isset($_GET['action'])) {
             );
 
             echo json_encode($newResult);
-            
+
             break;
         case 'ScheduleExistsByGuid':
 
@@ -2291,10 +2228,10 @@ if(isset($_GET['action'])) {
         case "GetTestById":
             $test_id = &$_GET["test_id"];
             $test_found = DbInfo::TestExists($test_id);
-            
+
             echo json_encode($test_found);
         break;
-        
+
         case "GetSkippedQuestions":
             $test_id = &$_GET["test_id"];
             $skipped_questions = DbInfo::GetSkippedQuestions($test_id,$user_info);
@@ -2311,7 +2248,7 @@ if(isset($_GET['action'])) {
             {
                 echo "0";
             }
-            
+
         break;
 
         /*Ids exist*/
@@ -2428,8 +2365,8 @@ if(isset($_GET['action'])) {
 
         case 'GetScheduleComments':
             $schedule_id = intval($_GET["id"]);
-
-            $comments = DbInfo::GetScheduleComments($schedule_id);
+            require_once("comment_handler.php");
+            $comments = CommentHandler::GetScheduleComments($schedule_id);
 
             echo json_encode($comments);
 
@@ -2437,8 +2374,8 @@ if(isset($_GET['action'])) {
 
         case 'GetAssComments':
             $ass_id = intval($_GET["id"]);
-
-            $comments = DbInfo::GetAssComments($ass_id);
+            require_once("comment_handler.php");
+            $comments = CommentHandler::GetAssComments($ass_id);
 
             echo json_encode($comments);
 
@@ -2446,8 +2383,8 @@ if(isset($_GET['action'])) {
 
         case 'GetAssSubmissionComments':
             $submission_id = intval($_GET["id"]);
-
-            $comments = DbInfo::GetAssSubmissionComments($submission_id);
+            require_once("comment_handler.php");
+            $comments = CommentHandler::GetAssSubmissionComments($submission_id);
 
             echo json_encode($comments);
 
@@ -2492,12 +2429,12 @@ if(isset($_GET['action'])) {
                     break;
                 }
                 //---------------------------------------------------------------------
-                
+
                 $total_schedule_count = $done_schedule_count = $unattended_schedule_count = 0;
                 if($schedules && @$schedules->num_rows>0)
                 {
                     $total_schedule_count = $schedules->num_rows;
-                    
+
                     //Returns an array that contains associative arrays corresponding to db records
                     $done_schedules = DbInfo::GetDoneSchedules($schedules);
                     $unattended_schedules = DbInfo::GetUnattendedSchedules($schedules);
@@ -2516,14 +2453,14 @@ if(isset($_GET['action'])) {
             }
         break;
 
-        case "UpdateAssignmentOverview": 
+        case "UpdateAssignmentOverview":
             $timeframe = $_GET["timeframe"];
 
             //If the timeframe provided is valid
             if(isset($timeframe) && !empty($timeframe))
             {
                 $assignments = false;
-                
+
                 //TODO: [REFACTOR THIS CODE INTO A FUNCTION since it is reused]
                 switch($timeframe)
                 {
@@ -2562,7 +2499,7 @@ if(isset($_GET['action'])) {
 
                     $ass_subs = DbInfo::GetMultipleAssSubmissions($assignments);
                     $graded_subs = DbInfo::GetGradedAssSubmissions($assignments);
-                    
+
                     $total_ass_subs = count($ass_subs);
                     $total_graded_ass_subs = count($graded_subs);
                     $total_unreturned_subs = DbInfo::GetUngradedAssSubmissions($assignments);
@@ -2578,7 +2515,7 @@ if(isset($_GET['action'])) {
 
         break;
 
-        case "UpdateScheduleTabStats": 
+        case "UpdateScheduleTabStats":
             $timeframe = $_GET["timeframe"];
 
             //If the timeframe provided is valid
@@ -2655,11 +2592,11 @@ if(isset($_GET['action'])) {
                         {
                             $schedule_classroom = $classroom_found["class_name"];
                         }
-                        
+
                         #If the schedule has been attended
                         $schedule_status = null;
                         if($schedule["attended_schedule"])
-                        {   
+                        {
                             $schedule_status = "Done";
                         }
                         else
@@ -2673,7 +2610,7 @@ if(isset($_GET['action'])) {
                         {
                             $schedule_comment_count = $schedule_comments->num_rows;
                         }
-                        
+
                         //TODO : Get this data
                         $schedule_info["schedule_title"] = $schedule["schedule_title"];
                         $schedule_info["schedule_teacher"] = $schedule_teacher;
@@ -2703,7 +2640,7 @@ if(isset($_GET['action'])) {
 
         break;
 
-        case "UpdateAssignmentTabStats": 
+        case "UpdateAssignmentTabStats":
             $timeframe = $_GET["timeframe"];
 
             //If the timeframe provided is valid
@@ -2784,13 +2721,13 @@ if(isset($_GET['action'])) {
 
                         #Returned and unreturned assignment submission count
                         $returned_ass_submission_count = $unreturned_ass_submission_count = $ass_submission_count = 0;
-                        
+
                         #If the assignment submissions were found
                         if($ass_submissions = DbInfo::GetAssSubmissionsByAssId($ass_id) && @$ass_submissions->num_rows>0)
                         {
                             $ass_submission_count = $ass_submissions->num_rows;
                         }
-                        
+
                         #If the returned assignment submissions were found
                         if($returned_ass_submissions = DbInfo::GetGradedAssSubBasedOnAss($ass_submissions) && count($returned_ass_submissions)>0)
                         {
