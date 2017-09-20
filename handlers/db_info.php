@@ -391,32 +391,6 @@ class DbInfo
         }
     }
 
-
-    //Check if an admin account with that staff_id exists
-    protected static function AdminStaffIdExists($admin_staff_id,$acc_type)
-    {
-        return self::SingleAdminPropertyExists("admin_accounts","staff_id",$admin_staff_id,"is",$acc_type);
-    }
-
-        #Check if the teacher staff_id exists
-        public static function TeacherStaffIdExists($admin_staff_id)
-        {
-            return self::AdminStaffIdExists($admin_staff_id,"teacher");
-        }
-
-        #Check if the principal staff_id exists
-        public static function PrincipalStaffIdExists($admin_staff_id)
-        {
-            return self::AdminStaffIdExists($admin_staff_id,"principal");
-        }
-
-        #Check if the superuser staff_id exists
-        public static function SuperuserStaffIdExists($admin_staff_id)
-        {
-            return self::AdminStaffIdExists($admin_staff_id,"superuser");
-        }
-
-
     //Check if an admin account with that username exists
     protected static function AdminUsernameExists($admin_username,$acc_type)
     {
@@ -2251,46 +2225,6 @@ if(isset($_GET['action'])) {
 
         break;
 
-        /*Ids exist*/
-        case 'SuperuserStaffIdExists':
-            $staff_id = htmlspecialchars($_GET["staff_id"]);
-            $id_exists = DbInfo::SuperuserStaffIdExists($id);
-
-            if($id_exists)
-            {
-                echo true;
-            }
-            else
-            {
-                echo "staff id does not exist";
-            }
-        break;
-        case 'PrincipalStaffIdExists':
-            $staff_id = htmlspecialchars($_GET["staff_id"]);
-            $id_exists = DbInfo::PrincipalStaffIdExists($id);
-
-            if($id_exists)
-            {
-                echo true;
-            }
-            else
-            {
-                echo "staff id does not exist";
-            }
-        break;
-        case 'TeacherStaffIdExists':
-            $staff_id = htmlspecialchars($_GET["staff_id"]);
-            $id_exists = DbInfo::TeacherStaffIdExists($id);
-
-            if($id_exists)
-            {
-                echo true;
-            }
-            else
-            {
-                echo "staff id does not exist";
-            }
-        break;
         case 'StudentIdValidation':
             $student_id = htmlspecialchars($_GET["student_id"]);
             $id_exists = DbInfo::StudentIdExists($student_id);

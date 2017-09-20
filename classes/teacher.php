@@ -47,7 +47,6 @@ class Teacher extends AdminAccount
     {
         #Properties
     /*
-        $this->staffId = $data["staffId"]
         $this->firstName = $data["firstName"]
         $this->lastName = $data["lastName"]
         $this->username = $data["username"]
@@ -60,7 +59,6 @@ class Teacher extends AdminAccount
         if (Validator::TeacherSignupValid($data))
         {         
             #set the class variable values to the post variable values
-            $this->staffId = htmlspecialchars($data["staff_id"]);
             $this->firstName = htmlspecialchars($data["first_name"]);
             $this->lastName = htmlspecialchars($data["last_name"]);
             $this->username = htmlspecialchars($data["username"]);

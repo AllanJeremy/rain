@@ -280,7 +280,7 @@ if(isset($section)):
                 </div>
 
                 <!--Student list table-->
-                <table class="bordered responsive-table" id="super_student_list_table">
+                <table class="bordered" id="super_student_list_table">
                     <thead>
                         <tr>
                             <th></th>
@@ -408,12 +408,6 @@ if(isset($section)):
                             <label for="new_teacher_username">Username<sup>*</sup></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newTeacherStaffId" type="number" class="" name="new_teacher_staff_id">
-                            <label for="newTeacherStaffId" required>Staff ID<sup>*</sup></label>
-                        </div>
-                    </div>
 
                     <div class="row">
                         
@@ -464,12 +458,7 @@ if(isset($section)):
 
                             <div class="input-field col s10">
                                 <div class="row">
-                                    <div class="input-field col s6 m4">
-                                        <p>
-                                            <input type="checkbox" class="filled-in" id="filled-box-1" />
-                                            <label for="filled-box-1">Staff ID</label>
-                                        </p>
-                                    </div>
+
                                     <div class="input-field col s6 m4">
                                         <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-2" />
@@ -489,11 +478,9 @@ if(isset($section)):
                 </div>
 
                 <!--Teacher list table-->
-                <table class="bordered responsive-table" id="super_teacher_list_table">
+                <table class="bordered" id="super_teacher_list_table">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th data-field="id">Staff ID</th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
                         </tr>
@@ -509,7 +496,6 @@ if(isset($section)):
                                  class="filled-in selected_teachers" id="filled-box-admin-<?php echo $teacher['acc_id']?>" />
                                 <label for="filled-box-admin-<?php echo $teacher['acc_id']?>"></label>
                             </td>
-                            <td><?php echo $teacher["staff_id"] ?></td>
                             <td><?php echo $teacher["first_name"] . " " . $teacher["last_name"]  ?></td>
                             <td><?php echo $teacher["username"] ?></td>
                         </tr>
@@ -631,12 +617,6 @@ if(isset($section)):
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="newPrincipalStaffId" type="number" class="" name="new_principal_staff_id" required>
-                            <label for="newPrincipalStaffId">Staff ID<sup>*</sup></label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
                             <p>
                                 <input type="checkbox" id="createTeacherAccountFromPrincipal" name="create_corresponding_teacher_account"/>
                                 <label for="createTeacherAccountFromPrincipal">Create a corresponding teacher account</label>
@@ -681,11 +661,10 @@ if(isset($section)):
                 </div>
 
                 <!--Principal list table-->
-                <table class="bordered responsive-table" id="super_principal_list_table">
+                <table class="bordered" id="super_principal_list_table">
                     <thead>
                         <tr>
                             <th></th>
-                            <th data-field="id">Staff ID</th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
                         </tr>
@@ -701,7 +680,6 @@ if(isset($section)):
                                  class="filled-in selected_principals" id="filled-box-admin-<?php echo $principal['acc_id']?>" />
                                 <label for="filled-box-admin-<?php echo $principal['acc_id']?>"></label>
                             </td>
-                            <td><?php echo $principal["staff_id"] ?></td>
                             <td><?php echo $principal["first_name"] . " " . $principal["last_name"] ?></td>
                             <td><?php echo $principal["username"] ?></td>
                         </tr>
@@ -825,12 +803,6 @@ if(isset($section)):
                             <label for="newSuperuserUsername">Username<sup>*</sup></label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="newSuperuserStaffId" type="number" class="" name="new_superuser_staff_id" required>
-                            <label for="newSuperuserStaffId">Staff ID<sup>*</sup></label>
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="input-field col s12">
@@ -873,12 +845,6 @@ if(isset($section)):
                                 <div class="row">
                                     <div class="input-field col s6 m4">
                                         <p>
-                                            <input type="checkbox" class="filled-in" id="filled-box-1" />
-                                            <label for="filled-box-1">Staff ID</label>
-                                        </p>
-                                    </div>
-                                    <div class="input-field col s6 m4">
-                                        <p>
                                             <input type="checkbox" class="filled-in" id="filled-box-2" />
                                             <label for="filled-box-2">Name</label>
                                         </p>
@@ -896,10 +862,9 @@ if(isset($section)):
                 </div>
 
                 <!--Principal list table-->
-                <table class="bordered responsive-table" id="super_superuser_list_table">
+                <table class="bordered" id="super_superuser_list_table">
                     <thead>
                         <tr>
-                            <th data-field="id">Staff ID</th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
                         </tr>
@@ -910,7 +875,6 @@ if(isset($section)):
                         foreach ($superusers as $superuser):
                     ?>
                         <tr>
-                            <td><?php echo $superuser["staff_id"] ?></td>
                             <td><?php echo $superuser["first_name"] . " " . $superuser["last_name"] ?></td>
                             <td><?php echo $superuser["username"] ?></td>
                         </tr>

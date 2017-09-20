@@ -18,16 +18,14 @@ class Validator
                 $data["first_name"],
                 $data["last_name"],
                 $data["email"],
-                $data["username"],
-                $data["staff_id"]
+                $data["username"]
             )
             &&
             (
                 !empty($data["first_name"])&&
                 !empty($data["last_name"])&&
                 !empty($data["email"])&&
-                !empty($data["username"])&&
-                !empty($data["staff_id"])
+                !empty($data["username"])
             )
         );
 
@@ -43,16 +41,14 @@ class Validator
                 $data["first_name"],
                 $data["last_name"],
                 $data["email"],
-                $data["username"],
-                $data["staff_id"]
+                $data["username"]
             )
             &&
             (
                 !empty($data["first_name"]) &&
                 !empty($data["last_name"]) &&
                 !empty($data["email"]) &&
-                !empty($data["username"]) &&
-                !empty($data["staff_id"])
+                !empty($data["username"])
             )
         );
     }
@@ -67,16 +63,14 @@ class Validator
                 $data["first_name"],
                 $data["last_name"],
                 $data["email"],
-                $data["username"],
-                $data["staff_id"]
+                $data["username"]
             )
             &&
             (
                 !empty($data["first_name"]) &&
                 !empty($data["last_name"]) &&
                 !empty($data["email"]) &&
-                !empty($data["username"]) &&
-                !empty($data["staff_id"])
+                !empty($data["username"])
             )
         );
 

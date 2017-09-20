@@ -25,7 +25,6 @@ class MySessionHandler
 
         #If the admin account was successfully created, initialize the session variables
         $_SESSION["admin_acc_id"]= $admin_acc["acc_id"];
-        $_SESSION["admin_staff_id"]= $admin_acc["staff_id"];
         $_SESSION["admin_first_name"]= $admin_acc["first_name"];
         $_SESSION["admin_last_name"]= $admin_acc["last_name"];
         $_SESSION["admin_username"]= $admin_acc["username"];
@@ -59,7 +58,6 @@ class MySessionHandler
         {
             unset(
                 $_SESSION["admin_acc_id"],
-                $_SESSION["admin_staff_id"],
                 $_SESSION["admin_first_name"],
                 $_SESSION["admin_last_name"],
                 $_SESSION["admin_username"],
@@ -81,7 +79,6 @@ class MySessionHandler
         (
             isset(
                 $_SESSION["admin_acc_id"],
-                $_SESSION["admin_staff_id"],
                 $_SESSION["admin_first_name"],
                 $_SESSION["admin_last_name"],
                 $_SESSION["admin_username"],

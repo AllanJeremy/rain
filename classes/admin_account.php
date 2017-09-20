@@ -5,10 +5,9 @@ require_once (realpath(dirname(__FILE__) . "/../handlers/db_connect.php")); #All
 require_once (realpath(dirname(__FILE__) . "/../handlers/pass_encrypt.php")); #Allows encryption of passwords
 
 require_once (dirname(__FILE__) ."/../handlers/validation_handler.php");#Handles validation of form data
-require_once (dirname(__FILE__) ."/../handlers/comment_handler.php");#Handles comments
 
 #HANDLES ACCOUNTS
-class AdminAccount extends CommentHandler
+class AdminAccount
 {
     //Variable initialization
     public $staffId;
@@ -51,7 +50,7 @@ class AdminAccount extends CommentHandler
         }
         else #if the query cannot be prepared
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            // ErrorHandler::PrintError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -59,7 +58,7 @@ class AdminAccount extends CommentHandler
 
     //Create an account - used by all classes that inherit from this class ie. teacher, principal, superuser
     protected function CreateAccount($args = 
-            array("staffId"=>999,"firstName"=>"","lastName"=>"","username"=>"","email"=>"",
+            array("firstName"=>"","lastName"=>"","username"=>"","email"=>"",
                 "phone"=>"","accType"=>"","encrypted_password"=>""))
     {
         #Database connection - mysqli object
@@ -68,13 +67,12 @@ class AdminAccount extends CommentHandler
         if(self::AccountExists($this->username,$this->accType)==false)
         {  
             #query for inserting the information to the database
-            $insert_query = "INSERT INTO admin_accounts(staff_id,first_name,last_name,username,email,phone,account_type,password) 
+            $insert_query = "INSERT INTO admin_accounts(first_name,last_name,username,email,phone,account_type,password) 
             VALUES(?,?,?,?,?,?,?,?)"; 
 
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
-                $insert_stmt->bind_param("isssssss",
-                    $args["staffId"],
+                $insert_stmt->bind_param("sssssss",
                     $args["firstName"],
                     $args["lastName"],
                     $args["username"],
@@ -88,8 +86,8 @@ class AdminAccount extends CommentHandler
             }
             else #if the query cannot be prepared
             {
-                ErrorHandler::PrintError("Couldn't prepare query to create a " . 
-                $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
+                // ErrorHandler::PrintError("Couldn't prepare query to create a " . 
+                // $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
                 return false;
             }
         }
@@ -145,7 +143,6 @@ class AdminAccount extends CommentHandler
          $this->encrypted_password = PasswordEncrypt::EncryptPass($this->password);
          
          $args = array(
-         "staffId"=>$this->staffId,
          "firstName"=>$this->firstName,
          "lastName"=>$this->lastName,
          "username"=>$this->username,

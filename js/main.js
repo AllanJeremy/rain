@@ -42,80 +42,6 @@ $(document).ready(function (z) {
         }
     }
 
-    //Superuser staff id
-    function SuperuserStaffIdValid($input){
-        var staff_id = $input.val();
-        ResetInputValidity($input);
-
-        if(IsEmpty(staff_id))
-        {
-            $input.addClass("invalid");
-            return false;
-        }
-        else
-        {
-            $.get(db_info_path,{"action":"SuperuserStaffIdExists","staff_id":staff_id},function(response,status){
-                return ValidateInputResponse($input,response);
-            });
-        }
-    };
-
-    //Principal staff id
-    function PrincipalStaffIdValid($input){
-        var staff_id = $input.val();
-
-        ResetInputValidity($input);
-
-        if(IsEmpty(staff_id))
-        {
-            $input.addClass("invalid");
-            return false;
-        }
-        else
-        {
-            $.get(db_info_path,{"action":"PrincipalStaffIdExists","staff_id":staff_id},function(response,status){
-                return ValidateInputResponse($input,response);
-            });
-        }
-    };
-
-    //Teacher staff id
-    function TeacherStaffIdValid($input){
-        var staff_id = $input.val();
-        ResetInputValidity($input);
-
-        if(IsEmpty(staff_id))
-        {
-            $input.addClass("invalid");
-            return false;
-        }
-        else
-        {
-            $.get(db_info_path,{"action":"TeacherStaffIdExists","staff_id":staff_id},function(response,status){
-                return ValidateInputResponse($input,response);
-            });
-        }
-    };
-
-    //Student id
-    function StudentIdValid($input){
-        var student_id = $input.val();
-
-        ResetInputValidity($input);
-
-        if(IsEmpty(student_id))
-        {
-            $input.addClass("invalid");
-            return false;
-        }
-        else
-        {
-            $.get(db_info_path,{"action":"StudentIdValidation","student_id":student_id},function(response,status){
-                return ValidateInputResponse($input,response);
-           });
-        }
-    };
-
     /*Username changes and validation*/
     //Superuser username exists
     function SuperuserUsernameValid($input){
@@ -377,7 +303,6 @@ $(document).ready(function (z) {
             var email = $form.find("#newTeacherEmail").val();
             var phone = $form.find("#newTeacherPhone").val();
             var username = $form.find("#newTeacherUsername").val();
-            var staff_id = $form.find("#newTeacherStaffId").val();
 
             //JSON data to send in ajax request
             var data = {
@@ -385,8 +310,7 @@ $(document).ready(function (z) {
                 "last_name":last_name,
                 "email":email,
                 "phone":phone,
-                "username":username,
-                "staff_id":staff_id
+                "username":username
             };
 
             CreateTeacherAccount(data,$form);
@@ -405,7 +329,6 @@ $(document).ready(function (z) {
             var email = $form.find("#newPrincipalEmail").val();
             var phone = $form.find("#newPrincipalPhone").val();
             var username = $form.find("#newPrincipalUsername").val();
-            var staff_id = $form.find("#newPrincipalStaffId").val();
             var create_teacher_acc = $form.find("#createTeacherAccountFromPrincipal").is(":checked");
 
             //JSON data to send in ajax request
@@ -414,8 +337,7 @@ $(document).ready(function (z) {
                 "last_name":last_name,
                 "email":email,
                 "phone":phone,
-                "username":username,
-                "staff_id":staff_id,
+                "username":username
             };
 
             CreatePrincipalAccount(data,$form,create_teacher_acc);
@@ -434,7 +356,6 @@ $(document).ready(function (z) {
             var email = $form.find("#newSuperuserEmail").val();
             var phone = $form.find("#newSuperuserPhone").val();
             var username = $form.find("#newSuperuserUsername").val();
-            var staff_id = $form.find("#newSuperuserStaffId").val();
 
             //JSON data to send in ajax request
             var data = {
@@ -442,8 +363,7 @@ $(document).ready(function (z) {
                 "last_name":last_name,
                 "email":email,
                 "phone":phone,
-                "username":username,
-                "staff_id":staff_id,
+                "username":username
             };
             CreateSuperuserAccount(data,$form);
         }
