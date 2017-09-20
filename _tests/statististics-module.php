@@ -1,0 +1,3 @@
+<?php
+    /* STATISTICS MODULE TESTS */
+?>

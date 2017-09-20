@@ -1,0 +1,3 @@
+<?php
+    /* CLASSROOM MODULE TESTS */
+?>

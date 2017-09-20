@@ -1,0 +1,3 @@
+<?php
+    /* ACCOUNT MODULE TESTS */
+?>

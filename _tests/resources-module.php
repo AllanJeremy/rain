@@ -1,0 +1,3 @@
+<?php
+    /* RESOURCES MODULE TESTS */
+?>

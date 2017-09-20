@@ -1,0 +1,3 @@
+<?php
+    /* ASSIGNMENT MODULE TESTS */
+?>

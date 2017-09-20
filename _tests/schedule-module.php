@@ -1,0 +1,3 @@
+<?php
+    /* SCHEDULE MODULE TESTS */
+?>
