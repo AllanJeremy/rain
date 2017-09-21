@@ -27,7 +27,7 @@
     echo "<p>Function : <code class='center-text'>DbInfo::GetAllStudentClassrooms($student_acc_id)</code></p>";
     if($std_classrooms = DbInfo::GetAllStudentClassrooms($student_acc_id))
     {
-        ErrorHandler::PrintSuccess("Found student with id ".$student_acc_id." in classroom(s)");
+        ErrorHandler::MsgBoxSuccess("Found student with id ".$student_acc_id." in classroom(s)");
         echo "<h4>Classrooms the student belongs to</h4><ul>";
         foreach($std_classrooms as $std_classroom)
         {
@@ -37,7 +37,7 @@
     }
     else
     {
-        ErrorHandler::PrintError("Could not find student with id ".$student_acc_id." in classrooms");
+        ErrorHandler::MsgBoxError("Could not find student with id ".$student_acc_id." in classrooms");
     }
 
 ?>
@@ -52,7 +52,7 @@
     echo "<p>Function : <code class='center-text'>DbInfo::GetAllStudentAssignments($student_acc_id)</code></p>";
     if($std_assignments = DbInfo::GetAllStudentAssignments($student_acc_id))
     {
-        ErrorHandler::PrintSuccess("Found student with id ".$student_acc_id." in classroom(s)");
+        ErrorHandler::MsgBoxSuccess("Found student with id ".$student_acc_id." in classroom(s)");
         echo "<h4>Assignments received by this student</h4><ul>";
         
         foreach($std_assignments as $std_assignment)
@@ -63,7 +63,7 @@
     }
     else
     {
-        ErrorHandler::PrintError("Could not find assignments for the student with student_id ".$student_acc_id);
+        ErrorHandler::MsgBoxError("Could not find assignments for the student with student_id ".$student_acc_id);
     }
     
     

@@ -38,7 +38,7 @@ class DbHandler extends DbInfo
             }
             else #failed to prepare the query for data retrieval
             {
-                // ErrorHandler::PrintError($prepare_error . $dbCon->error);
+                // ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
                 return null;
             }
         }
@@ -157,7 +157,7 @@ class DbHandler extends DbInfo
             }
             else #failed to prepare the query for data retrieval
             {
-                // ErrorHandler::PrintError($prepare_error . $dbCon->error);
+                // ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
                 return null;
             }
         }
@@ -251,7 +251,7 @@ class DbHandler extends DbInfo
             }
             else
             {
-                ErrorHandler::PrintError($prepare_error . $dbCon->error);
+                ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
                 return null;
             }
         }
@@ -303,7 +303,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
     }
     else
     {
-        ErrorHandler::PrintError($prepare_error . $dbCon->error);
+        ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
         return null;
     }
 }
@@ -554,7 +554,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
     }
     else
     {
-        ErrorHandler::PrintError($prepare_error . $dbCon->error);
+        ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
         return null;
     }
 }

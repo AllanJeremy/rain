@@ -50,7 +50,7 @@ class AdminAccount
         }
         else #if the query cannot be prepared
         {
-            // ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            // ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -140,7 +140,7 @@ class AdminAccount
         }
         else
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
         }
     }
 

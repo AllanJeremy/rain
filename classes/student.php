@@ -67,7 +67,7 @@ class Student implements StudentAssignmentFunctions
         }
         else #if the query cannot be prepared
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -162,7 +162,7 @@ class Student implements StudentAssignmentFunctions
         }
         else
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return $dbCon->error;
         }
     }

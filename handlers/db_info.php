@@ -53,7 +53,7 @@ class DbInfo
         }
         else
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -89,7 +89,7 @@ class DbInfo
         }
         else
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -228,7 +228,7 @@ class DbInfo
         }
         else #failed to prepare the query for data retrieval
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -320,7 +320,7 @@ class DbInfo
         }
         else #failed to prepare the query for data retrieval
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -386,7 +386,7 @@ class DbInfo
         }
         else #failed to prepare the query for data retrieval
         {
-            ErrorHandler::PrintError($prepare_error . $dbCon->error);
+            ErrorHandler::MsgBoxError($prepare_error . $dbCon->error);
             return null;
         }
     }
@@ -719,7 +719,7 @@ class DbInfo
         }
         else
         {
-            ErrorHandler::PrintError("Error preparing query. <br>Technical Error :".$dbCon->error);
+            ErrorHandler::MsgBoxError("Error preparing query. <br>Technical Error :".$dbCon->error);
         }
     }
 

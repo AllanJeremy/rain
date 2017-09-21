@@ -21,7 +21,7 @@ if(!isset($dbCon))//makes sure we don't open multiple connections
 
 	if ($dbCon->error)//check if there is any error when connecting to the database
 	{
-		ErrorHandler::PrintError("Database Error : ".$dbCon->error);
+		ErrorHandler::MsgBoxError("Database Error : ".$dbCon->error);
 		exit();//exit the file execution i we did not get a successful connection to the database
 	}
 

@@ -93,7 +93,7 @@ function StudentInfoValid()
     }
     else //The account does not exist. Return false
     {
-            // ErrorHandler::PrintSuccess("Account doesn't exist <br>Username input: ".$student_username."<br>Password input :".$student_password);
+            // ErrorHandler::MsgBoxSuccess("Account doesn't exist <br>Username input: ".$student_username."<br>Password input :".$student_password);
 
         //Cleanup - we don't need this anymore
         unset($student_username);
@@ -102,15 +102,8 @@ function StudentInfoValid()
     }
 }
 
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_acc_id"]);
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_adm_no"]);
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_first_name"]);
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_last_name"]);
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_username"]);
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_password"]);
-// ErrorHandler::PrintSmallSuccess($_SESSION["student_email"]);
 #RUN THIS CODE WHEN THIS FILE IS REFERENCED - when the user attempts to login
-    // ErrorHandler::PrintSuccess("LoginHandler");
+    // ErrorHandler::MsgBoxSuccess("LoginHandler");
 //Check if the student login variables have been set
 if(StudentLoginSet())
 {
@@ -128,7 +121,7 @@ if(StudentLoginSet())
     else
     {
         //if the info is invalid deny login
-        ErrorHandler::PrintSmallError("Invalid student credentials, failed to logged in");
+        ErrorHandler::MsgBoxError("Invalid student credentials, failed to logged in");
     }
 }
 
@@ -149,10 +142,10 @@ else if (AdminLoginSet())
     else
     {
         //if the info is invalid deny login
-        ErrorHandler::PrintSmallError("Invalid admin credentials, failed to logged in");
+        ErrorHandler::MsgBoxError("Invalid admin credentials, failed to logged in");
     }
 }
 else
 {
-    //  ErrorHandler::PrintSuccess("no information is set");
+    //  ErrorHandler::MsgBoxSuccess("no information is set");
 }

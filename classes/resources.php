@@ -262,7 +262,7 @@ class EsomoResource
             $error_message = "<b>Note : Teacher Resource Error</b>.<br>Could not retrieve teacher resources.<br>Reason: <i>we could not find the teacher account associated with the tests stated</i>. Displaying uneditable resources instead.<br>If the problem persists, feel free to <a href='./report.php' target='_blank'>report the problem</a>";
             
             //Print the error message
-            ErrorHandler::PrintError($error_message);
+            ErrorHandler::MsgBoxError($error_message);
             
             echo "<br><div class='divider'></div><br>";#add a divider after the error message
             
@@ -283,7 +283,7 @@ class EsomoResource
             }
             catch(Exception $error){
                 $error_message = "Could not display resources normally either.<br>If the problem persists, feel free to <a href='./report.php' target='_blank'>report the problem</a> ";
-                ErrorHandler::PrintError($error_message."<br><b>Error Caught : </b>$error");
+                ErrorHandler::MsgBoxError($error_message."<br><b>Error Caught : </b>$error");
             }
             
         endif;

@@ -43,7 +43,7 @@ class MySessionHandler
         #Attempt to initialize session variables, if this fails, print the error message
         if(!self::AdminInitSession($username,$acc_type))
         {
-            ErrorHandler::PrintError("Could not retrieve the admin account requested for use in the session handler.");
+            ErrorHandler::MsgBoxError("Could not retrieve the admin account requested for use in the session handler.");
         }
 
     }
@@ -125,11 +125,11 @@ class MySessionHandler
     //Logs the student in - initializes all session variables
     public static function StudentLogin($username)
     {
-        //ErrorHandler::PrintSuccess("Logging you in...");
+        //ErrorHandler::MsgBoxSuccess("Logging you in...");
         #Attempt to initialize session variables, if this fails, print the error message
         if(!self::StudentInitSession($username))
         {
-            ErrorHandler::PrintError("Failed to login. <br> Could not retrieve the student account requested for use in the session handler.");
+            ErrorHandler::MsgBoxError("Failed to login. <br> Could not retrieve the student account requested for use in the session handler.");
         }
 
     }
