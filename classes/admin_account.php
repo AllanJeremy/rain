@@ -63,12 +63,14 @@ class AdminAccount
     {
         #Database connection - mysqli object
         global $dbCon;
-        
+        $errors = array();
+        $error_msg = "Something went wrong while trying to create your account. Consider reporting this to the dev team";
+
         if(self::AccountExists($this->username,$this->accType)==false)
         {  
             #query for inserting the information to the database
             $insert_query = "INSERT INTO admin_accounts(first_name,last_name,username,email,phone,account_type,password) 
-            VALUES(?,?,?,?,?,?,?,?)"; 
+            VALUES(?,?,?,?,?,?,?)"; 
 
             if($insert_stmt = $dbCon->prepare($insert_query))
             {
@@ -81,14 +83,24 @@ class AdminAccount
                     $args["accType"],
                     $args["encrypted_password"]);  
 
-            $insert_stmt->execute();
-            return true;#return true if successful
+                #return true if account was successfully created
+                if($insert_stmt->execute())
+                {
+                    ErrorHandler::PrintErrorLog($errors);
+                    return true;
+                }
+                else
+                {
+                    array_push($errors,"[query exec error] : $error_msg");
+                    ErrorHandler::PrintErrorLog($errors);
+                    return false;
+                }
             }
             else #if the query cannot be prepared
             {
-                // ErrorHandler::PrintError("Couldn't prepare query to create a " . 
-                // $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
-                return false;
+                array_push($errors,"[query prepare error] : $error_msg");
+                ErrorHandler::PrintErrorLog($errors);
+                return null;#return null if account creation query prepare failed
             }
         }
         else

@@ -75,7 +75,7 @@ class Teacher extends AdminAccount
 
             #converts the this-> variables to an argument array
             $args = parent::GetArgsArray();
-
+           
             return parent::CreateAccount($args);
         }
 

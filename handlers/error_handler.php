@@ -2,56 +2,31 @@
 
 class ErrorHandler
 {
+    
+    //Prints a json encoded error log
+    public static function PrintErrorLog($errors=(array()))
+    {
+        echo json_encode(
+            array("errors"=>$errors)
+        );
+    }
+    
+    //Generic print message
+    private static function PrintMessage($message,$type)
+    {
+        $return_val = array("$type"=>(ucfirst($type)." : ".$message));
+        echo json_encode($return_val);
+        return $return_val;
+    }
 
-    //Print a success message in a green card-panel
     public static function PrintError($message)
     {
-?>
-    <div class='container errorMessage'>
-    <div class='card-panel red darken-4'>
-        <p class='red-text text-lighten-2'><?php echo $message ?></p>
-    </div>
-    </div>
-<?php 
+        return self::PrintMessage($message,"error");
     }
 
-   //Print a success message in a green card-panel
    public static function PrintSuccess($message)
     {
-?>
-    <div class='container successMessage'>
-    <div class='card-panel green'>
-        <p class='green-text text-darken-4'><?php echo $message ?></p>
-    </div>
-    </div>
-<?php
-    }
-    //Print a success message in a green card-panel
-    public static function PrintSmallError($message)
-    {
-?>
-    <div class='container errorMessage'>
-    <div class="row">
-        <div class='col s12 m6 offset-m3 card red darken-4 red-text center text-lighten-2'>
-            <?php echo $message ?> 
-        </div>
-    </div>
-    </div>
-<?php 
-    }
-
-   //Print a success message on a small card strip
-   public static function PrintSmallSuccess($message)
-    {
-?>
-    <div class='container successMessage'>
-    <div class="row">
-        <div class='col s12 m6 offset-m3 card green green-text center text-darken-4'>
-            <?php echo $message ?> 
-        </div>
-    </div>
-    </div>
-<?php
+        return self::PrintMessage($message,"message");
     }
 }
 ?>

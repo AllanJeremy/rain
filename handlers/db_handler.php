@@ -135,9 +135,13 @@ class DbHandler extends DbInfo
         global $dbCon;#db connection string (mysqli object)
         $prepare_error = "Couldn't prepare query to reset the admin (" . $acc_type . ") account. <br><br> Technical information : ";
 
-        if($admin = self::GetAdminById($acc_id,$acc_type))#if the admin exists
+        if($admin_acc = self::GetAdminById($acc_id,$acc_type))#if the admin exists
         {
-            $admin_acc = $admin->fetch_array();
+            if(!is_array($admin_acc))
+            {
+                $admin_acc = $admin_acc->fetch_array();
+            }
+            
 
             $new_password = PasswordEncrypt::EncryptPass($admin_acc["username"]);#set the new password to be equal to the username
 
@@ -1367,13 +1371,7 @@ if(isset($_POST['action'])) {
             $data = $_POST["data"];
 
             $student = new Student();
-            $create_status = $student->CreateStudentAccount($data);
-
-            // //Generate email for the account created
-            // $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
-            // $email_status = EmailHandler::EsomoSendEmail($email);
-
-            echo ($create_status);#Print out the create status for feedback handling by javascript
+            $student->CreateStudentAccount($data);
         break;
 
         case 'CreateTeacherAccount': #Create a teacher account
@@ -1382,13 +1380,7 @@ if(isset($_POST['action'])) {
             $create_status = false;#The create status for the account ~ true on success | false or null on failure
 
             $teacher = new Teacher();
-            $create_status = $teacher->CreateTeacher($data);
-
-            //Generate email for the account created
-            $email = EsomoMailGenerator::NewTeacherAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
-            $email_status = EmailHandler::EsomoSendEmail($email);
-
-            echo ($create_status);#Print out the create status for feedback handling by javascript
+            $teacher->CreateTeacher($data);
         break;
 
         case 'CreatePrincipalAccount': #Create a principal account
@@ -1399,22 +1391,15 @@ if(isset($_POST['action'])) {
 
             $create_status = false;#The create status for the account ~ true on success | false or null on
             //If create a corresponding teacher account is selected
-            if($create_teacher_acc)
+            if($create_teacher_acc=="yes")
             {
                 require_once("../classes/teacher.php");#include teacher class
                 $create_status = $principal->CreatePrincipalTeacherAccount($data);
             }
             else #Only create principal account
             {
-                echo "Only create the principal";
                 $create_status = $principal->CreatePrincipal($data);
             }
-
-            //Generate email for the account created
-            $email = EsomoMailGenerator::NewPrincipalAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
-            $email_status = EmailHandler::EsomoSendEmail($email);
-
-            echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'CreateSuperuserAccount': #Create a superuser account
@@ -1423,12 +1408,6 @@ if(isset($_POST['action'])) {
 
             $superuser = new Superuser();
             $create_status = $superuser->CreateSuperuser($data);
-
-            //Generate email for the account created
-            $email = EsomoMailGenerator::NewSuperuserAccEmail($data["first_name"],$data["last_name"],$data["username"],$data["email"]);
-            $email_status = EmailHandler::EsomoSendEmail($email);
-
-            echo ($create_status);#Print out the create status for feedback handling by javascript
         break;
 
         case 'UpdateClassroomInfo':

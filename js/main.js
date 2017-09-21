@@ -5,18 +5,38 @@ $(document).ready(function (z) {
     var db_handler_path = "handlers/db_handler.php";
     var db_info_path = "handlers/db_info.php";
     var toast_time = 4000;
-    
+    var short_toast_time = 2000;
+
     //Returns true if empty and false if not empty
     function IsEmpty(value)
     {
         return (value=="" || value==null);
     }
 
-    //Returns true if ajax response is valid
+    //Returns true if ajax response is valid (true)
     function IsValidResponse(response)
     {
         return(response=="1" || response=="true");
     }
+
+    //Check if there are any errrors in the var errors ~ return true if there are
+    function HasErrors(errors)
+    {
+        console.log(errors);
+        return ((errors["errors"]).length>0);        
+    }
+
+    //Toast all the errors (this is a js array)
+    function ToastAjaxErrors(errors)
+    {
+        errors = errors["errors"];
+        for(var i=0; i<errors.length; i++)
+        {
+            Materialize.toast(errors[i],toast_time);
+            setTimeout(100);
+        }
+    }
+
     /*Staff id|Student id changes and validation*/
     //Reset the validity of an input
     function ResetInputValidity($input)
@@ -184,7 +204,12 @@ $(document).ready(function (z) {
         return is_valid;
     }
 
-    /*SUPERUSER AJAX REQUESTS*/
+    /*SUPERUSER SECTION AJAX REQUESTS*/
+    var feedback_timeout = toast_time*2 ;
+
+    var creating_acc_message = "Creating account... Please wait";
+    var acc_creation_failed_message = "Account creation failed. Please ensure filled in all the required fields.";
+
     //Clear form inputs
     function ClearFormInputs($form)
     {
@@ -196,76 +221,74 @@ $(document).ready(function (z) {
         $form.find("textarea").html("");
     }
 
-    //Timeout for toasts
-    var timeout_time = 2000;
+    //Show feedback for creating accounts
+    function ShowCreateAccountFeedback(acc_type,ajaxResponse,$form)
+    {
+        try
+        {
+            var errors = JSON.parse(ajaxResponse);
+            
+            //If there were any errors
+            if(HasErrors(errors))
+            {
+                Materialize.toast("Failed to create the "+acc_type+" account",short_toast_time);
+
+                ToastAjaxErrors(errors);
+            }
+            else //No errors
+            {
+                ClearFormInputs($form);
+                Materialize.toast("Successfully created the "+acc_type+" account",short_toast_time);
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
+
+    }
+
     //Create student account
     function CreateStudentAccount(data,$form)
     {
+        Materialize.toast(creating_acc_message,feedback_timeout);//HACK ~ This should disappear once the post request is done
+
         $.post(db_handler_path,{"action":"CreateStudentAccount","data":data},function(response,status){
-            //If the account was successfully created
-            if(IsValidResponse(response))
-            {
-                ClearFormInputs($form);
-                Materialize.toast("Successfully created the student account",timeout_time);
-            }
-            else
-            {
-                Materialize.toast("Failed to create the student account",timeout_time);
-            }
+            ShowCreateAccountFeedback("student",response,$form);
         });
     }
     //Create teacher account
     function CreateTeacherAccount(data,$form)
     {
+        Materialize.toast(creating_acc_message,feedback_timeout);//HACK ~ This should disappear once the post request is done
+        
         $.post(db_handler_path,{"action":"CreateTeacherAccount","data":data},function(response,status){
-            //If the account was successfully created
-            if(IsValidResponse(response))
-            {
-                ClearFormInputs($form);
-                Materialize.toast("Successfully created the teacher account",timeout_time);
-            }
-            else
-            {
-                Materialize.toast("Failed to create the teacher account",timeout_time);
-            }
+            ShowCreateAccountFeedback("teacher",response,$form);
         });
     }
     //Create principal account
     function CreatePrincipalAccount(data,$form,$create_teacher_acc)
     {
+        Materialize.toast(creating_acc_message,feedback_timeout);//HACK ~ This should disappear once the post request is done
+
         $.post(db_handler_path,{"action":"CreatePrincipalAccount","data":data,"create_teacher_acc":$create_teacher_acc},function(response,status){
-            //If the account was successfully created
-            if(IsValidResponse(response))
-            {
-                ClearFormInputs($form);
-                Materialize.toast("Successfully created the principal account",timeout_time);
-            }
-            else
-            {
-                Materialize.toast("Failed to create the principal account",timeout_time);
-            }
+            ShowCreateAccountFeedback("principal",response,$form);
         });
     }
     //Create superuser account
     function CreateSuperuserAccount(data,$form)
     {
+        Materialize.toast(creating_acc_message,feedback_timeout);//HACK ~ This should disappear once the post request is done
+
         $.post(db_handler_path,{"action":"CreateSuperuserAccount","data":data},function(response,status){
-            //If the account was successfully created
-            if(IsValidResponse(response))
-            {
-                ClearFormInputs($form);
-                Materialize.toast("Successfully created the superuser account",timeout_time);
-            }
-            else
-            {
-                Materialize.toast("Failed to create the superuser account",timeout_time);
-            }
+            ShowCreateAccountFeedback("superuser",response);
         });
     }
 
     /*SUPERUSER EVENTS*/
     //Create Student
     $(".btn#createStudentAccount").click(function(){
+        $(this).addClass("disabled");
         //Validate input
         var $form = $(this).parents("form#createStudentForm");
 
@@ -289,6 +312,10 @@ $(document).ready(function (z) {
             console.log("Create student account");
             CreateStudentAccount(data,$form);
         }
+        else
+        {
+            Materialize.toast(acc_creation_failed_message,short_toast_time);
+        }
     });
     //Create Teacher
     $(".btn#createTeacherAccount").click(function(){
@@ -297,6 +324,7 @@ $(document).ready(function (z) {
 
         if(IsValidFormData($form))
         {
+            
             //Form data
             var first_name = $form.find("#newTeacherFirstName").val();
             var last_name = $form.find("#newTeacherLastName").val();
@@ -314,6 +342,10 @@ $(document).ready(function (z) {
             };
 
             CreateTeacherAccount(data,$form);
+        }
+        else
+        {
+            Materialize.toast(acc_creation_failed_message,short_toast_time);
         }
     });
     //Create Principal
@@ -342,6 +374,10 @@ $(document).ready(function (z) {
 
             CreatePrincipalAccount(data,$form,create_teacher_acc);
         }
+        else
+        {
+            Materialize.toast(acc_creation_failed_message,short_toast_time);
+        }
     });
     //Create Superuser
     $(".btn#createSuperuserAccount").click(function(){
@@ -367,9 +403,17 @@ $(document).ready(function (z) {
             };
             CreateSuperuserAccount(data,$form);
         }
+        else
+        {
+            Materialize.toast(acc_creation_failed_message,short_toast_time);
+        }
     });
 
     /*Bulk actions superuser section*/
+    var info_timeout = short_toast_time*2;
+    var delete_message = "Delete in Progress... Please wait";
+    var reset_message = "Account Reset in Progress... Please wait";
+    var action_failed_message = "Bulk action failed, select accounts to perform action on first";
 
     //Student bulk action
     $("#student_bulk_action").change(function(){
@@ -398,7 +442,7 @@ $(document).ready(function (z) {
             switch($option)
             {
                 case "super_student_delete":
-                console.log("Deleting student");
+                    Materialize.toast(delete_message,toast_time);
                     $selected_accounts.each(function(){
                         $(this).addClass("disabled");
                         $(this).attr("disabled","disabled");
@@ -408,11 +452,11 @@ $(document).ready(function (z) {
                         if(is_valid)
                         {
                             $selected_accounts.parents("tr").remove();
-                            Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",(timeout_time*2));
+                            Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",toast_time);
                         }
                         else
                         {
-                            Materialize.toast("Failed to delete 1 or more students accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                            Materialize.toast("Failed to delete 1 or more students accounts, if the problem persists: contact your web administrator",toast_time);
 
                             //Re-enable the checkboxes
                             $selected_accounts.each(function(){
@@ -423,15 +467,16 @@ $(document).ready(function (z) {
                     });
                 break;
                 case "super_student_reset":
-                        $.post(db_handler_path,{"action":"SuperuserResetStudents","data":data},function(response,status){
-                        is_valid = IsValidResponse(response);
+                    Materialize.toast(reset_message,toast_time);
+                    $.post(db_handler_path,{"action":"SuperuserResetStudents","data":data},function(response,status){
+                    is_valid = IsValidResponse(response);
                         if(is_valid)
                         {
-                            Materialize.toast("Successfully reset "+number_of_accs+" student account(s)",(timeout_time*2));
+                            Materialize.toast("Successfully reset "+number_of_accs+" student account(s)",toast_time);
                         }
                         else
                         {
-                            Materialize.toast("Failed to reset 1 or more student accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                            Materialize.toast("Failed to reset 1 or more student accounts, if the problem persists: contact your web administrator",toast_time);
                         }
                     });
                 break;
@@ -439,7 +484,7 @@ $(document).ready(function (z) {
         }
         else
         {
-            Materialize.toast("Bulk action failed, select accounts to perform action on first",(timeout_time*2));
+            Materialize.toast(action_failed_message,info_timeout);
         }
 
     });
@@ -461,7 +506,6 @@ $(document).ready(function (z) {
 
         data = {"acc_ids":selected_acc_ids};
 
-
         var number_of_accs = data["acc_ids"].length;
         console.log(number_of_accs);
         //If some accounts have been selected
@@ -472,6 +516,7 @@ $(document).ready(function (z) {
             switch($option)
             {
                 case "super_teacher_delete":
+                    Materialize.toast(delete_message,toast_time);
                     $selected_accounts.each(function(){
                         $(this).addClass("disabled");
                         $(this).attr("disabled","disabled");
@@ -481,11 +526,11 @@ $(document).ready(function (z) {
                         if(is_valid)
                         {
                             $selected_accounts.parents("tr").remove();
-                            Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",(timeout_time*2));
+                            Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",toast_time);
                         }
                         else
                         {
-                            Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                            Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",toast_time);
 
                             //Re-enable the checkboxes
                             $selected_accounts.each(function(){
@@ -496,15 +541,16 @@ $(document).ready(function (z) {
                     });
                 break;
                 case "super_teacher_reset":
-                        $.post(db_handler_path,{"action":"SuperuserResetTeachers","data":data},function(response,status){
+                    Materialize.toast(reset_message,toast_time);
+                    $.post(db_handler_path,{"action":"SuperuserResetTeachers","data":data},function(response,status){
                         is_valid = IsValidResponse(response);
                         if(is_valid)
                         {
-                            Materialize.toast("Successfully reset "+number_of_accs+" accounts",(timeout_time*2));
+                            Materialize.toast("Successfully reset "+number_of_accs+" accounts",toast_time);
                         }
                         else
                         {
-                            Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                            Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",toast_time);
                         }
                     });
                 break;
@@ -512,13 +558,14 @@ $(document).ready(function (z) {
         }
         else
         {
-            Materialize.toast("Bulk action failed, select accounts to perform action on first",(timeout_time*2));
+            Materialize.toast(action_failed_message,info_timeout);
         }
     });
 
     //Principal delete action
     $("#super_delete_principal_acc").click(function()
     {
+        Materialize.toast(delete_message,toast_time);
         var $self = $(this);
 
         var $selected_accounts = $("input.selected_principals:checked");
@@ -550,11 +597,11 @@ $(document).ready(function (z) {
                 if(is_valid)
                 {
                     $selected_accounts.parents("tr").remove();
-                    Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",(timeout_time*2));
+                    Materialize.toast("Successfully deleted "+number_of_accs+" account(s)",toast_time);
                 }
                 else
                 {
-                    Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                    Materialize.toast("Failed to delete 1 or more accounts, if the problem persists: contact your web administrator",toast_time);
 
                     //Re-enable the checkboxes
                     $selected_accounts.each(function(){
@@ -567,7 +614,7 @@ $(document).ready(function (z) {
         }
         else
         {
-            Materialize.toast("Bulk action failed, select accounts to perform action on first",(timeout_time*2));
+            Materialize.toast(action_failed_message,toast_time);
         }
 
     });
@@ -597,17 +644,17 @@ $(document).ready(function (z) {
                 is_valid = IsValidResponse(response);
                 if(is_valid)
                 {
-                    Materialize.toast("Successfully reset "+number_of_accs+" accounts",(timeout_time*2));
+                    Materialize.toast("Successfully reset "+number_of_accs+" accounts",toast_time);
                 }
                 else
                 {
-                    Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",(timeout_time*2));
+                    Materialize.toast("Failed to reset 1 or more accounts, if the problem persists: contact your web administrator",toast_time);
                 }
             });
         }
         else
         {
-            Materialize.toast("Failed to reset accounts, select accounts to perform action on first",(timeout_time*2));
+            Materialize.toast("Failed to reset accounts, select accounts to perform action on first",toast_time);
         }
 
     });
@@ -617,7 +664,6 @@ $(document).ready(function (z) {
 
     //Changing passwords
     $("#btn_change_password").click(function(){
-        var toast_time = 4000;
         var $form = $(this).parents(".account_form");
 
         var $inputs = $form.find(".input-container").children("input");

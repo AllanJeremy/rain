@@ -79,45 +79,48 @@ class Student implements StudentAssignmentFunctions
     {
         #Database connection - mysqli object
         global $dbCon;
-        
-        if(self::AccountExists($args["username"])==false)
-        {  
-            #query for inserting the information to the database
-            $insert_query = "INSERT INTO 
-            student_accounts(adm_no,first_name,last_name,username,password,email,personal_phone,parent_names,parent_phone,full_name,class_ids) 
-            VALUES(?,?,?,?,?,?,?,?,?,?,?)"; 
+        $errors = array();
+        $error_msg = "Something went wrong while trying to create your account. Consider reporting this to the dev team";
 
-            if($insert_stmt = $dbCon->prepare($insert_query))
-            {
-                $insert_stmt->bind_param("issssssssss",
-                $args["adm_no"],
-                $args["first_name"],
-                $args["last_name"],
-                $args["username"],
-                $args["encrypted_password"],
-                $args["email"],
-                $args["personal_phone"],
-                $args["parent_names"],
-                $args["parent_phone"],
-                $args["full_name"],
-                $args["class_ids"]
-                );        
+        #query for inserting the information to the database
+        $insert_query = "INSERT INTO 
+        student_accounts(adm_no,first_name,last_name,username,password,email,personal_phone,parent_names,parent_phone,full_name,class_ids) 
+        VALUES(?,?,?,?,?,?,?,?,?,?,?)"; 
 
-                #return true if account was successfully created
-                return($insert_stmt->execute());
-            }
-            else #if the query cannot be prepared
-            {
-                ErrorHandler::PrintError("Couldn't prepare query to create a " . 
-                $this->accType . " account. <br><br> Technical information : ".$dbCon->error);
-                return false;#return false if account creation failed
-            }
-
-        }
-        else#account already exists
+        if($insert_stmt = $dbCon->prepare($insert_query))
         {
-            return false;#return false if account creation failed
-            // ErrorHandler::PrintSmallError("Failed to create a ".$this->accType." account with the username ".$this->username." as it already exists.");
+            $insert_stmt->bind_param("issssssssss",
+            $args["adm_no"],
+            $args["first_name"],
+            $args["last_name"],
+            $args["username"],
+            $args["encrypted_password"],
+            $args["email"],
+            $args["personal_phone"],
+            $args["parent_names"],
+            $args["parent_phone"],
+            $args["full_name"],
+            $args["class_ids"]
+            );        
+            
+            #return true if account was successfully created
+            if($insert_stmt->execute())
+            {
+                ErrorHandler::PrintErrorLog($errors);
+                return true;
+            }
+            else
+            {
+                array_push($errors,"[query exec error] : $error_msg");
+                ErrorHandler::PrintErrorLog($errors);
+                return false;
+            }
+        }
+        else #if the query cannot be prepared
+        {
+            array_push($errors,"[query prepare error] : $error_msg");
+            ErrorHandler::PrintErrorLog($errors);
+            return null;#return null if account creation query prepare failed
         }
     }
 
