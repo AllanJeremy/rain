@@ -170,7 +170,7 @@ if(isset($section)):
 
                     <div class="row">  
                         <div class="input-field col s12">
-                            <a href="javascript:void(0)" class="right btn" id="createStudentAccount" >Create account</a>
+                            <a href="javascript:void(0)" class="right btn create-acc-btn" id="createStudentAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -280,7 +280,7 @@ if(isset($section)):
                 </div>
 
                 <!--Student list table-->
-                <table class="bordered" id="super_student_list_table">
+                <table class="bordered highlight centered" id="super_student_list_table">
                     <thead>
                         <tr>
                             <th></th>
@@ -412,7 +412,7 @@ if(isset($section)):
                     <div class="row">
                         
                         <div class="input-field col s12">
-                            <a class="right btn" id="createTeacherAccount">Create account</a>
+                            <a class="right btn create-acc-btn" id="createTeacherAccount">Create account</a>
                         </div>
                     </div>
                 </form>
@@ -478,11 +478,14 @@ if(isset($section)):
                 </div>
 
                 <!--Teacher list table-->
-                <table class="bordered" id="super_teacher_list_table">
+                <table class="bordered highlight centered" id="super_teacher_list_table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
+                            <th data-field="name">Email</th>
+                            <th data-field="name">Phone</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -498,6 +501,14 @@ if(isset($section)):
                             </td>
                             <td><?php echo $teacher["first_name"] . " " . $teacher["last_name"]  ?></td>
                             <td><?php echo $teacher["username"] ?></td>
+                            <td><?php echo $teacher["email"] ?></td>
+                            <td><?php
+                                $phone = "N/A";
+                                if(!empty($teacher["phone"]))
+                                {
+                                    $phone = $teacher["phone"];
+                                }
+                                echo $phone ?></td>
                         </tr>
                     <?php
                         endforeach;
@@ -625,7 +636,7 @@ if(isset($section)):
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <a href="javascript:void(0)" class="right btn" id="createPrincipalAccount" >Create account</a>
+                            <a href="javascript:void(0)" class="right btn create-acc-btn" id="createPrincipalAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -661,12 +672,14 @@ if(isset($section)):
                 </div>
 
                 <!--Principal list table-->
-                <table class="bordered" id="super_principal_list_table">
+                <table class="bordered highlight centered" id="super_principal_list_table">
                     <thead>
                         <tr>
                             <th></th>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
+                            <th data-field="name">Email</th>
+                            <th data-field="name">Phone</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -682,6 +695,14 @@ if(isset($section)):
                             </td>
                             <td><?php echo $principal["first_name"] . " " . $principal["last_name"] ?></td>
                             <td><?php echo $principal["username"] ?></td>
+                            <td><?php echo $principal["email"] ?></td>
+                            <td><?php
+                                $phone = "N/A";
+                                if(!empty($principal["phone"]))
+                                {
+                                    $phone = $principal["phone"];
+                                }
+                                echo $phone ?></td>
                         </tr>
                     <?php
                         endforeach;
@@ -806,7 +827,7 @@ if(isset($section)):
 
                     <div class="row">
                         <div class="input-field col s12">
-                            <a href="javascript:void(0)" class="right btn" id="createSuperuserAccount" >Create account</a>
+                            <a href="javascript:void(0)" class="right btn create-acc-btn" id="createSuperuserAccount" >Create account</a>
                         </div>
                     </div>
                 </form>
@@ -862,11 +883,13 @@ if(isset($section)):
                 </div>
 
                 <!--Principal list table-->
-                <table class="bordered" id="super_superuser_list_table">
+                <table class="bordered highlight centered" id="super_superuser_list_table">
                     <thead>
                         <tr>
                             <th data-field="name">Name(s)</th>
                             <th data-field="name">Username</th>
+                            <th data-field="name">Email</th>
+                            <th data-field="name">Phone</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -877,6 +900,14 @@ if(isset($section)):
                         <tr>
                             <td><?php echo $superuser["first_name"] . " " . $superuser["last_name"] ?></td>
                             <td><?php echo $superuser["username"] ?></td>
+                            <td><?php echo $superuser["email"] ?></td>
+                            <td><?php
+                                $phone = "N/A";
+                                if(!empty($superuser["phone"]))
+                                {
+                                    $phone = $superuser["phone"];
+                                }
+                                echo $phone ?></td>
                         </tr>
                     <?php
                         endforeach;

@@ -1,5 +1,7 @@
 $(document).ready(function (z) {
 
+    var DISABLED_CLASS = "disabled";
+    var ACTIVE_CLASS = "active";
 
     /*Superuser validation*/
     var db_handler_path = "handlers/db_handler.php";
@@ -22,7 +24,6 @@ $(document).ready(function (z) {
     //Check if there are any errrors in the var errors ~ return true if there are
     function HasErrors(errors)
     {
-        console.log(errors);
         return ((errors["errors"]).length>0);        
     }
 
@@ -245,7 +246,11 @@ $(document).ready(function (z) {
         {
             console.log(e);
         }
-
+        finally 
+        {
+            //In the end ~ re-enable the create account button
+            $form.find(".create-acc-btn").removeClass(DISABLED_CLASS);
+        }
     }
 
     //Create student account
@@ -286,31 +291,47 @@ $(document).ready(function (z) {
     }
 
     /*SUPERUSER EVENTS*/
+    var acc_wait_msg = "Please wait until the current account is done being created";
+
+    //Show account wait message
+    function ShowAccWaitMessage()
+    {
+        Materialize.toast(acc_wait_msg,short_toast_time);
+    }
+
+    //TODO: Consider making buttons re-enable on disappearing of "Create account toasts"
     //Create Student
     $(".btn#createStudentAccount").click(function(){
-        $(this).addClass("disabled");
+        $btn = $(this);
         //Validate input
         var $form = $(this).parents("form#createStudentForm");
 
-        console.log(IsValidFormData($form));
+        //Only create the account if the form data is valid and the button is not disabled
         if(IsValidFormData($form))
         {
-            //Form data
-            var student_id = $form.find("#newStudentId").val();
-            var first_name = $form.find("#newStudentFirstName").val();
-            var last_name = $form.find("#newStudentLastName").val();
-            var username = $form.find("#newStudentUsername").val();
+            if(!($btn.hasClass(DISABLED_CLASS)))
+            {
+                $btn.addClass(DISABLED_CLASS);
+                //Form data
+                var student_id = $form.find("#newStudentId").val();
+                var first_name = $form.find("#newStudentFirstName").val();
+                var last_name = $form.find("#newStudentLastName").val();
+                var username = $form.find("#newStudentUsername").val();
 
-            //JSON data to send in ajax request
-            var data = {
-                "student_id":student_id,
-                "first_name":first_name,
-                "last_name":last_name,
-                "username":username
-            };
-
-            console.log("Create student account");
-            CreateStudentAccount(data,$form);
+                //JSON data to send in ajax request
+                var data = {
+                    "student_id":student_id,
+                    "first_name":first_name,
+                    "last_name":last_name,
+                    "username":username
+                };
+                
+                CreateStudentAccount(data,$form);
+            }
+            else //Account is still being created ~ wait
+            {
+                ShowAccWaitMessage();
+            }
         }
         else
         {
@@ -319,29 +340,37 @@ $(document).ready(function (z) {
     });
     //Create Teacher
     $(".btn#createTeacherAccount").click(function(){
+        $btn = $(this);
         //Validate input
         var $form = $(this).parents("form#createTeacherForm");
 
         if(IsValidFormData($form))
         {
-            
-            //Form data
-            var first_name = $form.find("#newTeacherFirstName").val();
-            var last_name = $form.find("#newTeacherLastName").val();
-            var email = $form.find("#newTeacherEmail").val();
-            var phone = $form.find("#newTeacherPhone").val();
-            var username = $form.find("#newTeacherUsername").val();
+            if(!($btn.hasClass(DISABLED_CLASS)))
+            {
+                $btn.addClass(DISABLED_CLASS);
+                //Form data
+                var first_name = $form.find("#newTeacherFirstName").val();
+                var last_name = $form.find("#newTeacherLastName").val();
+                var email = $form.find("#newTeacherEmail").val();
+                var phone = $form.find("#newTeacherPhone").val();
+                var username = $form.find("#newTeacherUsername").val();
 
-            //JSON data to send in ajax request
-            var data = {
-                "first_name":first_name,
-                "last_name":last_name,
-                "email":email,
-                "phone":phone,
-                "username":username
-            };
+                //JSON data to send in ajax request
+                var data = {
+                    "first_name":first_name,
+                    "last_name":last_name,
+                    "email":email,
+                    "phone":phone,
+                    "username":username
+                };
 
-            CreateTeacherAccount(data,$form);
+                CreateTeacherAccount(data,$form);
+            }
+            else
+            {
+                ShowAccWaitMessage();
+            }
         }
         else
         {
@@ -350,29 +379,38 @@ $(document).ready(function (z) {
     });
     //Create Principal
     $(".btn#createPrincipalAccount").click(function(){
+        $btn = $(this);
         //Validate input
         var $form = $(this).parents("form#createPrincipalForm");
 
         if(IsValidFormData($form))
         {
-            //Form data
-            var first_name = $form.find("#newPrincipalFirstName").val();
-            var last_name = $form.find("#newPrincipalLastName").val();
-            var email = $form.find("#newPrincipalEmail").val();
-            var phone = $form.find("#newPrincipalPhone").val();
-            var username = $form.find("#newPrincipalUsername").val();
-            var create_teacher_acc = $form.find("#createTeacherAccountFromPrincipal").is(":checked");
+            if(!($btn.hasClass(DISABLED_CLASS)))
+            {
+                $btn.addClass(DISABLED_CLASS);
+                //Form data
+                var first_name = $form.find("#newPrincipalFirstName").val();
+                var last_name = $form.find("#newPrincipalLastName").val();
+                var email = $form.find("#newPrincipalEmail").val();
+                var phone = $form.find("#newPrincipalPhone").val();
+                var username = $form.find("#newPrincipalUsername").val();
+                var create_teacher_acc = $form.find("#createTeacherAccountFromPrincipal").is(":checked");
 
-            //JSON data to send in ajax request
-            var data = {
-                "first_name":first_name,
-                "last_name":last_name,
-                "email":email,
-                "phone":phone,
-                "username":username
-            };
+                //JSON data to send in ajax request
+                var data = {
+                    "first_name":first_name,
+                    "last_name":last_name,
+                    "email":email,
+                    "phone":phone,
+                    "username":username
+                };
 
-            CreatePrincipalAccount(data,$form,create_teacher_acc);
+                CreatePrincipalAccount(data,$form,create_teacher_acc);
+            }
+            else
+            {
+                ShowAccWaitMessage();
+            }
         }
         else
         {
@@ -381,27 +419,36 @@ $(document).ready(function (z) {
     });
     //Create Superuser
     $(".btn#createSuperuserAccount").click(function(){
+        $btn = $(this);
         //Validate input
         var $form = $(this).parents("form#createSuperuserForm");
 
         if(IsValidFormData($form))
         {
-            //Form data
-            var first_name = $form.find("#newSuperuserFirstName").val();
-            var last_name = $form.find("#newSuperuserLastName").val();
-            var email = $form.find("#newSuperuserEmail").val();
-            var phone = $form.find("#newSuperuserPhone").val();
-            var username = $form.find("#newSuperuserUsername").val();
+            if(!($btn.hasClass(DISABLED_CLASS)))
+            {
+                $btn.addClass(DISABLED_CLASS);
+                //Form data
+                var first_name = $form.find("#newSuperuserFirstName").val();
+                var last_name = $form.find("#newSuperuserLastName").val();
+                var email = $form.find("#newSuperuserEmail").val();
+                var phone = $form.find("#newSuperuserPhone").val();
+                var username = $form.find("#newSuperuserUsername").val();
 
-            //JSON data to send in ajax request
-            var data = {
-                "first_name":first_name,
-                "last_name":last_name,
-                "email":email,
-                "phone":phone,
-                "username":username
-            };
-            CreateSuperuserAccount(data,$form);
+                //JSON data to send in ajax request
+                var data = {
+                    "first_name":first_name,
+                    "last_name":last_name,
+                    "email":email,
+                    "phone":phone,
+                    "username":username
+                };
+                CreateSuperuserAccount(data,$form);
+            }
+            else
+            {
+                ShowAccWaitMessage();
+            }
         }
         else
         {
@@ -431,7 +478,6 @@ $(document).ready(function (z) {
         });
 
         data = {"acc_ids":selected_acc_ids};
-        console.log();
 
         var number_of_accs = data["acc_ids"].length;
         //If some accounts have been selected
@@ -444,8 +490,8 @@ $(document).ready(function (z) {
                 case "super_student_delete":
                     Materialize.toast(delete_message,toast_time);
                     $selected_accounts.each(function(){
-                        $(this).addClass("disabled");
-                        $(this).attr("disabled","disabled");
+                        $(this).addClass(DISABLED_CLASS);
+                        $(this).attr(DISABLED_CLASS,DISABLED_CLASS);
                     });
                     $.post(db_handler_path,{"action":"SuperuserDeleteStudents","data":data},function(response,status){
                         is_valid = IsValidResponse(response);
@@ -460,8 +506,8 @@ $(document).ready(function (z) {
 
                             //Re-enable the checkboxes
                             $selected_accounts.each(function(){
-                                $(this).removeClass("disabled");
-                                $(this).removeAttr("disabled");
+                                $(this).removeClass(DISABLED_CLASS);
+                                $(this).removeAttr(DISABLED_CLASS);
                             });
                         }
                     });
@@ -518,8 +564,8 @@ $(document).ready(function (z) {
                 case "super_teacher_delete":
                     Materialize.toast(delete_message,toast_time);
                     $selected_accounts.each(function(){
-                        $(this).addClass("disabled");
-                        $(this).attr("disabled","disabled");
+                        $(this).addClass(DISABLED_CLASS);
+                        $(this).attr(DISABLED_CLASS,DISABLED_CLASS);
                     });
                     $.post(db_handler_path,{"action":"SuperuserDeleteTeachers","data":data},function(response,status){
                         is_valid = IsValidResponse(response);
@@ -534,8 +580,8 @@ $(document).ready(function (z) {
 
                             //Re-enable the checkboxes
                             $selected_accounts.each(function(){
-                                $(this).removeClass("disabled");
-                                $(this).removeAttr("disabled");
+                                $(this).removeClass(DISABLED_CLASS);
+                                $(this).removeAttr(DISABLED_CLASS);
                             });
                         }
                     });
@@ -579,7 +625,6 @@ $(document).ready(function (z) {
         });
 
         data = {"acc_ids":selected_acc_ids};
-        console.log();
 
         var number_of_accs = data["acc_ids"].length;
         //If some accounts have been selected
@@ -587,8 +632,8 @@ $(document).ready(function (z) {
         {
             //Disable each input
             $selected_accounts.each(function(){
-                $(this).addClass("disabled");
-                $(this).attr("disabled","disabled");
+                $(this).addClass(DISABLED_CLASS);
+                $(this).attr(DISABLED_CLASS,DISABLED_CLASS);
             });
 
             //Delete principal accounts
@@ -605,8 +650,8 @@ $(document).ready(function (z) {
 
                     //Re-enable the checkboxes
                     $selected_accounts.each(function(){
-                        $(this).removeClass("disabled");
-                        $(this).removeAttr("disabled");
+                        $(this).removeClass(DISABLED_CLASS);
+                        $(this).removeAttr(DISABLED_CLASS);
                     });
                 }
             });
