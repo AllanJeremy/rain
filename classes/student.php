@@ -87,8 +87,14 @@ class Student implements StudentAssignmentFunctions
         student_accounts(adm_no,first_name,last_name,username,password,email,personal_phone,parent_names,parent_phone,full_name,class_ids) 
         VALUES(?,?,?,?,?,?,?,?,?,?,?)"; 
 
+        //Prepare query
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
+
+            //Title case names
+            $args["first_name"] = ucwords(strtolower($args["first_name"]));
+            $args["last_name"] = ucwords(strtolower($args["last_name"]));
+
             $insert_stmt->bind_param("issssssssss",
             $args["adm_no"],
             $args["first_name"],

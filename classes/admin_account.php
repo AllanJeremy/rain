@@ -66,47 +66,44 @@ class AdminAccount
         $errors = array();
         $error_msg = "Something went wrong while trying to create your account. Consider reporting this to the dev team";
 
-        if(self::AccountExists($this->username,$this->accType)==false)
-        {  
-            #query for inserting the information to the database
-            $insert_query = "INSERT INTO admin_accounts(first_name,last_name,username,email,phone,account_type,password) 
-            VALUES(?,?,?,?,?,?,?)"; 
+        #query for inserting the information to the database
+        $insert_query = "INSERT INTO admin_accounts(first_name,last_name,username,email,phone,account_type,password) 
+        VALUES(?,?,?,?,?,?,?)"; 
 
-            if($insert_stmt = $dbCon->prepare($insert_query))
-            {
-                $insert_stmt->bind_param("sssssss",
-                    $args["firstName"],
-                    $args["lastName"],
-                    $args["username"],
-                    $args["email"],
-                    $args["phone"],
-                    $args["accType"],
-                    $args["encrypted_password"]);  
+        //Prepare query
+        if($insert_stmt = $dbCon->prepare($insert_query))
+        {
+            //Title case names
+            $args["first_name"] = ucwords(strtolower($args["first_name"]));
+            $args["last_name"] = ucwords(strtolower($args["last_name"]));
 
-                #return true if account was successfully created
-                if($insert_stmt->execute())
-                {
-                    ErrorHandler::PrintErrorLog($errors);
-                    return true;
-                }
-                else
-                {
-                    array_push($errors,"[query exec error] : $error_msg");
-                    ErrorHandler::PrintErrorLog($errors);
-                    return false;
-                }
-            }
-            else #if the query cannot be prepared
+            $insert_stmt->bind_param("sssssss",
+                $args["firstName"],
+                $args["lastName"],
+                $args["username"],
+                $args["email"],
+                $args["phone"],
+                $args["accType"],
+                $args["encrypted_password"]);  
+
+            #return true if account was successfully created
+            if($insert_stmt->execute())
             {
-                array_push($errors,"[query prepare error] : $error_msg");
                 ErrorHandler::PrintErrorLog($errors);
-                return null;#return null if account creation query prepare failed
+                return true;
+            }
+            else
+            {
+                array_push($errors,"[query exec error] : $error_msg");
+                ErrorHandler::PrintErrorLog($errors);
+                return false;
             }
         }
-        else
+        else #if the query cannot be prepared
         {
-            // ErrorHandler::PrintSmallError("Failed to create a ".$this->accType." account with the username ".$this->username." as it already exists.");
-            return false;
+            array_push($errors,"[query prepare error] : $error_msg");
+            ErrorHandler::PrintErrorLog($errors);
+            return null;#return null if account creation query prepare failed
         }
     }
 
