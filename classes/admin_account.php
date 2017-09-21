@@ -70,12 +70,13 @@ class AdminAccount
         $insert_query = "INSERT INTO admin_accounts(first_name,last_name,username,email,phone,account_type,password) 
         VALUES(?,?,?,?,?,?,?)"; 
 
+        //TODO : Consider getting more consistent naming for args parameters ~ choose either CamelCase or this_case (don't know the name)
         //Prepare query
         if($insert_stmt = $dbCon->prepare($insert_query))
         {
             //Title case names
-            $args["first_name"] = ucwords(strtolower($args["first_name"]));
-            $args["last_name"] = ucwords(strtolower($args["last_name"]));
+            $args["firstName"] = ucwords(strtolower($args["firstName"]));
+            $args["lastName"] = ucwords(strtolower($args["lastName"]));
 
             $insert_stmt->bind_param("sssssss",
                 $args["firstName"],
@@ -87,23 +88,22 @@ class AdminAccount
                 $args["encrypted_password"]);  
 
             #return true if account was successfully created
-            if($insert_stmt->execute())
-            {
-                ErrorHandler::PrintErrorLog($errors);
-                return true;
-            }
-            else
+            if(!$insert_stmt->execute())
             {
                 array_push($errors,"[query exec error] : $error_msg");
-                ErrorHandler::PrintErrorLog($errors);
-                return false;
             }
         }
         else #if the query cannot be prepared
         {
             array_push($errors,"[query prepare error] : $error_msg");
-            ErrorHandler::PrintErrorLog($errors);
-            return null;#return null if account creation query prepare failed
+        }
+        if(count($errors)==0)
+        {
+            return true;
+        }
+        else
+        {
+            return $errors;
         }
     }
 

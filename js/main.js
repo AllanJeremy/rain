@@ -22,20 +22,38 @@ $(document).ready(function (z) {
     }
 
     //Check if there are any errrors in the var errors ~ return true if there are
-    function HasErrors(errors)
+    function HasErrors(ajaxResponse)
     {
-        return ((errors["errors"]).length>0);        
+        try
+        {
+            var errors = JSON.parse(ajaxResponse);
+            return ( ((errors["errors"]).length>0) );  
+        }
+        catch(e)//If the json could not be parsed, check if the input was blank
+        {
+            return !(ajaxResponse == "" || IsValidResponse(ajaxResponse));
+        }
+            
     }
 
-    //Toast all the errors (this is a js array)
-    function ToastAjaxErrors(errors)
+    //Toast all the errors (this is a js array) ~ doesn't have try catch because haserrors is used before using it
+    function ToastAjaxErrors(ajaxResponse)
     {
-        errors = errors["errors"];
-        for(var i=0; i<errors.length; i++)
+        try
         {
-            Materialize.toast(errors[i],toast_time);
-            setTimeout(100);
+            var errors = JSON.parse(ajaxResponse);
+            errors = errors["errors"];
+            for(var i=0; i<errors.length; i++)
+            {
+                Materialize.toast(errors[i],toast_time);
+                setTimeout(100);
+            } 
         }
+        catch(e)//If the json could not be parsed, check if the input was blank
+        {
+            console.log("Unable to parse error checking json");
+        }
+
     }
 
     /*Staff id|Student id changes and validation*/
@@ -224,33 +242,23 @@ $(document).ready(function (z) {
 
     //Show feedback for creating accounts
     function ShowCreateAccountFeedback(acc_type,ajaxResponse,$form)
-    {
-        try
+    {   
+        //Possibly unnecessary try
+        var has_errors = HasErrors(ajaxResponse);
+        //If there were any errors
+        if(has_errors)
         {
-            var errors = JSON.parse(ajaxResponse);
-            
-            //If there were any errors
-            if(HasErrors(errors))
-            {
-                Materialize.toast("Failed to create the "+acc_type+" account",short_toast_time);
+            Materialize.toast("Failed to create the "+acc_type+" account",short_toast_time);
+            ToastAjaxErrors(ajaxResponse);
+        }
+        else //No errors
+        {
+            ClearFormInputs($form);
+            Materialize.toast("Successfully created the "+acc_type+" account",short_toast_time);
+        }
 
-                ToastAjaxErrors(errors);
-            }
-            else //No errors
-            {
-                ClearFormInputs($form);
-                Materialize.toast("Successfully created the "+acc_type+" account",short_toast_time);
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-        }
-        finally 
-        {
-            //In the end ~ re-enable the create account button
-            $form.find(".create-acc-btn").removeClass(DISABLED_CLASS);
-        }
+        //In the end ~ re-enable the create account button
+        $form.find(".create-acc-btn").removeClass(DISABLED_CLASS);
     }
 
     //Create student account
@@ -286,7 +294,7 @@ $(document).ready(function (z) {
         Materialize.toast(creating_acc_message,feedback_timeout);//HACK ~ This should disappear once the post request is done
 
         $.post(db_handler_path,{"action":"CreateSuperuserAccount","data":data},function(response,status){
-            ShowCreateAccountFeedback("superuser",response);
+            ShowCreateAccountFeedback("superuser",response,$form);
         });
     }
 
@@ -402,9 +410,9 @@ $(document).ready(function (z) {
                     "last_name":last_name,
                     "email":email,
                     "phone":phone,
-                    "username":username
+                    "username":username,
                 };
-
+            
                 CreatePrincipalAccount(data,$form,create_teacher_acc);
             }
             else

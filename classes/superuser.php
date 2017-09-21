@@ -30,6 +30,7 @@ class Superuser extends AdminAccount
     //TODO Add the various account properties as parameters to the function
     public function CreateSuperuser($data)
     {
+        $errors = array();
         #Properties
     /*
         $this->firstName = $data["firstName"]
@@ -47,7 +48,7 @@ class Superuser extends AdminAccount
             $superuser_accounts = $result->num_rows;
         }
 
-     if($superuser_accounts<=self::MAX_SUPERUSER_ACCOUNTS)
+     if($superuser_accounts < self::MAX_SUPERUSER_ACCOUNTS)
      {
         #if the teacher details are set (form data filled,phone can be left blank), create account
         if (Validator::SuperuserSignupValid($data))
@@ -70,11 +71,17 @@ class Superuser extends AdminAccount
 
             return parent::CreateAccount($args);
         }
-        return false;
+        else
+        {
+            return false;
+        }
+        
     }#end of master if
     else
     {
-         return false;#cannot create anymore superuser accounts, as the limit has been reached
+        array_push($errors,"Cannot create anymore superuser accounts. Maximum account limit reached.");
+        ErrorHandler::PrintErrorLog($errors);
+        return null;#cannot create anymore superuser accounts, as the limit has been reached
     }   
     
     }#end of function

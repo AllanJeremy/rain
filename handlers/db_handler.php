@@ -1390,14 +1390,17 @@ if(isset($_POST['action'])) {
             $principal = new Principal();
 
             $create_status = false;#The create status for the account ~ true on success | false or null on
+            
             //If create a corresponding teacher account is selected
-            if($create_teacher_acc=="yes")
+            if($create_teacher_acc == "true")
             {
+                #Conditional works as expected
                 require_once("../classes/teacher.php");#include teacher class
                 $create_status = $principal->CreatePrincipalTeacherAccount($data);
             }
             else #Only create principal account
             {
+                #Conditional works as expected
                 $create_status = $principal->CreatePrincipal($data);
             }
         break;

@@ -19,28 +19,31 @@ class Principal extends AdminAccount
     //TODO Add the various account properties as parameters to the function
     public function CreatePrincipal($data)
     {
-        #Properties
-    /*
-        $this->firstName = $data["firstName"]
-        $this->lastName = $data["lastName"]
-        $this->username = $data["username"]
-        $this->email = $data["email"]
-        $this->phone = $data["phone"]
-        $this->password = $data["password"]
-    */
-    global $dbCon;
-    $select_query = "SELECT acc_id FROM admin_accounts WHERE account_type='principal'";
-    $principal_accounts = 0;#initial value - number of principal accoutns
-    if($result = $dbCon->query($select_query))
-    {
-        $principal_accounts = $result->num_rows;
-    }
-    
-     if($principal_accounts <= self::MAX_PRINCIPAL_ACCOUNTS )
-     {
-        #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (Validator::PrincipalSignupValid($data))
-        {         
+        $errors = array();
+            #Properties
+        /*
+            $this->firstName = $data["firstName"]
+            $this->lastName = $data["lastName"]
+            $this->username = $data["username"]
+            $this->email = $data["email"]
+            $this->phone = $data["phone"]
+            $this->password = $data["password"]
+        */
+        global $dbCon;
+        $select_query = "SELECT acc_id FROM admin_accounts WHERE account_type='principal'";
+        $principal_accounts = 0;#initial value - number of principal accoutns
+
+        
+        if($result = $dbCon->query($select_query))
+        {
+            $principal_accounts = $result->num_rows;
+        }
+        
+        if($principal_accounts < self::MAX_PRINCIPAL_ACCOUNTS )
+        {
+            #if the teacher details are set (form data filled,phone can be left blank), create account
+            if (Validator::PrincipalSignupValid($data))
+            {         
                 #set the class variable values to the post variable values
                 $this->firstName = htmlspecialchars($data["first_name"]);
                 $this->lastName = htmlspecialchars($data["last_name"]);
@@ -56,13 +59,15 @@ class Principal extends AdminAccount
 
                 #converts the this-> variables to an argument array
                 $args = parent::GetArgsArray();
-
+                
                 return parent::CreateAccount($args);
             }
-            return false;
         }
         else
         {
+            //TODO: refactor this into its own function
+            array_push($errors,"Cannot create anymore principal accounts. Maximum principal accounts created.");
+            ErrorHandler::PrintErrorLog($errors);
             return null;#Cannot create anymore principal accounts
         }
     }
@@ -74,8 +79,8 @@ class Principal extends AdminAccount
         $teacher = new Teacher();
 
         $create_principal_status = $this->CreatePrincipal($data);
-        $create_teacher_status = $teacher->CreateTeacher($data);
+        $teacher->CreateTeacher($data);
 
-        return ($create_principal_status && $create_teacher_status);
+        return ($create_principal_status/*  && $create_teacher_status */);
     }
 };
