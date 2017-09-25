@@ -220,7 +220,7 @@ header.horizontal-navigation {
     display: block;
     position: relative;
     z-index: 420;
-    background-color: color("green", "lighten-3");
+    background-color: $header-bg-overlay;
 
     + main {
         margin-top: 48px;
@@ -317,16 +317,14 @@ header.horizontal-navigation {
 
             &:hover {
                 background-color: rgba(0,0,0,.27);
-
             }
 
             &.active {
-                border-bottom: 3px solid $primary-color;
-                color: $primary-color;
+                border-bottom: 3px solid $header-nav-active;
+                color: $header-nav-active;
 
                 a {
-                    color: $primary-color;
-
+                    color: $header-nav-active;
                 }
             }
 
@@ -357,11 +355,11 @@ header.horizontal-navigation {
 
                 li > a {
 
-                    color: color('brookhurst-theme-secondary', 'base');
+                    color: $header-dropdown-dark;
 
                     &:hover {
-                        color: #fff;
-                        background-color: color('brookhurst-theme-secondary', 'lighten-1');
+                        color: $header-dropdown-light;
+                        background-color: $header-dropdown-dark;
                     }
                 }
 
