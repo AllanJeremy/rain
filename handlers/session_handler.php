@@ -3,6 +3,7 @@ ob_start();#enable output buffering, allows for sending of headers within the fi
 
 @session_start();
 
+require_once(realpath(dirname(__FILE__) . "/../licenses/license_check.php"));
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php"));#Used to retrieve information from the database
 
 #HANDLES SESSIONS, LOGIN INFORMATION AND OTHER SESSION INFO.

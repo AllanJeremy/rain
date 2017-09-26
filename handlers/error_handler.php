@@ -30,21 +30,33 @@ class ErrorHandler
     }
 
     //Messageboxes
-    private static function MsgBoxDefault($message, $color_class)
+    private static function MsgBoxDark($message, $color_class,$extra_classes="")
     {
 ?>
-   <div class='card-panel errorMessage   <?php echo "$color_class $color_class-text";?> darken-4 center text-lighten-2'>		
+   <div class='card-panel errorMessage   <?php echo "$color_class $color_class-text $extra_classes";?> darken-4 center text-lighten-2'>		
         <span><?php echo $message ?></span>		
    </div>
 <?php
     }
-    public static function MsgBoxError($message)
+    private static function MsgBoxLight($message, $color_class,$extra_classes="")
     {
-        self::MsgBoxDefault($message,"red");
+?>
+   <div class='card-panel errorMessage   <?php echo "$color_class $color_class-text $extra_classes";?> lighten-4 center text-darken-2'>		
+        <span><?php echo $message ?></span>		
+   </div>
+<?php
     }
-    public static function MsgBoxSuccess($message)
+    public static function MsgBoxError($message,$extra_classes="")
     {
-        self::MsgBoxDefault($message,"green");
+        self::MsgBoxDark($message,"red",$extra_classes);
+    }
+    public static function MsgBoxSuccess($message,$extra_classes="")
+    {
+        self::MsgBoxDark($message,"green",$extra_classes);
+    }
+    public static function MsgBoxInfo($message,$extra_classes="")
+    {
+        self::MsgBoxLight($message,"teal",$extra_classes);
     }
 }
 ?>

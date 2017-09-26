@@ -10991,3 +10991,28 @@ input:-webkit-autofill:active {
   overflow: hidden;
   background-size: cover;
 }
+
+/* line 866, ../sass/_style.scss */
+.mt-0 {
+  margin-top: 0;
+}
+
+/* line 869, ../sass/_style.scss */
+.mb-0 {
+  margin-bottom: 0;
+}
+
+/* line 872, ../sass/_style.scss */
+.mr-0 {
+  margin-right: 0;
+}
+
+/* line 875, ../sass/_style.scss */
+.ml-0 {
+  margin-left: 0;
+}
+
+/* line 878, ../sass/_style.scss */
+.m-0 {
+  margin: 0;
+}
