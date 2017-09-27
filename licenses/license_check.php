@@ -11,24 +11,36 @@ class RainLicense
 
     //Returns true if the license is valid and false if not
     public static function LicenseValid()
+    {        
+        #If the license could not be updated
+        if(!self::UpdateLicenseInfo()){
+            return false;
+        }
+        
+
+        #Check if the license information is valid
+
+        return true;
+    }
+
+    //Updates the license information based on the license file ~ returns true on success
+    public static function UpdateLicenseInfo()
     {
         #If the license file does not exist, show error and return false (license is invalid)
         if(!file_exists(self::LICENSE_FILE_PATH)){
             ErrorHandler::MsgBoxError(self::LICENSE_NOT_FOUND_MESSAGE,"m-0");
             return false;
         }
-        
-        #If the file was found ~ update the license information
-        self::UpdateLicenseInfo();
 
-        #Check if the license information is valid
+        #License file was found
+        $license = file_get_contents(self::LICENSE_FILE_PATH);
+        $license = json_decode($license,true);
+
+        #API calls to get information
+        //$license["key"]
+        //$license["integrity"]
+
         
         return true;
-    }
-
-    //Updates the license information based on the license file
-    public static function UpdateLicenseInfo()
-    {
-        #code
     }
 }

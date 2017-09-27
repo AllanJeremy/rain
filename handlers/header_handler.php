@@ -7,9 +7,9 @@ class MyHeaderHandler
 {
 
     #Site header constants
-    const SITE_TITLE = "Brookhurst E-Learning";
+    const SITE_TITLE = "RAIN E-Learning";
     const SITE_ENCODING = "UTF-8";
-    const SITE_KEYWORDS = "Learn,E-learning,Education,Brookhurst,Kenya,Classroom,Teacher,Account,Import,Students,International"; #meta keywords used on the page
+    const SITE_KEYWORDS = "Learn,E-learning,Education,RAIN,Kenya,Classroom,Teacher,Account,Import,Students,International"; #meta keywords used on the page
     
     const STUDENT_DESCRIPTION = "Students can join classroom,
 Students cannot leave classroom without the teacher,
@@ -39,7 +39,7 @@ All assignments";
     const SUPERUSER_DESCRIPTION = "Superuser can create teacher,principal and student accounts.
 (Superuser) Import students database and create automatic accounts for each student.";
 
-    const DEFAULT_DESCRIPTION = "Brookhurst's very own e-learning platform developed by Deflix Enterprises";
+    const DEFAULT_DESCRIPTION = "RAIN E-Learning platform ~ developed by Deflix Enterprises";
 
     #Meta variables
     private static $description = self::SITE_TITLE; #meta description used for the page

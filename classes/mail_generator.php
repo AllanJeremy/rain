@@ -156,10 +156,10 @@ class EsomoMailGenerator
 
         $subject = "Hey ".$first_name."\n";
 
-        $message = "<h4>We received a request to change your password for your Brookhurst account.</h4>";
+        $message = "<h4>We received a request to change your password for your RAIN account.</h4>";
         $message .= "<h4>Click this link : ".$tmp_link."</h4>";
 
-        $non_html_message = "\nWe received a request to change your password for your Brookhurst account.";
+        $non_html_message = "\nWe received a request to change your password for your RAIN account.";
         $non_html_message .= "\nClick this link : ".$tmp_link;
 
         $email_data = array(

@@ -23,7 +23,7 @@ class EmailHandler
         $mail->SMTPAuth = true;
         $mail->Username = "#########@gmail.com";
         $mail->Password = "###########";
-        $mail->setFrom("##########@gmail.com", 'Brookhurst eLearning buddy');
+        $mail->setFrom("##########@gmail.com", 'RAIN E-Learning');
         $mail->addAddress($data['to'], $data['address_name']);
         $mail->Subject = $data['subject'];
 
