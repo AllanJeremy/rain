@@ -46,8 +46,8 @@ class Teacher extends AdminAccount
     //TODO Add the various account properties as parameters to the function
     public function CreateTeacher($data)
     {
-
         global $dbCon;
+        $errors = array();
         $select_query = "SELECT acc_id FROM admin_accounts WHERE account_type='teacher'";
         $teacher_accounts = 0;#initial value - number of principal accoutns
 
@@ -86,9 +86,9 @@ class Teacher extends AdminAccount
         else
         {
             //TODO: refactor this into its own function
-            array_push($errors,"Cannot create anymore principal accounts. Maximum principal accounts created.");
+            array_push($errors,"Cannot create anymore teacher accounts. Maximum teacher accounts created.");
             ErrorHandler::PrintErrorLog($errors);
-            return null;#Cannot create anymore principal accounts
+            return null;#Cannot create anymore teacher accounts
         }
 
         return false;
