@@ -18,6 +18,9 @@ interface StudentAssignmentFunctions
 #CLASS THAT HANDLES STUDENT RELATED FUNCTIONS
 class Student implements StudentAssignmentFunctions
 {
+    //Constants & static variables
+    const  MAX_STUDENT_ACCOUNTS = 3;
+
     //Variable initialization
     public $student_id;
     public $first_name;
@@ -170,26 +173,45 @@ class Student implements StudentAssignmentFunctions
     //Public function that can be called to create the student account
     public function CreateStudentAccount($data)
     {
+        global $dbCon;
+        $errors = array();
         $signup_valid = Validator::StudentSignupValid($data);
+        $student_accounts = 0;
 
-        #if the teacher details are set (form data filled,phone can be left blank), create account
-        if ($signup_valid)
-        {         
-            #set the class variable values to the post variable values
-            $this->student_id = htmlspecialchars($data["student_id"]);
-            $this->first_name = htmlspecialchars($data["first_name"]);
-            $this->last_name = htmlspecialchars($data["last_name"]);
-
-            $this->full_name = $this->first_name . " " . $this->last_name;#full name is first name + last name
-
-            $this->username = htmlspecialchars($data["username"]);
-            $this->password = $this->username; #default password is the username
-
-            $args = $this->GetArgsArray();
-
-            return self::CreateAccount($args);
+        $select_query = "SELECT acc_id FROM student_accounts";
+                
+        if($result = $dbCon->query($select_query))
+        {
+            $student_accounts = $result->num_rows;
         }
+        
+        if($student_accounts < self::MAX_STUDENT_ACCOUNTS )
+        {
+            #if the teacher details are set (form data filled,phone can be left blank), create account
+            if ($signup_valid)
+            {         
+                #set the class variable values to the post variable values
+                $this->student_id = htmlspecialchars($data["student_id"]);
+                $this->first_name = htmlspecialchars($data["first_name"]);
+                $this->last_name = htmlspecialchars($data["last_name"]);
 
+                $this->full_name = $this->first_name . " " . $this->last_name;#full name is first name + last name
+
+                $this->username = htmlspecialchars($data["username"]);
+                $this->password = $this->username; #default password is the username
+
+                $args = $this->GetArgsArray();
+
+                return self::CreateAccount($args);
+            }
+        }
+        else
+        {
+            //TODO: refactor this into its own function
+            array_push($errors,"Cannot create anymore student accounts. Maximum student accounts created.");
+            ErrorHandler::PrintErrorLog($errors);
+            return null;#Cannot create anymore student accounts
+        }
         return false;#failed to create account
     }
 

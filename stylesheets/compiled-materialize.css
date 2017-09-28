@@ -80,42 +80,42 @@
 
 /* line 401, ../sass/components/_color.scss */
 .brookhurst-theme-primary.darken-3 {
-  background-color: #3c0e12 !important;
+  background-color: #212121 !important;
 }
 
 /* line 404, ../sass/components/_color.scss */
 .brookhurst-theme-primary-text.text-darken-3 {
-  color: #3c0e12 !important;
+  color: #212121 !important;
 }
 
 /* line 393, ../sass/components/_color.scss */
 .brookhurst-theme-secondary {
-  background-color: #d8b759 !important;
+  background-color: #00AAC0 !important;
 }
 
 /* line 396, ../sass/components/_color.scss */
 .brookhurst-theme-secondary-text {
-  color: #d8b759 !important;
+  color: #00AAC0 !important;
 }
 
 /* line 401, ../sass/components/_color.scss */
 .brookhurst-theme-secondary.lighten-1 {
-  background-color: #e8d49b !important;
+  background-color: #4BBEE0 !important;
 }
 
 /* line 404, ../sass/components/_color.scss */
 .brookhurst-theme-secondary-text.text-lighten-1 {
-  color: #e8d49b !important;
+  color: #4BBEE0 !important;
 }
 
 /* line 401, ../sass/components/_color.scss */
 .brookhurst-theme-secondary.darken-1 {
-  background-color: #a28943 !important;
+  background-color: #069ABE !important;
 }
 
 /* line 404, ../sass/components/_color.scss */
 .brookhurst-theme-secondary-text.text-darken-1 {
-  color: #a28943 !important;
+  color: #069ABE !important;
 }
 
 /* line 393, ../sass/components/_color.scss */
@@ -3907,8 +3907,8 @@ td, th {
 }
 /* line 563, ../sass/components/_global.scss */
 .collection .collection-item.active {
-  background-color: #d8b759;
-  color: white;
+  background-color: #00AAC0;
+  color: #dafbff;
 }
 /* line 567, ../sass/components/_global.scss */
 .collection .collection-item.active .secondary-content {
@@ -3918,7 +3918,7 @@ td, th {
 .collection a.collection-item {
   display: block;
   transition: .25s;
-  color: #d8b759;
+  color: #00AAC0;
 }
 /* line 577, ../sass/components/_global.scss */
 .collection a.collection-item:not(.active):hover {
@@ -3942,7 +3942,7 @@ td, th {
 /* line 599, ../sass/components/_global.scss */
 .secondary-content {
   float: right;
-  color: #d8b759;
+  color: #00AAC0;
 }
 
 /* line 603, ../sass/components/_global.scss */
@@ -3968,7 +3968,7 @@ span.badge.new {
   font-weight: 300;
   font-size: 0.8rem;
   color: #fff;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   border-radius: 2px;
 }
 /* line 629, ../sass/components/_global.scss */
@@ -4009,7 +4009,7 @@ nav ul a span.badge {
   height: 4px;
   display: block;
   width: 100%;
-  background-color: #f5edd5;
+  background-color: #5aecff;
   border-radius: 2px;
   margin: 0.5rem 0 1rem 0;
   overflow: hidden;
@@ -4036,21 +4036,21 @@ nav ul a span.badge {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   transition: width .3s linear;
   border-radius: 2px;
 }
 /* line 700, ../sass/components/_global.scss */
 .progress .determinate span {
   position: absolute;
-  color: #d1aa3c;
+  color: #008a9c;
   left: 16px;
   font-size: 16px;
   top: 16px;
 }
 /* line 708, ../sass/components/_global.scss */
 .progress .indeterminate {
-  background-color: #d8b759;
+  background-color: #00AAC0;
 }
 /* line 710, ../sass/components/_global.scss */
 .progress .indeterminate:before {
@@ -5924,7 +5924,7 @@ small {
 .btn, .btn-large {
   text-decoration: none;
   color: #fff;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   text-align: center;
   letter-spacing: .5px;
   transition: .2s ease-out;
@@ -5932,7 +5932,7 @@ small {
 }
 /* line 64, ../sass/components/_buttons.scss */
 .btn:hover, .btn-large:hover {
-  background-color: #ddc06e;
+  background-color: #00c1da;
 }
 
 /* line 71, ../sass/components/_buttons.scss */
@@ -5946,7 +5946,7 @@ small {
   height: 37px;
   line-height: 37px;
   padding: 0;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   border-radius: 50%;
   transition: .3s;
   cursor: pointer;
@@ -5963,7 +5963,7 @@ small {
 }
 /* line 97, ../sass/components/_buttons.scss */
 .btn-floating:hover {
-  background-color: #d8b759;
+  background-color: #00AAC0;
 }
 /* line 102, ../sass/components/_buttons.scss */
 .btn-floating:before {
@@ -6126,7 +6126,7 @@ a.btn-inline:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating):hover 
 /* line 37, ../sass/components/_dropdown.scss */
 .dropdown-content li > a, .dropdown-content li > span {
   font-size: 16px;
-  color: #d8b759;
+  color: #00AAC0;
   display: block;
   line-height: 22px;
   padding: 14px 16px;
@@ -6624,13 +6624,13 @@ a.btn-inline:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating):hover 
 
 /* line 2, ../sass/components/forms/_forms.scss */
 select:focus {
-  outline: 1px solid white;
+  outline: 1px solid #b1f6ff;
 }
 
 /* line 6, ../sass/components/forms/_forms.scss */
 button:focus {
   outline: none;
-  background-color: #dcbe6a;
+  background-color: #00bcd4;
 }
 
 /* line 11, ../sass/components/forms/_forms.scss */
@@ -6810,8 +6810,8 @@ input[type=tel]:focus:not([readonly]),
 input[type=number]:focus:not([readonly]),
 input[type=search]:focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
-  border-bottom: 1px solid #d8b759;
-  box-shadow: 0 1px 0 0 #d8b759;
+  border-bottom: 1px solid #00AAC0;
+  box-shadow: 0 1px 0 0 #00AAC0;
 }
 /* line 120, ../sass/components/forms/_input-fields.scss */
 input:not([type]):focus:not([readonly]) + label,
@@ -6827,7 +6827,7 @@ input[type=tel]:focus:not([readonly]) + label,
 input[type=number]:focus:not([readonly]) + label,
 input[type=search]:focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
-  color: #d8b759;
+  color: #00AAC0;
 }
 /* line 125, ../sass/components/forms/_input-fields.scss */
 input:not([type]).valid, input:not([type]):focus.valid,
@@ -7044,7 +7044,7 @@ textarea.materialize-textarea + label:after {
 }
 /* line 237, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix.active {
-  color: #d8b759;
+  color: #00AAC0;
 }
 /* line 240, ../sass/components/forms/_input-fields.scss */
 .input-field .prefix ~ input,
@@ -7303,13 +7303,13 @@ textarea.materialize-textarea {
 [type="radio"]:checked + label:after,
 [type="radio"].with-gap:checked + label:before,
 [type="radio"].with-gap:checked + label:after {
-  border: 2px solid #d8b759;
+  border: 2px solid #00AAC0;
 }
 
 /* line 125, ../sass/components/forms/_radio-buttons.scss */
 [type="radio"]:checked + label:after,
 [type="radio"].with-gap:checked + label:after {
-  background-color: #d8b759;
+  background-color: #00AAC0;
   z-index: 0;
 }
 
@@ -7452,8 +7452,8 @@ form p:last-child {
   height: 22px;
   border-top: 2px solid transparent;
   border-left: 2px solid transparent;
-  border-right: 2px solid #d8b759;
-  border-bottom: 2px solid #d8b759;
+  border-right: 2px solid #00AAC0;
+  border-bottom: 2px solid #00AAC0;
   transform: rotate(40deg);
   backface-visibility: hidden;
   transform-origin: 100% 100%;
@@ -7473,7 +7473,7 @@ form p:last-child {
   height: 22px;
   border-top: none;
   border-left: none;
-  border-right: 2px solid #d8b759;
+  border-right: 2px solid #00AAC0;
   border-bottom: none;
   transform: rotate(90deg);
   backface-visibility: hidden;
@@ -7540,8 +7540,8 @@ form p:last-child {
   top: 0;
   width: 20px;
   height: 20px;
-  border: 2px solid #d8b759;
-  background-color: #d8b759;
+  border: 2px solid #00AAC0;
+  background-color: #00AAC0;
   z-index: 0;
 }
 /* line 189, ../sass/components/forms/_checkboxes.scss */
@@ -7553,8 +7553,8 @@ form p:last-child {
 /* line 195, ../sass/components/forms/_checkboxes.scss */
 [type="checkbox"].filled-in.tabbed:checked:focus + label:after {
   border-radius: 2px;
-  background-color: #d8b759;
-  border-color: #d8b759;
+  background-color: #00AAC0;
+  border-color: #00AAC0;
 }
 /* line 202, ../sass/components/forms/_checkboxes.scss */
 [type="checkbox"].filled-in:disabled:not(:checked) + label:before {
@@ -7600,11 +7600,11 @@ form p:last-child {
 }
 /* line 21, ../sass/components/forms/_switches.scss */
 .switch label input[type=checkbox]:checked + .lever {
-  background-color: #e7dfca;
+  background-color: #58d7e7;
 }
 /* line 24, ../sass/components/forms/_switches.scss */
 .switch label input[type=checkbox]:checked + .lever:after {
-  background-color: #d8b759;
+  background-color: #00AAC0;
   left: 24px;
 }
 
@@ -7640,7 +7640,7 @@ form p:last-child {
 /* line 60, ../sass/components/forms/_switches.scss */
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active::after,
 input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::after {
-  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(216, 183, 89, 0.1);
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(0, 170, 192, 0.1);
 }
 
 /* line 65, ../sass/components/forms/_switches.scss */
@@ -7870,7 +7870,7 @@ input[type=range] + .thumb {
   height: 0;
   width: 0;
   border-radius: 50%;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   top: 10px;
   margin-left: -6px;
   transform-origin: 50% 50%;
@@ -7881,7 +7881,7 @@ input[type=range] + .thumb .value {
   display: block;
   width: 30px;
   text-align: center;
-  color: #d8b759;
+  color: #00AAC0;
   font-size: 0;
   transform: rotate(45deg);
 }
@@ -7916,7 +7916,7 @@ input[type=range]::-webkit-slider-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   transform-origin: 50% 50%;
   margin: -5px 0 0 0;
   transition: .3s;
@@ -7947,7 +7947,7 @@ input[type=range]::-moz-range-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background: #d8b759;
+  background: #00AAC0;
   margin-top: -5px;
 }
 
@@ -7988,7 +7988,7 @@ input[type=range]::-ms-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background: #d8b759;
+  background: #00AAC0;
 }
 
 /* line 153, ../sass/components/forms/_range.scss */
@@ -8104,11 +8104,11 @@ input[type=range]:focus::-ms-fill-upper {
 }
 /* line 62, ../sass/components/_sideNav.scss */
 .side-nav a.btn:hover, .side-nav a.btn-large:hover, .side-nav a.btn-large:hover {
-  background-color: #ddc06e;
+  background-color: #00c1da;
 }
 /* line 64, ../sass/components/_sideNav.scss */
 .side-nav a.btn-floating:hover {
-  background-color: #d8b759;
+  background-color: #00AAC0;
 }
 /* line 67, ../sass/components/_sideNav.scss */
 .side-nav li > a > i,
@@ -8323,7 +8323,7 @@ input[type=range]:focus::-ms-fill-upper {
   width: 100%;
   height: 100%;
   opacity: 0;
-  border-color: #d8b759;
+  border-color: #00AAC0;
 }
 
 /* line 69, ../sass/components/_preloader.scss */
@@ -9475,7 +9475,7 @@ input[type=range]:focus::-ms-fill-upper {
 /* line 314, ../sass/components/date_picker/_default.date.scss */
 .picker__date-display {
   text-align: center;
-  background-color: #d8b759;
+  background-color: #00AAC0;
   color: #fff;
   padding-bottom: 15px;
   font-weight: 300;
@@ -9486,12 +9486,12 @@ input[type=range]:focus::-ms-fill-upper {
 .picker__nav--next:hover {
   cursor: pointer;
   color: #000000;
-  background: #f8f5ec;
+  background: #7ee7f5;
 }
 
 /* line 329, ../sass/components/date_picker/_default.date.scss */
 .picker__weekday-display {
-  background-color: #d1aa3c;
+  background-color: #008a9c;
   padding: 10px;
   font-weight: 200;
   letter-spacing: .5;
@@ -9548,7 +9548,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 /* line 378, ../sass/components/date_picker/_default.date.scss */
 .picker__day.picker__day--today {
-  color: #d8b759;
+  color: #00AAC0;
 }
 
 /* line 382, ../sass/components/date_picker/_default.date.scss */
@@ -9567,14 +9567,14 @@ input[type=range]:focus::-ms-fill-upper {
 .picker--focused .picker__day--selected {
   border-radius: 50%;
   transform: scale(0.9);
-  background-color: #d8b759;
+  background-color: #00AAC0;
   color: #ffffff;
 }
 /* line 399, ../sass/components/date_picker/_default.date.scss */
 .picker__day--selected.picker__day--outfocus,
 .picker__day--selected:hover.picker__day--outfocus,
 .picker--focused .picker__day--selected.picker__day--outfocus {
-  background-color: #f8f5ec;
+  background-color: #7ee7f5;
 }
 
 /* line 405, ../sass/components/date_picker/_default.date.scss */
@@ -9587,7 +9587,7 @@ input[type=range]:focus::-ms-fill-upper {
 .picker__close, .picker__today {
   font-size: 1.1rem;
   padding: 0 1rem;
-  color: #d8b759;
+  color: #00AAC0;
 }
 
 /* line 418, ../sass/components/date_picker/_default.date.scss */
@@ -9611,7 +9611,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 /* line 433, ../sass/components/date_picker/_default.date.scss */
 button.picker__today:focus, button.picker__clear:focus, button.picker__close:focus {
-  background-color: #f8f5ec;
+  background-color: #7ee7f5;
 }
 
 /* ==========================================================================
@@ -10554,7 +10554,7 @@ ul.side-nav.fixed ul.collapsible-accordion .collapsible-body li {
 /* line 437, ../sass/_style.scss */
 ul.side-nav.fixed ul.collapsible-accordion .collapsible-body li.active {
   background-color: #454545;
-  color: #e0c57a;
+  color: #00cee9;
 }
 /* line 445, ../sass/_style.scss */
 ul.side-nav.fixed:hover {
@@ -10841,7 +10841,7 @@ input:-webkit-autofill:active {
 
 /* line 706, ../sass/_style.scss */
 .secondary-text-color, .action-text-color {
-  color: #d8b759 !important;
+  color: #00AAC0 !important;
 }
 
 /* line 718, ../sass/_style.scss */
@@ -10992,27 +10992,27 @@ input:-webkit-autofill:active {
   background-size: cover;
 }
 
-/* line 866, ../sass/_style.scss */
+/* line 867, ../sass/_style.scss */
 .mt-0 {
   margin-top: 0;
 }
 
-/* line 869, ../sass/_style.scss */
+/* line 870, ../sass/_style.scss */
 .mb-0 {
   margin-bottom: 0;
 }
 
-/* line 872, ../sass/_style.scss */
+/* line 873, ../sass/_style.scss */
 .mr-0 {
   margin-right: 0;
 }
 
-/* line 875, ../sass/_style.scss */
+/* line 876, ../sass/_style.scss */
 .ml-0 {
   margin-left: 0;
 }
 
-/* line 878, ../sass/_style.scss */
+/* line 879, ../sass/_style.scss */
 .m-0 {
   margin: 0;
 }

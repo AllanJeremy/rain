@@ -32,7 +32,8 @@ interface TeacherAssignmentFunctions
 #CLASS THAT HANDLES TEACHER RELATED FUNCTIONS
 class Teacher extends AdminAccount
 {
-    //Variable initialization
+    //Constants & static variables
+    const  MAX_TEACHER_ACCOUNTS = 3;
 
     //Constructor
     function __construct()
@@ -45,38 +46,49 @@ class Teacher extends AdminAccount
     //TODO Add the various account properties as parameters to the function
     public function CreateTeacher($data)
     {
-        #Properties
-    /*
-        $this->firstName = $data["firstName"]
-        $this->lastName = $data["lastName"]
-        $this->username = $data["username"]
-        $this->email = $data["email"]
-        $this->phone = $data["phone"]
-        $this->password = $data["password"]
-    */
 
-        #if the teacher details are set (form data filled,phone can be left blank), create account
-        if (Validator::TeacherSignupValid($data))
-        {         
-            #set the class variable values to the post variable values
-            $this->firstName = htmlspecialchars($data["first_name"]);
-            $this->lastName = htmlspecialchars($data["last_name"]);
-            $this->username = htmlspecialchars($data["username"]);
-            $this->email = htmlspecialchars($data["email"]);
-            $this->password = $this->username;#default password is the username
+        global $dbCon;
+        $select_query = "SELECT acc_id FROM admin_accounts WHERE account_type='teacher'";
+        $teacher_accounts = 0;#initial value - number of principal accoutns
+
+        
+        if($result = $dbCon->query($select_query))
+        {
+            $teacher_accounts = $result->num_rows;
+        }
+        
+        if($teacher_accounts < self::MAX_TEACHER_ACCOUNTS )
+        {
+            #if the teacher details are set (form data filled,phone can be left blank), create account
+            if (Validator::TeacherSignupValid($data))
+            {         
+                #set the class variable values to the post variable values
+                $this->firstName = htmlspecialchars($data["first_name"]);
+                $this->lastName = htmlspecialchars($data["last_name"]);
+                $this->username = htmlspecialchars($data["username"]);
+                $this->email = htmlspecialchars($data["email"]);
+                $this->password = $this->username;#default password is the username
+                
+
+
+                #if the phone number was set, set the this to it, otherwise leave the default in $args [""]
+                if(isset($data["phone"]))
+                {
+                    $this->phone = htmlspecialchars($data["phone"]);
+                }
+
+                #converts the this-> variables to an argument array
+                $args = parent::GetArgsArray();
             
-
-
-            #if the phone number was set, set the this to it, otherwise leave the default in $args [""]
-            if(isset($data["phone"]))
-            {
-                $this->phone = htmlspecialchars($data["phone"]);
+                return parent::CreateAccount($args);
             }
-
-            #converts the this-> variables to an argument array
-            $args = parent::GetArgsArray();
-           
-            return parent::CreateAccount($args);
+        }
+        else
+        {
+            //TODO: refactor this into its own function
+            array_push($errors,"Cannot create anymore principal accounts. Maximum principal accounts created.");
+            ErrorHandler::PrintErrorLog($errors);
+            return null;#Cannot create anymore principal accounts
         }
 
         return false;
