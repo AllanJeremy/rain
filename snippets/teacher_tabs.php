@@ -756,12 +756,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                             
                                                         }
 
-                                                    } else {
-                                                        echo '<select class="schedule_classroom_default">'
-                                                            + '<option value="" disabled selected>Sub-topics</option>'
-                                                            + '<option value="" disabled >Choose a classroom first</option>'
-                                                            + '</select>';
-                                                    }
+                                                    } 
                                                         ?>
                                                     <select id="schedule_classroom_default">
                                                         <option value="" disabled selected>Sub-topics</option>
