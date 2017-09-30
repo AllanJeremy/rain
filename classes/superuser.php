@@ -6,7 +6,7 @@ require_once("tracker.php");
 #HANDLES SUPERUSER RELATED FUNCTIONS
 class Superuser extends AdminAccount
 {
-    const MAX_SUPERUSER_ACCOUNTS = 3;#Maximum number of superuser accounts that can be created
+    const MAX_SUPERUSER_ACCOUNTS = 5;#Maximum number of superuser accounts that can be created
     
     //Default superuser information
     const DEFAULT_FIRST_NAME = "Default";

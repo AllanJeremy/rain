@@ -19,7 +19,7 @@ interface StudentAssignmentFunctions
 class Student implements StudentAssignmentFunctions
 {
     //Constants & static variables
-    const  MAX_STUDENT_ACCOUNTS = 3;
+    const  MAX_STUDENT_ACCOUNTS = 1000;
 
     //Variable initialization
     public $student_id;

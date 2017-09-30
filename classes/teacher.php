@@ -33,7 +33,7 @@ interface TeacherAssignmentFunctions
 class Teacher extends AdminAccount
 {
     //Constants & static variables
-    const  MAX_TEACHER_ACCOUNTS = 3;
+    const  MAX_TEACHER_ACCOUNTS = 100;
 
     //Constructor
     function __construct()

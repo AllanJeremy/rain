@@ -101,7 +101,7 @@ class DbInfo
         $select_query = "SELECT * FROM $table_name";
         if($result = $dbCon->query($select_query))#run the query, returns false if it fails
         {
-            if ($result->num_rows == 0)#if the number of students found was 0, return false
+            if ($result->num_rows == 0)#if the number of records found was 0, return false
             {
                 return false;
             }
@@ -2039,9 +2039,7 @@ if(isset($_GET['action'])) {
             $result = DbInfo::GetAllSubjects();
 
             $num = 0;
-
-            foreach ($result as $row) {
-
+            foreach ($result as $row) {  
                 $newResult = array(
                     "value" => $row['subject_id'],
                     "category" => $row['subject_category'],
@@ -2050,12 +2048,8 @@ if(isset($_GET['action'])) {
 
                 $arrayResult[$num] = $newResult;
 
-                $num += 1;
-
-                //echo $num;
-
+                $num++;
             }
-
             echo json_encode($arrayResult);
 
             break;

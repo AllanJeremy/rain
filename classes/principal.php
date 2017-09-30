@@ -6,7 +6,7 @@ require_once("admin_account.php");
 class Principal extends AdminAccount
 {
     //Variable initialization
-    const MAX_PRINCIPAL_ACCOUNTS = 3;#default is 3 - one for the principal, one for the deputy, one for the director
+    const MAX_PRINCIPAL_ACCOUNTS = 5;#default is 3 - one for the principal, one for the deputy, one for the director
 
     //Constructor
     function __construct()

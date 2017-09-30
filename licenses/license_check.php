@@ -60,12 +60,12 @@ class RainLicense
         #License file was found
         $license = file_get_contents(self::LICENSE_FILE_PATH);
         $license = json_decode($license,true);
-        $api_call_path = self::LICENSE_API_PATH."?key=".$license["key"]."&integrity=".$license["integrity"];
+        $api_call_path = self::LICENSE_API_PATH."?req_type=licensee&key=".$license["key"]."&integrity=".$license["integrity"];
         
         #Get the license info through an api call
-        $license = json_decode(@file_get_contents($api_call_path));
+        // $license = json_decode(file_get_contents($api_call_path));
 
-        #return true ~ this is for testing purposes [to remove]
+        // #return true ~ this is for testing purposes [to remove]
         return true;
         
         #If the license retrieved from the api call was invalid return false
