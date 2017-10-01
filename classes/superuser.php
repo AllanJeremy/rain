@@ -6,7 +6,7 @@ require_once("tracker.php");
 #HANDLES SUPERUSER RELATED FUNCTIONS
 class Superuser extends AdminAccount
 {
-    const MAX_SUPERUSER_ACCOUNTS = 5;#Maximum number of superuser accounts that can be created
+    public static $MAX_SUPERUSER_ACCOUNTS = 5;#Maximum number of superuser accounts that can be created
     
     //Default superuser information
     const DEFAULT_FIRST_NAME = "Default";
@@ -45,7 +45,7 @@ class Superuser extends AdminAccount
             $superuser_accounts = $result->num_rows;
         }
 
-        if($superuser_accounts < self::MAX_SUPERUSER_ACCOUNTS)
+        if($superuser_accounts < self::$MAX_SUPERUSER_ACCOUNTS)
         {
             #if the teacher details are set (form data filled,phone can be left blank), create account
             if (Validator::SuperuserSignupValid($data))

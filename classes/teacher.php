@@ -33,7 +33,7 @@ interface TeacherAssignmentFunctions
 class Teacher extends AdminAccount
 {
     //Constants & static variables
-    const  MAX_TEACHER_ACCOUNTS = 100;
+    public static  $MAX_TEACHER_ACCOUNTS = 100;
 
     //Constructor
     function __construct()
@@ -57,7 +57,7 @@ class Teacher extends AdminAccount
             $teacher_accounts = $result->num_rows;
         }
         
-        if($teacher_accounts < self::MAX_TEACHER_ACCOUNTS )
+        if($teacher_accounts < self::$MAX_TEACHER_ACCOUNTS )
         {
             #if the teacher details are set (form data filled,phone can be left blank), create account
             if (Validator::TeacherSignupValid($data))

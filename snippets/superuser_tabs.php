@@ -592,7 +592,7 @@ if(isset($section)):
                     <h6 class="center-align valign grey-text " id="principalCreateLimitMessage">
                         Account creation limit
                         <br>
-                        Note : You can only create a maximum of <?php echo Principal::MAX_PRINCIPAL_ACCOUNTS?> principal accounts
+                        Note : You can only create a maximum of <?php echo Principal::$MAX_PRINCIPAL_ACCOUNTS?> principal accounts
                     </h6>
                 </div>
                 <form class="col s12" method="post"  id="createPrincipalForm">
@@ -789,7 +789,7 @@ if(isset($section)):
                     <h6 class="center-align valign grey-text " id="superuserCreateLimitMessage">
                         Account creation limit
                         <br>
-                        Note : You can only create a maximum of <?php echo Superuser::MAX_SUPERUSER_ACCOUNTS?> superuser accounts
+                        Note : You can only create a maximum of <?php echo Superuser::$MAX_SUPERUSER_ACCOUNTS?> superuser accounts
                     </h6>
                 </div>
 

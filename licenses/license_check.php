@@ -74,10 +74,25 @@ class RainLicense
         }
         #Update the license file
         if( (file_put_contents(self::LICENSE_FILE_PATH, $license)) !== false){
+            // self::UpdateMaxAccounts(10,10,10,10);#Update the max accounts
             return true;
         }
         else{
             return false;
         }
+    }
+
+    //Update the maximum number of accounts that can be created
+    public static function UpdateMaxAccounts($max_student_accs,$max_teacher_accs,$max_principal_accs,$max_superuser_accs)
+    {
+        require_once(dirname(__FILE__) ."/../classes/student.php");
+        require_once(dirname(__FILE__) ."/../classes/teacher.php");
+        require_once(dirname(__FILE__) ."/../classes/principal.php");
+        require_once(dirname(__FILE__) ."/../classes/superuser.php");
+
+        Student::$MAX_STUDENT_ACCOUNTS = $max_student_accs;
+        Teacher::$MAX_TEACHER_ACCOUNTS = $max_teacher_accs;
+        Principal::$MAX_PRINCIPAL_ACCOUNTS = $max_principal_accs;
+        Superuser::$MAX_SUPERUSER_ACCOUNTS = $max_superuser_accs;
     }
 }

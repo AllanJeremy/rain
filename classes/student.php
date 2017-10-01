@@ -19,7 +19,7 @@ interface StudentAssignmentFunctions
 class Student implements StudentAssignmentFunctions
 {
     //Constants & static variables
-    const  MAX_STUDENT_ACCOUNTS = 1000;
+    public static  $MAX_STUDENT_ACCOUNTS = 1000;
 
     //Variable initialization
     public $student_id;
@@ -185,7 +185,7 @@ class Student implements StudentAssignmentFunctions
             $student_accounts = $result->num_rows;
         }
         
-        if($student_accounts < self::MAX_STUDENT_ACCOUNTS )
+        if($student_accounts < self::$MAX_STUDENT_ACCOUNTS )
         {
             #if the teacher details are set (form data filled,phone can be left blank), create account
             if ($signup_valid)
