@@ -58,5 +58,14 @@ class ErrorHandler
     {
         self::MsgBoxLight($message,"teal",$extra_classes);
     }
+
+    public static function MsgBoxDefault($message)
+    {
+    ?>
+    <div class="col s12 center grey lighten-3">
+        <p class=" php-data"><?php echo ucfirst($message);?></p>
+    </div>
+    <?php
+    }
 }
 ?>

@@ -1741,7 +1741,7 @@ class DbInfo
     public static function GetMultipleAssSubmissions($assignments)
     {
         $found_ass_submissions = array();
-        if($assignments && @$assignments->num_rows>0)
+        if($assignments || count($assignments)>0)
         {
             //For each assignment
             foreach($assignments as $ass)

@@ -65,7 +65,7 @@ switch($section)
                 <a href="<?php echo GetSectionLink(SECTION_ST_BASE);?>">Received</a>
             </li>
             <li <?php echo $sent_ass_class;?>>
-                <a href="<?php echo GetSectionLink(SECTION_ST_ASS_SENT);?>">Sent</a>
+                <a href="<?php echo GetSectionLink(SECTION_ST_ASS_SENT);?>">Submissions</a>
             </li>
         </ul>
     </li>
