@@ -67,12 +67,14 @@
             $headerImageUrl = "";
             $accType="";
             $accountName ="";
+            $firstName="";
             $logoutLink = "";
             //Determine what type of account is logged in and set accType to the appropriate value
             if(MySessionHandler::AdminIsLoggedIn())
             {
                 $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
                 $accountName = $_SESSION["admin_username"];
+                $firstName = $_SESSION["admin_first_name"];
                 $headerImageUrl = "images/stairway.jpg";
                 $logoutLink = "?action=admin_logout";
             }
@@ -80,6 +82,7 @@
             {
                 $accType = "student";#corresponds with file name prefix
                 $accountName = $_SESSION["student_username"];
+                $firstName = $_SESSION["student_first_name"];
                 $headerImageUrl = "";
                 $logoutLink = "?action=student_logout";
             }
@@ -116,7 +119,7 @@
                             <li>
                                 <a data-beloworigin="true" href="#" data-activates="accDropDown" class="account-name dropdown-button with-photo" >
                                     <span class="profile-photo"></span>
-                                    <?php echo $accountName; ?>
+                                     <?php echo "$firstName ($accountName)"; ?>
                                 </a>
                                 <ul id="accDropDown" class="dropdown-content">
                                     <li>
