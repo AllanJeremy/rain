@@ -15,6 +15,7 @@
     const TAB_IMPORT = "import";
     const TAB_VIEW = "view";
     
+    //Include required files
     require_once("handlers/session_handler.php");
     require_once("handlers/global_init_handler.php");
 
@@ -51,57 +52,65 @@
     </head>
 
     <body class="<!--side-nav-page--> grey lighten-5">
-
         <?php 
+            #Update license and check if the license info provided is valid
+            if(!RainLicense::LicenseValid())
+            {
+                ErrorHandler::MsgBoxInfo(RainLicense::INVALID_LICENSE_MESSAGE,"m-0");
+                include_once("./snippets/site_footer.php");
+                echo "</body>";
+                die();
+            }
 
-                //Account type - from session variable storing the account type of the currently logged in user
-                $snippet_folder = "snippets/";#folder that contains snippets
+            //Account type - from session variable storing the account type of the currently logged in user
+            $snippet_folder = "snippets/";#folder that contains snippets
+            $headerImageUrl = "";
+            $accType="";
+            $accountName ="";
+            $firstName="";
+            $logoutLink = "";
+            //Determine what type of account is logged in and set accType to the appropriate value
+            if(MySessionHandler::AdminIsLoggedIn())
+            {
+                $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
+                $accountName = $_SESSION["admin_username"];
+                $firstName = $_SESSION["admin_first_name"];
+                $headerImageUrl = "images/stairway.jpg";
+                $logoutLink = "?action=admin_logout";
+            }
+            else if(MySessionHandler::StudentIsLoggedIn())
+            {
+                $accType = "student";#corresponds with file name prefix
+                $accountName = $_SESSION["student_username"];
+                $firstName = $_SESSION["student_first_name"];
                 $headerImageUrl = "";
-                $accType="";
-                $accountName ="";
-                $logoutLink = "";
-                //Determine what type of account is logged in and set accType to the appropriate value
-                if(MySessionHandler::AdminIsLoggedIn())
+                $logoutLink = "?action=student_logout";
+            }
+
+            //Check to see if the logout action has been triggered
+
+            
+            if(isset($_GET["action"]))
+            {
+                $actionVariable = htmlspecialchars($_GET["action"]);#sanitized action variable to get the GET action variable
+                switch($actionVariable)
                 {
-                    $accType = $_SESSION["admin_account_type"];#corresponds with file name prefix as well as the database name of the account type
-                    $accountName = $_SESSION["admin_username"];
-                    $headerImageUrl = "images/stairway.jpg";
-                    $logoutLink = "?action=admin_logout";
+                    case "student_logout":
+                        MySessionHandler::StudentLogout();#logout
+                    break;
+
+                    case "admin_logout":#admin logs out
+                        MySessionHandler::AdminLogout();
+                    break;
+
+                    default:#invalid entry, anything we hadn't planned for
+                        echo "<p>If you're seeing this, there has been a problem with the logout, please try again</p>";
+
                 }
-                else if(MySessionHandler::StudentIsLoggedIn())
-                {
-                    $accType = "student";#corresponds with file name prefix
-                    $accountName = $_SESSION["student_username"];
-                    $headerImageUrl = "";
-                    $logoutLink = "?action=student_logout";
-                }
-
-                //Check to see if the logout action has been triggered
-
-                
-                if(isset($_GET["action"]))
-                {
-                    $actionVariable = htmlspecialchars($_GET["action"]);#sanitized action variable to get the GET action variable
-                    switch($actionVariable)
-                    {
-                        case "student_logout":
-                            MySessionHandler::StudentLogout();#logout
-                        break;
-
-                        case "admin_logout":#admin logs out
-                            MySessionHandler::AdminLogout();
-                        break;
-
-                        default:#invalid entry, anything we hadn't planned for
-                            echo "<p>If you're seeing this, there has been a problem with the logout, please try again</p>";
-
-                    }
-                    unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
-                }
+                unset($_GET["action"]);#unset the action GET variable if it hasn't been automagically unset
+            }
         ?>
-
         <header class="horizontal-navigation z-depth-1">
-
             <nav class="top-nav ">
                 <div class="container ">
                     <div class="nav-wrapper ">
@@ -110,7 +119,7 @@
                             <li>
                                 <a data-beloworigin="true" href="#" data-activates="accDropDown" class="account-name dropdown-button with-photo" >
                                     <span class="profile-photo"></span>
-                                    <?php echo $accountName; ?>
+                                     <?php echo "$firstName ($accountName)"; ?>
                                 </a>
                                 <ul id="accDropDown" class="dropdown-content">
                                     <li>

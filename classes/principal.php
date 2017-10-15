@@ -6,7 +6,7 @@ require_once("admin_account.php");
 class Principal extends AdminAccount
 {
     //Variable initialization
-    const MAX_PRINCIPAL_ACCOUNTS = 3;#default is 3 - one for the principal, one for the deputy, one for the director
+    public static $MAX_PRINCIPAL_ACCOUNTS = 5;#default is 3 - one for the principal, one for the deputy, one for the director
 
     //Constructor
     function __construct()
@@ -39,7 +39,7 @@ class Principal extends AdminAccount
             $principal_accounts = $result->num_rows;
         }
         
-        if($principal_accounts < self::MAX_PRINCIPAL_ACCOUNTS )
+        if($principal_accounts < self::$MAX_PRINCIPAL_ACCOUNTS )
         {
             #if the teacher details are set (form data filled,phone can be left blank), create account
             if (Validator::PrincipalSignupValid($data))

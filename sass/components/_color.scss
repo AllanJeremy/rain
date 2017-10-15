@@ -5,23 +5,27 @@
 //}
 
 // Google Color Palette defined: http://www.google.com/design/spec/style/color.html
+$header-nav-active: #b0f3e1;
+$header-bg-overlay: rgb(32, 10, 70);
+$header-dropdown-dark: #313131;
+$header-dropdown-light: #f1f1f1;
 
 $brookhurst-theme-secondary: (
-    "base":     #d8b759,
-    "lighten-1":    #e8d49b,
-    "darken-1":     #a28943
+    "base":     #00AAC0,
+    "lighten-1":    #4BBEE0,
+    "darken-1":     #069ABE
 );
 //30150d
 $brookhurst-theme-primary: (
-    "base":     #781822,
-    "lighten-5":    #dba8b6,
-    "lighten-4":    #be7281,
-    "lighten-3":    #b96676,
-    "lighten-2":    #aa5061,
-    "lighten-1":    #91334d,
-    "darken-1":     #59131a,
-    "darken-2":     #481015,
-    "darken-3":     #3c0e12
+    "base":     #212121,
+    "lighten-5":    #ADADAD,
+    "lighten-4":    #888888,
+    "lighten-3":    #7E7E7E,
+    "lighten-2":    #585858,
+    "lighten-1":    #444444,
+    "darken-1":     #1D1D1D,
+    "darken-2":     #111111,
+    "darken-3":     #212121
 );
 
 $materialize-red: (

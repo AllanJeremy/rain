@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connection to the database
 require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 require_once(realpath(dirname(__FILE__) . "/../handlers/grade_handler.php")); #Grade handler. Handles all grade operations
@@ -10,18 +10,18 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                 <!--<p class="grey-text">Assignments (overview headers)</p>
                 <div class="divider"></div>
                 <br>-->
-               
+
             <!--ASSIGNMENTS SECTION-->
             <?php
                 $loggedInStudentId = $_SESSION["student_adm_no"];
-                
+
                 //Get all assignments that belong to the logged in teacher
                 $assignments = DbInfo::GetAllStudentAssignments($loggedInStudentId);
                 // var_dump($assignments);
                 if(isset($section)):
                     switch($section):
                         case SECTION_ST_BASE:
-            ?>  
+            ?>
                 <!--Received assignments-->
                 <div class="row main-tab" id="recievedAssignmentsTab">
                 <?php
@@ -39,7 +39,7 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                                 {
                                     $ass_attachments = $assignment["attachments"];
                                 }
-                                
+
                                 //Assignment date related functionality
                                 $ass_date_due = $assignment["due_date"];
                                 $ass_date_sent = $assignment["date_sent"];
@@ -52,14 +52,14 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
 
                                 $ass_due_info = EsomoDate::GetDueText($ass_date_due);
 
-                                //Classroom 
+                                //Classroom
                                 $classroom_name="Unknown Class";
                                 if($classroom = DbInfo::ClassroomExists($assignment["class_id"]))
                                 {
                                     $classroom_name = $classroom["class_name"];
                                 }
                                 $ass_teacher = DbInfo::GetTeacherById($assignment["teacher_id"]);
-                                
+
                 ?>
                 <div class="col card-col" data-assignment-id="">
                         <div class="card white">
@@ -75,14 +75,14 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                                         </div>
                                     </li>
                                 </ul>
-        
+
                                 <p>From: <span class="php-data"><?php echo "Tr. " . $ass_teacher["first_name"]." ".$ass_teacher["last_name"]; ?></span></p>
                                 <p>Class: <span class="php-data"><?php echo $classroom_name;?></span></p>
-                                
+
                                 <p>Subject: <span class="php-data">Physical education</span></p>
                                 <p>Date sent: <span class="php-data"><?php echo $date_sent_fmt["date"]." at ".$date_sent_fmt["time"]; ?></span></p>
-                                <p>Due date: <span class="php-data"><?php echo $date_due_fmt["date"]." at ".$date_sent_fmt["time"]; ?></span></p>
-                                <p>Resources: 
+                                <p>Due date: <span class="php-data"><?php echo $date_due_fmt["date"]." at ".$date_due_fmt["time"]; ?></span></p>
+                                <p>Resources:
                                 <span class="php-data">
                                     <?php if ($ass_attachments=="None"): ?>
                                     No Attachments
@@ -108,62 +108,172 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                 <?php
 
                     endif;
-                ?> 
-                    
+                ?>
+
                 </div>
 
                 <?php
                         break;
                         case SECTION_ST_ASS_SENT:
                 ?>
-                <!--Sent assignments-->
+                <!--Sent assignments -->
                 <div class="row main-tab" id="sentAssignmentsTab">
                     <?php
-/*
-                if($assignments):
-                    foreach($assignments as $assignment):
-                            if(!$assignment["sent"]):
-                                var_dump($assignment);
-                            endif;
-                    endforeach;
-                            endif;
-*/
+                        $graded_subs = DbInfo::GetGradedAssSubmissions($assignments);
+                        $ungraded_subs = DbInfo::GetUngradedAssSubmissions($assignments);
                     ?>
 
-                    <div class="col card-col" data-assignment-id="">
+                    <!-- Graded submissions -->
+                    <div class="row">
+                        <div class="grey-text text-darken-1 ">
+                            <h5>Graded submissions</h5>
+                            <div class="divider"></div>
+                        </div>
+                    <?php
+                        if(!@$graded_subs):
+                            ErrorHandler::MsgBoxDefault("No graded assignments found. Once graded, the submissions will be found here.");
+                        else:
+                    ?>
+                    
+                    <?php
+                            foreach($graded_subs as &$sub):
+                                $ass = DbInfo::AssignmentExists($sub["ass_id"]);
+                                $ass_teacher = DbInfo::GetTeacherById($ass["teacher_id"]);
+                                
+                                //TODO : Refactor these into their own functions to get classroom names ad subject names
+                                $classroom_name="Unknown Class";
+                                if($classroom = DbInfo::ClassroomExists($ass["class_id"]))
+                                {
+                                    $classroom_name = $classroom["class_name"];
+                                }
+
+                                $subject_name = "Unknown Subject";
+                                if($subject = DbInfo::GetSubjectById($ass["subject_id"]))
+                                {
+                                    $subject_name = $subject["subject_name"];
+                                }
+
+                                $date_sent_fmt = EsomoDate::GetOptimalDateTime($ass["date_sent"]);#formatted sent date
+                                $date_due_fmt = EsomoDate::GetOptimalDateTime($ass["due_date"]);#formatted due date
+                                $date_submitted_fmt = EsomoDate::GetOptimalDateTime($sub["date_submitted"]);#formatted submission date
+                    ?>
+                    <div class="col card-col" data-assignment-id="<?php echo $sub["ass_id"];?>">
                         <div class="card white">
                             <div class="card-content">
-                                <span class="card-title">Assignment title</span>
+                                <span class="card-title"><?php echo $ass["ass_title"]?></span>
 
                                 <ul class="collapsible " data-collapsible="accordion">
                                     <li>
                                         <div class="collapsible-header">Instructions<i class="material-icons right">arrow_drop_down</i></div>
                                         <div class="collapsible-body">
-                                            <p>1. Make a girl run three times using your 
-fingers only then write a report of 2,500 words 
-about how you came to achieve this.<br>2. Make a boy sing three times using your 
-boobs only then write a report of 1,000 words 
-about how you came to achieve this.</p>
+                                            <p><?php echo $ass["ass_description"];?></p>
                                         </div>
                                     </li>
                                 </ul>
-        
-                                <p>From: <span class="php-data">Tr.Jessica</span></p>
-                                <p>Subject: <span class="php-data">Physical education</span></p>
-                                <p>Date sent: <span class="php-data">24th Aug 2016</span></p>
-                                <p>Date handed in: <span class="php-data">1st Sept 2016</span></p>
-                                <p>Due date: <span class="php-data">2nd Sept 2016</span></p>
-                                <p>Resources: <span class="php-data"><a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a></span></p>
+
+                                <p>From: <span class="php-data"><?php echo "Tr. " . $ass_teacher["first_name"]." ".$ass_teacher["last_name"]; ?></span></p>
+                                <p>Class: <span class="php-data"><?php echo $classroom_name;?></span></p>
+                                <p>Subject: <span class="php-data"><?php echo $subject_name;?></span></p>
+                                <p title="The date the assignment was sent">Date sent: <span class="php-data"><?php echo $date_sent_fmt["date"]." (".$date_sent_fmt["time"].")"; ?></span></p>
+                                <p title="The due date for the assignment. Submit your assignment before this date to avoid being penalized">Due date: <span class="php-data"><?php echo $date_due_fmt["date"]." (".$date_due_fmt["time"].")"; ?></span></p>
+                                <p title="The date you submitted the assignment">Date submitted: <span class="php-data"><?php echo $date_submitted_fmt["date"]." (".$date_submitted_fmt["time"].")"; ?></span></p>
+  
+                               <!-- TODO: MAKE THIS DYNAMIC -->
+                               <p>Resources: <span class="php-data">
+                                    <a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, 
+                                    <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a>
+                                </span></p>
                             </div>
                             <div class="card-action center-align brookhurst-theme-primary assignment-results">
-                                <p class="white-text no-margin">Grade given: <span class="php-data">90%</span></p>
+                                <p class="white-text no-margin">Grade given: <span class="php-data"><?php echo $sub["grade"]."/".$ass["max_grade"]." ( ".floor(($sub["grade"]/$ass["max_grade"])*100)."% )";?></span></p>
                                 <div class="js-assignment-comments assignment-info">
-                                    <a href="#" data-root-hook="assignment" class="js-get-comments <!--deep-orange-text text-accent-3--> php-data white-text" onclick="">
+                                    <a href="#" data-root-hook="assignment" class="js-get-comments <!--deep-orange-text text-accent-3--> php-data white-text" onclick="" title="View comments for this assignment">
                                         <i class="material-icons center">message</i>
                                     </a>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <?php
+                            endforeach;
+                        endif;
+                    ?>
+                    </div>
+
+                    <!-- Awaiting grading submissions -->
+                    <div class="row">
+                        <div class="grey-text text-darken-1 ">
+                            <h5>Awaiting grading</h5>
+                            <div class="divider"></div>
+                        </div>
+                    <?php
+                        if(!@$ungraded_subs):
+                            ErrorHandler::MsgBoxDefault("No graded assignments found. Once graded, the submissions will be found here.");
+                        else:
+                    ?>
+                    
+                    <?php
+                            foreach($ungraded_subs as &$sub):
+                                $ass = DbInfo::AssignmentExists($sub["ass_id"]);
+                                $ass_teacher = DbInfo::GetTeacherById($ass["teacher_id"]);
+                                
+                                //TODO : Refactor these into their own functions to get classroom names ad subject names
+                                $classroom_name="Unknown Class";
+                                if($classroom = DbInfo::ClassroomExists($ass["class_id"]))
+                                {
+                                    $classroom_name = $classroom["class_name"];
+                                }
+
+                                $subject_name = "Unknown Subject";
+                                if($subject = DbInfo::GetSubjectById($ass["subject_id"]))
+                                {
+                                    $subject_name = $subject["subject_name"];
+                                }
+
+                                $date_sent_fmt = EsomoDate::GetOptimalDateTime($ass["date_sent"]);#formatted sent date
+                                $date_due_fmt = EsomoDate::GetOptimalDateTime($ass["due_date"]);#formatted due date
+                                $date_submitted_fmt = EsomoDate::GetOptimalDateTime($sub["date_submitted"]);#formatted submission date
+                    ?>
+                    <div class="col card-col" data-assignment-id="<?php echo $sub["ass_id"];?>">
+                        <div class="card white">
+                            <div class="card-content">
+                                <span class="card-title"><?php echo $ass["ass_title"]?></span>
+
+                                <ul class="collapsible " data-collapsible="accordion">
+                                    <li>
+                                        <div class="collapsible-header">Instructions<i class="material-icons right">arrow_drop_down</i></div>
+                                        <div class="collapsible-body">
+                                            <p><?php echo $ass["ass_description"];?></p>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <p>From: <span class="php-data"><?php echo "Tr. " . $ass_teacher["first_name"]." ".$ass_teacher["last_name"]; ?></span></p>
+                                <p>Class: <span class="php-data"><?php echo $classroom_name;?></span></p>
+                                <p>Subject: <span class="php-data"><?php echo $subject_name;?></span></p>
+                                <p title="The date the assignment was sent">Date sent: <span class="php-data"><?php echo $date_sent_fmt["date"]." (".$date_sent_fmt["time"].")"; ?></span></p>
+                                <p title="The due date for the assignment. Submit your assignment before this date to avoid being penalized">Due date: <span class="php-data"><?php echo $date_due_fmt["date"]." (".$date_due_fmt["time"].")"; ?></span></p>
+                                <p title="The date you submitted the assignment">Date submitted: <span class="php-data"><?php echo $date_submitted_fmt["date"]." (".$date_submitted_fmt["time"].")"; ?></span></p>
+
+                             <!-- TODO: MAKE THIS DYNAMIC -->
+                                <p>Resources: <span class="php-data">
+                                    <a href="#!resourceFile1" id="resourceFile">Runner.pdf</a>, 
+                                    <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a>
+                                </span></p>   
+                            </div>
+                            <div class="card-action center-align brookhurst-theme-primary assignment-results">
+                                <div class="js-assignment-comments assignment-info">
+                                    <a href="#" data-root-hook="assignment" class="js-get-comments <!--deep-orange-text text-accent-3--> php-data white-text" onclick="" title="View comments for this assignment">
+                                        <i class="material-icons center">message</i> Comments
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                            endforeach;
+                        endif;
+                    ?>
                     </div>
                 </div>
 
@@ -176,14 +286,14 @@ about how you came to achieve this.</p>
                     <div class="row">
                         <h5 class="grey-text text-darken-1">Tests Available</h5>
                     </div>
-                    
+
                     <div class="divider"></div>
-                    
+
                     <?php
                         $redirect_url = "";#url the test redirects to
                         $test_id = 0; #init test_id
                         $no_of_takers = 0;#init number of takers
-                        $subject = null;#init subject 
+                        $subject = null;#init subject
                         $pass_mark = 0;
 
                         #Get all subjects
@@ -197,7 +307,7 @@ about how you came to achieve this.</p>
 
                     <div class="row">
                         <h5 class="php-data" style="text-transform:uppercase;"><?php echo $subject["subject_name"]?> TESTS</h5>
-                    <?php       
+                    <?php
                             foreach($tests as $test):
                                 $test_id = &$test["test_id"];
                                 $redirect_url = "tests.php?tid=".$test_id;
@@ -254,7 +364,7 @@ about how you came to achieve this.</p>
                             endif;#if tests found
                             $count++;
                         endforeach;
-                        
+
                     else:#if subjects were not found
                     ?>
                         <p class="red-text">Could not retrieve subjects</p>
@@ -360,7 +470,7 @@ about how you came to achieve this.</p>
                 <div class="row main-tab" id="studentResourcesTab">
                     <?php
                         // TODO: [OPTIMIZATION] Could Create a function for quick retrieval of resources (use 1 column in database and limit selection length. Or check for whether values exist or not and return true or false)
-                        //If there are resources available 
+                        //If there are resources available
                         if($resources = DbInfo::GetAllResources())
                         {
                             EsomoResource::DisplayResources();
@@ -368,7 +478,7 @@ about how you came to achieve this.</p>
                         else#Resources not found
                         {
                             EsomoResource::DisplayMissingDataMessage();
-                        }     
+                        }
                     ?>
                 </div>
 

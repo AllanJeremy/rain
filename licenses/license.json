@@ -1,4 +1,4 @@
 {
-    "key":"",//A licence key ~ the license id
-    "integrity":""//A hash specific to the key
+    "key":"testkey",
+    "integrity":"somesha"
 }
