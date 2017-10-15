@@ -2328,7 +2328,6 @@ if(isset($_GET['action'])) {
         case "UpdateScheduleOverview":#Update schedule overview
             //---------------------------------------------------------------------
             $timeframe = $_GET["timeframe"];
-
             //If the timeframe provided is valid
             if(isset($timeframe) && !empty($timeframe))
             {
@@ -2451,7 +2450,7 @@ if(isset($_GET['action'])) {
 
         case "UpdateScheduleTabStats":
             $timeframe = $_GET["timeframe"];
-
+            require_once("comment_handler.php");
             //If the timeframe provided is valid
             if(isset($timeframe) && !empty($timeframe))
             {
@@ -2540,7 +2539,7 @@ if(isset($_GET['action'])) {
 
                         $schedule_comment_count = 0;
                         #Schedule comments
-                        if($schedule_comments = DbInfo::GetScheduleComments($schedule_id) && @$schedule_comments->num_rows>0)
+                        if($schedule_comments = CommentHandler::GetScheduleComments($schedule_id) && @$schedule_comments->num_rows>0)
                         {
                             $schedule_comment_count = $schedule_comments->num_rows;
                         }
