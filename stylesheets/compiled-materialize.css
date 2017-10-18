@@ -11016,3 +11016,8 @@ input:-webkit-autofill:active {
 .m-0 {
   margin: 0;
 }
+
+/* line 883, ../sass/_style.scss */
+.small-text {
+  font-size: 0.8rem;
+}

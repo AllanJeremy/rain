@@ -561,10 +561,14 @@ var Lists_Templates = function () {
             break;
         }
 
+        var title = ((commentType !== '') ? '' /* + commentType + ' comments - ' */ + obj.title + " comments " + obj.extraInfo : 'Comments');
+        
         templateOutput += '<div id="' + obj.modalId + '" class="modal modal-fixed-footer">';
         templateOutput += '<div class="modal-content">';
-        templateOutput += ((commentType !== '') ? '<h4>' + commentType + ' comments</h4>' : '<h4>Comments</h4>');
-        templateOutput += ((commentType !== '') ? "<h5>ref: " + obj.title + " " + obj.extraInfo + "</h5>" : '');
+        templateOutput += '<h4 class="small-text php-data">';
+        templateOutput += title.toUpperCase();
+        templateOutput += '</h4>';
+        templateOutput += '<div class="divider"></div>';
         templateOutput += obj.templateBody;
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
@@ -1124,11 +1128,11 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="input-field inline comment margin-horiz-16" data-comment-type="' + comment_type + '" data-id="' + id + '">';
+        templateOutput += '<div class="input-field inline comment margin-horiz-16 col s8" data-comment-type="' + comment_type + '" data-id="' + id + '">';
         templateOutput += '<label for="comment">';
         templateOutput += '<i class="material-icons">comment</i>';
         templateOutput += '</label>';
-        templateOutput += '<input type="text" placeholder="comment" class="js-comment-bar browser-default modal-comment " name="comment">';
+        templateOutput += '<input type="text" placeholder="comment" class="col s8 js-comment-bar browser-default modal-comment " name="comment">';
 
         if (can_comment === true) {
             templateOutput += '<a class="marg-6 btn js-add-comment" data-root-hook="' + comment_type + '" href="javascript:void(0)">comment</a>';
