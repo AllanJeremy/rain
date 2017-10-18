@@ -84,6 +84,7 @@ class CommentHandler
     public static function StudentCommentOnAss($ass_id,$acc_id,$comment_text)
     {
         $commentor_type="student";
+        echo $acc_id;
         return self::CommentOnItem("assignment",$ass_id,$acc_id,$comment_text,$commentor_type);
     }
 
@@ -171,7 +172,7 @@ class CommentHandler
         //If comments were available
         if(@$comments && $comments->num_rows>0)
         {
-            $cur_comment = array("comment_id"=>"","poster_name"=>"","poster_type"=>"","poster_link"=>"","poster_id"=>"","comment_text"=>"","date"=>"","time"=>"");
+            $cur_comment = array("comment_id"=>"","poster_name"=>"","poster_type"=>"","poster_link"=>"","poster_id"=>"","comment_text"=>"","date"=>"");
 
             //For each comment
             foreach($comments as $comment)
@@ -182,15 +183,9 @@ class CommentHandler
                 $cur_comment["poster_link"] = $comment["commentor_link"];
                 $cur_comment["poster_id"] = $comment["commentor_id"];
                 $cur_comment["comment_text"] = $comment["comment_text"];
-
-                $date_info = EsomoDate::GetDateInfo($comment["date_sent"]);
-
-                //Format the date and time into a usable format eg. (Fri,April 28, 2017)
-                $date = $date_info["days"].", ".$date_info["months"]." ".$date_info["days"].", ".$date_info["years"];
-                $time = $date_info["hours"].":".$date_info["minutes"];
-
-                $cur_comment["date"] = $date;
-                $cur_comment["time"] = $time;
+                
+                $date_info = EsomoDate::GetOptimalCommentDate($comment["date_sent"]);
+                $cur_comment["date"] = $date_info;
 
                 array_push($comment_data["comments"],$cur_comment);
             }

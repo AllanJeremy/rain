@@ -147,6 +147,15 @@ class EsomoDate implements EsomoDateFunctions
         return $date_time_output;
     }
 
+    //TODO : Consider adding text like (a few moments ago) or about a minute ago when a comment is recent for improved UX
+    public static function GetOptimalCommentDate($date_input)
+    {
+        $date = self::GetOptimalDateTime($date_input);
+        
+        $date_text = $date["day"].", ".$date["date"]." - ".$date["time"]."";
+
+        return $date_text;
+    }
     public static function GetOptimalDateText($date_input)
     {
         $date = self::GetOptimalDateTime($date_input);
@@ -218,17 +227,15 @@ class EsomoDate implements EsomoDateFunctions
     //Gets the date info and returns it in an array - takes a date_input as a parameter
     public static function GetDateInfo($date_input)
     {
-        $date = null;
+        $date = $date_input;
         //If the time entered is not date time, create a new date time from it.
         if(!is_a($date_input,"DateTime") && is_string($date_input))
         {
             $date = new DateTime($date_input);
         }
-        else //otherwise, if it is datetime, then set the date equal to it
-        {
-            $date = $date_input;
-        }
 
+        //TODO : Fix bug with this, returns incorrectly formatted date: 
+        //8 Oct 2017 05:05:09 +0300, %Wed, 18 Oct 2017 05:05:09 +0300
         $years = $date->format("%r%y");
         $months = $date->format("%r%m");
         $days = $date->format("%r%d");
