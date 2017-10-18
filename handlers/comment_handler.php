@@ -57,12 +57,16 @@ class CommentHandler
         //Commentor variables
         $commentor_info = self::GetCommentorInfo($acc_id,$commentor_type);#Commentor info array
         $commentor_name = $commentor_info["commentor_name"];#default is anonymous if we can't find the commentor name
-        $comment_link = $commentor_info["commentor_link"];#Link to commentor's profile
-
+        $commentor_link = $commentor_info["commentor_link"];#Link to commentor's profile
+        
+        echo "<p> Acc id: $acc_id </p>";
+        echo "<p> Commentor name: $commentor_name </p>";
+        echo "<p> Commentor link: $commentor_link </p>";
+        
         if($insert_stmt = $dbCon->prepare($insert_stmt))
         {
             //(ass_id,comment_text,commentor_name,commentor_link)
-            $insert_stmt->bind_param("isssssi",$fk_id,$comment_category,$comment_text,$commentor_name,$comment_link,$commentor_type,$acc_id);
+            $insert_stmt->bind_param("isssssi",$fk_id,$comment_category,$comment_text,$commentor_name,$commentor_link,$commentor_type,$acc_id);
 
             if($insert_stmt->execute())
             {
@@ -261,10 +265,10 @@ if(isset($_POST['action'])) {
         case 'StudentIdExists':
             break;
         case 'StudentCommentOnAss':
-            $ass_id = &$_POST["id"];
-            $comment = &$_POST["comment"];
-            $acc_id = &$user_info["acc_id"];
-            echo CommentHandler::StudentCommentOnAss($ass_id,$acc_id,$comment);
+            @$ass_id = &$_POST["id"];
+            @$comment = &$_POST["comment"];
+            @$acc_id = &$user_info["user_id"];
+            CommentHandler::StudentCommentOnAss($ass_id,$acc_id,$comment);
             break;
     default:
             echo "invalid get request";
