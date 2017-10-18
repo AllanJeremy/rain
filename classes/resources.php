@@ -185,7 +185,8 @@ class EsomoResource
                     </div>
                     <div class="card-action">
                         <!--TODO: Make this display the file regardless of type in a new tab-->
-                    <a class="" href="resourcesViewer.php?" data-href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a>
+                    <a class="" href="resourceViewer.php?rid=<?php echo $res_id;?>" data-href="<?php echo $res_file_link; ?>">OPEN</a>
+                    <!-- <a class="" href="<?php echo $res_found['file_link'];?>" data-href="<?php echo $res_file_link; ?>" target="_blank">OPEN</a> -->
                     <a <?php echo $res_edit_btn_properties?> href="javascript:void(0)">EDIT</a>
                     </div>
 

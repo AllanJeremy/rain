@@ -208,7 +208,7 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                         </div>
                     <?php
                         if(!@$ungraded_subs):
-                            ErrorHandler::MsgBoxDefault("No graded assignments found. Once graded, the submissions will be found here.");
+                            ErrorHandler::MsgBoxDefault("No assignments waiting to be graded found. Any assignments awaiting grading will be found here.");
                         else:
                     ?>
                     

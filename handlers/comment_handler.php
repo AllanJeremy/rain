@@ -9,7 +9,7 @@ class CommentHandler
     {
         //Prefix for the commentor link
         $commentor_link = realpath(dirname(__FILE__) . "/../profile.php?");
-
+        $commentor_name = "";
         switch($commentor_type)#add case for every new type off accessible profile
         {
             case "student":
@@ -265,8 +265,14 @@ if(isset($_POST['action'])) {
             break;
         case 'StudentIdExists':
             break;
+        case 'StudentCommentOnAss':
+            $ass_id = &$_POST["id"];
+            $comment = &$_POST["comment"];
+            $acc_id = &$user_info["acc_id"];
+            echo CommentHandler::StudentCommentOnAss($ass_id,$acc_id,$comment);
+            break;
     default:
-            // echo "invalid get request";
+            echo "invalid get request";
             return null;
             break;
     }
