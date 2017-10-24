@@ -5,7 +5,7 @@
 html {
     &.login-bg {
         height: 100%;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-image: url('../images/esomo-bg-01.jpg');
         background-position: bottom right;
         background-repeat: no-repeat;
@@ -115,7 +115,7 @@ h5 > span {
 }
 
 .header {
-  color: color("brookhurst-theme-primary", "lighten-1");
+  color: $primary-color-light;
   font-weight: 300;
 }
 
@@ -287,7 +287,7 @@ header.horizontal-navigation {
             z-index: 6;
             right: 0;
             height: 100%;
-            background-color: rgba(0,0,0,.54);
+            background-color: rgba(0,0,0,.78);
             padding: 16px;
             width: 48px;
             font-size: inherit;
@@ -445,10 +445,6 @@ ul.side-nav.fixed {
   &:hover {
     overflow-y: auto;
   }
-}
-
-.bold > a {
-  font-weight: bold;
 }
 
 #logo-container {
@@ -624,9 +620,7 @@ $height: auto;
         line-height: 20px;
         margin: 0;
     }
-    
-    
-    
+
 }
 #images .card-panel .row {
   margin-bottom: 0;
@@ -657,12 +651,12 @@ $height: auto;
     margin: -24px;
     margin-bottom: 20px;
     padding: 24px;
-    background-color: $primary-color;
+    background-color: $secondary-color;
     position: relative;
 
-    &.blue {
-        background-color: #263238 !Important;
-        border-bottom: 4px solid rgb(247, 219, 139);
+    &.accent {
+        background-color: color("rain-theme-accent", "darken-1") !Important;
+        border-bottom: 4px solid $primary-color-dark;
     }
 }
 
@@ -746,7 +740,7 @@ $height: auto;
         transition-duration: .3s;
         width: 100%;
         overflow: hidden;
-        overflow-x: scroll;
+        overflow-x: auto;
         margin-bottom: 20px;
 
         &.pinned {
@@ -862,25 +856,4 @@ $height: auto;
     }
 }
 
-//Margins
-.mt-0{
-    margin-top:0;
-}
-.mb-0{
-    margin-bottom:0;
-}
-.mr-0{
-    margin-right:0;
-}
-.ml-0{
-    margin-left:0;
-}
-.m-0{
-    margin:0;
-}
 
-//Font sizes
-.small-text
-{
-    font-size:0.8rem;
-}

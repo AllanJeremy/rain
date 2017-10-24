@@ -10,13 +10,22 @@ $header-bg-overlay: rgb(32, 10, 70);
 $header-dropdown-dark: #313131;
 $header-dropdown-light: #f1f1f1;
 
-$brookhurst-theme-secondary: (
+$rain-theme-accent: (
     "base":     #00AAC0,
-    "lighten-1":    #4BBEE0,
-    "darken-1":     #069ABE
+    "lighten-1":    #b0f3e1,
+    "darken-1":     #007a89
+);
+
+$rain-theme-primary: (
+    "base":     #371722,
+    "lighten-1":    #46222e,
+    "lighten-2":    #5f3744,
+    "darken-1":     #271018,
+    "darken-2":     #1f0d08
 );
 //30150d
-$brookhurst-theme-primary: (
+
+$rain-theme-secondary: (
     "base":     #212121,
     "lighten-5":    #ADADAD,
     "lighten-4":    #888888,
@@ -25,7 +34,6 @@ $brookhurst-theme-primary: (
     "lighten-1":    #444444,
     "darken-1":     #1D1D1D,
     "darken-2":     #111111,
-    "darken-3":     #212121
 );
 
 $materialize-red: (
@@ -359,8 +367,9 @@ $shades: (
 );
 
 $colors: (
-  "brookhurst-theme-primary": $brookhurst-theme-primary,
-  "brookhurst-theme-secondary": $brookhurst-theme-secondary,
+  "rain-theme-primary": $rain-theme-primary,
+  "rain-theme-secondary": $rain-theme-secondary,
+  "rain-theme-accent": $rain-theme-accent,
   "materialize-red": $materialize-red,
   "red": $red,
   "pink": $pink,

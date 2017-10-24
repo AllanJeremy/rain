@@ -56,7 +56,7 @@
             #Update license and check if the license info provided is valid
             if(!RainLicense::LicenseValid())
             {
-                ErrorHandler::MsgBoxInfo(RainLicense::INVALID_LICENSE_MESSAGE,"m-0");
+                ErrorHandler::MsgBoxInfo(RainLicense::INVALID_LICENSE_MESSAGE,"no-margin");
                 include_once("./snippets/site_footer.php");
                 echo "</body>";
                 die();

@@ -191,7 +191,7 @@ var Lists_Templates = function () {
         
         templateOutput +=  obj.duedate + '</span></p>';
         templateOutput += '</div>';
-        templateOutput += '<div class="card-action center-align brookhurst-theme-primary assignment-results">';
+        templateOutput += '<div class="card-action center-align rain-theme-primary assignment-results">';
         templateOutput += '<p class="white-text">Grade given: <span class="php-data">' + obj.assignmentgradegiven + '</span></p>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';
@@ -232,7 +232,7 @@ var Lists_Templates = function () {
         templateOutput += '<p>Pass mark:  <span class="php-data">' + obj.testpassmark + '</span></p>';
         templateOutput += '<p class="students-taken php-data"><i>' + obj.testtotalstudentstaken + ' students in your class have taken this test</i></p></span></p>';
         templateOutput += '</div>';
-        templateOutput += '<div class="card-action center-align brookhurst-theme-primary assignment-results">';
+        templateOutput += '<div class="card-action center-align rain-theme-primary assignment-results">';
         templateOutput += '<a href="' + obj.testlink + '">Take test</a>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';

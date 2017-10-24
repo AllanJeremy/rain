@@ -33,11 +33,13 @@
 /* 1. Colors
    ========================================================================== */
 
-$primary-color: color("brookhurst-theme-primary", "base") !default;
+$primary-color: color("rain-theme-primary", "base") !default;
 $primary-color-light: lighten($primary-color, 7%) !default;
 $primary-color-dark: darken($primary-color, 7%) !default;
 
-$secondary-color: color("brookhurst-theme-secondary", "base") !default;
+$accent-color: color("rain-theme-accent", "base") !default;
+
+$secondary-color: color("rain-theme-secondary", "base") !default;
 $success-color: color("green", "base") !default;
 $error-color: color("red", "base") !default;
 $link-color: color("light-blue", "darken-1") !default;
@@ -54,7 +56,7 @@ $badge-bg-color: $secondary-color !default;
 
 // Shared styles
 $button-border: none !default;
-$button-background-focus: lighten($secondary-color, 4%) !default;
+$button-background-focus: lighten($accent-color, 4%) !default;
 $button-font-size: 1.3rem !default;
 $button-height: 36px !default;
 $button-padding: 0 2rem !default;
@@ -65,7 +67,7 @@ $button-disabled-background: #DFDFDF !default;
 $button-disabled-color: #9F9F9F !default;
 
 // Raised buttons
-$button-raised-background: $secondary-color !default;
+$button-raised-background: $accent-color !default;
 $button-raised-background-hover: lighten($button-raised-background, 5%) !default;
 $button-raised-color: #fff !default;
 
@@ -116,12 +118,12 @@ $chip-margin: 5px !default;
 /* 7. Date Picker
    ========================================================================== */
 
-$datepicker-weekday-bg: darken($secondary-color, 7%) !default;
-$datepicker-date-bg: $secondary-color !default;
+$datepicker-weekday-bg: darken($primary-color, 4%) !default;
+$datepicker-date-bg: $primary-color !default;
 $datepicker-year: rgba(255, 255, 255, .4) !default;
 $datepicker-focus: rgba(0,0,0, .05) !default;
-$datepicker-selected: $secondary-color !default;
-$datepicker-selected-outfocus: desaturate(lighten($secondary-color, 35%), 15%) !default;
+$datepicker-selected: $primary-color !default;
+$datepicker-selected-outfocus: desaturate(lighten($primary-color, 35%), 15%) !default;
 
 
 /* 8. Dropdown
@@ -129,7 +131,7 @@ $datepicker-selected-outfocus: desaturate(lighten($secondary-color, 35%), 15%) !
 
 $dropdown-bg-color: #fff !default;
 $dropdown-hover-bg-color: #eee !default;
-$dropdown-color: $secondary-color !default;
+$dropdown-color: $primary-color-light !default;
 $dropdown-item-height: 50px !default;
 
 
@@ -149,7 +151,7 @@ $input-border: 1px solid $input-border-color !default;
 $input-background: #fff !default;
 $input-error-color: $error-color !default;
 $input-success-color: $success-color !default;
-$input-focus-color: $secondary-color !default;
+$input-focus-color: color("rain-theme-primary", "lighten-2") !default;
 $input-font-size: 1rem !default;
 $input-margin: 0 0 20px 0 !default;
 $input-padding: 0 !default;
@@ -162,7 +164,7 @@ $input-invalid-border: 1px solid $input-error-color !default;
 $placeholder-text-color: lighten($input-border-color, 20%) !default;
 
 // Radio Buttons
-$radio-fill-color: $secondary-color !default;
+$radio-fill-color: $accent-color !default;
 $radio-empty-color: #5a5a5a !default;
 $radio-border: 2px solid $radio-fill-color !default;
 
@@ -174,14 +176,14 @@ $track-height: 3px !default;
 // Select
 $select-border: 1px solid #f2f2f2 !default;
 $select-background: rgba(255, 255, 255, 0.90) !default;
-$select-focus: 1px solid lighten($secondary-color, 47%) !default;
+$select-focus: 1px solid lighten($accent-color, 47%) !default;
 $select-padding: 5px !default;
 $select-radius: 2px !default;
 $select-disabled-color: rgba(0,0,0,.3) !default;
 
 // Switches
-$switch-bg-color: $secondary-color !default;
-$switch-checked-lever-bg: desaturate(lighten($secondary-color, 25%), 25%) !default;
+$switch-bg-color: $accent-color !default;
+$switch-checked-lever-bg: desaturate(lighten($accent-color, 25%), 25%) !default;
 $switch-unchecked-bg: #F1F1F1 !default;
 $switch-unchecked-lever-bg: #818181 !default;
 $switch-radius: 15px !default;
@@ -250,7 +252,7 @@ $spinner-default-color: $secondary-color !default;
 /* 17. Tabs
    ========================================================================== */
 
-$tabs-underline-color: $primary-color-light !default;
+$tabs-underline-color: color("rain-theme-accent", "lighten-1") !default;
 $tabs-text-color: $primary-color !default;
 $tabs-bg-color: #fff !default;
 
@@ -312,4 +314,4 @@ $collection-link-color: $secondary-color !default;
 /* 24. Progress Bar
    ========================================================================== */
 
-$progress-bar-color: $secondary-color !default;
+$progress-bar-color: color("rain-theme-primary", "lighten-2") !default;

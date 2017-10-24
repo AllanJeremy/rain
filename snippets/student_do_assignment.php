@@ -62,7 +62,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         <div class="determinate" style="width:0%;"></div>
     </div>
 
-    <div class="brookhurst-theme-primary lighten-1">
+    <div class="rain-theme-primary lighten-1">
         <div class="container ">
             <br>
             <div class="row no-bottom-margin">
@@ -106,7 +106,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
             ?>
         </div>
     </div>
-    <div class="brookhurst-theme-primary lighten-2 row pin-nav-top">
+    <div class="rain-theme-primary lighten-2 row pin-nav-top">
 
         <div class="col s12">
             <a class="white-text btn-flat btn marg-6 hide"><i class="material-icons">arrow_back</i></a>
@@ -200,7 +200,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
     <div id="myAssignment" class="row container">
         <div class="m12 s12 col l8 assignment-tinymce">
-            <div hidefocus="0" class="brookhurst-theme-primary lighten-3 row tinymce-toolbar inline-toolbar" id="mytoolbar">
+            <div hidefocus="0" class="rain-theme-primary lighten-3 row tinymce-toolbar inline-toolbar" id="mytoolbar">
             </div>
             <div class="header white row z-depth-2">
                 <div class="col s6 input-field no-margin">
@@ -343,7 +343,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
     </div>
     <div id="assignmentUploadConfirm" class="modal modal-fixed-footer">
         <div class="modal-content">
-            <div class="js-drag-drop-area blue">
+            <div class="js-drag-drop-area accent">
                 <h5 class="white-text center-align">
                     Confirm assignment upload
                 </h5>
@@ -368,9 +368,8 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
                     <div class="col s12">
                         <div class="row container">
                             <div class="col s12 input-field no-margin">
-                                <textarea class="white-text materialize-textarea js-submission-text" title="Type a text for the teacher" name="submission_text">
-                                </textarea>
-                                <label for="submission_text">Add a comment to your assignment for <?php echo $assignment['teacher_name']['first_name'] .' '. $assignment['teacher_name']['last_name'] ; ?> to read first.</label>
+                                <textarea class="op-4 materialize-textarea js-submission-text" title="Type a text for the teacher" name="submission_text"></textarea>
+                                <label class="op-4" for="submission_text">Add a comment to your assignment for <?php echo $assignment['teacher_name']['first_name'] .' '. $assignment['teacher_name']['last_name'] ; ?> to read first.</label>
                             </div>
                         </div>
                     </div>

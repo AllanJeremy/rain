@@ -53,7 +53,7 @@ class RainLicense
     {
         #If the license file does not exist, show error and return false (license is invalid)
         if(!file_exists(self::LICENSE_FILE_PATH)){
-            ErrorHandler::MsgBoxError(self::LICENSE_NOT_FOUND_MESSAGE,"m-0");
+            ErrorHandler::MsgBoxError(self::LICENSE_NOT_FOUND_MESSAGE,"no-margin");
             return false;
         }
 

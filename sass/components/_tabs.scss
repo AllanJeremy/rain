@@ -25,7 +25,7 @@
       
     .tab a:hover,
     .tab a.active {
-      color: $primary-color;
+      color: color("rain-theme-accent", "lighten-1");
     }
 
     .indicator {

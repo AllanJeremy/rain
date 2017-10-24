@@ -853,7 +853,7 @@ var ClassroomEvents = function () {
                             totalSelected = previouslySelectedStudents.split(',').length - 1;
 
                         $('#' + template.modalId + ' .student-list')
-                            .append('<div class="col s12 brookhurst-theme-primary previous students lighten-2 card-panel " data-total-students="'
+                            .append('<div class="col s12 rain-theme-primary previous students lighten-2 card-panel " data-total-students="'
                                     + totalSelected + '" data-selected-students="'
                                     + previouslySelectedStudents + '"><p class="white-text php-data">A total of '
                                     + totalSelected + ' student' + ( (totalSelected > 1) ? 's are' : ' is' ) + ' in the classroom. </p> <p><a id="removeStudentsFromClassroom" class="btn btn-small ' + ( (totalSelected < 1) ? 'disabled hide' : '' ) + '"> Remove students</a></p><br></div>');
@@ -1705,7 +1705,7 @@ var ClassroomEvents = function () {
 
                             $('.modal#editClassRoom .student-list').find('.students').remove();
                             
-                            hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="'
+                            hook.append('<div class="col s12 rain-theme-primary students lighten-2 card-panel " data-total-students="'
                                         + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 
                                         '"><p class="white-text php-data">' + previousTotal + ' student' + ( (previousTotal > 1) ? 's are' : ' is' ) + ' already in the classroom<br>' + 
                                         ((selectedStringFormat.split(',').length - 1) - parseInt(previousTotal)) + 
@@ -1752,7 +1752,7 @@ var ClassroomEvents = function () {
 
                             $('.modal#editClassRoom .students').remove();
 
-                            hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="'
+                            hook.append('<div class="col s12 rain-theme-primary students lighten-2 card-panel " data-total-students="'
                                         + (selectedStringFormat.split(',').length - 1) + '" data-selected-students="' + selectedStringFormat + 
                                         '"><p class="white-text php-data">' 
                                         + (parseInt(previousTotal) - (selectedStringFormat.split(',').length - 1)) + 
@@ -1770,7 +1770,7 @@ var ClassroomEvents = function () {
 
                 } else {
                     
-                    hook.append('<div class="col s12 brookhurst-theme-primary students lighten-2 card-panel " data-total-students="' 
+                    hook.append('<div class="col s12 rain-theme-primary students lighten-2 card-panel " data-total-students="'
                                 + totalSelected + '" data-selected-students="' + selectedStringFormat + 
                                 '"><p class="white-text php-data">A total of ' + totalSelected + 
                                 ' students to be added in the classroom. </p><p><a id="removeStudentsFromClassroom" class="btn"> Remove students</a></p><br></div>');
@@ -1799,7 +1799,7 @@ var ClassroomEvents = function () {
 
                     $('.modal#editAssignment .classrooms').remove();
 
-                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' 
+                    hook.append('<div class="col s12 rain-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="'
                                 + (selectedStringFormat.split(',').length - 1) + '" data-selected-classrooms="' 
                                 + selectedStringFormat + '"><p class="white-text php-data">' 
                                 + previousTotal + ' classrooms have the assignment<br>' 
@@ -1807,7 +1807,7 @@ var ClassroomEvents = function () {
 
                 } else {
 
-                    hook.append('<div class="col s12 brookhurst-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="' 
+                    hook.append('<div class="col s12 rain-theme-primary classrooms lighten-2 card-panel " data-total-classrooms="'
                                 + totalSelected + '" data-selected-classrooms="' 
                                 + selectedStringFormat + '"><p class="white-text php-data">A total of ' 
                                 + totalSelected + ' classrooms to receive the assignment.</p><p><input id="canComment" class="filled-in" type="checkbox"><label for="canComment">Allow students to comment</label></p><br></div>');

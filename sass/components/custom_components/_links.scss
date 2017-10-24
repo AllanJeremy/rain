@@ -25,13 +25,13 @@ a.btn-icon {
 }
 
 nav {
-  // background-color: color("materialize-red", "lighten-2");
+  background-color: $primary-color-light;
 
   a {
     -webkit-font-smoothing: antialiased;
   }
   ul li a:hover, ul li.active {
-    background-color: color("brookhurst-theme-primary", "base");
+    background-color: $primary-color;
   }
 }
 form {

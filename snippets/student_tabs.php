@@ -184,7 +184,7 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                                     <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a>
                                 </span></p>
                             </div>
-                            <div class="card-action center-align brookhurst-theme-primary assignment-results">
+                            <div class="card-action center-align rain-theme-primary assignment-results">
                                 <p class="white-text no-margin">Grade given: <span class="php-data"><?php echo $sub["grade"]."/".$ass["max_grade"]." ( ".floor(($sub["grade"]/$ass["max_grade"])*100)."% )";?></span></p>
                                 <div class="js-assignment-comments assignment-info">
                                     <a href="#" data-root-hook="assignment" class="js-get-comments <!--deep-orange-text text-accent-3--> php-data white-text" onclick="" title="View comments for this assignment">
@@ -261,7 +261,7 @@ $user_info = MySessionHandler::GetLoggedUserInfo();
                                     <a href="#!resourceFile2" id="resourceFile">Singer.pdf</a>
                                 </span></p>   
                             </div>
-                            <div class="card-action center-align brookhurst-theme-primary assignment-results">
+                            <div class="card-action center-align rain-theme-primary assignment-results">
                                 <div class="js-assignment-comments assignment-info">
                                     <a href="#" data-root-hook="assignment" class="js-get-comments <!--deep-orange-text text-accent-3--> php-data white-text" onclick="" title="View comments for this assignment">
                                         <i class="material-icons center">message</i> Comments
