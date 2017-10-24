@@ -425,8 +425,9 @@ td, th{
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
-    //display: block;
+    display: block;
     position: relative;
+    overflow-x: auto;
 
     td:empty:before {
       content: '\00a0';
