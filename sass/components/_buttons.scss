@@ -29,6 +29,11 @@
   color: $button-disabled-color !important;
   cursor: default;
 
+    &.btn-loading {
+        background-color: inherit !Important;
+        @extend .op-4;
+    }
+
   * {
     pointer-events: none;
   }
@@ -48,6 +53,7 @@
     font-size: $button-font-size;
     line-height: inherit;
   }
+
 }
 
 // Raised Button
@@ -109,6 +115,22 @@
     i {
       line-height: $button-floating-large-size;
     }
+  }
+
+  &.halfway-fab {
+    &.left {
+      right: auto;
+      left: 24px;
+    }
+
+      &.btn-loading {
+          opacity: .54;
+          pointer-events: none;
+          @extend .z-depth-0;
+      }
+    position: absolute;
+    right: 24px;
+    bottom: -$button-floating-size / 2;
   }
 }
 
@@ -192,6 +214,11 @@ button.btn-floating {
     color: $button-flat-disabled-color;
     cursor: default;
   }
+    &.btn-loading {
+
+        color: $button-flat-color !Important;
+        opacity: .54 !Important;
+    }
 }
 
 // Large button

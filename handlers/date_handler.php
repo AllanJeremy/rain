@@ -106,6 +106,7 @@ class EsomoDate implements EsomoDateFunctions
                 elseif($date_difference->i==0)
                 {
                     $due_text = "Due Today!";
+                    $due_class = "red";
                 }
                 else
                 {
@@ -117,6 +118,7 @@ class EsomoDate implements EsomoDateFunctions
         #one day left
         elseif($date_difference->d == 1 && $date_difference->m == 0 && $date_difference->y == 0)
         {
+            $due_class = "orange accent-2";
             $due_text = "Due Tomorrow!";
         }
         else

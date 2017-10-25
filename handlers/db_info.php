@@ -713,7 +713,7 @@ class DbInfo
                     }
 
                     //Extract individual student_ids
-                    echo json_encode($student_ids);
+                    return $student_ids;
                 }
             }
         }
@@ -1882,7 +1882,7 @@ if(isset($_GET['action'])) {
 
             $result = DbInfo::GetAllStudentsInClass($class_id);
 
-            echo $result;
+            echo json_encode($result);
 
             break;
         case 'GetTeacherAssInClass':
@@ -1892,7 +1892,7 @@ if(isset($_GET['action'])) {
 
             $result = DbInfo::GetTeacherAssInClass($class_id,$teacher_acc_id);
 
-            echo $result;
+            echo json_encode($result);
 
             break;
         case 'GetAssignmentsInClass':
@@ -1901,14 +1901,14 @@ if(isset($_GET['action'])) {
 
             $result = $DBInfo::GetAssignmentsInClass($class_id);
 
-            echo $result;
+            echo json_encode($result);
 
             break;
         case 'getAllTeachers':
 
             $result = DbInfo::getAllTeachers();
 
-            return $result;
+            echo json_encode($result);
 
             break;
         case 'ClassroomExists':

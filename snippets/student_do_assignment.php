@@ -62,7 +62,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         <div class="determinate" style="width:0%;"></div>
     </div>
 
-    <div class="rain-theme-primary lighten-1">
+    <div class="rain-theme-primary">
         <div class="container ">
             <br>
             <div class="row no-bottom-margin">
@@ -106,7 +106,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
             ?>
         </div>
     </div>
-    <div class="rain-theme-primary lighten-2 row pin-nav-top">
+    <div class="rain-theme-primary lighten-1 row pin-nav-top">
 
         <div class="col s12">
             <a class="white-text btn-flat btn marg-6 hide"><i class="material-icons">arrow_back</i></a>
@@ -200,7 +200,7 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
 
     <div id="myAssignment" class="row container">
         <div class="m12 s12 col l8 assignment-tinymce">
-            <div hidefocus="0" class="rain-theme-primary lighten-3 row tinymce-toolbar inline-toolbar" id="mytoolbar">
+            <div hidefocus="0" class="rain-theme-primary row tinymce-toolbar inline-toolbar" id="mytoolbar">
             </div>
             <div class="header white row z-depth-2">
                 <div class="col s6 input-field no-margin">
@@ -389,10 +389,15 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         </div>
     </div>
 </main>
-<script src="js/jquery-2.0.0.js"></script>
-<script src="js/js_print.js"></script>
-<script src="js/dashboard/lists_templates.js"></script>
-<script src="js/dashboard/student_assignment_events.js"></script>
+<script type="text/javascript" src="js/jquery-2.0.0.js"></script>
+<script type="text/javascript" src="js/js_print.js"></script>
+<script type="text/javascript" src="js/dashboard/result.js"></script>
+<script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
+<script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
+<script type="text/javascript" src="js/dashboard/comments_events.js"></script>
+<script type="text/javascript" src="js/dashboard/events.js"></script>
+<script type="text/javascript" src="js/dashboard/test_events.js"></script>
+<script type="text/javascript" src="js/dashboard.js"></script>
 
 <!--DON'T MESS WITH-->
 <script src="tinymce/jquery.tinymce.min.js"></script>
@@ -421,9 +426,12 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         image_advtab: false,
         toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect forecolor backcolor | link unlink anchor | image media"
     });
-
-    Lists_Templates = new Lists_Templates();
-    StudentAssignmentEvents = new StudentAssignmentEvents();
+    //init the dashboard application except on login page
+    if (location.pathname.split('/').pop() != 'login.php') {
+        console.log(location);
+        console.log(location.search);
+        var dashboard = new Dashboard();
+    }
 
     var $target = $('.pin-nav-top'),
         $target2 = $('.inline-toolbar'),

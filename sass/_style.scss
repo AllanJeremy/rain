@@ -671,15 +671,47 @@ $height: auto;
 }
 
 .document-view {
+    position: relative;
     height: auto;
     background-color: rgba(185, 145, 145, 0.24);
     word-wrap: break-word;
-}
+    border-top-right-radius: 12px !Important;
+//    border: 1px solid $primary-color-dark;
 
-.document-view > i.material-icons {
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 28px;
+        height: 28px;
+        border-bottom: 7px solid $primary-color-dark;
+        border-left: 7px solid $primary-color-dark;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: inherit;
+        background-color: rgba(185, 145, 145, 0.69);
+    }
+    p {
+        margin: 4px 4px 12px 4px;
+
+        &.title {
+            margin-top: 24px;
+            font-size: 1.6rem;
+            line-height: 1.45rem;
+            font-size-adjust: auto;
+            font-style: oblique;
+            font-family: sans-serif;
+            font-weight: 700;
+            opacity: .87;
+        }
+
+        &.size {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 300;
+            font-kerning: 500;
+        }
+    }
 }
 
 #classroomAss_Container .collapsible-header span.badge {

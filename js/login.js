@@ -89,6 +89,9 @@ function studentLogin() {
             data: loginData,
             beforeSend: function () {
                 console.log('sending');
+                $('#studentForm button')
+                    .text('loging you in...')
+                    .addClass('op-4 z-depht-0');
             },
             complete: function () {
                 
@@ -99,9 +102,11 @@ function studentLogin() {
                 
                 if (str.length === 1) {
                     //redirect
-                    $('#studentForm').prepend('<div class="card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>');
+                    $('#studentForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as admin
                     
-                    $('#adminForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as admin
+                    $('#studentForm')
+                        .prepend('<div style="display: none;" class=" card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>')
+                        .fadeIn(230);
                     
                     window.setTimeout(function () {
                         location.reload();//Better option since a user won't define what page should load

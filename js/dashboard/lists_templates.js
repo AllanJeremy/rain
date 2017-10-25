@@ -388,7 +388,7 @@ var Lists_Templates = function () {
         templateOutput += '<h6 class=" op-4">To upload</h6>';
         templateOutput += '<h4 class="white-text"><span id="totalResources">0</span> files</h4>';
         templateOutput += '<br><div class="progress" style="width:0%;"><div class="determinate" style="width:0%;"></div></div>';
-        templateOutput += '<h6 class="num-progress hide secondary-text-color"><i>Uploading <span class="js-num-progress">0%</span></i></h6>';
+        templateOutput += '<h6 class="num-progress hide rain-theme-primary-text text-lighten-3"><i>Uploading <span class="js-num-progress">0%</span></i></h6>';
         templateOutput += '</div>';
         templateOutput += '<div class="col m6 s12">';
         templateOutput += '<form id="createResourcesForm">';
@@ -454,13 +454,16 @@ var Lists_Templates = function () {
 
     //--------------------------------------
 
-    this.resourcesListTemplate = function (obj, i) {
+    this.resourcesListTemplate = function (obj, i, error) {
 
-        var templateOutput = '';
+        var templateOutput = '', errorClass = '';
 
-        templateOutput += '<div class="row no-margin" data-index="' + i + '"><div class="col s5">';
+        if (error) {
+            errorClass = 'red lighten-3';
+        }
+
+        templateOutput += '<div class="' + errorClass + ' row no-margin padding-vert-8" data-index="' + i + '"><div class="col s5">';
         templateOutput += '<div class="card document-view">';
-        templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
         templateOutput += '<div class="info row no-margin">';
         templateOutput += '<div class="col s12"><p class="title">';
@@ -470,9 +473,11 @@ var Lists_Templates = function () {
         templateOutput += (obj.size / (1024 * 1024)).toFixed(2) + ' mbs';
 //        templateOutput += '<div class="col s3"><p class="size right-align">';
 //        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
-        templateOutput += '</p></div></div>';
-        //end of info row ---
+        templateOutput += '</p>';
+        templateOutput += '<a class="btn-floating halfway-fab right red white-text accent-2 js-delete-document"><i class="material-icons">delete</i></a>';
         templateOutput += '</div></div>';
+        templateOutput += '</div></div>';
+        //end of info row ---
         templateOutput += '<div class="col s7">';
         templateOutput += '<div class="row no-margin">';
         templateOutput += '<div class="input-field col s12">';
@@ -498,9 +503,8 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += '<div class="col s12 m6 l4"  data-index="' + i + '">';
+        templateOutput += '<div class="' + obj.errorClass + ' col s12 m6 l4"  data-index="' + i + '">';
         templateOutput += '<div class="card document-view">';
-        templateOutput += '<i class="material-icons">&#xE24D;</i>';//icon for the type of media?
         //info row ---
         templateOutput += '<div class="info row no-margin">';
         templateOutput += '<div class="col s12"><p class="title">';
@@ -510,7 +514,9 @@ var Lists_Templates = function () {
         templateOutput += (obj.size / (1024 * 1024)).toFixed(2) + ' mbs';
 //        templateOutput += '<div class="col s3"><p class="size right-align">';
 //        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
-        templateOutput += '</p></div></div>';
+        templateOutput += '</p>';
+        templateOutput += '<a class="js-document-delete btn-icon"><i class="material-icons">delete</i></a>';
+        templateOutput += '</div></div>';
         templateOutput += '</div></div>';
 
         return templateOutput;
@@ -725,7 +731,7 @@ var Lists_Templates = function () {
         templateOutput += '<div class="modal-footer row">';
         templateOutput += '<div class="col s12 m6"><div class="progress modal-progress"><div class="determinate ' + colorClass + '" style="width:' + obj.progressWidth + ';"><span class=" ' + textColorClass + ' ">' + obj.progressWidth + '</span></div></div></div>';
         templateOutput += '<div class="col m3 s6"><a href="javascript:void(0)" id="modalFooterCloseAction" class="right modal-action modal-close waves-effect waves-red red-text btn-flat">close</a></div>';
-        templateOutput += '<div class="col m3 s6"><a href="javascript:void(0)" id="modalFooterActionAdd" class="right modal-action modal-close waves-effect waves-green btn">' + obj.modal_action + '</a></div>';
+        templateOutput += '<div class="col m3 s6"><a href="javascript:void(0)" id="modalFooterActionAdd" class="right modal-action waves-effect waves-green btn">' + obj.modal_action + '</a></div>';
         templateOutput += '</div>';
         templateOutput += '</div>';
         templateOutput += '</div>';
@@ -770,7 +776,7 @@ var Lists_Templates = function () {
         templateOutput += '<table>';
         templateOutput += '<thead><tr>';
         //templateOutput += '<th data-field="action"></th>';
-        templateOutput += '<th data-field="price">Admission no.</th>';
+        templateOutput += '<th data-field="adm_no">Admission no.</th>';
         templateOutput += '<th data-field="name">Full name</th>';
         templateOutput += '</tr></thead>';
         templateOutput += '<tbody>';
@@ -807,10 +813,10 @@ var Lists_Templates = function () {
         templateOutput += '<thead><tr>';
         //templateOutput += '<th data-field="action"></th>';
         templateOutput += '<th data-field="name">Assignment name</th>';
-        templateOutput += '<th data-field="price">Subject</th>';
-        templateOutput += '<th data-field="price">Date sent</th>';
-        templateOutput += '<th data-field="price">Attachments</th>';
-        templateOutput += '<th data-field="price">Pass grade</th>';
+        templateOutput += '<th data-field="due_date">Due</th>';
+        templateOutput += '<th data-field="date_sent">Date created</th>';
+        templateOutput += '<th data-field="sent">Sent</th>';
+        templateOutput += '<th data-field="pass_grade">Pass grade</th>';
         templateOutput += '</tr></thead>';
         templateOutput += '<tbody>';
         templateOutput += obj.listData;
@@ -827,11 +833,11 @@ var Lists_Templates = function () {
         
         var templateOutput = '';
         
-        templateOutput += '<tr>';
+        templateOutput += '<tr data-ass-id="' + obj.id + '">';
         templateOutput += '<td>' + obj.name + '</td>';
-        templateOutput += '<td>' + obj.subject + '</td>';
-        templateOutput += '<td>' + obj.datesent + '</td>';
-        templateOutput += '<td>' + obj.totalattachments + '</td>';
+        templateOutput += '<td>' + obj.duedate + '</td>';
+        templateOutput += '<td>' + obj.datecreated + '</td>';
+        templateOutput += '<td>' + ((obj.sent  == 1) ? 'Yes' : 'no') + '</td>';
         templateOutput += '<td>' + obj.passgrade + '</td>';
         templateOutput += '</tr>';
             

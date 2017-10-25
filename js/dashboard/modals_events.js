@@ -74,7 +74,10 @@ var Modals_Events = function () {
 
         console.log('cleaning out all modals');
 
-        $('.modal ').remove();
+        setTimeout(function () {
+            $('.modal ').remove();
+
+        }, 1400);
 
     };
 

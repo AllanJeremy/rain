@@ -24,7 +24,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
             ?>
                 <!--CLASSROOMS SECTION-->
                 <div class="row main-tab" id="classroomTab">
-                    
+
                     <div class="row no-bottom-margin">
                         <div class="col s5">
                             <p class="grey-text">Your classrooms</p>
@@ -36,19 +36,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             </span>
                             </a>
                         </div>
-<!--
-                        <div class="col s1">
-                            <a class="btn-flat transparent btn center dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>
-                        </div>
-                        
-                        <ul id="moreHoriz1" class="dropdown-content">
-                            <li class="waves-effect waves-green"><a class="more-card-options black-text" id="moreCardDelete"><i class="material-icons red-text">delete</i> delete</a></li>
-                        </ul> 
--->
-                        
                     </div>
-                    
-
                     <div class="divider"></div>
                     <br>
                     

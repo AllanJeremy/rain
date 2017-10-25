@@ -42,11 +42,10 @@ var ClassroomEvents = function () {
         $('main').on('click', '.modal#editClassRoom a#moreCardDelete', function (e) {
             e.preventDefault();
             
-            var self = $(this);
-            var classid = localStorage.getItem("cardId");
-            var toastMessage = '<p class="white-text" data-ref-class-id="' + classid + '">Preparing to delete classroom  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
-            
-            var re = new RegExp("regex", "i");
+            var self = $(this),
+                classid = localStorage.getItem("cardId"),
+                toastMessage = '<p class="white-text" data-ref-class-id="' + classid + '">Preparing to delete classroom  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>',
+                re = new RegExp("regex", "i");
             
             console.log('card id ' + classid + ' to be deleted.');
             
@@ -85,38 +84,34 @@ var ClassroomEvents = function () {
         
         $('main').on('click', '#classroomCardList a#openStudentsClassList', function (e) {
             
-            var classroomId = $(this).parents('.card-col').attr('data-classroom-id');
-        
+            var $this = $(this),
+                classroomId = $(this).parents('.card-col').attr('data-classroom-id');
+
+            if($this.hasClass('disabled')) {
+                return;
+            }
+
+            $this.addClass('disabled');
+
             $.get("handlers/db_info.php", {"action": "GetAllStudentsInClass", "class_id" : classroomId}, function (result) {
                 
                 console.log('fetching students in classroom id:' + classroomId);
                 
             }).success(function (result) {
-                
                 console.log(result);
-                
                 result = jQuery.parseJSON(result);
-                
-                console.log(jQuery.isEmptyObject(result));
-                
-                
+
                 if (jQuery.isEmptyObject(result)) {
                     // is empty or whitespace
                     console.log('empty. No students found');
 
                     var errorMessage = '<span>Sorry, there are no students found in this classroom.</span>';
 
+                    $this.removeClass('disabled');
                     // Materialize.toast(message, displayLength, className, completeCallback);
-                    Materialize.toast(errorMessage, 5000, '', function () {
-                        
-                    });
+                    Materialize.toast(errorMessage, 5000, 'red accent-3 white-text');
 
                 } else {
-                    
-                    //result = result.replace(/0,/, '');
-                    console.log(result);
-                    
-                    
                     result = cleanArray(result, 'true');
                     
                     console.log('Students found');
@@ -125,28 +120,17 @@ var ClassroomEvents = function () {
                     var listVars = {
                         "id": "",
                         "name": ""
-                    };
-                    
-                    var list = '';
-                    var admNo = '';
-                    var XHRs = [];
-                    var ajaxObjectResult = '';
+                    },
+                        list = '',
+                        admNo = '',
+                        XHRs = [],
+                        ajaxObjectResult = '',
+                        responseLength;
                     
                     $.each(result, function (i, v) {
-                        
                         admNo = v;
-                        
                         console.log(v);
-                        
-                        /*XHRs.push($.get("handlers/db_info.php", {"action": "StudentIdExists", "adm_no": admNo}, function (r) {
-                                
-                                //console.log(l);
-                                //console.log(l.username);
-                            }
-                            
-                        ));*/
-                        
-                        
+
                         XHRs.push(
                             $.ajax({
                                 url: "handlers/db_info.php",
@@ -158,44 +142,28 @@ var ClassroomEvents = function () {
                           
                     });
                     
-                    var responseLength = (XHRs.length - 1);
-                    var k = 0;
+                    responseLength = (XHRs.length - 1);
                     
                     $.each(XHRs, function (b, n) {
-
-                        
-                        
+                        console.log(b);
                         XHRs[b].done(function (x) {
-                        
-                            console.log(b);
-                            console.log(responseLength);
+                            console.log(b,responseLength);
                             
-                            if (k < (responseLength)) {
-                                
-                                console.log('still less');
-                                
-                                listVars.id = x.adm_no;
-                                listVars.name = x.full_name;
+                            listVars.id = x.adm_no;
+                            listVars.name = x.full_name;
 
-                                list += Lists_Templates.studentTableList(listVars);
-
-                                k++;
-                                
-                            } else {
+                            list += Lists_Templates.studentTableList(listVars);
                             
+                            if (b >= (responseLength)) {
                                 console.log('last one');
                                 
-                                listVars.id = x.adm_no;
-                                listVars.name = x.full_name;
-
-                                list += Lists_Templates.studentTableList(listVars);
+                                list += '';
 
                                 //Continue with the rest of the functions
                                 var listTemplate = {
                                     "listData" : list
-                                };
-
-                                var listData = Lists_Templates.studentTable(listTemplate);
+                                },
+                                    listData = Lists_Templates.studentTable(listTemplate);
 
                                 //variables for the modal
                                 var template = {
@@ -207,79 +175,16 @@ var ClassroomEvents = function () {
                                 $('main').append(Lists_Templates.modalTemplate(template));
 
                                 $('#' + template.modalId).openModal({dismissible: false});
-
                                 console.log('modal students classroom list created.');
 
+                                $this.removeClass('disabled');
                             }
                             
                         });
                     
                     });
-                    
-                    
-                    //console.log(list);
-                    
-                    
-                    /*ajaxObjectResult = $.when(XHRs).then(function(x) {
-
-                        for (x in XHRs) {
-
-                            console.log('done');
-                            console.log(x);
-
-                            listVars.id = x.adm_no;
-                            listVars.name = x.full_name;
-
-                            list += Lists_Templates.studentTableList(listVars);
-
-                            console.log(list);
-                            //console.log(XHRs[s]);
-                            console.log(x.responseText);
-
-
-
-                            listVars.id = x.adm_no;
-                            listVars.name = x.full_name;
-
-                            list += Lists_Templates.studentTableList(listVars);
-
-                            //return list;
-                            
-                            console.log(listVars);  
-
-                        }
-                        
-                    });*/
-                    
-                    //console.log(list);
-                    //console.log(ajaxObjectResult);
-                    
-                    list += '';
-                    
-                    
-                    /*var listTemplate = {
-                        "listData" : list
-                    };
-                    
-                    var listData = Lists_Templates.studentTable(listTemplate);
-                    
-                    //variables for the modal
-                    var template = {
-                        modalId: 'ClassRoomStudents',
-                        templateHeader: 'Students in the classroom',
-                        templateBody: listData,
-                    };
-                    
-                    $('main').append(Lists_Templates.modalTemplate(template));
-
-                    $('#' + template.modalId).openModal({dismissible:false});
-
-                    console.log('modal students classroom list created.');
-*/
                 }
-                
-                
-            }, 'text');
+            }, 'json');
             
         });
       
@@ -295,126 +200,94 @@ var ClassroomEvents = function () {
         
         $('main').on('click', '#classroomCardList a#openAssignmentsClassList', function (e) {
             
-            var classroomId = $(this).parents('.card-col').attr('data-classroom-id');
+            var $this = $(this),
+                classroomId = $(this).parents('.card-col').attr('data-classroom-id');
+
+            if($this.hasClass('disabled')) {
+                return;
+            }
+
+            $this.addClass('disabled');
             
             $.get("handlers/db_info.php", {"action": "GetTeacherAssInClass", "class_id" : classroomId}, function (result) {
                 
                 console.log('fetching Assignments in classroom id:' + classroomId);
                 
-                if (!result.trim() || result === '0') {
+                if (jQuery.isEmptyObject(result)) {
                     // is empty or whitespace
                     console.log('empty. No assignments found');
 
                     var errorMessage = '<span>Sorry, there are no assignments found in this classroom.</span>';
 
                     // Materialize.toast(message, displayLength, className, completeCallback);
-                    Materialize.toast(errorMessage, 5000, '', function () {
-                        
+                    Materialize.toast(errorMessage, 5000, 'red accent-3 white-text', function () {
                     });
 
                 } else {
                     
-                    result = cleanArray(result.split(','), 'false');
+                    result = cleanArray(result, 'false');
                     
                     console.log('Assignments found');
                     console.log(result);
 
                     var listVars = {
                         "id": "",
-                        "name": ""
-                    };
+                        "name": "",
+                        "sent": "",
+                        "datecreated": "",
+                        "duedate": "",
+                        "passgrade": ""
+                    },
+                        list = '',
+                        ajaxObjectResult,
+                        responseLength = result.length - 1;
                     
-                    var list = '';
-                    var classId = '';
-                    var XHRs = [];
-                    var ajaxObjectResult = '';
-                    
-                    $.each(result, function (i, v) {
+                    $.each(result, function (b, x) {
                         
-                        classId = v;
+                        console.log(x);
+                        console.log(responseLength);
                         
-                        console.log(v);
-                        
-                        /*XHRs.push($.get("handlers/db_info.php", {"action": "StudentIdExists", "adm_no": admNo}, function (r) {
-                                
-                                //console.log(l);
-                                //console.log(l.username);
-                            }
-                            
-                        ));*/
-                        
-                        
-                        XHRs.push(
-                            $.ajax({
-                                url: "handlers/db_info.php",
-                                type: 'GET',
-                                dataType: 'json',
-                                data: {"action": "GetTeacherAssInClass", "class_id": classId}
-                            })
-                        );
-                          
+                        listVars.id = x.ass_id;
+                        listVars.name = x.ass_title;
+                        listVars.datecreated = moment(x.date_sent).toString();
+                        listVars.duedate = moment(x.due_date).fromNow();
+                        listVars.passgrade = x.max_grade;
+                        listVars.sent = x.sent;
+
+                        console.log(listVars);
+                        list += Lists_Templates.assignmentTableList(listVars);
+
+                        if (b >= (responseLength)) {
+                            console.log('last one');
+
+                            list += '';
+
+                            //Continue with the rest of the functions
+                            var listTemplate = {
+                                "listData" : list
+                            },
+                                listData = Lists_Templates.assignmentTable(listTemplate);
+
+                            //variables for the modal
+                            var template = {
+                                modalId: 'ClassRoomAssignments',
+                                templateHeader: 'All assignments given to the classroom',
+                                templateBody: listData
+                            };
+
+                            $('main').append(Lists_Templates.modalTemplate(template));
+
+                            $('#' + template.modalId).openModal({dismissible: false});
+
+                            $this.removeClass('disabled');
+
+                            console.log('modal assignments classroom list created.');
+                        }
+
                     });
-                    
-                    var responseLength = (XHRs.length - 1);
-                    
-                    $.each(XHRs, function (b, n) {
-
-                        XHRs[b].done(function (x) {
-                        
-                            console.log(b);
-                            console.log(responseLength);
-                            
-                            if (b < (responseLength)) {
-                                
-                                console.log('still less');
-                                
-                                listVars.id = x.adm_no;
-                                listVars.name = x.full_name;
-
-                                list += Lists_Templates.studentTableList(listVars);
-
-                            } else {
-                            
-                                console.log('last one');
-                                
-                                listVars.id = x.adm_no;
-                                listVars.name = x.full_name;
-
-                                list += Lists_Templates.studentTableList(listVars);
-
-                                //Continue with the rest of the functions
-                                var listTemplate = {
-                                    "listData" : list
-                                };
-
-                                var listData = Lists_Templates.studentTable(listTemplate);
-
-                                //variables for the modal
-                                var template = {
-                                    modalId: 'ClassRoomAssignments',
-                                    templateHeader: 'All assignments given to the classroom',
-                                    templateBody: listData
-                                };
-
-                                $('main').append(Lists_Templates.modalTemplate(template));
-
-                                $('#' + template.modalId).openModal({dismissible: false});
-
-                                console.log('modal assignments classroom list created.');
-
-                            }
-                            
-                        });
-                    
-                    });
-                    
                 }
-                
-            });
-            
-            
+            }, 'json');
         });
-      
     };
     
     //----------------------------
@@ -487,7 +360,6 @@ var ClassroomEvents = function () {
             totalOutput += Forms_Templates.formSelectTemplate(result[u]);
 
         }
-
         return totalOutput;
     };
 
@@ -566,25 +438,6 @@ var ClassroomEvents = function () {
 
             $(this).removeClass('disabled');
 
-            /*
-            $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').bind('blur', function (e) {
-
-                var ifExistsResult = searchIfClassNameExists($(this).val());
-
-                console.log('blur');
-
-                if (ifExistsResult === 1) {
-                    //exists
-                    //append warning to that input
-                    var warningText = '<p class="orange-text text-accent-1 col s9">Classroom ' + $(this).val() + 'exists, continue?</p><a class="btn btn-flat>Okay</a>"';
-
-                    $('.modal#esomoModal' + template.modalId + ' input#newClassroomName').parent().append(warningText);
-
-                }
-
-            });
-            */
-
             return (false);
         });
     };
@@ -614,9 +467,16 @@ var ClassroomEvents = function () {
                 newClass_subject = $('.modal#createNewClassRoom select#newClassroomSubject').val(),
                 newClass_streamname = $('.modal#createNewClassRoom select#newClassroomStream').find('option:selected:not(:disabled)').text(),
                 newClass_subjectname = $('.modal#createNewClassRoom select#newClassroomSubject').find('option:selected:not(:disabled)').text(),
-                $this = $(this);
-            
-            $this.unbind('click');
+                $this = $(this),
+                $thisEl = $this[0].innerHTML;
+
+            if($this.hasClass('disabled')) {
+                return false;
+            }
+
+            $this.addClass('disabled btn-loadiing')
+                .text('creating...');
+
             console.log($this);
 
             console.log($('.modal#createNewClassRoom .students').attr('data-total-students'));
@@ -677,6 +537,10 @@ var ClassroomEvents = function () {
                         var classroomTab = $('#classroomTab #classroomCardList'),
                             Result = Lists_Templates.classRoomCard(formResults);
 
+                        //masonryGridInit();
+                        $this.removeClass('disabled btn-loadiing');
+                        $this[0].inneHTML = $thisEl;
+
                         if ( $('#classroomTab .no-data-message').length > 0 ) {
                             
                             $('#classroomTab .no-data-message').remove();
@@ -694,11 +558,26 @@ var ClassroomEvents = function () {
 
                         $('.tooltipped').tooltip({delay: 50});
                         
-                        //masonryGridInit();
+                        var successMessage = '<span class="white-text name ">Class ' + formResults.classroomtitle + ' has been created!</span>';
+
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast(successMessage, 3000, 'green accent-3', function () {
+                            Modals_Events.cleanOutModals();
+                        });
                     
+                    $('#' + str1).closeModal();
+
                     } else {
                         console.log('waiting');
                     
+                        $this.removeClass('disabled btn-loadiing');
+                        $this[0].innerHTML = $thisEl;
+                        var errorMessage = '<span class="white-text name ">Sorry, we found an error in creating the classroom<br>We will <a class="btn-inline" href="">reload</a> the page</span>';
+
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast(successMessage, 3000, 'red accent-3', function () {
+                            location.reload();
+                        });
                     }
                     
                 }, 'text');
@@ -708,22 +587,22 @@ var ClassroomEvents = function () {
             
                 console.log('empty form. Unable to create the class');
 
-                $('#' + str1).closeModal();
+//                $('#' + str1).closeModal();
+                $this.removeClass('disabled btn-loadiing');
+                $this[0].innerHTML = $thisEl;
                 
                 var errorMessage = '<span class="white-text name ">Error in creating the classroom. Kindly see if you have filled all inputs.</span>';
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
-                Materialize.toast(errorMessage, 5000, 'red accent-3', function () {
-                    Modals_Events.cleanOutModals();
+                Materialize.toast(errorMessage, 3000, 'red accent-3', function () {
+//                    Modals_Events.cleanOutModals();
                 });
             }
 
-            $('#' + str1).closeModal();
-           
-            Modals_Events.cleanOutModals();
+//            $('#' + str1).closeModal();
+//            Modals_Events.cleanOutModals();
 
         });
-
     };
     
     //-------------------------------
@@ -891,15 +770,16 @@ var ClassroomEvents = function () {
             
             /*1*/
             var self = $(this),
+                selfEl = $(this)[0],
                 str1 = $('.modal#editClassRoom').attr('id'),
-                str2 = Materialize.guid();//Generate class-id
-
-            var classes = $('.modal#editClassRoom .card-color-list input[type="radio"]:checked').parent().children('label').attr('class'),
+                str2 = Materialize.guid(),//Generate class-id
+                classes = $('.modal#editClassRoom .card-color-list input[type="radio"]:checked').parent().children('label').attr('class'),
                 newClassTitle = $('.modal#editClassRoom input#editClassroomName').val(),
                 newClass_stream = $('.modal#editClassRoom select#editClassroomStream').val(),
                 newClass_subject = $('.modal#editClassRoom select#editClassroomSubject').val(),
                 newClass_streamname = $('.modal#editClassRoom select#editClassroomStream').find('option:selected:not(:disabled)').text(),
                 newClass_subjectname = $('.modal#editClassRoom select#editClassroomSubject').find('option:selected:not(:disabled)').text();
+
 
             if (typeof classes === 'undefined') {
                 
@@ -932,8 +812,10 @@ var ClassroomEvents = function () {
             
              /*2*/
             //validate first
-            if (newClassTitle !== '' && newClass_stream !== '' && newClass_subject !== '')
-                {
+            if (newClassTitle !== '' && newClass_stream !== '' && newClass_subject !== '') {
+
+                self.addClass('disabled btn-loading').text('updating...');
+
                 var formResults = {
                     action : 'UpdateClassroomInfo',
                     classroomid : localStorage.getItem("cardId"),
@@ -951,7 +833,7 @@ var ClassroomEvents = function () {
               
         /*3*/
                 //ajax post
-                    console.log(formResults);
+                console.log(formResults);
                     
                 var request = $.post( "handlers/db_handler.php", formResults, function (result) {
 
@@ -972,6 +854,11 @@ var ClassroomEvents = function () {
                     hook.append(Result);
                     
                     $('.tooltipped').tooltip({delay: 50});
+                    var successMessage = '<span class="white-text name ">Class ' + formResults.classroomtitle + ' has been update!</span>';
+
+                    // Materialize.toast(message, displayLength, className, completeCallback);
+                    Materialize.toast(successMessage, 5000, 'green accent-3');
+
         /*6*/
                     $('#' + str1).closeModal();
         /*7*/
@@ -981,6 +868,10 @@ var ClassroomEvents = function () {
 
                     console.log('waiting');
 
+                    var errorMessage = '<span class="white-text name ">Sorry, we found an error in updating the classroom<br>We will <a class="btn-action" href="' + location.href + 'reload</a> the page</span>';
+
+                    // Materialize.toast(message, displayLength, className, completeCallback);
+                    Materialize.toast(errorMessage, 5000, 'red accent-3');
                 }
 
             }, 'text');
@@ -994,12 +885,9 @@ var ClassroomEvents = function () {
                 var errorMessage = '<span class="red-text name text-lighten-5">Error in updating the classroom. Kindly see if you have filled all inputs.</span>';
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
-                Materialize.toast(errorMessage, 5000, '', function() {
-                    Modals_Events.cleanOutModals();
-                });
+                Materialize.toast(errorMessage, 5000);
                 
             }
-                
             
         });
     };
@@ -1008,11 +896,10 @@ var ClassroomEvents = function () {
     
     var addStudentsInClassroom = function () {
         
-        var checkboxEl = 'input#addStudentsToClassroom';
-        var checkedCheckboxEl = 'input#addStudentsToClassroom:checked, input#addMoreStudentsToClassroom:checked';
-        var modal_id = 'NewClassStudentList';
-                        
-        var main = $('main');
+        var checkboxEl = 'input#addStudentsToClassroom',
+            checkedCheckboxEl = 'input#addStudentsToClassroom:checked, input#addMoreStudentsToClassroom:checked',
+            modal_id = 'NewClassStudentList',
+            main = $('main');
         
         main.on('change', checkboxEl, function (e) {
         
@@ -1032,19 +919,19 @@ var ClassroomEvents = function () {
             
             if($(checkedCheckboxEl).length > 0) {//checked
                 
-                //remove existing esomo modal
+                //remove existing esomo modal for student list
                 Modals_Events.cleanOutModal('#esomoModal' + modal_id);
                 
-                var classiD = localStorage.getItem("cardId");
+                Materialize.toast('Fetching students', 15000, 'white-text');
+
+                var classiD = localStorage.getItem("cardId"),
+                    subject = $('select#newClassroomSubject').val();
                 
                 console.log('adding list');
-                
-                var subject = $('select#newClassroomSubject').val();
+
                 //console.log('args-' + subject + stream);
                 
                 if( $(checkboxEl).val() === "GetAllStudentsNotInClass" ) {
-                    
-
 
                     $.get('handlers/db_info.php', {"action" : action, "class_id" : localStorage.getItem("cardId")}, function (result) {
                         console.log('get results:- ');
@@ -1104,47 +991,52 @@ var ClassroomEvents = function () {
 
                             var formOptionsTemplate = {
                                 "formData" : output
-                            };
-
-                            var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                            },
+                                formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
 
                             //open the esomo modal Template
                             //append the list to esomo modal
 
-                            var modal_header = 'Add students to the classroom';
+                            var modal_header = 'Add students to the classroom',
+                                modal_body = formList,
+                                modal_action = 'Add',
+                                action2 = 'morph-in',
+                                studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
-                            var modal_body = formList;
-
-                            var modal_action = 'Add';
-                            
-                            var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+//                            console.log(formList);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
-                            console.log(formList);
-
-                            var action2 = 'morph-in';
-
-                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                                 e.preventDefault();
+                                $(this).addClass('disabled btn-loading')
+                                    .text('adding...');
+
                                 addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
+                                $(this).removeClass('disabled btn-loading');
+                                $(this)[0].innerHTML = el;
                             }); //when add students is clicked//
-
 
                         }
 
                     })
                       .success( function (result) {
+                        $('body').find('#toast-container .toast:nth-of-type(1)')
+                            .addClass('panning')
+                            .animate({
+                                'margin-top' : '-40px',
+                                'opacity' : 0
+                            }, 820, function () {
+                            console.log('REMOVE TOAST');
+                            this.remove();
+                        });
 
                         console.log('success');
 
                     }, 'json');
                 
                 } else if ( $(checkboxEl).val() === "GetAllStudents" ) {
-                    
-                    
-
 
                     $.get('handlers/db_info.php', { "action" : action }, function (result) {
                         console.log('get results:- ');
@@ -1225,10 +1117,15 @@ var ClassroomEvents = function () {
 
                             var action2 = 'morph-in';
 
-                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+                            $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                                 e.preventDefault();
+                                $(this).addClass('disabled btn-loading')
+                                    .text('adding...');
+
                                 addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
+                                $(this).removeClass('disabled btn-loading');
+                                $(this)[0].innerHTML = el;
                             }); //when add students is clicked//
 
 
@@ -1236,7 +1133,17 @@ var ClassroomEvents = function () {
 
                     })
                       .success( function (result) {
+                        $('body').find('#toast-container .toast:nth-of-type(1)')
+                            .addClass('panning')
+                            .animate({
+                                'margin-top' : '-40px',
+                                'opacity' : 0
+                            }, 820, function () {
+                            console.log('REMOVE TOAST');
+                            this.remove();
+                        });
 
+                        console.log('success dsfdf');
                         console.log('success');
 
                     }, 'json');
@@ -1278,21 +1185,24 @@ var ClassroomEvents = function () {
         
             e.preventDefault();
             
-            var hook = $('.student-list');
+            var hook = $('.student-list'),
+                elEL = $(el)[0].innerHTML,
+                action = $(el).attr('data-action'),
+                classiD = localStorage.getItem("cardId"),
+                subject = $('select#newClassroomSubject').val();
             
             console.log('V- ' + $(el).attr('data-action'));
             console.log('V- ' + $(el).attr('id'));
             
-            var action = $(el).attr('data-action');
+            $(el).addClass('btn-loading disabled')
+                .text('fetching...');
             
             //remove existing esomo modal
             Modals_Events.cleanOutModal('#esomoModal' + modal_id);
 
-            var classiD = localStorage.getItem("cardId");
+            Materialize.toast('Fetching more students', 15000, 'white-text');
 
             console.log('adding list');
-
-            var subject = $('select#newClassroomSubject').val();
 
             if( action === "GetAllStudentsNotInClass" ) {
 
@@ -1310,9 +1220,9 @@ var ClassroomEvents = function () {
                     if (typeof result === 'object') {
                         //loop
 
-                        var output = '';
-                        var count = 0;
-                        var autocompletedata = '{';//limit autocomplete dropdown to 20;
+                        var output = '',
+                            count = 0,
+                            autocompletedata = '{';//limit autocomplete dropdown to 20;
 
                         for (var key in result) {
 
@@ -1334,15 +1244,11 @@ var ClassroomEvents = function () {
                                 count++;
 
                             }
-
                         }
 
                         output += '';
 
                         autocompletedata += '}';
-
-                        //console.log(autocompletedata);
-
 
                         autocompletedata = jQuery.parseJSON(autocompletedata);
 
@@ -1354,31 +1260,31 @@ var ClassroomEvents = function () {
 
                         var formOptionsTemplate = {
                             "formData" : output
-                        };
-                        
-                        var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                        },
+                            formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
 
                         //open the esomo modal Template
                         //append the list to esomo modal
 
-                        var modal_header = 'Add students to the classroom';
-
-                        var modal_body = formList;
-
-                        var modal_action = 'Add';
-                        
-                        var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        var modal_header = 'Add students to the classroom',
+                            modal_body = formList,
+                            modal_action = 'Add',
+                            action2 = 'morph-in',
+                            studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
                         console.log(formList);
 
-                        var action2 = 'morph-in';
-
-                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                             e.preventDefault();
+                            $(this).addClass('disabled btn-loading')
+                                .text('adding...');
+
                             addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
+                            $(this).removeClass('disabled btn-loading');
+                            $(this)[0].innerHTML = el;
                         }); //when add students is clicked//
 
 
@@ -1386,6 +1292,20 @@ var ClassroomEvents = function () {
 
                 })
                   .success( function (result) {
+
+                    $(el).removeClass('btn-loading disabled');
+                    $(el)[0].innerHTML = elEL;
+
+                    $('body').find('#toast-container .toast:nth-of-type(1)')
+                        .addClass('panning')
+                        .animate({
+                        'margin-top' : '-40px',
+                        'opacity' : 0
+                    }, 820, function () {
+                        console.log('REMOVE TOAST');
+                        this.remove();
+
+                    });
 
                     console.log('success');
 
@@ -1407,9 +1327,9 @@ var ClassroomEvents = function () {
                     if (typeof result === 'object') {
                         //loop
 
-                        var output = '';
-                        var count = 0;
-                        var autocompletedata = '{';//limit autocomplete dropdown to 20;
+                        var output = '',
+                            count = 0,
+                            autocompletedata = '{';//limit autocomplete dropdown to 20;
 
                         for (var key in result) {
 
@@ -1440,7 +1360,6 @@ var ClassroomEvents = function () {
 
                         console.log(autocompletedata);
 
-
                         autocompletedata = jQuery.parseJSON(autocompletedata);
 
                         console.log(autocompletedata);
@@ -1458,31 +1377,44 @@ var ClassroomEvents = function () {
                         //open the esomo modal Template
                         //append the list to esomo modal
 
-                        var modal_header = 'Add students to the classroom';
-
-                        var modal_body = formList;
-
-                        var modal_action = 'Add';
-                        
-                        var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        var modal_header = 'Add students to the classroom',
+                            modal_body = formList,
+                            modal_action = 'Add',
+                            action2 = 'morph-in',
+                            studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
                         console.log(formList);
 
-                        var action2 = 'morph-in';
 
-                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                             e.preventDefault();
+                            $(this).addClass('disabled btn-loading')
+                                .text('adding...');
+
                             addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
+                            $(this).removeClass('disabled btn-loading');
+                            $(this)[0].innerHTML = el;
                         }); //when add students is clicked//
-
-
                     }
 
                 })
                   .success( function (result) {
+
+                    $(el).removeClass('btn-loading disabled');
+                    $(el)[0].innerHTML = elEL;
+
+                    $('body').find('#toast-container .toast:nth-of-type(1)')
+                        .addClass('panning')
+                        .animate({
+                            'margin-top' : '-40px',
+                            'opacity' : 0
+                        }, 820, function () {
+                        console.log('REMOVE TOAST');
+                        this.remove();
+                    });
 
                     console.log('success');
 
@@ -1608,10 +1540,15 @@ var ClassroomEvents = function () {
 
                         var action2 = 'morph-in';
 
-                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-close').bind('click', function(e) {
+                        $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                             e.preventDefault();
+                            $(this).addClass('disabled btn-loading')
+                                .text('adding...');
+
                             addToForm(action2, hook, modal_id, 0); //when add or remove students is clicked//
                             
+                            $(this).removeClass('disabled btn-loading');
+                            $(this)[0].innerHTML = el;
                         }); //when add or remove students is clicked//
 
                     }

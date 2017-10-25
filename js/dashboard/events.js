@@ -8,27 +8,29 @@ var Events = function () {
 
     $this.__construct = function (userInfo) {
         console.log('global events created');
-        ResourcesEvents = new ResourcesEvents();
-        Modals_Events = new Modals_Events();
+        Lists_Templates = new Lists_Templates();
+
         CommentsEvents = new CommentsEvents(userInfo);
-        
-        //global inits
-        Modals_Events.cleanOutModals();
-        Modals_Events.closeModalsEvent();
+        AssignmentEvents = new AssignmentEvents(userInfo);
+
     };
 
-/*
     $this.__construct_Student = function (userInfo) {
 
+        StudentAssignmentEvents = new StudentAssignmentEvents(userInfo);
     };
-*/
 
     $this.__construct_Admin = function (userInfo) {
 
+        Modals_Events = new Modals_Events();
+        Forms_Templates = new Forms_Templates();
         ClassroomEvents = new ClassroomEvents();
-        AssignmentEvents = new AssignmentEvents(userInfo);
         ScheduleEvents = new ScheduleEvents(userInfo);
+        ResourcesEvents = new ResourcesEvents();
 
+        //global inits
+        Modals_Events.cleanOutModals();
+        Modals_Events.closeModalsEvent();
     };
 
     var getUserInfo = function () {
@@ -73,6 +75,12 @@ var Events = function () {
 
     };
 
+var domInit = function () {
+
+        // the idea is that maybe some data-atribute could tell if the current
+        // user is a student or admin
+    };
+
     ajaxInit();
-    
+    // domInit();
 };

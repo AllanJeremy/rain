@@ -46,7 +46,9 @@ var ResourcesEvents = function () {
 
             $('.modal#uploadResource .modal-content').find('span#totalResources').html(totalfiles);
 
-            filesinfo = generateResourcesFormList(files);
+            var validateresult = validateFiles(files);
+
+            filesinfo = generateResourcesFormList(files, validateresult);
 
             resourceslisthook = $('.modal#uploadResource .modal-content').children('#resourcesList');
 
@@ -57,7 +59,6 @@ var ResourcesEvents = function () {
                 $(this).fadeIn();
             });
 
-            var validateresult = validateFiles(files);
             resources_errorshook = $('.modal#uploadResource .modal-content').children('#errorContainer');
 
             console.log(validateresult);
@@ -110,17 +111,22 @@ var ResourcesEvents = function () {
 
         $('main').on('click', 'a#uploadResource', function (e) {
             e.preventDefault();
-
-            if ($(this).hasClass('disabled')) {
+            var $THIS = $(this),
+                buttonEl = $THIS[0].innerHTML;
+            if ($THIS.hasClass('disabled')) {
                 return;
             }
+            $(this).addClass('disabled btn-loading')
+                .text('uploading...');
 
             var files = document.forms['createResourcesForm']['resources'].files,
                 filesdescription = '', subjectid,
                 $This = $(this), failedfiles,
-                DATA = [],
-                uploadSuccess = '<p class="';
+                DATA = [];
+
             console.log(files);
+            console.log($THIS);
+            console.log(buttonEl);
 
             //ajax
             // Create a new FormData object.
@@ -188,6 +194,10 @@ var ResourcesEvents = function () {
                         //if success
                         if(failedfiles.status) {
                             $('.num-progress').html('Upload successful');
+                            $THIS.removeClass('disabled btn-loading');
+                            $THIS[0].innerHTML = buttonEl;
+                            $THIS[0].innerHTML = buttonEl;
+
                             Materialize.toast('<p class="white-text">Upload successful</p>', 1200, 'green accent-3', function (s) {
                                 setTimeout(function () {
                                     location.reload();
@@ -207,7 +217,7 @@ var ResourcesEvents = function () {
                                 $('.num-progress').html('Upload error<br>');
 
                             }
-                            $('.num-progress').removeClass('secondary-text-color').addClass('red-text text-accent-1');
+                            $('.num-progress').removeClass('rain-theme-primary-text text-lighten-3').addClass('red-text text-accent-1');
                             $('.progress.js-progress-bar .determinate').addClass('red accent-3');
                         }
                     }
@@ -254,12 +264,25 @@ var ResourcesEvents = function () {
     //-----------
 
     //Generates the resources list, each with textareas.
-    var generateResourcesFormList = function (obj) {
-        var str = '';
+    var generateResourcesFormList = function (filesObj, validationResults) {
+        var str = '', x, b;
 
-        for(var a = 0; a < obj.length; a++) {
+        for(var a = 0; a < filesObj.length; a++) {
 
-            str += Lists_Templates.resourcesListTemplate(obj[a], a);
+            var error = validationResults.map(function(v) {
+                if (v.index === a ) {
+                    console.log(a, v.index)
+                    return true;
+                } else { return false; }
+
+            });
+
+            console.log(error.includes( true ));
+
+            error = error.includes( true );
+            str += Lists_Templates.resourcesListTemplate(filesObj[a], a, error);
+            error = false;
+
         }
 
         return str;
