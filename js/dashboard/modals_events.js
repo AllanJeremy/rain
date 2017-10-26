@@ -69,15 +69,21 @@ var Modals_Events = function () {
 
     //----------------------------
 
-    this.cleanOutModals = function () {
+    this.cleanOutModals = function (i) {
         //return;
 
-        console.log('cleaning out all modals');
+        if(i === true) {
+            // waste time
+            console.log('cleaning out all modals');
 
-        setTimeout(function () {
-            $('.modal ').remove();
+            setTimeout(function () {
+                $('.modal ').remove();
 
-        }, 1400);
+            }, 1400);
+        } else {
+                $('.modal ').remove();
+
+        }
 
     };
 

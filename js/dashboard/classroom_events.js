@@ -437,8 +437,8 @@ var ClassroomEvents = function () {
             });
 
             $(this).removeClass('disabled');
-
-            return (false);
+            console.log('mijiji');
+//            return (false);
         });
     };
     
