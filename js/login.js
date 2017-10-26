@@ -62,8 +62,9 @@ function validateInputs(type) {
 
 function studentLogin() {
     'use strict';
-    var validated, username, password, type, errorMessage, loginData;
+    var validated, username, password, type, errorMessage, loginData, btnEl;
     
+    btnEl = $('#studentForm button')[0].innerHTML;
     type = 'student';
     username = $('#studentForm input#studentUsername').val();
     password = $('#studentForm input#studentPassword').val();
@@ -90,22 +91,24 @@ function studentLogin() {
             beforeSend: function () {
                 console.log('sending');
                 $('#studentForm button')
-                    .text('loging you in...')
-                    .addClass('op-4 z-depht-0');
+                    .text('verifying...')
+                    .addClass('op-4 disabled btn-loading');
             },
             complete: function () {
                 
             },
             success: function (str) {
                 //success message
-                //console.log('success-' + str);
+//                console.log('success-' + str);
                 
                 if (str.length === 1) {
                     //redirect
-                    $('#studentForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as admin
+                    $('#adminForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as admin
                     
+                    $('#studentForm button')[0].innerHTML = btnEl;//preventing bastards who would switch tabs fast to login as admin
+                    $('#studentForm button').removeClass('op-4 disabled btn-loading');//preventing bastards who would switch tabs fast to login as admin
                     $('#studentForm')
-                        .prepend('<div style="display: none;" class=" card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>')
+                        .prepend('<div class="new-class card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>')
                         .fadeIn(230);
                     
                     window.setTimeout(function () {
@@ -118,13 +121,16 @@ function studentLogin() {
                     
                 } else {
                     $('#studentForm').prepend(str);
+                    $('#studentForm button')[0].innerHTML = btnEl;
+                    $('#studentForm button').removeClass('op-4 disabled btn-loading');
                 }
                 
             },
             error: function (str) {
                 //error messages
                 console.log('error-' + str);
-                
+                $('#studentForm button')[0].innerHTML = btnEl;
+                $('#studentForm button').removeClass('op-4 disabled btn-loading');
                 $('#studentForm').prepend(str);
             }
         });
@@ -137,10 +143,10 @@ function studentLogin() {
 
 function adminLogin() {
     'use strict';
-    var validated, accountType, username, password, type, errorMessage, loginData;
+    var validated, accountType, username, btnEl, password, type, errorMessage, loginData;
     
     type = 'admin';
-    
+    btnEl = $('#adminForm button')[0].innerHTML;
     
     accountType = $('#adminForm select').val();
     username = $('#adminForm input#staffUsername').val();
@@ -168,6 +174,9 @@ function adminLogin() {
             data: loginData,
             beforeSend: function () {
                 console.log('sending');
+                $('#adminForm button')
+                    .text('verifying...')
+                    .addClass('op-4 disabled btn-loading');
             },
             complete: function () {
                 
@@ -178,9 +187,13 @@ function adminLogin() {
                 
                 if (str.length === 1) {
                     //redirect
-                    $('#adminForm').prepend('<div class="card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>');
+                    $('#studentForm button').removeAttr('onclick')//preventing bastards who would switch tabs fast to login as a student
                     
-                    $('#studentForm button').removeAttr('onclick');//preventing bastards who would switch tabs fast to login as a student
+                    $('#adminForm button')[0].innerHTML = btnEl;
+                    $('#adminForm button').removeClass('op-4 disabled btn-loading');
+                    $('#adminForm')
+                        .prepend('<div class="new-class card-panel success green white-text text-lighten-2">Success!<br>Logging you in in a few...</div>')
+                        .fadeIn(230);
                     
                     window.setTimeout(function () {
                         location.reload();//Better option since a user won't define what page should load
@@ -192,15 +205,18 @@ function adminLogin() {
                     
                 } else {
                     $('#adminForm').prepend(str);
+                    $('#adminForm button')[0].innerHTML = btnEl;
+                    $('#adminForm button').removeClass('op-4 disabled btn-loading');
                 }
-                
-                
             },
             error: function (str) {
                 //error messages
                 console.log('error-' + str);
                 
                 $('#adminForm').prepend(str);
+                $('#adminForm button')[0].innerHTML = btnEl;
+                $('#adminForm button').removeClass('op-4 disabled btn-loading');
+
             }
         });
         
