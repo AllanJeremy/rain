@@ -319,9 +319,10 @@ var AssignmentEvents = function (userInfo) {
                 newAssignmentMaxGrade = document.forms['createAssignmentForm']['assMaxGrade'].value,
                 newAssignmentResources = document.forms['createAssignmentForm']['ass_resources'].files,
                 newAssignmentClassIds = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms'),
-                totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms'),
+                totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms');
+
                 // Create a new FormData object.
-                formData = new FormData(),
+                var formData = new FormData(),
                 $this = $(this),
                 $thisEl = $this[0].innerHTML;
 
@@ -345,7 +346,7 @@ var AssignmentEvents = function (userInfo) {
             }
             if (typeof newAssignmentClassIds === 'undefined') {
             
-                newAssignmentClassIds = 0;
+                newAssignmentClassIds = ['0'];
             } else {
                 newAssignmentClassIds = newAssignmentClassIds.slice(0,-1);
                 newAssignmentClassIds = newAssignmentClassIds.split(',');
@@ -377,10 +378,11 @@ var AssignmentEvents = function (userInfo) {
                 formData.append('data', JSON.stringify(formResults));
                 formData.append('action', 'UpdateAssignmentInfo');
                     
+                console.log(formData);
                 $.ajax({
                     url: "handlers/db_handler.php",
                     data: formData,
-                    xhr: function() {
+//                    xhr: function() {
 /*
                         var myXhr = $.ajaxSettings.xhr();
                             if(myXhr.upload){
@@ -388,19 +390,14 @@ var AssignmentEvents = function (userInfo) {
                             }
                         return myXhr;
 */
-                    },
+//                    },
                     cache: false,
                     contentType: false,
                     processData: false,
                     type: 'POST',
                     beforeSend : function () {
                         //Make the loader visible
-                        $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').animate({
-                            width:'50%'
-                        },300);
-                        $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').animate({
-                            width:'0%'
-                        },300);
+                        $('#createAssignmentForm').find('.progress').fadeIn(240);
 
                     },
                     success: function (returndata) {
@@ -459,6 +456,7 @@ var AssignmentEvents = function (userInfo) {
                             console.log('toast on file upload error');
                         });
 
+                        console.log(e);
                         console.log("Not Cool");
                     }
                 }, 'json');
