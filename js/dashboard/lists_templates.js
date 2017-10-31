@@ -679,7 +679,7 @@ var Lists_Templates = function () {
     
     this.esomoModalTemplate = function (obj) {
         
-        obj.progressWidth = '78%';
+        obj.progressWidth = '1%';
         
         var formattedProgressWidth = $.trim(obj.progressWidth).split("%").join(""),
             warningClass = 'red',

@@ -87,23 +87,29 @@ var Modals_Events = function () {
 
     };
 
+    
     //--------------------------------
 
-    this.updateEsomoModalProgress = function (modal_id) {
+    this.updateEsomoModalAutocomplete = function (modal_id, data, funC) {
         //return;
-        console.log('progress bar event listener fired on modal id: ' + modal_id);
+        console.log('updatingAutocomplete for ' + modal_id);
+        var El = $('.modal#esomoModal'+modal_id+ ' input.autocomplete');
+        console.log(El);
+        El.autocomplete({
+            data: data,
+            limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+            onAutocomplete: function(val) {
+                // Callback function when value is autcompleted.
 
-        $('main').on('change', 'input[type="checkbox"]', function (o) {
-
-            o.preventDefault();
-
-            var totalCount = $('#' + modal_id).find('input[type="checkbox"]:checked').length;
-
-            console.log('progress bar event listener on ' + totalCount + ' checkboxes.');
-
+                Materialize.toast('Checked ' + val, 1300, 'white-text');
+                // $('.modal'+modal_id+ ' input
+            },
+            minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+            
         });
     };
 
+    
     //--------------------------------
 
     this.closeModalsEvent = function () {

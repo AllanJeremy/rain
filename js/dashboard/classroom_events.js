@@ -947,63 +947,40 @@ var ClassroomEvents = function () {
                         if (typeof result === 'object') {
                             //loop
 
-                            var output = '';
-                            var count = 0;
-                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
+                            var output = '',
+                                autocompletedata = {};
 
                             for (var key in result) {
 
                                 output += Forms_Templates.formOptionsTemplate(result[key]);
 
-                                if (count < 21 && result[key].name != 'undefined') {
-
-                                    if (key > 0) {
-
-                                        autocompletedata += ',';
-
-                                    }
-
-                                    autocompletedata += '"';
-                                    autocompletedata += result[key].name;
-                                    autocompletedata += '" : ';
-                                    autocompletedata += 'null';
-
-                                    count++;
+                                if (result[key].name != 'undefined') {
+                                    autocompletedata[result[key].name] = null;
 
                                 }
-
                             }
 
                             output += '';
 
-                            autocompletedata += '}';
-
                             console.log(autocompletedata);
-
-
-                            autocompletedata = jQuery.parseJSON(autocompletedata);
-
-                            console.log(autocompletedata);
-
-                            $('input#searchStudentFormList').autocomplete({
-                                data: autocompletedata
-                            });
 
                             var formOptionsTemplate = {
                                 "formData" : output
                             },
-                                formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                                formList = Forms_Templates.makeStudentFormList(formOptionsTemplate),
 
                             //open the esomo modal Template
                             //append the list to esomo modal
 
-                            var modal_header = 'Add students to the classroom',
+                                modal_header = 'Add students to the classroom',
                                 modal_body = formList,
                                 modal_action = 'Add',
-                                action2 = 'morph-in',
-                                studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                                action2 = 'morph-in';
+                                
+                            Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            Modals_Events.updateEsomoModalAutocomplete(modal_id, autocompletedata);
 
-//                            console.log(formList);
+                            console.log(studentListModal);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1019,7 +996,6 @@ var ClassroomEvents = function () {
                             }); //when add students is clicked//
 
                         }
-
                     })
                       .success( function (result) {
                         $('body').find('#toast-container .toast:nth-of-type(1)')
@@ -1052,70 +1028,40 @@ var ClassroomEvents = function () {
                         if (typeof result === 'object') {
                             //loop
 
-                            var output = '';
-                            var count = 0;
-                            var autocompletedata = '{';//limit autocomplete dropdown to 20;
+                            var output = '',
+                            autocompletedata = {};
 
                             for (var key in result) {
 
                                 output += Forms_Templates.formOptionsTemplate(result[key]);
 
-                                if (count < 21 && result[key].name != 'undefined') {
-
-                                    if (key > 0) {
-
-                                        autocompletedata += ',';
-
-                                    }
-
-                                    autocompletedata += '"';
-                                    autocompletedata += result[key].name;
-                                    autocompletedata += '" : ';
-                                    autocompletedata += 'null';
-
-                                    count++;
-
+                                if (result[key].name != 'undefined') {
+                                    autocompletedata[result[key].name] = null;
+                                    
                                 }
-
                             }
 
                             output += '';
-
-                            autocompletedata += '}';
-
+                            
                             console.log(autocompletedata);
-
-
-                            autocompletedata = jQuery.parseJSON(autocompletedata);
-
-                            console.log(autocompletedata);
-
-                            $('input#searchStudentFormList').autocomplete({
-                                data: autocompletedata
-                            });
-
+                            
                             var formOptionsTemplate = {
                                 "formData" : output
-                            };
-
-                            var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                            },
+                                formList = Forms_Templates.makeStudentFormList(formOptionsTemplate),
 
                             //open the esomo modal Template
                             //append the list to esomo modal
 
-                            var modal_header = 'Add students to the classroom';
-
-                            var modal_body = formList;
-
-                            var modal_action = 'Add';
-                            
-                            var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                                modal_header = 'Add students to the classroom',
+                                modal_body = formList,
+                                modal_action = 'Add',
+                                action2 = 'morph-in';
+                                
+                            Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            Modals_Events.updateEsomoModalAutocomplete(modal_id, autocompletedata);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
-
-                            console.log(formList);
-
-                            var action2 = 'morph-in';
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                                 e.preventDefault();
@@ -1128,9 +1074,7 @@ var ClassroomEvents = function () {
                                 $(this)[0].innerHTML = el;
                             }); //when add students is clicked//
 
-
                         }
-
                     })
                       .success( function (result) {
                         $('body').find('#toast-container .toast:nth-of-type(1)')
@@ -1221,56 +1165,35 @@ var ClassroomEvents = function () {
                         //loop
 
                         var output = '',
-                            count = 0,
-                            autocompletedata = '{';//limit autocomplete dropdown to 20;
-
+                            autocompletedata = {};
+                            
                         for (var key in result) {
 
                             output += Forms_Templates.formOptionsTemplate(result[key]);
 
-                            if (count < 21 && result[key].name != 'undefined') {
-
-                                if (key > 0) {
-
-                                    autocompletedata += ',';
-
-                                }
-
-                                autocompletedata += '"';
-                                autocompletedata += result[key].name;
-                                autocompletedata += '" : ';
-                                autocompletedata += 'null';
-
-                                count++;
-
+                            if (result[key].name != 'undefined') {
+                                autocompletedata[result[key].name] = null;
+                                
                             }
                         }
 
                         output += '';
 
-                        autocompletedata += '}';
-
-                        autocompletedata = jQuery.parseJSON(autocompletedata);
-
-                        //console.log(autocompletedata);
-
-                        $('input#searchStudentFormList').autocomplete({
-                            data: autocompletedata
-                        });
-
                         var formOptionsTemplate = {
                             "formData" : output
                         },
-                            formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                            formList = Forms_Templates.makeStudentFormList(formOptionsTemplate),
 
                         //open the esomo modal Template
                         //append the list to esomo modal
 
-                        var modal_header = 'Add students to the classroom',
+                            modal_header = 'Add students to the classroom',
                             modal_body = formList,
                             modal_action = 'Add',
-                            action2 = 'morph-in',
-                            studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            action2 = 'morph-in';
+                            
+                        Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        Modals_Events.updateEsomoModalAutocomplete(modal_id, autocompletedata);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -1328,65 +1251,41 @@ var ClassroomEvents = function () {
                         //loop
 
                         var output = '',
-                            count = 0,
-                            autocompletedata = '{';//limit autocomplete dropdown to 20;
+                            autocompletedata = {};
 
                         for (var key in result) {
 
                             output += Forms_Templates.formOptionsTemplate(result[key]);
 
-                            if (count < 21 && result[key].name != 'undefined') {
-
-                                if (key > 0) {
-
-                                    autocompletedata += ',';
-
-                                }
-
-                                autocompletedata += '"';
-                                autocompletedata += result[key].name;
-                                autocompletedata += '" : ';
-                                autocompletedata += 'null';
-
-                                count++;
+                            if (result[key].name != 'undefined') {
+                                autocompletedata[result[key].name] = null;
 
                             }
-
                         }
 
                         output += '';
 
-                        autocompletedata += '}';
-
                         console.log(autocompletedata);
-
-                        autocompletedata = jQuery.parseJSON(autocompletedata);
-
-                        console.log(autocompletedata);
-
-                        $('input#searchStudentFormList').autocomplete({
-                            data: autocompletedata
-                        });
 
                         var formOptionsTemplate = {
                             "formData" : output
-                        };
-                        
-                        var formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                        },
+                            formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
 
                         //open the esomo modal Template
                         //append the list to esomo modal
-
-                        var modal_header = 'Add students to the classroom',
+                            
+                            modal_header = 'Add students to the classroom',
                             modal_body = formList,
                             modal_action = 'Add',
-                            action2 = 'morph-in',
-                            studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            action2 = 'morph-in';
+                            
+                        Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                        Modals_Events.updateEsomoModalAutocomplete(modal_id, autocompletedata);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
                         console.log(formList);
-
 
                         $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                             e.preventDefault();
@@ -1399,7 +1298,6 @@ var ClassroomEvents = function () {
                             $(this)[0].innerHTML = el;
                         }); //when add students is clicked//
                     }
-
                 })
                   .success( function (result) {
 
@@ -1522,23 +1420,19 @@ var ClassroomEvents = function () {
                         //Continue with the rest of the functions
                         var formOptionsTemplate = {
                             "formData" : formList
-                        };
+                        },
+                            formListData = Forms_Templates.makeStudentFormList(formOptionsTemplate),
+                            modal_header = 'Remove students from the classroom',
+                            modal_body = formListData,
+                            modal_action = 'Remove',
+                            action2 = 'morph-in';
 
-                        var formListData = Forms_Templates.makeStudentFormList(formOptionsTemplate);
-                        
-                        var modal_header = 'Remove students from the classroom';
-
-                        var modal_body = formListData;
-                        
-                        var modal_action = 'Remove';
-
-                        var studentListModal = Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
+                            
+                        Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, modal_action);
 
                         $('.modal#esomoModal' + modal_id).openModal({dismissible:false});
 
                         console.log('modal students classroom list created.');
-
-                        var action2 = 'morph-in';
 
                         $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                             e.preventDefault();

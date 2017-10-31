@@ -76,8 +76,7 @@ var AssignmentEvents = function (userInfo) {
                         if (typeof result === 'object') {
                             //loop
                             var output = '',
-                                count = 0,
-                                autocompletedata = '{';//limit autocomplete dropdown to 20;
+                                autocompletedata = {};//limit autocomplete dropdown to 20;
 
                             for (var key in result) {
 
@@ -85,36 +84,17 @@ var AssignmentEvents = function (userInfo) {
                                 
                                 output += Lists_Templates.classroomTableList(result[key]);
 
-                                
-                                if (count < 21 && result[key].name != 'undefined') {
-
-                                    if (key > 0) {
-
-                                        autocompletedata += ',';
-
-                                    }
-
-                                    autocompletedata += '"';
-                                    autocompletedata += result[key].name;
-                                    autocompletedata += '" : ';
-                                    autocompletedata += 'null';
-
-                                    count++;
-
+                                if (result[key].name != 'undefined') {
+                                    autocompletedata[result[key].name] = null;
+                                    
                                 }
 
                             }
 
                             output += '';
 
-                            autocompletedata += '}';
-
                             console.log(autocompletedata);
-
-                            autocompletedata = jQuery.parseJSON(autocompletedata);
-
-                            console.log(autocompletedata);
-
+    
                             var list = {
                                 
                                 "listData" : output
@@ -128,10 +108,7 @@ var AssignmentEvents = function (userInfo) {
                                 modal_body = List;
 
                             Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, 'add classrooms');
-                            
-                            $('input#searchStudentFormList').autocomplete({
-                                data: autocompletedata
-                            });
+                            Modals_Events.updateEsomoModalAutocomplete(modal_id, autocompletedata);
 
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
@@ -187,38 +164,18 @@ var AssignmentEvents = function (userInfo) {
                             //loop
 
                             var output = '',
-                                count = 0,
-                                autocompletedata = '{';//limit autocomplete dropdown to 20;
+                                autocompletedata = {};//limit autocomplete dropdown to 20;
 
                             for (var key in result) {
 
                                 output += Forms_Templates.formOptionsTemplate(result[key]);
 
-                                if (count < 21 && result[key].name != 'undefined') {
-
-                                    if (key > 0) {
-
-                                        autocompletedata += ',';
-
-                                    }
-
-                                    autocompletedata += '"';
-                                    autocompletedata += result[key].name;
-                                    autocompletedata += '" : ';
-                                    autocompletedata += 'null';
-
-                                    count++;
-
+                                if (result[key].name != 'undefined') {
+                                    autocompletedata[result[key].name] = null;
                                 }
                             }
 
                             output += '';
-
-                            autocompletedata += '}';
-
-                            console.log(autocompletedata);
-
-                            autocompletedata = jQuery.parseJSON(autocompletedata);
 
                             console.log(autocompletedata);
 
@@ -233,16 +190,13 @@ var AssignmentEvents = function (userInfo) {
 
                             Modals_Events.loadEsomoModal(modal_id, modal_header, modal_body, 'add students');
                             
-                            $('input#searchStudentFormList').autocomplete({
-                                data: autocompletedata
-                            });
-
                             $('.modal#esomoModal' + modal_id).openModal({dismissible : false});
 
                             console.log(formList);
 
                             //Init functions needed for the esomo actions
                             Modals_Events.updateEsomoModalProgress(modal_id);
+                            Modals_Events.updateEsomoModalAutocomplete(modal_id, autocompletedata);
 
                             $('.modal#esomoModal' + modal_id + ' a#modalFooterActionAdd.modal-action').bind('click', function(e) {
                                 e.preventDefault();
@@ -292,7 +246,7 @@ var AssignmentEvents = function (userInfo) {
         });
         
     };
-       
+    
     //--------------------------------
     
     var submitNewAssignment = function (str1, str2) {

@@ -242,7 +242,7 @@ textarea.materialize-textarea {
   .prefix ~ label,
   .prefix ~ .validate ~ label,
   .prefix ~ .autocomplete-content {
-    margin-left: 3rem;
+    // margin-left: 3rem;
     width: 92%;
     width: calc(100% - 3rem);
   }

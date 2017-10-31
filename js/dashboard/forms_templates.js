@@ -295,15 +295,18 @@ var Forms_Templates = function () {
         
         //searchBar
         templateOutput += '<div class="row"><div class="input-field col s12">';
-        templateOutput += '<p class="col s6 m4">';
+        templateOutput += '<p class="col s6 m4 no-margin">';
         templateOutput += '<input type="checkbox" id="selectAll" />';
         templateOutput += '<label for="selectAll">Select all</label>';
         templateOutput += '</p>';
         templateOutput += '<div class="col s6 m8 search-wrapper">';
+        templateOutput += '<div class="row"><div class="input-field margin-horiz-8 col s12">';
         templateOutput += '<i class="material-icons prefix">search</i>';
         templateOutput += '<input type="search" class="transparent autocomplete" id="searchStudentFormList">';
+        templateOutput += '<label for="searchStudentFormList-input"  class="hide">Student\'s name</label>';
         templateOutput += '<i id="cancelSearch" class="mdi-navigation-close material-icons prefix">close</i>';
         templateOutput += '<div class="search-results"></div>';
+        templateOutput += '</div></div>';
         templateOutput += '</div>';
         templateOutput += '</div></div>';
         templateOutput += '<div class="divider"></div>';
