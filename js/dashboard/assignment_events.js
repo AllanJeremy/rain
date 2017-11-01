@@ -249,7 +249,7 @@ var AssignmentEvents = function (userInfo) {
     
     //--------------------------------
     
-    var submitNewAssignment = function (str1, str2) {
+    var submitNewAssignment = function (str1, str2) {           
         
         //get form variables
         //validate the variables
@@ -312,7 +312,7 @@ var AssignmentEvents = function (userInfo) {
             }
 
             //validate first
-//            return;
+        //            return;
 
             if (newAssignmentTitle !== '' && newAssignmentDescription !== '' && newAssignmentDueDate !== '') {
 
@@ -336,15 +336,15 @@ var AssignmentEvents = function (userInfo) {
                 $.ajax({
                     url: "handlers/db_handler.php",
                     data: formData,
-//                    xhr: function() {
-/*
-                        var myXhr = $.ajaxSettings.xhr();
-                            if(myXhr.upload){
-                                myXhr.upload.addEventListener('progress', progress, false);
-                            }
-                        return myXhr;
-*/
-//                    },
+        //                    xhr: function() {
+        /*
+                var myXhr = $.ajaxSettings.xhr();
+                    if(myXhr.upload){
+                        myXhr.upload.addEventListener('progress', progress, false);
+                    }
+                return myXhr;
+        */
+        //                    },
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -798,7 +798,6 @@ var AssignmentEvents = function (userInfo) {
             assignmentslisthook.fadeOut(300, function () {
 
                 $(this).html(filesinfo);
-
                 $(this).fadeIn();
             });
 

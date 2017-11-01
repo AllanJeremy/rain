@@ -1,509 +1,569 @@
 /*global $, jQuery, alert, console*/
 
-var ResourcesEvents = function () {
-    'use strict';
-    //--------------
+var ResourcesEvents = function (userInfo) {
+	'use strict';
+	//--------------
 
-    var res_on_edit;
+	var res_on_edit, $this = this;
+	
+	this.__construct_Student = function (userInfo) {
+		console.log('Student Resources events created');
 
-    this.__construct = function () {
-        console.log('Resources events created');
+		//Resources inits
+		minimizeSubjectResources();
+		subjectGroupHeaders();
 
-        //Resources inits
-        addResources();
-        UploadResources();
-        editResource();
-        uploadEditedResource();
-        deleteResource();
-        minimizeSubjectResources();
+	};
 
-    };
+	this.__construct_Admin = function (userInfo) {
+		console.log('Admin Resources events created');
 
-    //------------------------------
-    //--------------------------------  RESOURCES EVENTS AND FUNCTIONS
-    //--------------------------------
+		//Resources inits
+		addResources();
+		UploadResources();
+		editResource();
+		uploadEditedResource();
+		deleteResource();
+		minimizeSubjectResources();
 
-    //Resources modal
-    //temporary
-    var addResources = function () {
-        var filesinfo, files, totalfiles, resourceslisthook, resources_errorshook, errorlist = '';
+		subjectGroupHeaders();
+	};
 
-        //Checks on file input change, updates, the modal infos
-        $('main').on('change', "form#createResourcesForm input:file", function (e) {
-            e.preventDefault();
+	//------------------------------
+	//--------------------------------  RESOURCES EVENTS AND FUNCTIONS
+	//--------------------------------
 
-            files = document.forms['createResourcesForm']['resources'].files;
-            totalfiles = files.length;
+	//Resources modal
+	//temporary
+	var addResources = function () {
+		var filesinfo, files, totalfiles, resourceslisthook, resources_errorshook, errorlist = '';
 
-            if (files.length > 0) {
-                $('.modal#uploadResource').find('a#uploadResource').removeClass('disabled');
-            } else {
-                $('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
+		//Checks on file input change, updates, the modal infos
+		$('main').on('change', "form#createResourcesForm input:file", function (e) {
+			e.preventDefault();
 
-            }
+			files = document.forms['createResourcesForm']['resources'].files;
+			totalfiles = files.length;
 
-            console.log(files);
+			if (files.length > 0) {
+				$('.modal#uploadResource').find('a#uploadResource').removeClass('disabled');
+			} else {
+				$('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
 
-            $('.modal#uploadResource .modal-content').find('span#totalResources').html(totalfiles);
+			}
 
-            var validateresult = validateFiles(files);
+			console.log(files);
 
-            filesinfo = generateResourcesFormList(files, validateresult);
+			$('.modal#uploadResource .modal-content').find('span#totalResources').html(totalfiles);
 
-            resourceslisthook = $('.modal#uploadResource .modal-content').children('#resourcesList');
+			var validateresult = validateFiles(files);
 
-            resourceslisthook.fadeOut(300, function () {
+			filesinfo = generateResourcesFormList(files, validateresult);
 
-                $(this).html(filesinfo);
+			resourceslisthook = $('.modal#uploadResource .modal-content').children('#resourcesList');
 
-                $(this).fadeIn();
-            });
+			resourceslisthook.fadeOut(300, function () {
 
-            resources_errorshook = $('.modal#uploadResource .modal-content').children('#errorContainer');
+				$(this).html(filesinfo);
 
-            console.log(validateresult);
+				$(this).fadeIn();
+			});
 
-            if(validateresult.length > 0) {
-                //disable the upload button
-                //show errors
-                $('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
+			resources_errorshook = $('.modal#uploadResource .modal-content').children('#errorContainer');
 
-                $.each(validateresult, function(b,x) {
-                    errorlist += Lists_Templates.documentUploadsErrorListTemplate(files[x.index], x.errortype);
+			console.log(validateresult);
 
-                });
+			if(validateresult.length > 0) {
+				//disable the upload button
+				//show errors
+				$('.modal#uploadResource').find('a#uploadResource').addClass('disabled');
 
-                resources_errorshook.find('ul:first').html(errorlist);
+				$.each(validateresult, function(b,x) {
+					errorlist += Lists_Templates.documentUploadsErrorListTemplate(files[x.index], x.errortype);
 
-                errorlist = '';
+				});
 
-                return;
-            }
+				resources_errorshook.find('ul:first').html(errorlist);
 
-            resources_errorshook.find('ul:first').html('');
-            errorlist = '';
+				errorlist = '';
 
-        });
+				return;
+			}
 
-        $('main').on('click', 'a#addResource', function (e) {
-            e.preventDefault();
+			resources_errorshook.find('ul:first').html('');
+			errorlist = '';
 
-            var template = {
-                modalId: 'uploadResource',
-                templateHeader: 'Upload Resources',
-                templateBody: ''
-            };
+		});
+
+		$('main').on('click', 'a#addResource', function (e) {
+			e.preventDefault();
+
+			var template = {
+				modalId: 'uploadResource',
+				templateHeader: 'Upload Resources',
+				templateBody: ''
+			};
 
 //            load the modal in the DOM
-            $('main').append(Lists_Templates.resourcesModalTemplate(template));
+			$('main').append(Lists_Templates.resourcesModalTemplate(template));
 
-            $('select').material_select();
+			$('select').material_select();
 
-            $('#' + template.modalId).openModal({dismissible: false});
+			$('#' + template.modalId).openModal({dismissible: false});
 
-        });
-    };
+		});
+	};
 
-    //-----------
+	//-----------
 
-    //Uploads the resources form
-    var UploadResources = function () {
+	//Uploads the resources form
+	var UploadResources = function () {
 
-        $('main').on('click', 'a#uploadResource', function (e) {
-            e.preventDefault();
-            var $THIS = $(this),
-                buttonEl = $THIS[0].innerHTML;
-            if ($THIS.hasClass('disabled')) {
-                return;
-            }
-            $(this).addClass('disabled btn-loading')
-                .text('uploading...');
+		$('main').on('click', 'a#uploadResource', function (e) {
+			e.preventDefault();
+			var $THIS = $(this),
+				buttonEl = $THIS[0].innerHTML;
+			if ($THIS.hasClass('disabled')) {
+				return;
+			}
+			$(this).addClass('disabled btn-loading')
+				.text('uploading...');
 
-            var files = document.forms['createResourcesForm']['resources'].files,
-                filesdescription = '', subjectid,
-                $This = $(this), failedfiles,
-                DATA = [];
+			var files = document.forms['createResourcesForm']['resources'].files,
+				filesdescription = '', subjectid,
+				$This = $(this), failedfiles,
+				DATA = [];
 
-            console.log(files);
-            console.log($THIS);
-            console.log(buttonEl);
+			console.log(files);
+			console.log($THIS);
+			console.log(buttonEl);
 
-            //ajax
-            // Create a new FormData object.
-            var formData = new FormData();
+			//ajax
+			// Create a new FormData object.
+			var formData = new FormData();
 
-            for (var g = 0; g < files.length; g++) {
-                //Hoping the indexes will match
-                formData.append('file-'+g, files[g]);
-                var d = {
-                    'description' : $('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('textarea#resourceDescription').val(),
-                    'subjectid' : parseInt($('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('select#resourceSubjectType option:selected').val())
-                }
-                DATA.push(d);
-            }
+			for (var g = 0; g < files.length; g++) {
+				//Hoping the indexes will match
+				formData.append('file-'+g, files[g]);
+				var d = {
+					'description' : $('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('textarea#resourceDescription').val(),
+					'subjectid' : parseInt($('.modal#uploadResource .modal-content').children('#resourcesList').children('.row[data-index="'+ g +'"]').find('select#resourceSubjectType option:selected').val())
+				}
+				DATA.push(d);
+			}
 
-            console.log(DATA);
+			console.log(DATA);
 
-            //return;
+			//return;
 
-            //Append the data and the action name
-            formData.append('data', JSON.stringify(DATA));
-            formData.append('action', 'ResourcesUpload');
+			//Append the data and the action name
+			formData.append('data', JSON.stringify(DATA));
+			formData.append('action', 'ResourcesUpload');
 
-            $.ajax({
-                url: "handlers/db_handler.php",
-                data: formData,
-                xhr: function() {
-                    var myXhr = $.ajaxSettings.xhr();
-                        if(myXhr.upload){
-                            myXhr.upload.addEventListener('progress', progress, false);
-                        }
-                        return myXhr;
-                },
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: 'POST',
-                beforeSend : function () {
-                    //Make the loader visible
-                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .num-progress').removeClass('hide');
-                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html('0%');
+			$.ajax({
+				url: "handlers/db_handler.php",
+				data: formData,
+				xhr: function() {
+					var myXhr = $.ajaxSettings.xhr();
+						if(myXhr.upload){
+							myXhr.upload.addEventListener('progress', progress, false);
+						}
+						return myXhr;
+				},
+				cache: false,
+				contentType: false,
+				processData: false,
+				type: 'POST',
+				beforeSend : function () {
+					//Make the loader visible
+					$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .num-progress').removeClass('hide');
+					$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html('0%');
 
-                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').animate({
-                        width:'50%'
-                    },300);
-                    $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').animate({
-                        width:'0%'
-                    },300);
+					$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress').animate({
+						width:'50%'
+					},300);
+					$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').animate({
+						width:'0%'
+					},300);
 
-                },
-                success: function (returndata) {
+				},
+				success: function (returndata) {
 
-                    console.log("Cool");
-                    console.log(returndata);
-                    //$('#uploadResource').closeModal();
-                    if (returndata === '') {
-                        $This.trigger('click');
+					console.log("Cool");
+					console.log(returndata);
+					//$('#uploadResource').closeModal();
+					if (returndata === '') {
+						$This.trigger('click');
 
-                        console.log('retrying');
-                        return (false);
+						console.log('retrying');
+						return (false);
 
-                    } else {
-                        failedfiles = jQuery.parseJSON(returndata);
+					} else {
+						failedfiles = jQuery.parseJSON(returndata);
 
-                        //if success
-                        if(failedfiles.status) {
-                            $('.num-progress').html('Upload successful');
-                            $THIS.removeClass('disabled btn-loading');
-                            $THIS[0].innerHTML = buttonEl;
-                            $THIS[0].innerHTML = buttonEl;
+						//if success
+						if(failedfiles.status) {
+							$('.num-progress').html('Upload successful');
+							$THIS.removeClass('disabled btn-loading');
+							$THIS[0].innerHTML = buttonEl;
+							$THIS[0].innerHTML = buttonEl;
 
-                            Materialize.toast('<p class="white-text">Upload successful</p>', 1200, 'green accent-3', function (s) {
-                                setTimeout(function () {
-                                    location.reload();
+							Materialize.toast('<p class="white-text">Upload successful</p>', 1200, 'green accent-3', function (s) {
+								setTimeout(function () {
+									location.reload();
 
-                                }, 800);
+								}, 800);
 
-                            });
+							});
 
-                        } else {
+						} else {
 
-                            if(failedfiles.failed_files.length > 0) {
-                                //File didn't upload
-                                //Probably there was an error
-                                $('.num-progress').html('Upload error<br>Check if you have any errors on the files list.');
+							if(failedfiles.failed_files.length > 0) {
+								//File didn't upload
+								//Probably there was an error
+								$('.num-progress').html('Upload error<br>Check if you have any errors on the files list.');
 
-                            } else {
-                                $('.num-progress').html('Upload error<br>');
+							} else {
+								$('.num-progress').html('Upload error<br>');
 
-                            }
-                            $('.num-progress').removeClass('rain-theme-primary-text text-lighten-3').addClass('red-text text-accent-1');
-                            $('.progress.js-progress-bar .determinate').addClass('red accent-3');
-                        }
-                    }
+							}
+							$('.num-progress').removeClass('rain-theme-primary-text text-lighten-3').addClass('red-text text-accent-1');
+							$('.progress.js-progress-bar .determinate').addClass('red accent-3');
+						}
+					}
 
 
-                    console.log(failedfiles);
-                    console.log(failedfiles.failed_files.length);
+					console.log(failedfiles);
+					console.log(failedfiles.failed_files.length);
 
-                },
-                error: function (e) {
-                    console.log("Not Cool");
-                }
-            }, 'json');
+				},
+				error: function (e) {
+					console.log("Not Cool");
+				}
+			}, 'json');
 
-        });
-    };
+		});
+	};
 
-    //-----------
+	//-----------
 
-    var validateFiles = function (files) {
-        var mimetypes = Array("application/pdf","image/jpeg","image/jpg","image/png","application/msword","application/vnd.ms-excel","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.openxmlformats-officedocument.presentationml.presentation"),
-            maxsize = 52428800,
-            reportdata = [];
+	var validateFiles = function (files) {
+		var mimetypes = Array("application/pdf","image/jpeg","image/jpg","image/png","application/msword","application/vnd.ms-excel","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+			maxsize = 52428800,
+			reportdata = [];
 
-        for(var i = 0;  i < files.length; i++) {
-            var errordata = {
-                'index' : '',
-                'errortype' : []//0 for mimetype, 1 for file exceeding its size
-            };
-            //console.log(jQuery.inArray(files[i].type, mimetypes));
-            if(jQuery.inArray(files[i].type, mimetypes) < 0) {//if it is -1, then it's not part of the mimetype
-                errordata.index = i;
-                errordata.errortype.push(0);
+		for(var i = 0;  i < files.length; i++) {
+			var errordata = {
+				'index' : '',
+				'errortype' : []//0 for mimetype, 1 for file exceeding its size
+			};
+			//console.log(jQuery.inArray(files[i].type, mimetypes));
+			if(jQuery.inArray(files[i].type, mimetypes) < 0) {//if it is -1, then it's not part of the mimetype
+				errordata.index = i;
+				errordata.errortype.push(0);
 
-                if (files[i].size > maxsize ) {
-                    errordata.errortype.push(1);
-                }
-                reportdata.push(errordata);
-            }
-        }
-        return reportdata;
-    };
+				if (files[i].size > maxsize ) {
+					errordata.errortype.push(1);
+				}
+				reportdata.push(errordata);
+			}
+		}
+		return reportdata;
+	};
 
-    //-----------
+	//-----------
 
-    //Generates the resources list, each with textareas.
-    var generateResourcesFormList = function (filesObj, validationResults) {
-        var str = '', x, b;
+	//Generates the resources list, each with textareas.
+	var generateResourcesFormList = function (filesObj, validationResults) {
+		var str = '', x, b;
 
-        for(var a = 0; a < filesObj.length; a++) {
+		for(var a = 0; a < filesObj.length; a++) {
 
-            var error = validationResults.map(function(v) {
-                if (v.index === a ) {
-                    console.log(a, v.index)
-                    return true;
-                } else { return false; }
+			var error = validationResults.map(function(v) {
+				if (v.index === a ) {
+					console.log(a, v.index)
+					return true;
+				} else { return false; }
 
-            });
+			});
 
-            console.log(error.includes( true ));
+			console.log(error.includes( true ));
 
-            error = error.includes( true );
-            str += Lists_Templates.resourcesListTemplate(filesObj[a], a, error);
-            error = false;
+			error = error.includes( true );
+			str += Lists_Templates.resourcesListTemplate(filesObj[a], a, error);
+			error = false;
 
-        }
+		}
 
-        return str;
-    };
+		return str;
+	};
 
-    //-----------
+	//-----------
 
-    var editResource = function () {
+	var editResource = function () {
 
-        $('main').on('click', 'a.js-edit-resource', function (e) {
-            e.preventDefault();
-            var resourceid = $(this).parents('.tr_res_container').attr('data-res-id'),
-                subjectid = $(this).parents('.tr_res_container').attr('data-subject-id'),
-                description = $(this).parents('.tr_res_container').find('span.js-res-description')[0].innerText;
-            console.log(resourceid, subjectid);
-            console.log(description);
+		$('main').on('click', 'a.js-edit-resource', function (e) {
+			e.preventDefault();
+			var resourceid = $(this).parents('.tr_res_container').attr('data-res-id'),
+				subjectid = $(this).parents('.tr_res_container').attr('data-subject-id'),
+				description = $(this).parents('.tr_res_container').find('span.js-res-description')[0].innerText;
+			console.log(resourceid, subjectid);
+			console.log(description);
 
-            res_on_edit = Array(resourceid, subjectid);
+			res_on_edit = Array(resourceid, subjectid);
 
-            var template = {
-                modalId: 'editResource_' + resourceid,
-                templateHeader: 'Edit Resource',
-                templateBody: Forms_Templates.editResourceForm(resourceid),
-                extraActions: Lists_Templates.infoExtraFooterActions({
-                    "Delete" : true,
-                    "Archive" : false
-                }, 'moreResources')
-            };
+			var template = {
+				modalId: 'editResource_' + resourceid,
+				templateHeader: 'Edit Resource',
+				templateBody: Forms_Templates.editResourceForm(resourceid),
+				extraActions: Lists_Templates.infoExtraFooterActions({
+					"Delete" : true,
+					"Archive" : false
+				}, 'moreResources')
+			};
 
 //            load the modal in the DOM
-            $('main').append(Lists_Templates.modalTemplate(template));
+			$('main').append(Lists_Templates.modalTemplate(template));
 
-            $('select').material_select();
+			$('select').material_select();
 
-            $('#' + template.modalId).openModal({dismissible: false});
+			$('#' + template.modalId).openModal({dismissible: false});
 
-            $('.modal#' + template.modalId + ' form#editResourceForm')[0][1].value = description;
-            $('.modal#' + template.modalId + ' form#editResourceForm')[0][0].value = subjectid;
+			$('.modal#' + template.modalId + ' form#editResourceForm')[0][1].value = description;
+			$('.modal#' + template.modalId + ' form#editResourceForm')[0][0].value = subjectid;
 
-            Materialize.updateTextFields();
+			Materialize.updateTextFields();
 
-        });
-    }
+		});
+	}
 
-    //-----------
+	//-----------
 
-    var uploadEditedResource = function () {
+	var uploadEditedResource = function () {
 
-        $('main').on('click', 'a#updateResource', function (e) {
-            e.preventDefault();
-            var res_id = $(this).attr('data-res-id'),
-                self = $(this),
-                description = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][1].value,
-                subjectid = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][0].value,
-                data = {
-                    'action' : 'UpdateResource',
-                    'resource_id' : Number(res_id),
-                    'description' : description,
-                    'subject_id' : Number(subjectid)
-                }, res_el;
+		$('main').on('click', 'a#updateResource', function (e) {
+			e.preventDefault();
+			var res_id = $(this).attr('data-res-id'),
+				self = $(this),
+				description = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][1].value,
+				subjectid = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][0].value,
+				data = {
+					'action' : 'UpdateResource',
+					'resource_id' : Number(res_id),
+					'description' : description,
+					'subject_id' : Number(subjectid)
+				}, res_el;
 
-            console.log(data);
+			console.log(data);
 
-            //ajax
-            $.post('handlers/db_handler.php', data, function(returndata) {
-                console.log(returndata.description);
+			//ajax
+			$.post('handlers/db_handler.php', data, function(returndata) {
+				console.log(returndata.description);
 
-                //close modal
-                $('.modal#editResource_'+ res_id).closeModal();
-//                return;
-                //Change only the current card data if the subject id has not been changed
-                //otherwise append eithe to a row uunder the chosen subject id
-                //or create a row if not exist
-                if(Number(res_on_edit[1]) === data['subject_id']) {
-                    //Subject id was not changed, so no need for appending card
-                    $('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
-                } else {
-                    //subject id was updated. APPEND CAR TO THE RIGHT ROW
-                    $('.tr_res_container[data-res-id=' + res_id + ']').attr('data-subject-id', returndata.subject_id);
-                    $('.tr_res_container[data-res-id=' + res_id + ']').addClass('new-class');
-                    $('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
+				//close modal
+				$('.modal#editResource_'+ res_id).closeModal();
+		// return;
+				//Change only the current card data if the subject id has not been changed
+				//otherwise append eithe to a row uunder the chosen subject id
+				//or create a row if not exist
+				if(Number(res_on_edit[1]) === data['subject_id']) {
+					//Subject id was not changed, so no need for appending card
+					$('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
+				} else {
+					//subject id was updated. APPEND CAR TO THE RIGHT ROW
+					$('.tr_res_container[data-res-id=' + res_id + ']').attr('data-subject-id', returndata.subject_id);
+					$('.tr_res_container[data-res-id=' + res_id + ']').addClass('new-class');
+					$('.tr_res_container[data-res-id=' + res_id + ']').find('span.js-res-description').html(returndata.description);
 
-                    res_el = $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col')[0].outerHTML;
+					res_el = $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col')[0].outerHTML;
 
-                    $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col').remove();
+					$('.tr_res_container[data-res-id=' + res_id + ']').parent('.col').remove();
 
-                    //If there are no cards left in the subject group, delete the subject group
-                    if($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').children('.subject-group-body').children('.col').length === 0) {
-                        console.log('skr skr');
-                        $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').remove();
-                        //console.log($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']'));
-                    }
+					//If there are no cards left in the subject group, delete the subject group
+					if($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').children('.subject-group-body').children('.col').length === 0) {
+						console.log('skr skr');
+						$('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').remove();
+						//console.log($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']'));
+					}
 
-                    //If there exist a subject group, simply append the card; else append the whole subject group element
-                    if ($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').length > 0) {
-                        $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').children('.subject-group-body').prepend(res_el);
-                    } else {
+					//If there exist a subject group, simply append the card; else append the whole subject group element
+					if ($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').length > 0) {
+						$('#teacherResourcesTab').find('.subject-group[data-subject-group=' + returndata.subject_id + ']').children('.subject-group-body').prepend(res_el);
+					} else {
 
-                        var El = Lists_Templates.resourceSubjectGroup({'id':data.subject_id, 'el':res_el});
-                        console.log('implanting this now');
-                        console.log(El);
+						var El = Lists_Templates.resourceSubjectGroup({'id':data.subject_id, 'el':res_el});
+						console.log('implanting this now');
+						console.log(El);
 
-                        $('#teacherResourcesTab').children('.tab-content').children('.row').append(El);
+						$('#teacherResourcesTab').children('.tab-content').children('.row').append(El);
 
-                    }
-                    setTimeout(function(t) {
-                        $('.tr_res_container[data-res-id=' + res_id + ']').removeClass('new-class');
+					}
+					setTimeout(function(t) {
+						$('.tr_res_container[data-res-id=' + res_id + ']').removeClass('new-class');
 
-                    }, 500);
-                }
-            }, 'json');
-        });
-    };
+					}, 500);
+				}
+			}, 'json');
+		});
+	};
 
-    //-----------
+	//-----------
 
-    var deleteResource = function () {
-        $('main').on('click', ' a#moreResourcesCardDelete', function (e) {
-            e.preventDefault();
-            console.log('will delete');
+	var deleteResource = function () {
+		$('main').on('click', ' a#moreResourcesCardDelete', function (e) {
+			e.preventDefault();
+			console.log('will delete');
 
-            var self = $(this), re,
-                res_id = self.parents('.modal').attr('id').split('_').pop(),
-                toastMessage = '<p class="white-text" data-ref-resource-id="' + res_id + '">Preparing to delete a resource file  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
+			var self = $(this), re,
+				res_id = self.parents('.modal').attr('id').split('_').pop(),
+				toastMessage = '<p class="white-text" data-ref-resource-id="' + res_id + '">Preparing to delete a resource file  <a href="#!" class="bold" id="toastUndoAction" >UNDO</a></p>';
 
-            console.log('resource id ' + res_id + ' to be deleted.');
+			console.log('resource id ' + res_id + ' to be deleted.');
 
-            //close modal
-            $('.modal#' + self.parents('.modal').attr('id') ).closeModal();
-            //remove modal from dom
-            Modals_Events.cleanOutModals();
+			//close modal
+			$('.modal#' + self.parents('.modal').attr('id') ).closeModal();
+			//remove modal from dom
+			Modals_Events.cleanOutModals();
 
-            $('.tr_res_container[data-res-id=' + res_id + ']').addClass('to-remove');
-            //3
-            var toastCall = Materialize.toast(toastMessage, 7200, '', function (s) {
-                //4
-                $.post("handlers/db_handler.php", {"action" : "DeleteResource", "resourceid" : res_id}, function (result) {
+			$('.tr_res_container[data-res-id=' + res_id + ']').addClass('to-remove');
+			//3
+			var toastCall = Materialize.toast(toastMessage, 7200, '', function (s) {
+				//4
+				$.post("handlers/db_handler.php", {"action" : "DeleteResource", "resourceid" : res_id}, function (result) {
 
-                    //5
-                    if(result === '1') {
-                        $('.tr_res_container[data-res-id=' + res_id + ']').parent('.col').remove();
+					//5
+					if(result === '1') {
+						$('.tr_res_container[data-res-id=' + res_id + ']').parent('.col').remove();
 
-                        //If there are no cards left in the subject group, delete the subject group
-                        if($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').children('.subject-group-body').children('.col').length === 0) {
-                            console.log('skr skr');
-                            $('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').remove();
-                            //console.log($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']'));
-                        }
-                    }
+						//If there are no cards left in the subject group, delete the subject group
+						if($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').children('.subject-group-body').children('.col').length === 0) {
+							console.log('skr skr');
+							$('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']').remove();
+							//console.log($('#teacherResourcesTab').find('.subject-group[data-subject-group=' + res_on_edit[1] + ']'));
+						}
+					}
 
-                    //6
-                    //cleanOutModals();
+					//6
+					//cleanOutModals();
 
-                }, 'text');
+				}, 'text');
 
-            });
+			});
 
-        });
+		});
 
 
-    };
+	};
 
-    //--------------------------------
+	//--------------------------------
 
-    var progress = function (e) {
+	var progress = function (e) {
 
-        if(e.lengthComputable){
-            var max = e.total;
-            var current = e.loaded;
+		if(e.lengthComputable){
+			var max = e.total;
+			var current = e.loaded;
 
-            var Percentage = Math.ceil((current * 100)/max);
-            console.log(Percentage + '%');
+			var Percentage = Math.ceil((current * 100)/max);
+			console.log(Percentage + '%');
 
-            $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html(Percentage + '%');
-            $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').css({
-                width : Percentage + '%'
-            });
+			$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html(Percentage + '%');
+			$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').css({
+				width : Percentage + '%'
+			});
 
-            if(Percentage >= 100)
-            {
+			if(Percentage >= 100)
+			{
 
-                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html('100%');
-                $('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').css({
-                    width : '100%'
-                });
+				$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .js-num-progress').html('100%');
+				$('.modal#uploadResource .modal-content').find('#resourcesTotalInfo .progress .determinate').css({
+					width : '100%'
+				});
 
-                // process completed
-            }
-        }
-    };
+				// process completed
+			}
+		}
+	};
 
-    //--------------------------------
+	//--------------------------------
 
-    var minimizeSubjectResources = function () {
+	var minimizeSubjectResources = function () {
 
-        $('main').on('click', 'a.js-minimize-subject-resources', function (e) {
-            e.preventDefault();
-            console.log('minimizing div');
-            console.log($(this)[0].innerText);
+		var $THIS = this;
 
-            var subjectgroup = $(this).parents('.subject-group'),
-                subjectgroupbody = subjectgroup.find('.subject-group-body');
+		$('main').on('click', 'a.js-minimize-subject-resources', function (e) {
+			e.preventDefault();
+			console.log('minimizing div');
+			console.log($(this)[0].innerText);
 
-            if($(this).hasClass('hidden')) {
-                subjectgroupbody.slideDown();
-                $(this).children('i.material-icons')[0].innerText = 'expand_more';
-                $(this).removeClass('hidden');
+			var subjectgroup = $(this).parents('.subject-group'),
+				subjectgroupbody = subjectgroup.find('.subject-group-body');
 
-            } else {
+			if($(this).hasClass('hidden')) {
+				subjectgroupbody.slideDown(500);
+				$(this).children('i.material-icons')[0].innerText = 'expand_more';
+				$(this).removeClass('hidden');
 
-                subjectgroupbody.slideUp();
+			} else {
 
-                $(this).children('i.material-icons')[0].innerText = 'expand_less';
-                $(this).addClass('hidden');
+				subjectgroupbody.slideUp(330);
 
-            }
+				$(this).children('i.material-icons')[0].innerText = 'expand_less';
+				$(this).addClass('hidden');
 
-        });
+			}
 
-    };
+			// reinitialize pushpin to recalculate the target heights
+			setTimeout(function () {
+				$('.subject-group > .row:nth-of-type(1):not(.subject-group-body').pushpin('remove');
+				subjectGroupHeaders();
 
-    this.__construct();
+			}, 600);
+			
+		});
+
+	};
+
+	//--------------------------------
+
+	var subjectGroupHeaders = function () {
+		var el = $('.subject-group > .row:nth-of-type(1):not(.subject-group-body');
+
+		el.each(function() {
+			var $this = $(this),
+				width = $this.outerWidth(),
+				$target = $this.parent('.subject-group').children('.row.subject-group-body'),
+				height = $target.is(':visible') ? $target.outerHeight(true) : 0;
+
+			// don't initiate pushpin for subjects with less than 4 documents
+			if (height > 560) {
+				$this.css({
+					width: width,
+					'z-index' : 888
+				}).pushpin({
+					top: $target.offset().top - $this.height(),
+					  bottom: $target.offset().top + $target.outerHeight() - $this.height()
+				});
+			}
+			
+		});
+	};
+
+	var ajaxDashboardInit = function (userInfo) {
+		console.log(userInfo);
+		if(userInfo.account_type != 'student') {
+
+			console.log('Admin account. Construct admin events for the page.');
+			$this.__construct_Admin(userInfo);
+		} else {
+
+			console.log('Student account. Construct student events for the page.');
+			$this.__construct_Student(userInfo);
+
+			return;
+		}
+
+	};
+	
+	ajaxDashboardInit(userInfo);
 
 };

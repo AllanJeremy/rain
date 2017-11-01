@@ -12,12 +12,13 @@ var Events = function () {
 
         CommentsEvents = new CommentsEvents(userInfo);
         AssignmentEvents = new AssignmentEvents(userInfo);
-
+        ResourcesEvents = new ResourcesEvents(userInfo);
     };
 
     $this.__construct_Student = function (userInfo) {
 
         StudentAssignmentEvents = new StudentAssignmentEvents(userInfo);
+        
     };
 
     $this.__construct_Admin = function (userInfo) {
@@ -26,7 +27,6 @@ var Events = function () {
         Forms_Templates = new Forms_Templates();
         ClassroomEvents = new ClassroomEvents();
         ScheduleEvents = new ScheduleEvents(userInfo);
-        ResourcesEvents = new ResourcesEvents();
 
         //global inits
         Modals_Events.cleanOutModals();

@@ -52,7 +52,7 @@ var ClassroomEvents = function () {
             //1 & 2
             $('.modal#editClassRoom').closeModal();
             //6
-            Modals_Events.cleanOutModals();
+            Modals_Events.cleanOutModals(true);
             $('#classroomCardList .card-col[data-classroom-id=' + classid + ']').addClass('to-remove');
             
             //3
@@ -599,9 +599,6 @@ var ClassroomEvents = function () {
                 });
             }
 
-//            $('#' + str1).closeModal();
-//            Modals_Events.cleanOutModals();
-
         });
     };
     
@@ -841,11 +838,10 @@ var ClassroomEvents = function () {
 
                 if(result === 'true') {
 
-                    var classroomTab = $('#classroomTab #classroomCardList');
-        /*4*/
-                    var Result = Lists_Templates.classRoomCardData(formResults);
-        /*5*/
-                    var hook = $('.card.to-edit').parent('.card-col[data-classroom-id=' + formResults.classroomid + ']');
+                    var classroomTab = $('#classroomTab #classroomCardList'),
+                        Result = Lists_Templates.classRoomCardData(formResults),
+                        hook = $('.card.to-edit').parent('.card-col[data-classroom-id=' + formResults.classroomid + ']'),
+                        successMessage = '<span class="white-text name ">Class ' + formResults.classroomtitle + ' has been update!</span>';
                     
                     console.log('Updating card id ' + formResults.classroomid + '.');
                     
@@ -854,7 +850,6 @@ var ClassroomEvents = function () {
                     hook.append(Result);
                     
                     $('.tooltipped').tooltip({delay: 50});
-                    var successMessage = '<span class="white-text name ">Class ' + formResults.classroomtitle + ' has been update!</span>';
 
                     // Materialize.toast(message, displayLength, className, completeCallback);
                     Materialize.toast(successMessage, 5000, 'green accent-3');
@@ -862,7 +857,7 @@ var ClassroomEvents = function () {
         /*6*/
                     $('#' + str1).closeModal();
         /*7*/
-                    Modals_Events.cleanOutModals();
+                    Modals_Events.cleanOutModals(true);
                     
                 } else {
 
@@ -920,8 +915,9 @@ var ClassroomEvents = function () {
             if($(checkedCheckboxEl).length > 0) {//checked
                 
                 //remove existing esomo modal for student list
-                Modals_Events.cleanOutModal('#esomoModal' + modal_id);
-                
+                // Modals_Events.cleanOutModal('#esomoModal' + modal_id);
+                $('.modal#esomoModal' + modal_id).closeModal();
+
                 Materialize.toast('Fetching students', 15000, 'white-text');
 
                 var classiD = localStorage.getItem("cardId"),
@@ -933,7 +929,7 @@ var ClassroomEvents = function () {
                 
                 if( $(checkboxEl).val() === "GetAllStudentsNotInClass" ) {
 
-                    $.get('handlers/db_info.php', {"action" : action, "class_id" : localStorage.getItem("cardId")}, function (result) {
+                    $.get('handlers/db_info.php', {"action" : action, "class_id" : classiD}, function (result) {
                         console.log('get results:- ');
 
                         result = JSON.parse(result);
@@ -967,7 +963,7 @@ var ClassroomEvents = function () {
                             var formOptionsTemplate = {
                                 "formData" : output
                             },
-                                formList = Forms_Templates.makeStudentFormList(formOptionsTemplate),
+                                formList = Forms_Templates.studentFormList(formOptionsTemplate),
 
                             //open the esomo modal Template
                             //append the list to esomo modal
@@ -992,7 +988,7 @@ var ClassroomEvents = function () {
                                 addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                                 $(this).removeClass('disabled btn-loading');
-                                $(this)[0].innerHTML = el;
+                                $(this)[0].innerHTML = modal_action;
                             }); //when add students is clicked//
 
                         }
@@ -1048,7 +1044,7 @@ var ClassroomEvents = function () {
                             var formOptionsTemplate = {
                                 "formData" : output
                             },
-                                formList = Forms_Templates.makeStudentFormList(formOptionsTemplate),
+                                formList = Forms_Templates.studentFormList(formOptionsTemplate),
 
                             //open the esomo modal Template
                             //append the list to esomo modal
@@ -1071,7 +1067,7 @@ var ClassroomEvents = function () {
                                 addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                                 $(this).removeClass('disabled btn-loading');
-                                $(this)[0].innerHTML = el;
+                                $(this)[0].innerHTML = modal_action;
                             }); //when add students is clicked//
 
                         }
@@ -1082,7 +1078,7 @@ var ClassroomEvents = function () {
                             .animate({
                                 'margin-top' : '-40px',
                                 'opacity' : 0
-                            }, 820, function () {
+                            }, 1020, function () {
                             console.log('REMOVE TOAST');
                             this.remove();
                         });
@@ -1094,8 +1090,8 @@ var ClassroomEvents = function () {
                 }
   
             } else if ($(checkedCheckboxEl).length < 1) {
-            
-                Modals_Events.cleanOutModal('#esomoModal' + modal_id);
+                $('.modal#esomoModal' + modal_id).closeModal();
+                Modals_Events.cleanOutModal('#esomoModal' + modal_id, true);
                 
                 console.log('removing list');
             
@@ -1142,7 +1138,8 @@ var ClassroomEvents = function () {
                 .text('fetching...');
             
             //remove existing esomo modal
-            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
+            // Modals_Events.cleanOutModal('#esomoModal' + modal_id);
+            $('.modal#esomoModal' + modal_id).closeModal();
 
             Materialize.toast('Fetching more students', 15000, 'white-text');
 
@@ -1150,7 +1147,7 @@ var ClassroomEvents = function () {
 
             if( action === "GetAllStudentsNotInClass" ) {
 
-                $.get('handlers/db_info.php', {"action" : action, "class_id" : localStorage.getItem("cardId")}, function (result) {
+                $.get('handlers/db_info.php', {"action" : action, "class_id" : classiD}, function (result) {
                     console.log('get results:- ');
 
                     result = JSON.parse(result);
@@ -1182,7 +1179,7 @@ var ClassroomEvents = function () {
                         var formOptionsTemplate = {
                             "formData" : output
                         },
-                            formList = Forms_Templates.makeStudentFormList(formOptionsTemplate),
+                            formList = Forms_Templates.studentFormList(formOptionsTemplate),
 
                         //open the esomo modal Template
                         //append the list to esomo modal
@@ -1207,7 +1204,7 @@ var ClassroomEvents = function () {
                             addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                             $(this).removeClass('disabled btn-loading');
-                            $(this)[0].innerHTML = el;
+                            $(this)[0].innerHTML = elEL;
                         }); //when add students is clicked//
 
 
@@ -1270,7 +1267,7 @@ var ClassroomEvents = function () {
                         var formOptionsTemplate = {
                             "formData" : output
                         },
-                            formList = Forms_Templates.makeStudentFormList(formOptionsTemplate);
+                            formList = Forms_Templates.studentFormList(formOptionsTemplate);
 
                         //open the esomo modal Template
                         //append the list to esomo modal
@@ -1295,7 +1292,7 @@ var ClassroomEvents = function () {
                             addToForm(action2, hook, modal_id, 1); //when add students is clicked//
 
                             $(this).removeClass('disabled btn-loading');
-                            $(this)[0].innerHTML = el;
+                            $(this)[0].innerHTML = elEL;
                         }); //when add students is clicked//
                     }
                 })
@@ -1328,10 +1325,9 @@ var ClassroomEvents = function () {
     var removeStudentsFromClassroom = function () {
         
         
-        var el = 'a#removeStudentsFromClassroom';
-        var modal_id = 'currentclassStudentList';
-                        
-        var main = $('main');
+        var el = 'a#removeStudentsFromClassroom',
+            modal_id = 'currentclassStudentList',
+            main = $('main');
         
         main.on('click', el, function (e) {
         
@@ -1339,42 +1335,35 @@ var ClassroomEvents = function () {
         
             e.preventDefault();
             
-            var hook = $('.student-list');
-            
+            var hook = $('.student-list'),
+                action = $(el).attr('data-action'),
+                classiD = localStorage.getItem("cardId"),
+                currentChosenStudents = hook.children('.students').attr('data-selected-students');
+
+            currentChosenStudents = cleanArray(currentChosenStudents.split(','), 'false');
             console.log('V- ' + $(el).attr('data-action'));
             console.log('V- ' + $(el).attr('id'));
             
-            var action = $(el).attr('data-action');
-            
             //remove existing esomo modal
-            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
-
-            var classiD = localStorage.getItem("cardId");
+            $('.modal#esomoModal' + modal_id).closeModal();
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id, true);
 
             console.log('making list');
-
-            var currentChosenStudents = hook.children('.students').attr('data-selected-students');
             console.log(currentChosenStudents);
-            
-            currentChosenStudents = cleanArray(currentChosenStudents.split(','), 'false');
             console.log(currentChosenStudents);
-            
             
             var listVars = {
                 "id":"",
                 "name":"",
-            };
-
-            var formList = '';
-            var admNo = '';
-            var XHRs = [];
-            var ajaxObjectResult = '';
+            },
+                ormList = '',
+                admNo = '',
+                XHRs = [],
+                ajaxObjectResult = '';
 
             $.each(currentChosenStudents, function(i, v) {
 
-                admNo = v;
-
-                console.log(v);
+                admNo = v;console.log(v);
 
                 XHRs.push(
                     $.ajax({
@@ -1387,8 +1376,8 @@ var ClassroomEvents = function () {
 
             });
 
-            var responseLength = (XHRs.length - 1);
-            var k = 0;
+            var responseLength = (XHRs.length - 1),
+                k = 0;
 
             $.each(XHRs, function(b, n) {
 
@@ -1421,7 +1410,7 @@ var ClassroomEvents = function () {
                         var formOptionsTemplate = {
                             "formData" : formList
                         },
-                            formListData = Forms_Templates.makeStudentFormList(formOptionsTemplate),
+                            formListData = Forms_Templates.studentFormList(formOptionsTemplate),
                             modal_header = 'Remove students from the classroom',
                             modal_body = formListData,
                             modal_action = 'Remove',
@@ -1442,17 +1431,13 @@ var ClassroomEvents = function () {
                             addToForm(action2, hook, modal_id, 0); //when add or remove students is clicked//
                             
                             $(this).removeClass('disabled btn-loading');
-                            $(this)[0].innerHTML = el;
+                            $(this)[0].innerHTML = modal_action;
                         }); //when add or remove students is clicked//
 
                     }
-
                 });
-
             });
-    
         });
-        
     };
        
     //--------------------------------
@@ -1464,18 +1449,14 @@ var ClassroomEvents = function () {
     var addToForm = function (action2, hook, modal_id, int) {
 
         console.log('Function Inited');
-        
         console.log(modal_id);
-
         console.log('adding to form now');
 
         if (action2 != 'undefined') {
 
             //getting the list
-
         }
 
-        
         var totalSelected = $('#esomoModal' + modal_id + ' .list').find('input[type="checkbox"]:checked').length;
 
         var selectedArrayResult = $('#esomoModal' + modal_id + ' .list').find('input[type="checkbox"]:checked').map(function(){
@@ -1649,7 +1630,8 @@ var ClassroomEvents = function () {
             
             console.log(totalSelected);
 
-            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
+            $('#esomoModal' + modal_id).closeModal();
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id, true);
 
             return true;
 
@@ -1657,7 +1639,8 @@ var ClassroomEvents = function () {
 
             console.log(totalSelected);
 
-            Modals_Events.cleanOutModal('#esomoModal' + modal_id);
+            $('#esomoModal' + modal_id).closeModal();
+            Modals_Events.cleanOutModal('#esomoModal' + modal_id, true);
 
             return null;
 
@@ -1722,7 +1705,6 @@ var ClassroomEvents = function () {
                 return newArray;
                 
                 break;
-            
             default:
                 
                 str = 'false';
@@ -1742,10 +1724,7 @@ var ClassroomEvents = function () {
                 return newArray;
             
                 break;
-                
         }
-        
-        
     };
     
     //--------------------------------

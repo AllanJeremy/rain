@@ -670,6 +670,24 @@ $height: auto;
     bottom: -27.5px;
 }
 
+.subject-group > .pinned {
+    background-color: color("rain-theme-primary", "darken-1") !Important;
+    @extend .z-depth-3;
+    @extend .white-text;
+    transition-duration: .33s;
+    transition-timing-function: ease-in-out;
+
+    .subject-group-header {
+        @extend .white-text;
+        opacity : .54;
+    }
+    .js-minimize-subject-resources {
+        @extend .white-text;
+        opacity : .28;
+        
+    }
+}
+
 .document-view {
     position: relative;
     height: auto;

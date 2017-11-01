@@ -474,7 +474,7 @@ var Lists_Templates = function () {
 //        templateOutput += '<div class="col s3"><p class="size right-align">';
 //        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
         templateOutput += '</p>';
-        templateOutput += '<a class="btn-floating halfway-fab right red white-text accent-2 js-delete-document"><i class="material-icons">delete</i></a>';
+        templateOutput += '<a class="btn-floating halfway-fab right red white-text accent-2 js-document-delete"><i class="material-icons">delete</i></a>';
         templateOutput += '</div></div>';
         templateOutput += '</div></div>';
         //end of info row ---
@@ -515,7 +515,7 @@ var Lists_Templates = function () {
 //        templateOutput += '<div class="col s3"><p class="size right-align">';
 //        templateOutput += (obj.size / (1024*1024)).toFixed(2) + ' mbs';
         templateOutput += '</p>';
-        templateOutput += '<a class="js-document-delete btn-icon"><i class="material-icons">delete</i></a>';
+        templateOutput += '<a class="js-document-delete btn-floating halfway-fab right red white-text accent-2"><i class="material-icons">delete</i></a>';
         templateOutput += '</div></div>';
         templateOutput += '</div></div>';
 
@@ -812,7 +812,7 @@ var Lists_Templates = function () {
         templateOutput += '<table class="responsive-table">';
         templateOutput += '<thead><tr>';
         //templateOutput += '<th data-field="action"></th>';
-        templateOutput += '<th data-field="name">Assignment name</th>';
+        templateOutput += '<th data-field="name">Name</th>';
         templateOutput += '<th data-field="due_date">Due</th>';
         templateOutput += '<th data-field="date_sent">Date created</th>';
         templateOutput += '<th data-field="sent">Sent</th>';

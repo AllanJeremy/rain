@@ -53,12 +53,22 @@ var Modals_Events = function () {
 
     //--------------------------------
 
-    this.cleanOutModal = function (str) {
+    this.cleanOutModal = function (str, i) {
         //return;
         console.log('cleaning out modal' + str);
+        if(i === true) {
+            // waste time
+            console.log('cleaning out all modals');
 
-        $('.modal' + str).remove();
+            setTimeout(function () {
+                $('.modal' + str).remove();
 
+            }, 1400);
+        } else {
+            $('.modal' + str).remove();
+            
+        }
+        
         if ($('main').find('.modal' + str).length > 0) {
             return true;
         } else {
@@ -81,7 +91,7 @@ var Modals_Events = function () {
 
             }, 1400);
         } else {
-                $('.modal ').remove();
+            $('.modal ').remove();
 
         }
 
@@ -94,13 +104,14 @@ var Modals_Events = function () {
         //return;
         console.log('updatingAutocomplete for ' + modal_id);
         var El = $('.modal#esomoModal'+modal_id+ ' input.autocomplete');
-        console.log(El);
+        // console.log(El);
+
         El.autocomplete({
             data: data,
             limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
             onAutocomplete: function(val) {
                 // Callback function when value is autcompleted.
-
+                console.log(val);
                 Materialize.toast('Checked ' + val, 1300, 'white-text');
                 // $('.modal'+modal_id+ ' input
             },
@@ -114,18 +125,22 @@ var Modals_Events = function () {
 
     this.closeModalsEvent = function () {
 
+        var $this = this;
+
         $('main').on('click', '.modal a#modalFooterCloseAction.modal-close', function (e) {
 
             e.preventDefault();
 
-            console.log('removing modal from DOM');
+            console.log('closing then removing modal from DOM');
 
-            $(this).parents('.modal').remove();
+            var cardColor = localStorage.getItem("cardColor"),
+                modalId = $(this).parents('.modal').attr('id');
+               
+            $('#' + modalId).closeModal();
+            $this.cleanOutModal('#' + modalId, true);
 
-            var cardColor = localStorage.getItem("cardColor");
-
-            $('.to-edit').removeClass('grey z-depth-4');
-            $('.to-edit').addClass(cardColor);
+            $('.to-edit').removeClass('grey z-depth-4')
+                .addClass(cardColor);
             $('.card').removeClass('to-edit');
 
         });

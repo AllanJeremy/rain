@@ -99,8 +99,8 @@ class EsomoResource
      ?>
         <div class='subject-group' data-subject-group="<?php echo $subject_id; ?>">
             <div class='row no-margin'>
-                <div class="col s8">
-                    <h5 class="grey-text text-darken-2 s8 col"><?php echo $subject["subject_name"];?></h5>
+                <div class="col s8 ">
+                    <h5 class="grey-text text-darken-2 subject-group-header"><?php echo $subject["subject_name"];?></h5>
                 </div>
                 <div class="col s4">
                     <a class="js-minimize-subject-resources btn-icon right" href="#!" >
