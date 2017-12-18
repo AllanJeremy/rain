@@ -224,7 +224,7 @@ var CommentsEvents = function (userInfo) {
 
         /*
         *
-        *   Contains three events
+        *   Contains four events
                 -   edit (for the edit button)
                 -   cancel edit event
                 -   submit editted comments
@@ -238,14 +238,13 @@ var CommentsEvents = function (userInfo) {
             e.preventDefault();
 
             if ($(this).hasClass('disabled')) {
-                console.log('disabled');
+                console.log('disabled, return');
 
                 return (false);
             }
 
             console.log($(this));
             var $El = $(this).parents('.comment-item'),
-
                 commentid = $El.attr('data-comment-id'),
                 modalId = $(this).parents('.modal').attr('id'),
                 buttonhook = $El.parents('.modal').find('.js-add-comment'),
@@ -275,7 +274,7 @@ var CommentsEvents = function (userInfo) {
             }
 
             var $El = $(this),
-                modalId = $(this).parents('.modal').attr('id'),
+                modalId = $El.parents('.modal').attr('id'),
                 buttonhook = $El.parents('.modal').find('.js-update-comment'),
                 texthook = $El.parent('.js-comment'),
                 commentbar = $El.parents('.modal').find('input.js-comment-bar');

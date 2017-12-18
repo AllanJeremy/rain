@@ -156,10 +156,6 @@ var AssignmentEvents = function (userInfo) {
                         console.log(result);
                         console.log(typeof result);
 
-                        if (typeof result === 'undefined') {
-
-                        }
-
                         if (typeof result === 'object') {
                             //loop
 
@@ -263,27 +259,29 @@ var AssignmentEvents = function (userInfo) {
             e.preventDefault();
 
             console.log('new assignment submit event handler ready');
-            
-
-            var newAssignmentTitle = document.forms['createAssignmentForm']['newAssignmentName'].value,
-                newAssignmentDescription = document.forms['createAssignmentForm']['assignmentInstructions'].value,
-                newAssignmentCanComment = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').find('input#canComment').value,
-                newAssignmentDueDate = document.forms['createAssignmentForm']['ass_due_date'].value,
-                newAssignmentDueDateFormatted = document.forms['createAssignmentForm']['assDueDate'].value,
-                newAssignmentMaxGrade = document.forms['createAssignmentForm']['assMaxGrade'].value,
-                newAssignmentResources = document.forms['createAssignmentForm']['ass_resources'].files,
-                newAssignmentClassIds = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms'),
-                totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms');
-
-                // Create a new FormData object.
-                var formData = new FormData(),
-                $this = $(this),
+            var $this = $(this),
                 $thisEl = $this[0].innerHTML;
-
+                
             if($this.hasClass('disabled')) {
                 return (false);
             }
 
+            var newAssignmentTitle = document.forms['createAssignmentForm']['newAssignmentName'].value,
+                newAssignmentDescription = document.forms['createAssignmentForm']['assignmentInstructions'].value,
+                newAssignmentDueDate = document.forms['createAssignmentForm']['ass_due_date'].value,
+                newAssignmentDueDateFormatted = document.forms['createAssignmentForm']['assDueDate'].value,
+                newAssignmentMaxGrade = document.forms['createAssignmentForm']['assMaxGrade'].value,
+                newAssignmentResources = document.forms['createAssignmentForm']['ass_resources'].files,
+                newAssignmentHasClassroom = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').length || false,
+                newAssignmentCanComment = 0, totalClassrooms = 0, newAssignmentClassIds = ['0'],
+                formData = new FormData();
+                
+            if(newAssignmentHasClassroom) {
+                newAssignmentCanComment = document.forms['createAssignmentForm']['canComment'].value;
+                newAssignmentClassIds = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-selected-classrooms');
+                totalClassrooms = $('#createAssignmentsTab form#createAssignmentForm .classroom-list .classrooms').attr('data-total-classrooms');
+            }
+            console.log(newAssignmentClassIds);  
             $this.addClass('disabled btn-loading')
                 .text('creating...');
             
@@ -291,28 +289,20 @@ var AssignmentEvents = function (userInfo) {
                 //Hoping the indexes will match
                 formData.append('file-'+g, newAssignmentResources[g]);
             }
+            
+
             if (newAssignmentCanComment === 'on') {
                 
                 newAssignmentCanComment = 1;
-            } else {
-                
-                newAssignmentCanComment = 0;
             }
-            if (typeof newAssignmentClassIds === 'undefined') {
             
-                newAssignmentClassIds = ['0'];
-            } else {
+            if (typeof newAssignmentClassIds !== 'undefined') {
                 newAssignmentClassIds = newAssignmentClassIds.slice(0,-1);
                 newAssignmentClassIds = newAssignmentClassIds.split(',');
             }
-
-            if (typeof totalClassrooms === 'undefined') {
-
-                totalClassrooms = 0;
-            }
-
+            
             //validate first
-        //            return;
+                //    return;
 
             if (newAssignmentTitle !== '' && newAssignmentDescription !== '' && newAssignmentDueDate !== '') {
 
@@ -328,7 +318,7 @@ var AssignmentEvents = function (userInfo) {
                 };
 
                 console.log(formResults);
-
+                return;
                 formData.append('data', JSON.stringify(formResults));
                 formData.append('action', 'UpdateAssignmentInfo');
                     
@@ -685,13 +675,19 @@ var AssignmentEvents = function (userInfo) {
 
         /*Returning assignments to students*/
         $('.return-ass-submission').click(function(){
-            console.log('classroom clicked');
+            console.log('Returning assignment to student');
             var $self = $(this), //Student name
                 student_name = $(this).attr("data-student-name"), //Submission data
                 sub_id = $(this).attr("data-submission-id"),
                 sub_grade = $(this).siblings("span").children("input.ass-grade-achieved").val(),
                 sub_data = {"grade":sub_grade,"submission_id":sub_id};
-
+            
+            if($self.hasClass('disabled')) {
+                return (false);
+            }
+            
+            $self.addClass('disabled');
+            
             $.post("classes/teacher.php",{"action":"ReturnAssSubmission","submission_data":sub_data},function(response,status){
                 var success_message = "Successfully returned the assignment to "+student_name,
                     failure_message = "Failed to return the assignment to "+student_name,
@@ -754,8 +750,9 @@ var AssignmentEvents = function (userInfo) {
                 {
                     Materialize.toast(failure_message+". Error : Failed to grade submission",toast_time);
                 }
-
-            });
+                
+                $self.removeClass('disabled');
+            }, 'json');
         });
 
     }
@@ -924,9 +921,16 @@ var AssignmentEvents = function (userInfo) {
         $('main').on('click', 'a#submitAssignment_Confirm_Modal', function (e) {
             e.preventDefault();
             var formData = form,
+                self = $(this),
+                selfText = $(this).html(),
                 data = obj,
                 user = i;
 
+            if(self.hasClass('disabled')) {
+                return;
+            }
+            self.addClass('disabled btn-loading').text('submitting');
+            
             //Get the submission text sent if comments are enabled
             if(data.commentsenabled === 1) {
                 data.submissiontext = $('textarea.js-submission-text').val();
@@ -985,12 +989,15 @@ var AssignmentEvents = function (userInfo) {
                     //if success
                     if(failedfiles.status) {
                         $('.num-progress').html('Upload successful');
+                        Materialize.toast('assignment submitted! <a href="" class="btn-inline">reload</a>', 3000, 'green accent-3');
+
                         setTimeout(function () {
                             location.reload();
 
                         }, 2000);
 
                     } else {
+                        Materialize.toast('Oops. Error in submitting your assignment at this time. This was unexpected', 3000, 'red accent-3');
 
                         if(failedfiles.failed_files.length > 0) {
                             //File didn't upload
@@ -1004,11 +1011,14 @@ var AssignmentEvents = function (userInfo) {
                         $('.num-progress').removeClass('secondary-text-color').addClass('red-text text-accent-1');
                         $('.progress.js-progress-bar .determinate').addClass('red accent-3');
                     }
+         
+                    self.removeClass('disabled btn-loading').html(selfText);
                 },
                 error: function (e) {
                     console.log("Not Cool");
                     console.log(e.statusText);
                 }
+                
             }, 'json');
 
             // Cancel click event.
@@ -1047,8 +1057,6 @@ var AssignmentEvents = function (userInfo) {
     //--------------------------------
 
     var myAssignmentSave = function (e) {
-
-
         var fileName, message;
 
         $('.js-save-myAssignment').click(function () {
@@ -1109,11 +1117,11 @@ var AssignmentEvents = function (userInfo) {
     var ajaxInit = function () {
 
         $.when(getUserInfo()).then(function (_1,_2,_3) {
-/*
+        /*
             console.log(_1);
             console.log(_2);
             console.log(_3.responseText);
-*/
+        */
 
             userInfo = jQuery.parseJSON(_1);
 

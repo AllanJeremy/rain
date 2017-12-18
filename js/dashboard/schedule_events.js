@@ -93,18 +93,22 @@ var ScheduleEvents = function (userInfo) {
         
             console.log('clicked');
 
-            var scheduletitle = $('#scheduleCreateFormContainer input#schedule_title').val();
-            var scheduleclassroom = $('#scheduleCreateFormContainer select#schedule_classroom').val();
-            var scheduledescription = $('#scheduleCreateFormContainer #descriptionTextarea').val();
+            var $self = $(this);
+            if($self.hasClass('disabled')) {
+                return false;
+            }
             
             $('#scheduleCreateFormContainer ul#objectivesList').children('li').children('span').remove();
-            var scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li');
-            var scheduleobjectivesformatted = '{';
-            var scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val();
-            var scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val();
-            var scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val();
-            var scheduleguidid = Materialize.guid();
-            var l = 0;
+            var scheduletitle = $('#scheduleCreateFormContainer input#schedule_title').val(),
+                scheduleclassroom = $('#scheduleCreateFormContainer select#schedule_classroom').val(),
+                scheduledescription = $('#scheduleCreateFormContainer #descriptionTextarea').val(),
+                scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li'),
+                scheduleobjectivesformatted = '{',
+                scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val(),
+                scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val(),
+                scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val(),
+                scheduleguidid = Materialize.guid(),
+                l = 0;
 
             scheduleobjectives.each(function (i, e) {
                
@@ -131,6 +135,7 @@ var ScheduleEvents = function (userInfo) {
             var scheduleformatteddatetime = scheduledate + ' ' + scheduletime;
             
             if (scheduletitle !== '' && scheduleclassroom !== null && scheduledescription !== '' && scheduleobjectivesformatted !== '' && scheduledate !== '' && scheduletime !== '') {
+                $self.addClass('disabled btn-loading').text('creating schedule...');
                 
                 $.post("classes/schedule_class.php", {
                     "action" : "CreateSchedule",
@@ -167,21 +172,19 @@ var ScheduleEvents = function (userInfo) {
 
                             //Prepend the new schedule to Pending schedule list
                             
-                            var pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').find('tbody:first');
-
-                            var scheduledata = {
+                            var pendingScheduleHook = $('#schedulesTab table#pendingScheduleTable').find('tbody:first'),
+                                scheduledata = {
                                 "schedulename": data.schedule_title,
                                 "scheduledescription": data.schedule_description,
                                 "scheduleobjectives": data.schedule_objectives,
                                 "scheduledatetime": moment(data.due_date).fromNow(),
                                 "scheduleid": data.schedule_id,
                                 "scheduletype": 'pending'
-                            };
+                            },
+                                scheduleData = Lists_Templates.scheduleList(scheduledata);
+
 
                             console.log(scheduledata);
-
-                            var scheduleData = Lists_Templates.scheduleList(scheduledata);
-
                             console.log(scheduleData);
                             console.log($('#schedulesTab table#pendingScheduleTable > tbody').length);
                             console.log(pendingScheduleHook.children('tr').length);
@@ -207,6 +210,7 @@ var ScheduleEvents = function (userInfo) {
                                 updatePagination('#schedulesTab table#pendingScheduleTable', 'tbody', '#pendingScheduleTable', paginationthrough, 'forward');
 
                             }
+                            $self.removeClass('disabled btn-loading').text('create schedule');
 
                         }, 'json');
                         
@@ -215,34 +219,35 @@ var ScheduleEvents = function (userInfo) {
                         console.log(typeof result);
                         
                     }
-                    
                 }, 'json');
-                
             }
 
             return(false);
         });
-        
     };
 
     var updateSchedule = function () {
 
         $('main').on('click', '#scheduleCreateFormContainer a#updateSchedule', function (e) {
             e.preventDefault();
-
             console.log('clicked');
-
-            var scheduletitle = $('#scheduleCreateFormContainer input#schedule_title').val();
-            var scheduleclassroom = $('#scheduleCreateFormContainer select#schedule_classroom').val();
-            var scheduledescription = $('#scheduleCreateFormContainer #descriptionTextarea').val();
-
+            
+            var $self = $(this);
+            if($self.hasClass('disabled')) {
+                return false;
+            }
+            
             $('#scheduleCreateFormContainer ul#objectivesList').children('li').children('span').remove();
-            var scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li');
-            var scheduleobjectivesformatted = '{';
-            var scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val();
-            var scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val();
-            var scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val();
-            var l = 0;
+            
+            var scheduletitle = $('#scheduleCreateFormContainer input#schedule_title').val(),
+                scheduleclassroom = $('#scheduleCreateFormContainer select#schedule_classroom').val(),
+                scheduledescription = $('#scheduleCreateFormContainer #descriptionTextarea').val(),
+                scheduleobjectives = $('#scheduleCreateFormContainer ul#objectivesList').children('li'),
+                scheduleobjectivesformatted = '{',
+                scheduledatetime = $('#scheduleCreateFormContainer input#scheduleDate').val() + ' ' + $('#scheduleCreateFormContainer input#scheduleTime').val(),
+                scheduledate = $('#scheduleCreateFormContainer .date-picker-container').find('input[type=hidden]').val(),
+                scheduletime = $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val(),
+                l = 0;
 
             scheduleobjectives.each(function (i, e) {
 
@@ -272,7 +277,7 @@ var ScheduleEvents = function (userInfo) {
                 newdata = '';
 
             if (scheduletitle !== '' && scheduleclassroom !== null && scheduledescription !== '' && scheduleobjectivesformatted !== '' && scheduledate !== '' && scheduletime !== '') {
-
+                $self.addClass('disabled btn-loading').text('updating schedule...');
                 console.log('set. Doing ajax now');
 
                 $.post("handlers/db_handler.php", {
@@ -289,7 +294,7 @@ var ScheduleEvents = function (userInfo) {
                     console.log(typeof result);
 
                     if(result === 'true') {
-
+                        Materialize.toast('Schedule ' + scheduletitle + ' is updated!', 2400, 'green accent-3');
                         console.log('true');
                         newdata += '<td>';
 
@@ -312,19 +317,17 @@ var ScheduleEvents = function (userInfo) {
                         $('#scheduleCreateFormContainer .time-picker-container').find('input[type=hidden]').val('');
 
                         //close the form
-
+                        
                         $('a#closeScheduleForm').trigger('click');
 
                     } else {
-
+                        Materialize.toast('Oops!. We found an error in updating your schedule.', 2000, 'green accent-3');
                         console.log(typeof result);
 
                     }
-
+                    $self.removeClass('disabled btn-loading').text('update schedule');
                 }, 'text');
-
             }
-
             return(false);
         });
 

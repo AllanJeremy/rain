@@ -102,7 +102,9 @@ var ResourcesEvents = function (userInfo) {
 				modalId: 'uploadResource',
 				templateHeader: 'Upload Resources',
 				templateBody: ''
-			};
+			},
+                self = $(this);
+            self.addClass('disabled');
 
 //            load the modal in the DOM
 			$('main').append(Lists_Templates.resourcesModalTemplate(template));
@@ -110,7 +112,7 @@ var ResourcesEvents = function (userInfo) {
 			$('select').material_select();
 
 			$('#' + template.modalId).openModal({dismissible: false});
-
+            self.removeClass('disabled');
 		});
 	};
 
@@ -304,12 +306,18 @@ var ResourcesEvents = function (userInfo) {
 
 		$('main').on('click', 'a.js-edit-resource', function (e) {
 			e.preventDefault();
-			var resourceid = $(this).parents('.tr_res_container').attr('data-res-id'),
-				subjectid = $(this).parents('.tr_res_container').attr('data-subject-id'),
-				description = $(this).parents('.tr_res_container').find('span.js-res-description')[0].innerText;
+			var self = $(this),
+                resourceid = self.parents('.tr_res_container').attr('data-res-id'),
+				subjectid = self.parents('.tr_res_container').attr('data-subject-id'),
+				description = self.parents('.tr_res_container').find('span.js-res-description')[0].innerText;
 			console.log(resourceid, subjectid);
 			console.log(description);
 
+            if(self.hasClass('disabled')) {
+                return false;
+            }
+            self.addClass('disabled');
+            
 			res_on_edit = Array(resourceid, subjectid);
 
 			var template = {
@@ -333,7 +341,7 @@ var ResourcesEvents = function (userInfo) {
 			$('.modal#' + template.modalId + ' form#editResourceForm')[0][0].value = subjectid;
 
 			Materialize.updateTextFields();
-
+            self.removeClass('disabled');
 		});
 	}
 
@@ -343,8 +351,8 @@ var ResourcesEvents = function (userInfo) {
 
 		$('main').on('click', 'a#updateResource', function (e) {
 			e.preventDefault();
-			var res_id = $(this).attr('data-res-id'),
-				self = $(this),
+			var self = $(this),
+                res_id = self.attr('data-res-id'),
 				description = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][1].value,
 				subjectid = $('.modal#editResource_'+ res_id +' form#editResourceForm')[0][0].value,
 				data = {
@@ -355,13 +363,18 @@ var ResourcesEvents = function (userInfo) {
 				}, res_el;
 
 			console.log(data);
-
+            if(self.hasClass('disabled')) {
+                return false;
+            }
+            self.addClass('disabled');
+            
 			//ajax
 			$.post('handlers/db_handler.php', data, function(returndata) {
 				console.log(returndata.description);
 
 				//close modal
 				$('.modal#editResource_'+ res_id).closeModal();
+                Materialize.toast('Resource file updated!', 5000, 'green white-text name accent-3');
 		// return;
 				//Change only the current card data if the subject id has not been changed
 				//otherwise append eithe to a row uunder the chosen subject id
@@ -401,8 +414,9 @@ var ResourcesEvents = function (userInfo) {
 					setTimeout(function(t) {
 						$('.tr_res_container[data-res-id=' + res_id + ']').removeClass('new-class');
 
-					}, 500);
+					}, 400);
 				}
+                self.removeClass('disabled');
 			}, 'json');
 		});
 	};

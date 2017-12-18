@@ -177,9 +177,9 @@ var ClassroomEvents = function () {
                                 $('#' + template.modalId).openModal({dismissible: false});
                                 console.log('modal students classroom list created.');
 
-                                $this.removeClass('disabled');
                             }
                             
+                            $this.removeClass('disabled');
                         });
                     
                     });
@@ -216,7 +216,7 @@ var ClassroomEvents = function () {
                 if (jQuery.isEmptyObject(result)) {
                     // is empty or whitespace
                     console.log('empty. No assignments found');
-
+                    
                     var errorMessage = '<span>Sorry, there are no assignments found in this classroom.</span>';
 
                     // Materialize.toast(message, displayLength, className, completeCallback);
@@ -279,13 +279,14 @@ var ClassroomEvents = function () {
 
                             $('#' + template.modalId).openModal({dismissible: false});
 
-                            $this.removeClass('disabled');
 
                             console.log('modal assignments classroom list created.');
                         }
 
                     });
                 }
+                
+                $this.removeClass('disabled');
             }, 'json');
         });
     };
@@ -365,7 +366,7 @@ var ClassroomEvents = function () {
 
     //----------------------------
     
-    var createClassroom = function () {
+    var createClassroom = function () { 
         
         //load form template
         //get subjects select list
@@ -379,7 +380,7 @@ var ClassroomEvents = function () {
             console.log('fetching form template');
 
             var totalOutput = '',
-//                $this = $(this),
+            //  $this = $(this),
                 SubjectOptions = '',
                 SubjectHook = '',
                 StreamOptions = '',
@@ -396,12 +397,11 @@ var ClassroomEvents = function () {
                 subjectoptions: SubjectOptions,
                 streamoptions: StreamOptions
 
-            };
-
-            var formTemplate = Forms_Templates.createClassroomForm(formTemplateVars);
+            },
+                formTemplate = Forms_Templates.createClassroomForm(formTemplateVars),
 
             //variables for the modal
-            var template = {
+                template = {
                 modalId: 'createNewClassRoom',
                 templateHeader: 'Create a new Classroom',
                 templateBody: formTemplate,
@@ -434,11 +434,11 @@ var ClassroomEvents = function () {
 
                 Materialize.updateTextFields();//doesn't work
                 $('select').material_select();
+                $(this).removeClass('disabled');
             });
-
-            $(this).removeClass('disabled');
+            
             console.log('mijiji');
-//            return (false);
+        //  return (false);
         });
     };
     
@@ -456,8 +456,13 @@ var ClassroomEvents = function () {
         
         $('main').on('click', 'a#createNewClassroomCard', function (e) {
             e.preventDefault();
+            var $this = $(this),
+                $thisEl = $this[0].innerHTML
             
             console.log('submit event handler ready');
+            if($this.hasClass('disabled')) {
+                return false;
+            }
             
             var str1 = $('.modal#createNewClassRoom').attr('id'),
                 str2 = $('#classroomCardList .card-col').first().attr('data-classroom-id'),//Get the class-id of the latest card then add +1
@@ -466,18 +471,10 @@ var ClassroomEvents = function () {
                 newClass_stream = $('.modal#createNewClassRoom select#newClassroomStream').val(),
                 newClass_subject = $('.modal#createNewClassRoom select#newClassroomSubject').val(),
                 newClass_streamname = $('.modal#createNewClassRoom select#newClassroomStream').find('option:selected:not(:disabled)').text(),
-                newClass_subjectname = $('.modal#createNewClassRoom select#newClassroomSubject').find('option:selected:not(:disabled)').text(),
-                $this = $(this),
-                $thisEl = $this[0].innerHTML;
-
-            if($this.hasClass('disabled')) {
-                return false;
-            }
+                newClass_subjectname = $('.modal#createNewClassRoom select#newClassroomSubject').find('option:selected:not(:disabled)').text();
 
             $this.addClass('disabled btn-loadiing')
                 .text('creating...');
-
-            console.log($this);
 
             console.log($('.modal#createNewClassRoom .students').attr('data-total-students'));
             console.log(classes);
@@ -537,10 +534,6 @@ var ClassroomEvents = function () {
                         var classroomTab = $('#classroomTab #classroomCardList'),
                             Result = Lists_Templates.classRoomCard(formResults);
 
-                        //masonryGridInit();
-                        $this.removeClass('disabled btn-loadiing');
-                        $this[0].inneHTML = $thisEl;
-
                         if ( $('#classroomTab .no-data-message').length > 0 ) {
                             
                             $('#classroomTab .no-data-message').remove();
@@ -569,9 +562,7 @@ var ClassroomEvents = function () {
 
                     } else {
                         console.log('waiting');
-                    
-                        $this.removeClass('disabled btn-loadiing');
-                        $this[0].innerHTML = $thisEl;
+                        
                         var errorMessage = '<span class="white-text name ">Sorry, we found an error in creating the classroom<br>We will <a class="btn-inline" href="">reload</a> the page</span>';
 
                         // Materialize.toast(message, displayLength, className, completeCallback);
@@ -580,6 +571,8 @@ var ClassroomEvents = function () {
                         });
                     }
                     
+                    $this.removeClass('disabled btn-loadiing');
+                    $this[0].innerHTML = $thisEl;
                 }, 'text');
 
                 console.log(request.status);
@@ -587,7 +580,7 @@ var ClassroomEvents = function () {
             
                 console.log('empty form. Unable to create the class');
 
-//                $('#' + str1).closeModal();
+            //  $('#' + str1).closeModal();
                 $this.removeClass('disabled btn-loadiing');
                 $this[0].innerHTML = $thisEl;
                 
@@ -595,7 +588,7 @@ var ClassroomEvents = function () {
                 
                 // Materialize.toast(message, displayLength, className, completeCallback);
                 Materialize.toast(errorMessage, 3000, 'red accent-3', function () {
-//                    Modals_Events.cleanOutModals();
+            //  Modals_Events.cleanOutModals();
                 });
             }
 
@@ -624,6 +617,12 @@ var ClassroomEvents = function () {
                 SubjectHook = '', StreamOptions = '',
                 StreamHook = '', activeInputId = '',
             /*1*/classroomId = self.parents('.card-col').attr('data-classroom-id');
+            
+            if(self.hasClass('disabled')) {
+                return false;
+            }
+
+            self.addClass('disabled btn-loading');
             
             self.parents('.card-col').attr('data-classroom-id');
             
@@ -742,6 +741,8 @@ var ClassroomEvents = function () {
                     
                     Materialize.toast(toastMessage, '6000', 'red accent-3');
                 }
+                
+                self.removeClass('disabled btn-loading');
             }, 'json');
             
         });
@@ -777,7 +778,11 @@ var ClassroomEvents = function () {
                 newClass_streamname = $('.modal#editClassRoom select#editClassroomStream').find('option:selected:not(:disabled)').text(),
                 newClass_subjectname = $('.modal#editClassRoom select#editClassroomSubject').find('option:selected:not(:disabled)').text();
 
-
+            
+            if (self.hasClass('disabled')) {
+                return false;
+            }
+            
             if (typeof classes === 'undefined') {
                 
                 classes = localStorage.getItem("cardColor");
@@ -833,49 +838,49 @@ var ClassroomEvents = function () {
                 console.log(formResults);
                     
                 var request = $.post( "handlers/db_handler.php", formResults, function (result) {
+                    console.log(result);
 
-                console.log(result);
+                    if(result === 'true') {
 
-                if(result === 'true') {
+                        var classroomTab = $('#classroomTab #classroomCardList'),
+                            Result = Lists_Templates.classRoomCardData(formResults),
+                            hook = $('.card.to-edit').parent('.card-col[data-classroom-id=' + formResults.classroomid + ']'),
+                            successMessage = '<span class="white-text name ">Class ' + formResults.classroomtitle + ' has been update!</span>';
 
-                    var classroomTab = $('#classroomTab #classroomCardList'),
-                        Result = Lists_Templates.classRoomCardData(formResults),
-                        hook = $('.card.to-edit').parent('.card-col[data-classroom-id=' + formResults.classroomid + ']'),
-                        successMessage = '<span class="white-text name ">Class ' + formResults.classroomtitle + ' has been update!</span>';
+                        console.log('Updating card id ' + formResults.classroomid + '.');
+
+                        $('.card-col[data-classroom-id=' + formResults.classroomid + '] .card.to-edit').remove();
+
+                        hook.append(Result);
+
+                        $('.tooltipped').tooltip({delay: 50});
+
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast(successMessage, 5000, 'green accent-3');
+
+            /*6*/
+                        $('#' + str1).closeModal();
+            /*7*/
+                        Modals_Events.cleanOutModals(true);
+
+                    } else {
+
+                        console.log('waiting');
+
+                        var errorMessage = '<span class="white-text name ">Sorry, we found an error in updating the classroom<br>We will <a class="btn-action" href="' + location.href + 'reload</a> the page</span>';
+
+                        // Materialize.toast(message, displayLength, className, completeCallback);
+                        Materialize.toast(errorMessage, 5000, 'red accent-3');
+                    }
                     
-                    console.log('Updating card id ' + formResults.classroomid + '.');
-                    
-                    $('.card-col[data-classroom-id=' + formResults.classroomid + '] .card.to-edit').remove();
-                    
-                    hook.append(Result);
-                    
-                    $('.tooltipped').tooltip({delay: 50});
-
-                    // Materialize.toast(message, displayLength, className, completeCallback);
-                    Materialize.toast(successMessage, 5000, 'green accent-3');
-
-        /*6*/
-                    $('#' + str1).closeModal();
-        /*7*/
-                    Modals_Events.cleanOutModals(true);
-                    
-                } else {
-
-                    console.log('waiting');
-
-                    var errorMessage = '<span class="white-text name ">Sorry, we found an error in updating the classroom<br>We will <a class="btn-action" href="' + location.href + 'reload</a> the page</span>';
-
-                    // Materialize.toast(message, displayLength, className, completeCallback);
-                    Materialize.toast(errorMessage, 5000, 'red accent-3');
-                }
-
-            }, 'text');
+                    self.removeClass('disabled btn-loading').text('update classroom');
+                }, 'text');
 
             } else {
             
                 console.log('empty form. Unable to create the class');
 
-                $('#' + str1).closeModal();
+//                $('#' + str1).closeModal();
                 
                 var errorMessage = '<span class="red-text name text-lighten-5">Error in updating the classroom. Kindly see if you have filled all inputs.</span>';
                 

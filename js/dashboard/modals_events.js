@@ -63,7 +63,7 @@ var Modals_Events = function () {
             setTimeout(function () {
                 $('.modal' + str).remove();
 
-            }, 1400);
+            }, 400);
         } else {
             $('.modal' + str).remove();
             
@@ -89,7 +89,7 @@ var Modals_Events = function () {
             setTimeout(function () {
                 $('.modal ').remove();
 
-            }, 1400);
+            }, 400);
         } else {
             $('.modal ').remove();
 
