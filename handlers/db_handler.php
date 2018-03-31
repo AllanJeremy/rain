@@ -373,6 +373,7 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
             "ass_title"=>"",
             "ass_description"=>"",
             "class_id"=>0,
+            "subject_id"=>0,
             "due_date"=>"",
             "attachments"=>"",
             "file_option"=>"view",
@@ -385,11 +386,11 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
 
         if(DbInfo::AssignmentExists($args["ass_id"]))#if the assignment exists - safety check
         {
-            $update_query = "UPDATE assignments SET ass_title=? ass_description=?,class_id=?,due_date=?,attachments=?,file_option=?,max_grade=?,comments_enabled=? WHERE teacher_id=? AND ass_id=?";
+            $update_query = "UPDATE assignments SET ass_title=? ass_description=?,class_id=?,subject_id=?,due_date=?,attachments=?,file_option=?,max_grade=?,comments_enabled=? WHERE teacher_id=? AND ass_id=?";
 
             if($update_stmt = $dbCon->prepare())
             {
-                $update_stmt->bind_param("ssssssiiii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"],$args["ass_id"]);
+                $update_stmt->bind_param("ssiisssiiii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["subject_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"],$args["ass_id"]);
 
                 if($update_stmt->execute())
                 {
@@ -407,12 +408,12 @@ public static function DeleteBasedOnSingleProperty($table_name,$column_name,$pro
         }
         else#assignment does not exist ~ create it
         {
-            $update_query = "INSERT INTO assignments(ass_title,ass_description,class_id,due_date,attachments,file_option,max_grade,comments_enabled,teacher_id) VALUES(?,?,?,?,?,?,?,?,?)";
+            $update_query = "INSERT INTO assignments(ass_title,ass_description,class_id,subject_id,due_date,attachments,file_option,max_grade,comments_enabled,teacher_id) VALUES(?,?,?,?,?,?,?,?,?,?)";
 
             //Prepare query for creating assignment
             if($update_stmt = $dbCon->prepare($update_query))
             {
-                 $update_stmt->bind_param("ssissssii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"])   ;
+                 $update_stmt->bind_param("ssiissssii",$args["ass_title"],$args["ass_description"],$args["class_id"],$args["subject_id"],$args["due_date"],$args["attachments"],$args["file_option"],$args["max_grade"],$args["comments_enabled"],$args["teacher_id"])   ;
 
                  #if the create query ran successfully
                  if($update_stmt->execute())
@@ -1713,12 +1714,15 @@ if(isset($_POST['action'])) {
 
             for($h = 0; $h < count($postData->classids); $h++) {
 
+                $classExists = DBInfo::ClassroomExists($postData->classids[$h]);
+                
                 $args = array (
                     "ass_id" => (empty($_POST['assignmentid']) ? 0 : $_POST['assignmentid']),
                     "teacher_id"=>$_SESSION['admin_acc_id'],
                     "ass_title"=> $postData->assignmenttitle,
                     "ass_description"=>$postData->assignmentdescription,
                     "class_id"=>$postData->classids[$h],
+                    "subject_id"=>$classExists['subject_id'],
                     "due_date"=>$postData->duedate,
                     "attachments"=>$attachments,
                     "max_grade"=>$postData->maxgrade,
@@ -1728,6 +1732,10 @@ if(isset($_POST['action'])) {
                 $r = DbHandler::UpdateAssignmentInfo($args);
 
                 array_push($result,$r);
+                
+//                for($g = 0; $g < count($postData->classids); $g++){
+//                    $classids .= $postData->classids[$g] . ',';
+//                }
             }
 
             if (count($_FILES) > 0) {

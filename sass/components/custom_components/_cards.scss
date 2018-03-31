@@ -39,3 +39,55 @@
         content: '';
     }
 }
+
+li.ass-submission-item {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    
+    > .item-details {
+        width: 45%;
+        flex-shrink: 0;
+        flex-grow: 1;
+        
+        .student-name {
+            font-size: 18px;
+        }
+    }
+    > .item-action {
+        width: 55%;
+        flex-grow: 0.5;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row-reverse;
+        
+        @media #{$large-and-up} {
+            align-items: center;
+            
+        }
+        
+    }
+    > .item-action-extra {
+        width: 100% !Important;
+        flex-shrink: 0;
+    }
+    
+    &:after {
+        content: '';
+        display: block;
+        margin: 4px auto -4px 5%;
+        width: 70%;
+        height: 1px;
+        background-color: $off-black;
+        opacity: .05;
+    }
+}
+
+@media #{$small-and-down} {
+    .ass-submission-container > .ass-submission-item {
+        > .item-details, .item-action {
+            width: 100%;
+        }
+    }
+}

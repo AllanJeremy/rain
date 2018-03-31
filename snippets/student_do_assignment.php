@@ -390,10 +390,12 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
     </div>
 </main>
 <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
 <script type="text/javascript" src="js/js_print.js"></script>
 <script type="text/javascript" src="js/dashboard/result.js"></script>
 <script type="text/javascript" src="js/dashboard/lists_templates.js"></script>
 <script type="text/javascript" src="js/dashboard/assignment_events.js"></script>
+<script type="text/javascript" src="js/dashboard/resources_events.js"></script>
 <script type="text/javascript" src="js/dashboard/comments_events.js"></script>
 <script type="text/javascript" src="js/dashboard/events.js"></script>
 <script type="text/javascript" src="js/dashboard/test_events.js"></script>
@@ -432,26 +434,29 @@ if (!isset($_SESSION["student_adm_no"]) && !isset($_SESSION['admin_acc_id'])) {
         console.log(location.search);
         var dashboard = new Dashboard();
     }
+    $(document).ready(function () {
+        $('.modal').modal();
+        
+        var $target = $('.pin-nav-top'),
+            $target2 = $('.inline-toolbar'),
+            $target3 = $('.resources-bar'),
+            $zeroOffset = $target.offset().top;
 
-    var $target = $('.pin-nav-top'),
-        $target2 = $('.inline-toolbar'),
-        $target3 = $('.resources-bar'),
-        $zeroOffset = $target.offset().top;
-
-    $target.pushpin({
-        top: $target.offset().top,
-        bottom: $('main').outerHeight(),
-        offset: 0
-    });
-    $target2.pushpin({
-        top: $zeroOffset + $target.outerHeight(),
-        bottom: $('main').outerHeight(),
-        offset: $target.outerHeight()
-    });
-    $target3.pushpin({
-        top: $zeroOffset + $target.outerHeight(),
-        bottom: $('main').outerHeight(),
-        offset: $target.outerHeight() + 160
+        $target.pushpin({
+            top: $target.offset().top,
+            bottom: $('main').outerHeight(),
+            offset: 0
+        });
+        $target2.pushpin({
+            top: $zeroOffset + $target.outerHeight(),
+            bottom: $('main').outerHeight(),
+            offset: $target.outerHeight()
+        });
+        $target3.pushpin({
+            top: $zeroOffset + $target.outerHeight(),
+            bottom: $('main').outerHeight(),
+            offset: $target.outerHeight() + 160
+        });
     });
 </script>
 <!--DON'T EVEN THINK ABOUT IT -->

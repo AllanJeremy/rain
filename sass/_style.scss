@@ -258,6 +258,7 @@ header.horizontal-navigation {
             content: '';
             position: absolute;
             width: 110%;
+            max-width: calc(100vw - 34px);
             height: 2px;
             background-color: #fff;
             left: -14px;
@@ -411,7 +412,7 @@ ul.side-nav.fixed {
       padding: 0 30px;
       color: color("shades", "white");
         
-        span.badge {
+        > span.badge {
             line-height: 38px;
             height: 38px;
             margin-bottom: 3px;
@@ -750,6 +751,9 @@ $height: auto;
 .secondary-text-color, .action-text-color {
     color: $secondary-color !Important;
 }
+.accent-text-color {
+    color: $accent-color !Important;
+}
 
 
 .comment {
@@ -906,4 +910,54 @@ $height: auto;
     }
 }
 
+#classroomCardsContainer.pinned  {
+    width: calc(25% - 2rem);
+   
+    @media #{$large-and-up} {
+        max-height: 100vh;
+        overflow-y: auto;
+        
+    }
+    
+    & ~ .classroom-ass-container {
+        margin-left: 25%;
+    }
+}
+
+@media #{$medium-and-down} {
+    #classroomCardsContainer.pinned {
+        display: flex !Important;
+        width: calc(100% - 96px) !Important;
+        overflow-x: auto !Important;
+        padding: 0 0 20px 0;
+        background-color: #fafafaa6;
+        
+        .ass-classroom-card {
+            width: 28% !Important;
+            flex-shrink: 0;
+            min-width: 220px;
+        }
+
+        & ~ .classroom-ass-container {
+            margin-top: 240px;
+            margin-left: auto;
+        }
+
+        &:after {
+            content: '>';
+            align-items: center;
+            text-align: center;
+            position: fixed;
+            z-index: 6;
+            right: 0;
+            height: auto;
+            background-color: rgba(0,0,0,0.78);
+            padding: 24px 16px;
+            width: 48px;
+            font-size: inherit;
+            color: rgba(255,255,255,0.87);
+            cursor: pointer;
+        }
+    }
+}
 

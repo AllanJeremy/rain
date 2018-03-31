@@ -49,8 +49,8 @@ var Lists_Templates = function () {
         templateOutput += '<p>Stream:  <span class="php-data">' + obj.classroomstreamname + '</span></p>';
         templateOutput += '</div>';
         templateOutput += '<div class="card-action">';
-        templateOutput += '<a href="#" data-target="modal1" class="modal-trigger" id="editClassroom">Edit</a>';
-        templateOutput += '<a href="#"  class="">View</a>';
+        templateOutput += '<a href="#editClassRoom" class="js-edit-classroom modal-trigger">Edit</a>';
+        templateOutput += '<a href="javascript:void(0)"  class="">View</a>';
         templateOutput += '</div>';
         
         return templateOutput;
@@ -357,12 +357,7 @@ var Lists_Templates = function () {
         templateOutput += '</div>';
         templateOutput += '<div class="modal-footer">';
         
-        if (typeof obj.extraActions === 'undefined') {
-          
-            templateOutput += '';
-            
-        } else {
-        
+        if (typeof obj.extraActions !== 'undefined') {
             templateOutput += obj.extraActions;
 
         }
@@ -544,6 +539,35 @@ var Lists_Templates = function () {
     
     //--------------------------------------
     
+    this.chatBoxBar = function (obj) {
+
+        var templateOutput = '',
+            commentType = '';
+        
+        templateOutput += '<div id="' + obj.id + '" class="chatbox-container z-depth-1 ' + obj.uistate + ' grey lighten-5">';
+        templateOutput += '<div class="chatbox"><div class="chatbox-header-container">';
+        templateOutput += '<nav class="box-header z-depth-0">';
+        templateOutput += '<p data-user-id="' + obj.userid + '" data-user-type="' + obj.usertype + '" class="white-text bold heavy box-title">' + obj.username + '</p>';
+        templateOutput += '<div class="box-action">';
+        templateOutput += '<a href="#!" class="pad-6 marg-8 js-close-chatbox"><i class="material-icons">close</i> </a>';
+        templateOutput += '<a href="#!" class="pad-6 marg-8 js-chatbox-menu"><i class="material-icons">more_horiz</i> </a>';
+        templateOutput += '</div></nav>';
+        templateOutput += '<div class="padding-horiz-16 box-sub-header grey lighten-4 z-depth-1-half">';
+        templateOutput += '<p class="no-margin js-chat-ref light grey-text text-darken-3" data-ref="' + obj.chatsectionref + '">Ref: <span>' + obj.chatref + '</span></p>';
+        templateOutput += '</div></div>';
+        templateOutput += '<div class="box-body padding-vert-8">';
+        templateOutput += obj.chats;
+        templateOutput += '</div>';
+        templateOutput += '<div class="box-footer no-margin pad-8">';
+        templateOutput += '<input type="text" class="chat-input marg-8">';
+        templateOutput += '<button class="padding-horiz-16 chat-btn btn-flat js-btn-send marg-6"><i class="material-icons">send</i></button>';
+        templateOutput += '</div></div></div>';
+        
+        return templateOutput;
+    };
+    
+    //--------------------------------------
+    
     this.commentsModal = function (obj) {
 
         var templateOutput = '',
@@ -612,16 +636,25 @@ var Lists_Templates = function () {
 
         var templateOutput = '';
 
-        templateOutput += "<li class='col s12 m6 pad-8 ass-submission-item'>";
-        templateOutput += '<span class="student-name">' + obj.name + '</span>';
-        templateOutput += '<span class="chip">'+obj.grade+' / '+obj.maxgrade+'</span><br>';
-        templateOutput += "<div class='input-field inline comment' data-submission-id='" + obj.id + "' data-id='" + obj.id + "'>";
-        templateOutput += "<input type='text' placeholder='comment' class='js-comment-bar browser-default normal longer' name='comment'>";
-        templateOutput += "<label for='comment'><i class='material-icons'>comment</i></label><br>";
-        templateOutput += "<a class='left btn-inline js-get-comments' data-root-hook='ass_submission' href='javascript:void(0)'>all</a>";
-        templateOutput += "<a class='right btn-inline js-add-comment' data-root-hook='ass_submission' href='javascript:void(0)'>send</a>";
-        templateOutput += '</div>';
-        templateOutput += '</li>';
+        templateOutput += '<li data-submission-id="' + obj.id + '" class="new-class container col s12 m6 ass-submission-item">';
+        templateOutput += '<div class="item-details"><p data-student-id="' + obj.studentid + '" class="pad-8 student-name">';
+        templateOutput += obj.studentname + ' <br>(Adm No.<span class="primary-text-color">' + obj.studentid + '</span>) </p>';
+        templateOutput += '</div><div class="item-action pad-8"><div data-ass-grade="' + obj.grade + '" class="chip marg-horiz-8">' + obj.grade + '/' + obj.maxgrade + '</div>';
+        templateOutput += '<a class="margin-horiz-16 pad-8 btn-icon js-open-comment-bar" data-root-hook="ass_submission" href="javascript:void(0)"><i class="material-icons">comment</i></a>';
+/*
+        <div class="item-action-extra hide">
+            <div class="input-field inline comment " data-id="<?php echo $sub['submission_id'] ?>" data-submission-id="<?php echo $sub['submission_id'] ?>">
+                <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                <label for="comment">
+                    <i class="material-icons">comment</i>
+                </label>
+                <br>
+                <a class='right btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
+                <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
+            </div>
+        </div>
+*/
+        templateOutput += '</div></li>';
 
         return templateOutput;
     };

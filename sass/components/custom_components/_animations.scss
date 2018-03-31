@@ -1,8 +1,7 @@
 .new-class {
     opacity: 0;
     @include transform(translateY(-8px) scale(0.95));
-
-    will-change: opacity;
+    will-change: opacity, transform;
     transition: opacity .7s;
     animation-delay: .4s;
     -webkit-animation: new-classroom 460ms cubic-bezier(0.225, 0.6, 0.36, 1) 244ms forwards;
@@ -35,41 +34,65 @@
 
 .to-remove {
     opacity: 0.27;
-    @include transform(scaleX(0) scaleY(0) !Important);
+    @include transform(scaleX(0) scaleY(0)  translateY(32px) !Important);
     will-change: transform !Important;
     transition-delay: 400ms !Important;
     transition-timing-function: cubic-bezier(0.225, 0.6, 0.36, 1) !Important;
     transition-duration: 240ms !Important;
+    animation-delay: 0s;
+    -webkit-animation: to-remove 780ms cubic-bezier(0.18, 0.79, 0.63, 0.97) 0ms forwards;
+    animation: to-remove 780ms easeoutCubic 0ms forwards;
 
 }
 
 .morph-in {
-
-    height: inherit;
     opacity: 0;
     z-index: 8888;
-    @include transform(scaleX(0.55) scaleY(0.45));
-    will-change: transform opacity z-index;
-
+    @include transform(scaleX(0.55) scaleY(0.45) translateY(32px));
+    will-change: transform, opacity, z-index;
     animation-delay: .3s;
-    -webkit-animation: morph-in 330ms 210ms ease-out forwards;
-    animation: morph-in 330ms 210ms ease-out forwards;
+    -webkit-animation: morph-in 780ms cubic-bezier(0.18, 0.79, 0.63, 0.97) 210ms forwards;
+    animation: morph-in 780ms easeoutCubic 210ms forwards;
 
 }
 
 @-webkit-keyframes morph-in {
-  to {
-      @include transform(scaleX(1));
+    55% {
+        @include transform(scaleX(0.45) scaleY(0.7) translateY(32px));
+        opacity: 0.5;
+        z-index: 8888;
+    }
+    100% {
+      @include transform(scaleX(1) scaleY(1) translateY(0px));
       z-index: inherit;
       opacity: 1;
     }
 }
 
 @keyframes morph-in {
-  to {
-      width: inherit;
-      @include transform(scaleX(1) scaleY(1));
+    55% {
+        @include transform(scaleX(0.45) scaleY(0.7) translateY(32px));
+        opacity: 0.5;
+        z-index: 8888;
+    }
+    100% {
+      @include transform(scaleX(1) scaleY(1) translateY(0px));
       z-index: inherit;
+      opacity: 1;
+    }
+}
+@-webkit-keyframes to-remove {
+    from {
+        @include transform(scaleX(1) scaleY(1) translateY(0px));
+      z-index: 8888;
+      opacity: 1;
+    }
+}
+
+@keyframes to-remove {
+    from {
+        @include transform(scaleX(1) scaleY(1) translateY(0px));
+      z-index: 8888;
       opacity: 1;
     }
 }

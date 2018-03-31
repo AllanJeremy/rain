@@ -15,19 +15,23 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  outline: none;
 }
+
 /**
  * The picker input element.
  */
 .picker__input {
   cursor: default;
 }
+
 /**
  * When the picker is opened, the input element is "activated".
  */
 .picker__input.picker__input--active {
-  border-color: #0089ec;
+  border-color: $primary-color;
 }
+
 /**
  * The holder is the only "scrollable" top-level container element.
  */
@@ -54,16 +58,17 @@
   right: 0;
   top: 100%;
 }
+
 /**
  * The holder should overlay the entire screen.
  */
 .picker__holder {
   position: fixed;
   -webkit-transition: background 0.15s ease-out, top 0s 0.15s;
-  -moz-transition: background 0.15s ease-out, top 0s 0.15s;
   transition: background 0.15s ease-out, top 0s 0.15s;
   -webkit-backface-visibility: hidden;
 }
+
 /**
  * The frame that bounds the box contents of the picker.
  */
@@ -71,19 +76,16 @@
   position: absolute;
   margin: 0 auto;
   min-width: 256px;
-
-//  picker width
   width: 300px;
   max-height: 350px;
-
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
   -moz-opacity: 0;
   opacity: 0;
   -webkit-transition: all 0.15s ease-out;
-  -moz-transition: all 0.15s ease-out;
   transition: all 0.15s ease-out;
 }
+
 @media (min-height: 28.875em) {
   .picker__frame {
     overflow: visible;
@@ -92,11 +94,13 @@
     max-height: 80%;
   }
 }
+
 @media (min-height: 40.125em) {
   .picker__frame {
     margin-bottom: 7.5%;
   }
 }
+
 /**
  * The wrapper sets the stage to vertically align the box contents.
  */
@@ -105,11 +109,13 @@
   width: 100%;
   height: 100%;
 }
+
 @media (min-height: 28.875em) {
   .picker__wrap {
     display: block;
   }
 }
+
 /**
  * The box contains all the picker contents.
  */
@@ -118,38 +124,19 @@
   display: table-cell;
   vertical-align: middle;
 }
-//@media (min-height: 26.5em) {
-//  .picker__box {
-////    font-size: 1.25em;
-//  }
-//}
+
 @media (min-height: 28.875em) {
   .picker__box {
     display: block;
-
-//    picker header font-size
-//    font-size: 1rem;
-
     border: 1px solid #777777;
     border-top-color: #898989;
     border-bottom-width: 0;
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
     -webkit-box-shadow: 0 12px 36px 16px rgba(0, 0, 0, 0.24);
-    -moz-box-shadow: 0 12px 36px 16px rgba(0, 0, 0, 0.24);
     box-shadow: 0 12px 36px 16px rgba(0, 0, 0, 0.24);
   }
 }
-//@media (min-height: 40.125em) {
-//  .picker__box {
-//    font-size: 1.1rem;
-//    border-bottom-width: 1px;
-//    -webkit-border-radius: 5px;
-//    -moz-border-radius: 5px;
-//    border-radius: 5px;
-//  }
-//}
+
 /**
  * When the picker opens...
  */
@@ -160,9 +147,9 @@
   zoom: 1;
   background: rgba(0, 0, 0, 0.32);
   -webkit-transition: background 0.15s ease-out;
-  -moz-transition: background 0.15s ease-out;
   transition: background 0.15s ease-out;
 }
+
 .picker--opened .picker__frame {
   top: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -170,22 +157,22 @@
   -moz-opacity: 1;
   opacity: 1;
 }
+
 @media (min-height: 35.875em) {
   .picker--opened .picker__frame {
     top: 10%;
     bottom: auto;
   }
 }
+
 /**
  * For `large` screens, transform into an inline picker.
  */
-
 /* ==========================================================================
    CUSTOM MATERIALIZE STYLES
    ========================================================================== */
-
 .picker__input.picker__input--active {
-  border-color: color("blue", "lighten-5");
+  border-color: $datepicker-selected;
 }
 
 .picker__frame {
@@ -198,4 +185,173 @@
     top: 10%;
     bottom: auto;
   }
+}
+
+@media only screen and (min-width: 601px) {
+  .picker__box {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .picker__frame {
+    width: 80%;
+    max-width: 600px;
+  }
+}
+
+/*.picker__box {
+  border-radius: 2px;
+  overflow: hidden;
+}*/
+.picker__date-display {
+  text-align: left;
+  background-color: $datepicker-date-bg;
+  color: #fff;
+  padding: 18px;
+  font-weight: 300;
+}
+
+@media only screen and (min-width: 601px) {
+  .picker__date-display {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+  }
+  .picker__weekday-display {
+    display: block;
+  }
+  .picker__container__wrapper {
+    -webkit-box-flex: 2;
+    -webkit-flex: 2;
+        -ms-flex: 2;
+            flex: 2;
+  }
+}
+
+.picker__nav--prev:hover,
+.picker__nav--next:hover {
+  cursor: pointer;
+  color: #000000;
+  background: $button-background-focus;
+}
+
+.picker__weekday-display {
+  font-weight: 500;
+  font-size: 2.8rem;
+  margin-right: 5px;
+  margin-top: 4px;
+}
+
+.picker__month-display {
+  font-size: 2.8rem;
+  font-weight: 500;
+}
+
+.picker__day-display {
+  font-size: 2.8rem;
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.picker__year-display {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: $datepicker-year;
+}
+
+/*.picker__box {
+  padding: 0;
+}*/
+.picker__calendar-container {
+  padding: 0 1rem;
+}
+
+.picker__calendar-container thead {
+  border: none;
+}
+
+.picker__table {
+  margin-top: 0;
+  margin-bottom: .5em;
+}
+
+.picker__day--infocus {
+  color: rgba(0, 0, 0, 0.87);
+  letter-spacing: -.3px;
+  padding: 0.75rem 0;
+  font-weight: 400;
+  border: 1px solid transparent;
+}
+
+@media only screen and (min-width: 601px) {
+  .picker__day--infocus {
+    padding: 1.1rem 0;
+  }
+}
+
+.picker__day.picker__day--today {
+  color: $secondary-color;
+}
+
+.picker__day.picker__day--today.picker__day--selected {
+  color: #fff;
+}
+
+.picker__weekday {
+  font-size: .9rem;
+}
+
+.picker__day--selected,
+.picker__day--selected:hover,
+.picker--focused .picker__day--selected {
+  border-radius: 50%;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+  background-color: $datepicker-selected;
+  color: #ffffff;
+}
+
+.picker__day--selected.picker__day--outfocus,
+.picker__day--selected:hover.picker__day--outfocus,
+.picker--focused .picker__day--selected.picker__day--outfocus {
+  background-color: $datepicker-selected-outfocus;
+}
+
+.picker__footer {
+  text-align: right;
+  padding: 5px 10px;
+}
+
+.picker__close, .picker__today, .picker__clear {
+  font-size: 1.1rem;
+  padding: 0 1rem;
+  color: $accent-color;
+}
+
+.picker__clear {
+  color: #f44336;
+  float: left;
+}
+
+.picker__nav--prev:before,
+.picker__nav--next:before {
+  content: " ";
+  border-top: .5em solid transparent;
+  border-bottom: .5em solid transparent;
+  border-right: 0.75em solid #676767;
+  width: 0;
+  height: 0;
+  display: block;
+  margin: 0 auto;
+}
+
+.picker__nav--next:before {
+  border-right: 0;
+  border-left: 0.75em solid #676767;
+}
+
+button.picker__today:focus, button.picker__clear:focus, button.picker__close:focus {
+  background-color: $button-background-focus;
 }

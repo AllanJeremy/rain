@@ -1464,13 +1464,15 @@ class DbInfo
             $students_not_in_class = array();
 
             $student_ids_array = self::GetArrayFromList($classroom["student_ids"]);#list of the students that are in the list
+            
             if($students = self::GetAllStudents())
             {
                 // var_dump($student_ids_array);
                 foreach($students as $student)#for every student
                 {
+                    
                     #If we don't find the admission number in the array for the classroom, then add the student'
-                    if(array_search($student["adm_no"],$student_ids_array) === false)
+                    if(in_array($student["adm_no"],$student_ids_array) == false)
                     {
                         array_push($students_not_in_class,$student);
                     }
@@ -1480,7 +1482,6 @@ class DbInfo
             {
                 return false;
             }
-
 
             #if there are students in the array
             if(count($students_not_in_class)>0)
@@ -1876,15 +1877,6 @@ if(isset($_GET['action'])) {
             echo json_encode($arrayResult);
 
             break;
-        case 'GetAllStudentsInClass':
-
-            $class_id = $_GET['class_id'];
-
-            $result = DbInfo::GetAllStudentsInClass($class_id);
-
-            echo json_encode($result);
-
-            break;
         case 'GetTeacherAssInClass':
 
             $class_id = $_GET['class_id'];
@@ -1956,6 +1948,15 @@ if(isset($_GET['action'])) {
             echo json_encode($arrayResult);
 
             break;
+        case 'GetAllStudentsInClass':
+
+            $class_id = $_GET['class_id'];
+
+            $result = DbInfo::GetAllStudentsInClass($class_id);
+
+            echo json_encode($result);
+
+            break;
         case 'GetAllStudentsNotInClass':
             $class_id = $_GET['class_id'];
 
@@ -1983,28 +1984,9 @@ if(isset($_GET['action'])) {
             }
             else
             {
+                $result = array();
 
-                $result = DbInfo::GetAllStudents();
-
-                $num = 0;
-
-                foreach ($result as $row) {
-
-                    $newResult = array(
-                        "value" => $row['adm_no'],
-                        "name" => $row['full_name']
-                    );
-
-                    $arrayResult[$num] = $newResult;
-
-                    $num += 1;
-
-                    //echo $num;
-
-                }
-
-                echo json_encode($arrayResult);
-
+                echo json_encode($result);
 
             }
 

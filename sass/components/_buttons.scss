@@ -236,6 +236,19 @@ button.btn-floating {
 .btn-block {
   display: block;
 }
+.btn-inline {
+    
+}
+.btn-inline-floating {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 4px 8px;
+    background-color: $accent-color;
+//    color: $button-raised-background;
+    color: rgba(255,255,255,.87);
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 12px;
+}
 
 a.btn-inline:not(.btn):not(.btn-large):not(.btn-floating) {
     color: $card-link-color;

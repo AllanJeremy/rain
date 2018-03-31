@@ -148,8 +148,267 @@
                 #show respective tabs for the respective account type
                 include_once($snippet_folder . $accType.'_tabs.php');
             ?>
+                <!-- chatbox Structure -->
+            <div class="chatbox-container hide z-depth-1 active full-open grey lighten-5">
+                <div class="chatbox">
+                    <div class="chatbox-header-container">
+                        <nav class="box-header z-depth-0 active">
+                            <p data-user-id="" data-user-type="" class="white-text bold heavy box-title">Gabriel Muchiri</p>
+                            <div class="box-action">
+                                <a href="#!" class="pad-6 marg-8 js-close-chatbox"><i class="material-icons">close</i> </a>
+                                <a href="#!" class="pad-6 marg-8 js-chatbox-menu"><i class="material-icons">more_horiz</i> </a>
+                            </div>
+                        </nav>
+                        <div class="padding-horiz-16 box-sub-header grey lighten-4 z-depth-1-half">
+                            <p class="no-margin js-chat-ref light grey-text text-darken-3" data-ref="">Ref: <span>Math assignment submission</span></p>
+                        </div>
+                    </div>
+                    <div class="box-body padding-vert-8">
+                        <div class="js-chat-text-cont self">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt no-margin">
+<!--                                        <div>-->
+                                            <li class="txt">I'd be on now if it had a genuine stock thing with rewards
+                                                uninstalled for productivity reasons
+                                            </li>
+                                            <li class="txt">uninstalled for productivity reasons
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont other">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt">
+<!--                                        <div>-->
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>Gabriel</span>
+                                    <span>.</span>
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont self">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt no-margin">
+<!--                                        <div>-->
+                                            <li class="txt">I'd be on now i reasons
+                                            </li>
+                                            <li class="txt">uninstalled for productivity reasons
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont other">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt">
+<!--                                        <div>-->
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>Gabriel</span>
+                                    <span>.</span>
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont self">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt no-margin">
+<!--                                        <div>-->
+                                            <li class="txt">I'd be on now a genuine 
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont other">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt">
+<!--                                        <div>-->
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>Gabriel</span>
+                                    <span>.</span>
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont self">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt no-margin">
+<!--                                        <div>-->
+                                            <li class="txt">I'd be on now if it had a genuine stock thing with rewards
+                                                uninstalled for productivity reasons
+                                            </li>
+                                            <li class="txt">uninstalled for productivity reasons
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont other">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt">
+<!--                                        <div>-->
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>Gabriel</span>
+                                    <span>.</span>
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont self">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt no-margin">
+<!--                                        <div>-->
+                                            <li class="txt">I'd be on now if it had a genuine stock thing with rewards
+                                                uninstalled for productivity reasons
+                                            </li>
+                                            <li class="txt">uninstalled for productivity reasons
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-chat-text-cont other">
+                            <div class="js-chat-text">
+                                <div class="chat-text">
+                                    <ul class="chat-txt">
+<!--                                        <div>-->
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+                                            <li class="txt">Ey, hope you see this soon.
+                                                I've pushed
+                                            </li>
+<!--                                        </div>-->
+<!--                                        <div class="txt-bg"></div>-->
+                                    </ul>
+                                    <div class="chat-point">
+                                        <div class="point"></div>
+                                    </div>
+                                </div>
+                                <div class="chat-info">
+                                    <span>Gabriel</span>
+                                    <span>.</span>
+                                    <span>8/10/2017</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer no-margin pad-8">
+<!--                        <div class="input-field col s12">-->
+                            <input type="text" class="chat-input marg-8">
+                            <button class="padding-horiz-16 chat-btn btn-flat js-btn-send marg-6">
+                                <i class="material-icons">send</i>
+                            </button>
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
                 <!-- Modal Structure -->
                 <!-- Will be transferred to esomo2-templates.js -->
+<!--
                 <div id="modal1" class="modal">
                     <div class="modal-content">
                     <h4>Modal Header</h4>
@@ -159,12 +418,14 @@
                     <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
                     </div>
                 </div>
+-->
         </main>
         <?php
             include_once("./snippets/site_footer.php");
         ?>
         <script type="text/javascript" src="js/jquery-2.0.0.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
+        <script type="text/javascript" src="js/lodash.js"></script>
         <script type="text/javascript" src="js/moment.js"></script>
 <!--        <script type="text/javascript" src="js/masonry.pkgd.min.js"></script>-->
         <script type="text/javascript" src="js/dashboard/result.js"></script>
@@ -181,7 +442,7 @@
         <script type="text/javascript" src="js/dashboard.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/pace.js"></script>
-        <script type="text/javascript" src="js/picker.time.js"></script>
+<!--        <script type="text/javascript" src="js/picker.time.js"></script>-->
 
         <script>
         $(document).ready(function() {
@@ -194,10 +455,18 @@
                 var dashboard = new Dashboard();
             }
 
-            $('.mobile-button-collapse').sideNav();
+//            $('.mobile-button-collapse').sideNav();
             $('select').material_select();
             $('.tooltipped').tooltip({delay: 50});
-            $('.modal-trigger').leanModal({dismissible : false});//a workaround the lean-overlay click event
+            $('.modal').modal({
+                dismissible : false,
+                ready: function(m,t) {
+                    console.log(m,t);
+                },
+                complete: function() {
+                    console.log('closed');
+                }
+            });//a workaround the lean-overlay click event
             $('.dropdown-button').dropdown({
                 constrain_width: false, // Does not change width of dropdown to that of the activator
                 hover: false, // Activate on hover
@@ -213,13 +482,22 @@
                 selectYears: false, // Creates a dropdown of 2 years to control year
                 formatSubmit: 'yyyy-mm-dd',
                 hiddenName: true,
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false, // Close upon selecting a date
                 firstDay: 1,
                 disable: [7]
             });
             
             var $input = $( '.timepicker' ).pickatime({
                 formatSubmit: 'HH:i',
-                hiddenName: true
+                hiddenName: true,
+                donetext: 'OK', // text for done-button
+                cleartext: 'Clear', // text for clear-button
+                canceltext: 'Cancel', // Text for cancel-button
+                autoclose: false, // automatic close timepicker
+                ampmclickable: true, // make AM PM clickable
+                aftershow: function(){}
                 
             });
             
@@ -327,8 +605,6 @@
         </script>
         <script type="text/javascript" src="js/test_functions.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
 
     </body>
 </html>

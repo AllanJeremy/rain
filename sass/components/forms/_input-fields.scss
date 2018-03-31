@@ -38,6 +38,13 @@ input.browser-default {
         line-height: 2rem;
         
     }
+    &.tiny-inline {
+
+        max-width: 50px;
+        height: auto !Important;
+        line-height: 1.5;
+        
+    }
     
     &.normal {
         height: 2rem !Important;
@@ -172,7 +179,7 @@ textarea.materialize-textarea {
 .input-field {
   // Inline styles
   &.inline {
-    display: inline-block;
+    display: inline;
     vertical-align: middle;
     margin-left: 5px;
 
@@ -180,22 +187,37 @@ textarea.materialize-textarea {
     .select-dropdown {
       margin-bottom: 1rem;
     }
+    
+    .btn-inline-floating {
+      height: 3rem !Important;
+      border-top-right-radius: 15px !Important;
+      border-bottom-right-radius: 15px !Important;
+      margin: 1px 0 !Important;
+      
+    }
 
+      &.grade {
+          display: flex !Important;
+          p {
+              padding: 0 4px;
+          }
+      }
+      
+      &.comment {
+
+          input:not(.modal-comment) + label {
+              top: 0.3rem;
+              left: 0;
+
+          }
+
+          label.active {
+              transform: translateY(0%) !Important;
+              margin-left: 8px;
+          }
+      }
   }
 
-  &.comment {
-
-      input:not(.modal-comment) + label {
-          top: 0.3rem;
-          left: 0;
-
-      }
-
-      label.active {
-          transform: translateY(0%) !Important;
-          margin-left: 8px;
-      }
-  }
 
   // Gutter spacing
   &.col {

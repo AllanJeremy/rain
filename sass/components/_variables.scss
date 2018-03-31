@@ -56,7 +56,7 @@ $badge-bg-color: $secondary-color !default;
 
 // Shared styles
 $button-border: none !default;
-$button-background-focus: lighten($accent-color, 4%) !default;
+$button-background-focus: color("rain-theme-accent", "lighten-1") !default;
 $button-font-size: 1.3rem !default;
 $button-height: 36px !default;
 $button-padding: 0 2rem !default;

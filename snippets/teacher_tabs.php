@@ -3,6 +3,7 @@ require_once(realpath(dirname(__FILE__) . "/../handlers/db_info.php")); #Connect
 require_once(realpath(dirname(__FILE__) . "/../handlers/date_handler.php")); #Date handler. Handles all date operations
 require_once(realpath(dirname(__FILE__) . "/../classes/uploader.php")); #Uploader class
 require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Uploader class
+require_once(realpath(dirname(__FILE__) . "/../snippets/modals.php")); #Uploader class
 ?>
 
 <?php 
@@ -30,7 +31,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <p class="grey-text">Your classrooms</p>
                         </div>
                         <div class="col s7">
-                            <a class="btn right" id="createClassroom"><span class="hide-on-small-only">Create a classroom</span>
+                            <a class="btn right modal-trigger" id="createClassroom" href="#createNewClassRoom"><span class="hide-on-small-only">Create a classroom</span>
                             <span class="hide-on-med-and-up">
                             <i class="material-icons">add</i>
                             </span>
@@ -96,7 +97,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <p>Stream:  <span class="php-data"><?php echo $stream_name ?></span></p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="javascript:void(0)" id="editClassroom">Edit</a>
+                                    <a href="#editClassRoom" class="js-edit-classroom modal-trigger">Edit</a>
                                     <a href="javascript:void(0)" >View</a>
 <!--                                    <a class=" transparent php-data white-text right dropdown-button" data-beloworigin="false" href="#" data-activates="moreHoriz1"><i class="material-icons">more_vert</i></a>-->
                                 </div>
@@ -115,7 +116,33 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <h5 class="center-align valign grey-text " id="noClassroomMessage">You don't have any classroom.<br><br><br><a class="btn btn-flat" id="createClassroom">Create one</a></h5>
                     </div>
 
-                   <?php endif ?>
+                    <?php endif; 
+//                    <!--CLASSROOM MODALS -->
+                    $createClassArgs = array(
+                        'modalId' => 'createNewClassRoom',
+                        'templateHeader' => 'Create a new Classroom',
+                        'templateBody' => Modals::CreateClassroomTemplate()
+                    );
+                    $editClassArgs = array(
+                        'modalId' => 'editClassRoom',
+                        'templateHeader' => 'Edit Classroom',
+                        'templateBody' => Modals::EditClassroomTemplate()
+                    );
+                    $studentLists = array(
+                        'modalId' => 'ClassStudentList',
+                        'templateHeader' => 'students to the classroom',
+                        'templateBody' => Modals::studentFormList()
+                    );
+                    
+                    $createClassModal = Modals::ModalTemplate($createClassArgs['modalId'], $createClassArgs['templateHeader'], $createClassArgs['templateBody'], '');
+                    $editClassModal = Modals::ModalTemplate($editClassArgs['modalId'], $editClassArgs['templateHeader'], $editClassArgs['templateBody'], '');
+                    $studentListsModal = Modals::EsomoModalTemplate($studentLists['modalId'], $studentLists['templateHeader'], $studentLists['templateBody'], '');
+                    
+                    echo $createClassModal;
+                    echo $editClassModal;
+                    echo $studentListsModal;
+                    
+                    ?>
                 </div>
                 
                 <!--ASSIGNMENTS SECTION-->
@@ -129,36 +156,83 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <br>
                         <form action="" id="createAssignmentForm" class="row" enctype="multipart/form-data" method="POST">
                             <div class=" input-field col s12 ">
-                                <input required class="validate" type="text" name="new_assignment_name" id="newAssignmentName">
+                                <input required class="" type="text" name="new_assignment_name" id="newAssignmentName">
                                 <label for="new_assignment_name">Assignment name</label>
                             </div>
                             <div class=" input-field col s12 ">
                                 <textarea id="assignmentInstructions" class="materialize-textarea"></textarea>
                                 <label for="assignmentInstructions">Assignment instructions</label>
                             </div>
-<!--
-                            <div class=" input-field col s6 ">
-                                <p>
-                                    <input type="checkbox" id="addStudentsToAssignment" name="add_students_to_assignment" value="GetAllStudents" />
-                                    <label for="addStudentsToAssignment">Add students to send assignment to</label>
-                                </p>
-                            </div>
--->
                             <div class=" input-field col s12 ">
+                                <select required multiple id="classroomToAssignment">
+                                    <option value="null" disabled selected>Classroom</option>
+                                    <?php
+                                                
+                                    if(!$classrooms) {
+                                        echo '<option value="null" disabled selected>No classrooms found</option>';
+
+                                    } else {
+
+                                        $teacher_acc_id = $_SESSION['admin_acc_id'];
+
+                                        $classrooms = DBInfo::GetSpecificTeacherClassrooms($teacher_acc_id);
+                                        $subjectIds = array();
+
+                                        foreach ($classrooms as $classroom) {
+                                            array_push($subjectIds,$classroom['subject_id']);
+                                        }
+                                        $subjectIds = array_unique($subjectIds);
+
+                                        foreach ($subjectIds as $subject_Id) {
+                                            $subjectName = DBInfo::GetSubjectById($subject_Id);
+                                            echo '<optgroup data-subject-id="'.$subject_Id.'" label="'.$subjectName['subject_name'].'">';
+
+                                            foreach ($classrooms as $classroom) {
+                                                $subjectId = $classroom['subject_id'];
+                                                if ($subjectId == $subject_Id) {
+
+                                                    $newResult = array(
+                                                        "id" => $classroom['class_id'],
+                                                        "name" => $classroom['class_name']
+                                                    );
+//                                                        var_dump($classroom);
+                                                    $streamId = $classroom['stream_id'];
+
+                                                    $subject = DBInfo::GetSubjectById($subjectId);
+                                                    $stream = DBInfo::GetStreamById($streamId);
+                                                    $studentCount = count(DBInfo::GetAllStudentsInClass($classroom['class_id']));
+
+                                                    echo '<option data-stream-name="'.$stream['stream_name'].'" data-subject-name="'.$subject['subject_name'].'" value="'.$newResult["id"].'">'.$newResult["name"].' ('.$studentCount.' student'.($studentCount > 1 ? 's': '').')</option>';
+
+                                                }
+                                            }
+                                            echo '</optgroup>';
+                                        }
+                                    }
+
+                                    ?>
+                                </select>
+                                <label>Choose classroom(s) for the assignment</label>
+
+                                <div id="extraClassroomSelectInfo" class="row no-margin">
+                                    <div class="col s12 php-data left ">Subject: <span class="js-assignment-subject"></span></div>
+                                </div>
+                            </div>
+                            <div class="input-field col s12">
                                 <p>
-                                    <input type="checkbox" id="addClassroomToAssignment" name="add_classroom_to_assignment" value="GetSpecificTeacherClassrooms" />
-                                    <label for="addClassroomToAssignment">Add classroom to send assignment to</label>
+                                    <input type="checkbox" id="canComment" />
+                                    <label for="canComment">Allow students to comment</label>
                                 </p>
                             </div>
                             <div class="col s12 classroom-list input-field"></div>
                             <div class=" input-field col s6 ">
                                 
-                                <input type="date" class="datepicker" id="assDueDate" name="ass_due_date">
+                                <input required type="text" class="datepicker" id="assDueDate" name="ass_due_date">
                                 <label for="assDueDate">Due date</label>
                             </div>
                             <div class=" input-field col s6 ">
 
-                                <input type="number" id="assMaxGrade" value="100" name="ass_max_grade">
+                                <input required type="number" id="assMaxGrade" value="100" name="ass_max_grade">
                                 <label for="assMaxGrade">Max grade</label>
                             </div>
                             
@@ -175,6 +249,14 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                             <div class="input-field col s12">
                             <br>
                                 <button type="submit" class="btn right" id="createNewAssignment">Create assignment</button>
+                            </div>
+                            <div class="input-field col s4 push-s8">
+                                <div class="progress js-progress-bar" style="width:0%;">
+                                    <div class="determinate" style="width:0%;"></div>
+                                </div>
+                                <h6 class="num-progress hide secondary-text-color">
+                                    <i>Progress: <span class="js-upload-num-progress">0%</span></i>
+                                </h6>
                             </div>
                         </form>
                         <br>
@@ -327,10 +409,31 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                         <div class="col s12 m6 l12 card-col ass-classroom-card <?php echo $selected_class;?>" data-content-trigger="<?php echo $container_id;?>">
                             <div class=" card tiny  <?php echo $classroom['classes'].' '.$selected_class;?> hoverable" title="<?php echo $classroom['class_name']?>" >
                                 <div class="card-content row">
-                                    <span class="card-title white-text truncate col s8">
+                                    <div class=" col s8">
+                                    <span class="card-title white-text truncate">
                                         <?php echo $classroom['class_name']?>
                                     </span>
-                                    <span class="new badge col s4 hide">4</span>
+                                    </div>
+                                    <div class=" col s4">
+                                        <?php 
+                                            $thisWeekTeacherClassSpecific = array();
+                                            $thisWeekAll = DBInfo::Get7DayAssignments();
+//                                            var_dump($thisWeekAll);
+                                            if( $thisWeekAll == array()) {
+                                                
+                                                foreach($thisWeekAll as $thisWeekSpecific) {
+                                                    if ($thisWeekSpecific['teacher_id'] == $loggedInTeacherId && $thisWeekSpecific['class_id'] == $classroom['class_id'] ) {
+                                                        array_push($thisWeekTeacherClassSpecific, $thisWeekSpecific);
+                                                    }
+                                                }
+                                            }
+//                                            var_dump($thisWeekTeacherClassSpecific);
+                                            if(count($thisWeekTeacherClassSpecific) > 0 ) : ?>
+                                        <span data-badge-caption="this week" class="white-text-color badge right">
+                                            <?php echo count($thisWeekTeacherClassSpecific); ?>
+                                        </span>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -382,7 +485,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                     <!--TEMPLATE_START-->
                                     <li class="js-assignment-collapsible" data-assignment-id="<?php echo $ass_id; ?>">
                                         <div class="collapsible-header ">
-                                            <span><?php echo $ass_title;?></span>
+                                            <span><big><?php echo $ass_title;?></big></span>
                                             <div class="right hide">
                                                 <span class="margin-horiz-8 badge new">0</span>
                                                 <p class="margin-horiz-8 right">
@@ -395,7 +498,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                             <div class="row">
                                                 <div class="col s12 m8">
                                                     <span class="no-margin line-height-0">Description</span>
-                                                    <p class="js-assignment-description no-margin line-height-0"><?php echo $ass_description;?></p>
+                                                    <p class="js-assignment-description no-margin line-height-0"><small><?php echo $ass_description;?></small></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -421,7 +524,7 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
 
                                         ?>
                                             <div class="filter-bar pad-8">
-                                                <a class="btn btn-flat btn-small <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
+                                                <a class="btn btn-flat btn-small hide <?php echo $returned_btn_disabled;?>" <?php echo $returned_btn_disabled;?>>Returned</a>
                                             </div>
 
                                             <div class="row submitted-assignment-list padding-horiz-16">
@@ -457,34 +560,39 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         <!--Assignment submissions
                                                             TODO: consider making this full width
                                                         -->
-                                                        <li class="col s12 pad-8 ass-submission-item">
+                                                        <li class="col m10 push-m1 s12 pad-8 ass-submission-item">
 
-                                                            <div class=" container">
-                                                                <a class="black-text pad-8 student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank">
+                                                            <div class=" item-details padding-vert-8">
+                                                                <a data-student-id="<?php echo $student_adm_no;?>" class="black-text student-name no-margin" href="javascript:void(0)" title="<?php echo $student_name."'s ".$ass_title." submission. Click to view (Opens a new window)";?>" target="_blank">
                                                                     <?php echo $student_name;?>
-                                                                    <span class="js-student-id primary-text-color">(Adm No: <?php echo $student_adm_no;?>)</span>
+                                                                    <span class="js-student-id primary-text-color"><small>(Adm No: <?php echo $student_adm_no;?>)</small></span>
                                                                 </a>
-                                                                <a href="javascript::void(0)" target="_blank" class="js-view-ass-submission grey-text text-lighten-2">
-                                                                     | read
+                                                                <a href="javascript::void(0)" target="_blank" class="padding-horiz-8 btn-inline js-view-ass-submission">
+                                                                     | view
                                                                 </a>
-                                                                <br>
-                                                                <div class="input-field inline comment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-id="<?php echo $ass_sub['submission_id']; ?>">
+                                                            </div>
+                                                            <div class="item-action">
+                                                                <a class="pad-8 btn-inline return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
+                                                                <div class="input-field inline grade padding-horiz-16 margin-horiz-16 primary-text-color">
+                                                                    <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" placeholder="--" class="ass-grade-achieved browser-default tiny grader"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
+    <!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php //echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
+                                                                    <p class="grey-text"> /<big class="black-text"><?php echo $ass['max_grade']?></big></p>
+                                                                </div>
+                                                                <a data-chat-ref="ass_sub" data-chat-userid="<?php echo $student_adm_no ?>" class="pad-8 btn-icon js-open-comment-bar" href="javascript:void(0)" title="Chat over <?php echo $student_name;?>'s assignment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>"><i class="material-icons">comment</i></a>
+                                                            </div>
+                                                            <div class="item-action-extra hide">
+                                                                <a class="js-sub-comment btn-inline hide" href="javascript:void(0)" title="Give remarks on the student's assignment. " data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">
+                                                                    <i class="material-icons">comment</i>
+                                                                </a>
+                                                                <div class="hide input-field inline comment" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-id="<?php echo $ass_sub['submission_id']; ?>">
                                                                     <input data-user-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal longer" name="comment">
                                                                     <label for="comment">
                                                                         <i class="material-icons">comment</i>
                                                                     </label>
-                                                                    <br>
-                                                                    <a class=' btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
-                                                                    <a class=' btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
+<!--                                                                    <br>-->
+                                                                    <a class=' btn-inline-floating js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
+                                                                    <a class=' btn-inline js-get-comments hide' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
                                                                 </div>
-                                                                <span class="right">
-                                                                    <span class="padding-horiz-16 margin-horiz-16 primary-text-color">
-                                                                        <input  type="number" min="0" max="<?php echo $ass['max_grade']?>" value="0" class="ass-grade-achieved browser-default tiny grader"  title="Assignment grade achieved. Double click to edit" class="browser-default inline-input">
-<!--                                                                            <span class="editable js-marks-given chip" data-max-grade="<?php //echo $ass['max_grade']?>" title="Assignment grade achieved. Double click to edit"><big>--</big></span>-->
-                                                                        <span class="grey-text"> / </span> <big><?php echo $ass['max_grade']?></big>
-                                                                    </span>
-                                                                    <a class="btn btn-small right return-ass-submission" href="javascript:void(0)" title="Return the graded assignment to the student. Note: You will not be able to recall the assignment once returned to the student" data-submission-id="<?php echo $ass_sub['submission_id']; ?>" data-student-name="<?php echo $student_name;?>">Return</a>
-                                                                </span>
                                                             </div>
                                                         </li>
                                         <?php
@@ -514,39 +622,52 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                                         <p class="pad-8">Returned submissions</p>
                                                         <div class="divider margin-horiz-16"></div>
                                                     </div>
-                                                    <ul class="row returned-ass">
+                                                    <ul class="row returned-ass-container">
                                                         <?php
                                                             $no_returned_msg = "No returned assignments found";
+                                                            $ass = 0;
                                                             if($returned_ass && $returned_ass->num_rows>0):
                                                                 foreach($returned_ass as $sub):
                                                                     $student = DbInfo::GetStudentByAccId($sub["student_id"]);
-
+//                                                        var_dump($ass_id);
                                                                     $student_name = "Unknown student";
                                                                     $student_adm_no = "---";
-
                                                                     //If the student was found
                                                                     if($student)
                                                                     {
                                                                         $student_adm_no = $student["adm_no"];
                                                                         $student_name = $student["full_name"];
                                                                     }
+                                                                    if ($ass_id == $sub["ass_id"]) :
+                                                                    $ass ++;
                                                                     ?>
-                                                                    <li class="container col s12 m6 ass-submission-item">
-                                                                        <span class="student-name"><?php echo $student_name." (Adm No. $student_adm_no) "?> </span>
-                                                                        <span class="chip"><?php echo $sub["grade"]."/".$sub["max_grade"];?></span>
-                                                                        <div class="input-field inline comment" data-id="<?php echo $sub['submission_id'] ?>" data-submission-id="<?php echo $sub['submission_id'] ?>">
-                                                                            <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
-                                                                            <label for="comment">
+                                                                    <li data-submission-id="<?php echo $sub["submission_id"]; ?>" class="container col s12 m6 ass-submission-item">
+                                                                        <div class="item-details">
+                                                                            <p data-student-id="<?php echo $student_adm_no ?>" class="pad-8 student-name"><?php echo $student_name." <br><small>(Adm No.<span class='primary-text-color'> $student_adm_no </span>)</small> "?> </p>
+                                                                        </div>
+                                                                        <div class="item-action pad-8">
+                                                                            <div data-ass-grade="<?php echo $sub["grade"]; ?>" class="chip marg-horiz-8"><?php echo $sub["grade"]."/".$sub["max_grade"];?></div>
+                                                                            <a data-chat-userid="<?php echo $student_adm_no ?>" data-chat-ref="ass_sub" class='margin-horiz-16 pad-8 btn-icon js-open-comment-bar' data-root-hook="ass_submission" href="javascript:void(0)">
                                                                                 <i class="material-icons">comment</i>
-                                                                            </label>
-                                                                            <br>
-                                                                            <a class='right btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
-                                                                            <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="item-action-extra hide">
+                                                                            <div class="input-field inline comment " data-id="<?php echo $sub['submission_id'] ?>" data-submission-id="<?php echo $sub['submission_id'] ?>">
+                                                                                <input data-student-id="<?php echo $student_adm_no; ?>" type="text" placeholder="comment" class="js-comment-bar browser-default normal" name="comment">
+                                                                                <label for="comment">
+                                                                                    <i class="material-icons">comment</i>
+                                                                                </label>
+                                                                                <br>
+                                                                                <a class='right btn-inline js-add-comment js-no-modal' data-root-hook="ass_submission" href="javascript:void(0)">send</a>
+                                                                                <a class='right btn-inline js-get-comments' data-root-hook="ass_submission" href="javascript:void(0)">all</a>
+                                                                            </div>
                                                                         </div>
                                                                     </li>
                                                                     <?php
+                                                                    endif;
                                                                 endforeach;
-                                                            else:
+                                                            endif;
+                                                            if ($ass == 0) :
                                                                     ?>
                                                             <p><?php echo $no_returned_msg;?></p>
                                                         <?php
@@ -757,11 +878,11 @@ require_once(realpath(dirname(__FILE__) . "/../classes/resources.php")); #Upload
                                         <div class="input-field col s10 push-s1">
                                             <div class="row no-margin">
                                                 <div class="input-field col s6 date-picker-container">
-                                                    <input type="date" class="datepicker" id="scheduleDate">
+                                                    <input type="text" class="datepicker" id="scheduleDate">
                                                     <label for="scheduleDate">Schedule a date</label>
                                                 </div>
                                                 <div class="input-field col s6 time-picker-container">
-                                                    <input type="time" class="timepicker" id="scheduleTime">
+                                                    <input type="text" class="timepicker" id="scheduleTime">
                                                     <label for="scheduleTime">Schedule the time</label>
                                                 </div>
                                             </div>

@@ -10,8 +10,9 @@ var CommentsEvents = function (userInfo) {
 
         //comments inits
         getComments([userInfo.user_id, userInfo.account_type, userInfo.full_name]);
+        chatBoxUI([userInfo.user_id, userInfo.account_type, userInfo.full_name]);
         addComment([userInfo.user_id, userInfo.account_type]);
-        editComment([userInfo.user_id, userInfo.account_type]);
+//        editComment([userInfo.user_id, userInfo.account_type]);
     };
     /*
     **
@@ -24,6 +25,121 @@ var CommentsEvents = function (userInfo) {
         -   ass_submission
     */
 
+    var chatBoxUI = function (user) {
+        
+        console.log('chatbox');
+        
+        $('main').on('click', '.js-open-comment-bar', function (e) {
+            e.preventDefault();
+            
+            var $this = $(this),
+                commentbar = $('.chatbox-container:not(.hide)'),
+                $thisref = $this.attr('data-chat-ref'),
+                $thisuserid = $this.attr('data-chat-userid'),
+                chatboxId = 'chatRef_' + _.camelCase($thisref) + '_' + $thisuserid;
+            
+            console.log(chatboxId);
+            console.log(commentbar.length);
+            //if it exists in the DOM
+            if($('.chatbox-container#' + chatboxId).length > 0) {
+                ChatBoxUiState($('.chatbox-container#' + chatboxId), 'full-open');
+            
+            } else {
+                var chatboxData = {
+                    id : chatboxId,
+                    uistate : '',
+                    usertype : '',
+                    userid : $thisuserid,
+                    username : '',
+                    chatsectionref : $thisref,
+                    chatref : $thisref,
+                    chats : '',
+                },
+                    chatboxEl = Lists_Templates.chatBoxBar(chatboxData);
+                
+                $('main').append(chatboxEl);
+                console.log(commentbar.length);
+                if(commentbar.length == 1 && $(window).width() > 912) {
+                    $('.chatbox-container#' + chatboxId).css('right', '456px');
+                    
+                } else if(commentbar.length == 1 && $(window).width() < 912) {
+                    ChatBoxUiState($('.chatbox-container:not(#' + chatboxId + ')'));
+                }
+                
+                ChatBoxUiState($('.chatbox-container#' + chatboxId), 'full-open');
+            }
+        });
+        
+        $('main').on('click', '.js-close-chatbox', function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                chatboxId = $this.parents('.chatbox-container').attr('id'),
+                chatboxEl = $('.chatbox-container#' + chatboxId);
+            
+            ChatBoxUiState(chatboxEl, 'close');
+        });
+        
+        $('main').on('click', '.box-header', function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                chatboxId = $this.parents('.chatbox-container').attr('id'),
+                chatboxEl = $('.chatbox-container#' + chatboxId);
+            
+            ChatBoxUiState(chatboxEl, 'full-open');
+        });
+        
+        function ChatBoxUiState(El, action) {
+            var chatboxUIState = {
+                    open : El.hasClass('open'),
+                    fullOpen : El.hasClass('full-open'),
+                    active : El.hasClass('active')
+                };
+            
+            switch (action) {
+                case 'full-open':
+                    //if open
+                    if(chatboxUIState.open) {
+                        El.removeClass('open').addClass('full-open active');
+                        
+                        //if not open at all
+                    } else if (!chatboxUIState.open && !chatboxUIState.fullOpen) {
+                        El.addClass('open');
+                        
+                        _.delay(function () {
+                            El.removeClass('open').addClass('full-open active');
+                        }, 340, 'opened');
+
+                        //if full open but not active
+                    } else if (chatboxUIState.fullOpen && !chatboxUIState.active) {
+                        El.addClass('active');
+                    }
+                    
+                    break;
+                case 'open':
+                        El.removeClass('full-open active').addClass('open');
+                    
+                    break;
+                case 'close':
+                    //if open
+                    El.removeClass('active');
+                    
+                    _.delay(function () {
+                        El.removeClass('full-open').addClass('open');
+                    }, 340, 'opened');
+                    
+                    break;
+                default:
+                    El.removeClass('full-open active');
+                    
+                    _.delay(function () {
+                        El.remove();
+                    }, 340, 'removed');
+                    
+                    console.log(chatboxUIState);
+            }
+        }
+    };
+    
     var getComments = function (user) {
         console.log(user);
 
@@ -218,172 +334,6 @@ var CommentsEvents = function (userInfo) {
 
         });
 
-    };
-
-    var editComment = function (user) {
-
-        /*
-        *
-        *   Contains four events
-                -   edit (for the edit button)
-                -   cancel edit event
-                -   submit editted comments
-                -   delete comment event
-        *
-        */
-
-        var currComment, currCommentId, commenttype;
-
-        $('main').on('click', 'a.js-edit-comment', function (e) {
-            e.preventDefault();
-
-            if ($(this).hasClass('disabled')) {
-                console.log('disabled, return');
-
-                return (false);
-            }
-
-            console.log($(this));
-            var $El = $(this).parents('.comment-item'),
-                commentid = $El.attr('data-comment-id'),
-                modalId = $(this).parents('.modal').attr('id'),
-                buttonhook = $El.parents('.modal').find('.js-add-comment'),
-                texthook = $El.find('.js-comment'),
-                currText = texthook[0].innerHTML,
-                commentbar = $El.parents('.modal').find('input.js-comment-bar');
-
-            currComment = currText;
-            currCommentId = commentid;
-            commenttype = buttonhook.attr('data-root-hook');
-
-            commentbar.val(currText);
-            texthook.addClass('z-depth-3 pad-8')[0].innerHTML = commentbar.val() + Lists_Templates.cancelCommentEdit();
-            buttonhook.addClass('js-update-comment').removeClass('js-add-comment')[0].innerHTML = 'edit';
-
-            $El.find('a.js-edit-comment').addClass('active');
-            $('.modal#' + modalId).find('a.js-edit-comment:not(.active)').addClass('disabled');
-
-            return (false);
-        });
-
-        $('main').on('click', 'a.js-cancel-edit-comment', function (e) {
-            e.preventDefault();
-
-            if (currComment === '') {
-                return (false);
-            }
-
-            var $El = $(this),
-                modalId = $El.parents('.modal').attr('id'),
-                buttonhook = $El.parents('.modal').find('.js-update-comment'),
-                texthook = $El.parent('.js-comment'),
-                commentbar = $El.parents('.modal').find('input.js-comment-bar');
-
-            commentbar.val('');
-            texthook.removeClass('z-depth-3 pad-8')[0].innerHTML = currComment;
-            buttonhook.removeClass('js-update-comment').addClass('js-add-comment')[0].innerHTML = 'comment';
-
-            $('.modal#' + modalId).find('a.js-edit-comment').removeClass('disabled active');
-
-            return (false);
-        });
-
-        $('main').on('click', 'a.js-update-comment', function (e) {
-            e.preventDefault();
-
-            var $this = $(this),
-                modalId = $this.parents('.modal').attr('id'),
-                call = '',
-                commentfail_errormessage = 'Commenting failed',
-                commenttext = $this.parents('.input-field.comment').find('input.js-comment-bar').val(),
-                commentsListHook = $('.modal#' + modalId).find('.modal-content'),
-                commentEl = $('.modal#' + modalId + ' .modal-content').find('.comment-item[data-comment-id=' + currCommentId + ']');
-
-            console.log('here 2');
-            console.log(currCommentId, commenttext);
-
-            if (commenttext === '') {
-                return (false);
-            }
-
-            switch (commenttype) {
-                case 'schedule':
-                    call = 'UpdateScheduleComment';
-                    break;
-                case 'assignment':
-                    call = 'UpdateAssComment';
-                    break;
-                case 'ass_submission':
-
-                    call = 'UpdateAssSubmissionComment';
-                    break;
-                default:
-                    break;
-            }
-
-            call = call.charAt(0).toUpperCase() + call.slice(1);
-
-            console.log(call);
-
-            $.post('handlers/db_handler.php', {"action": call, 'id': currCommentId, 'comment_text': commenttext}, function (returnData) {
-                console.log(returnData);
-
-                if(returnData === true) {
-                    $('.modal#' + modalId).find('a.js-edit-comment').removeClass('disabled active');
-
-                    commentEl.find('p.js-comment').removeClass('z-depth-3 pad-8')[0].innerHTML = commenttext;
-                    $this.parents('.input-field.comment').find('input.js-comment-bar').val('');
-                    $this.removeClass('js-update-comment').addClass('js-add-comment')[0].innerHTML = 'comment';
-                }
-
-            }, 'json');
-
-
-            return (false);
-        });
-
-        $('main').on('click', 'a.js-delete-comment', function (e) {
-            e.preventDefault();
-
-            var $this = $(this),
-                commenttype = $this.parents('.modal').find('.js-add-comment').attr('data-root-hook'),
-                call = '',
-                commentElHook = $this.parents('.comment-item'),
-                commentId = commentElHook.attr('data-comment-id');
-
-            switch (commenttype) {
-                case 'schedule':
-                    call = 'DeleteScheduleComment';
-                    break;
-                case 'assignment':
-                    call = 'DeleteAssComment';
-                    break;
-                case 'ass_submission':
-
-                    call = 'DeleteAssSubmissionComment';
-                    break;
-                default:
-                    break;
-            }
-
-            call = call.charAt(0).toUpperCase() + call.slice(1);
-
-            console.log(call);
-
-            commentElHook.removeClass('new-class').addClass('to-remove');
-
-            $.post('handlers/db_handler.php', {'action' : call, 'id' : commentId}, function (resultData) {
-                console.log(resultData);
-                if (resultData === true) {
-                    commentElHook.remove();
-                } else {
-                    commentElHook.removeClass('to-remove').addClass('new-class');
-
-                }
-            }, 'json');
-
-            return (false);
-        });
     };
 
     this.__construct(userInfo);

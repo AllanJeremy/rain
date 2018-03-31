@@ -29,7 +29,7 @@ var Events = function () {
         ScheduleEvents = new ScheduleEvents(userInfo);
 
         //global inits
-        Modals_Events.cleanOutModals();
+//        Modals_Events.cleanOutModals();
         Modals_Events.closeModalsEvent();
     };
 
