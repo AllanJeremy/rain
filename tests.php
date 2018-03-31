@@ -201,7 +201,7 @@
             /*Include the footer at the bottom of the page*/
             include_once("./snippets/site_footer.php");
         ?>
-
+        
         <script>
 
         $(document).ready(function(){
@@ -734,6 +734,9 @@
             $("#start_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
+
+                //Timer tick
+
                 //Start timer
                 $.post("handlers/timer_handler.php",{"action":"StartTestTimer","test_id":test_id},function(){
                     window.location=(redirect_url);
@@ -792,6 +795,8 @@
 
         </script>
 
+        <script type="text/javascript" src="js/moment.js"></script>
+        <script type="text/javascript" src="js/test_timer.js"></script>
         <script type="text/javascript" src="js/test_functions.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
 

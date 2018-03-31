@@ -129,7 +129,7 @@ class Test
                     <p class="white-text">Question <span class="php-data"><?php echo $question_index; ?></span> of <?php echo $test["number_of_questions"]; ?></p>
                 </div>
                 <div class="col s6 m4 right pull-s1">
-                    <p class="white-text valign">Time Left : <span class="<?php echo $timer_info['timer_class'];?>"><?php echo $timer_info['timer_text'];?></span></p>
+                    <p class="white-text valign">Time Left : <span class="<?php echo $timer_info['timer_class'];?>" id="test-timer"><?php echo $timer_info['timer_text'];?></span></p>
                 </div>
             </div>
         </div>
