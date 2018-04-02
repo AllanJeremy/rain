@@ -6,7 +6,7 @@
     <div class="container">
         <div class="center row">        
             <div class="col s12 m4">
-                <p class="grey-text text-darken-1"><a href="http://www.brookhurstschool.or.ke/" target="_blank">Brookhurst International School</a></p>
+                <p class="grey-text text-darken-1"><a href="http://www.rain.co.ke" target="_blank">Your school name goes here</a></p>
             </div>
             
             <div class="col s12 m4">
