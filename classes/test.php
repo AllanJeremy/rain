@@ -28,7 +28,7 @@ class Test
         <!--Test details-->
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></small></h5></div>
 
-        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo (empty($test["difficulty"]) || !isset($test["difficulty"]))?'Not specified':$test["difficulty"];?></small></h5></div>
 
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Max Grade : <small class="grey-text text-darken-2"><?php echo $test["max_grade"];?></small></h5></div>
 
@@ -84,7 +84,7 @@ class Test
         <!--Test details-->
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Subject : <small class="grey-text text-darken-2"><?php echo $subject["subject_name"];?></small></h5></div>
 
-        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo $test["difficulty"];?></small></h5></div>
+        <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Difficulty : <small class="grey-text text-darken-2"><?php echo (empty($test["difficulty"]) || !isset($test["difficulty"]))?'Not specified':$test["difficulty"];?></small></h5></div>
 
         <div class="col s12 m6 l3"><h5 class="grey-text text-darken-3">Max Grade : <small class="grey-text text-darken-2"><?php echo $test["max_grade"];?></small></h5></div>
 
@@ -138,10 +138,20 @@ class Test
         //Check if the time is up
         if($timer_info['timer_text'] == "00:00:00"):
     ?>
-        <div class="row my-container center">
-            <h3>Time is up</h3>
-            <p>The time to complete the test ran out</p>
-            <a href="#" class="btn">GET YOUR RESULTS</a>
+        <div class="row my-container left-align">
+            <div class="card white">
+                <div class="card-content">
+                <h4>Time is up</h4>
+                <p class="flow-text">The time to complete the test ran out.Your results will be calculated based on the questions you have <i>answered and submitted</i> so far.</p>
+                </div>
+                
+                <div class="card-action">
+                    <p class="center">
+                        <a href="#" class="btn t_complete_test" data-redirect-url="tests.php?complete_test=1">GET YOUR RESULTS</a>
+                    </p>
+                </div>
+            </div>
+            
         </div>
     <?php else: ?>
     <div class="row my-container">
@@ -218,7 +228,7 @@ class Test
                             <a class="btn-flat skipped_questions_btn center truncate" type="submit">skipped <span class="hide-on-small-only">questions</span></a>
                         </div>-->
                         <div class="col s6 input-field">
-                            <a class="btn right" id="t_complete_test" data-redirect-url="tests.php?complete_test=1"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
+                            <a class="btn right t_complete_test" data-redirect-url="tests.php?complete_test=1"><span class="hidden-on-small-only">Complete Test</span><i class="material-icons hide-on-med-and-up">arrow_forward</i></a>
                         </div>
                         <?php
                             endif;
@@ -561,7 +571,7 @@ class Test
                         else:#if the last question
                     ?>
                         <div class="col s4 right" id="completeEditTest">
-                            <a class="btn right" href="javascript:void(0)" id="done_editing" data-redirect-url="tests.php?complete=1">
+                            <a class="btn right" href="<?php echo 'tests.php?tid='.$test_id?>" id="done_editing" data-redirect-url="tests.php?complete=1">
                                 PREVIEW <span class="hide-on-med-and-down"> TEST</span>
                             </a>
                         </div>

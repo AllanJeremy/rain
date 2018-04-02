@@ -17,6 +17,16 @@
     </head>
 
     <body>
+    <!-- Modal Structure -->
+    <div id="m_time_up" class="modal">
+        <div class="modal-content">
+        <h4>Time is up</h4>
+        <p class="flow-text">The time to complete the test ran out. Your results will be calculated based on the questions you have <i>answered and submitted</i> so far.</p>
+        </div>
+        <div class="modal-footer">
+        <a class="modal-action waves-effect waves-green btn t_complete_test" data-redirect-url="tests.php?complete_test=1">>GET YOUR RESULTS</a>
+        </div>
+    </div>
         <?php
             //If statement that determines whether content can be viewed
             if (MySessionHandler::AdminIsLoggedIn() || MySessionHandler::StudentIsLoggedIn()):
@@ -680,7 +690,7 @@
             });
 
             //Takers complete test handler
-            $("#t_complete_test").click(function(){
+            $(".t_complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
 
