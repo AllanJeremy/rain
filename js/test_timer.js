@@ -1,7 +1,7 @@
 window.addEventListener('load',function(){
     var time_format = 'HH:mm:ss';
     var empty_time = '00:00:00';
-    var DANGER_TIME = 2;//Time when the timer should go red (in minutes)
+    var DANGER_TIME = 60;//Time when the timer should go red (in seconds)
     
     function _update_timer_color(moment_obj,element)
     {
@@ -11,11 +11,13 @@ window.addEventListener('load',function(){
             return;
         }
 
+        var seconds = (moment_obj.minutes * 60) + moment_obj.seconds;
+
         //Update the class of the element based on the time left
-        if(moment_obj.minutes <= DANGER_TIME)
+        if(seconds <= DANGER_TIME)
         {
-            element.classList.add('red-text');//Note: not compatible with IE9
-            element.classList.add('text-lighten-2');//Note: not compatible with IE9
+            var class_name = (moment_obj.hours == 0 && moment_obj.minutes == 0 && moment_obj.seconds == 0) ? 'red-text' : 'amber-text';
+            element.classList.add(class_name);//Note: not compatible with IE9
         }
     }
 

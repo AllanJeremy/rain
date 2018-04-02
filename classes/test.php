@@ -117,10 +117,10 @@ class Test
     public static function DisplayTest($test,$question_index)
     {
         $user_info = MySessionHandler::GetLoggedUserInfo();
+        $timer_info = EsomoTimer::GetTestTimerInfo($test,$user_info);
 
         //Find the question in the database
         if($question = DbInfo::TestQuestionExists($test["test_id"],$question_index)):
-            $timer_info = EsomoTimer::GetTestTimerInfo($test,$user_info);
 ?>
     <div class="row grey darken-2 z-depth-1">
         <div class="container">
@@ -134,6 +134,16 @@ class Test
             </div>
         </div>
     </div>
+    <?php
+        //Check if the time is up
+        if($timer_info['timer_text'] == "00:00:00"):
+    ?>
+        <div class="row my-container center">
+            <h3>Time is up</h3>
+            <p>The time to complete the test ran out</p>
+            <a href="#" class="btn">GET YOUR RESULTS</a>
+        </div>
+    <?php else: ?>
     <div class="row my-container">
                 <h4 class="col s12 grey-text thin text-darken-4 question-number">Question <?php echo $question_index." ( ".$question["marks_attainable"]." Marks)"; ?></h4>
                 <br>
@@ -218,6 +228,7 @@ class Test
                 </div>
             </div>
 <?php
+        endif;
     else://If the question exists in the database
 ?>
  <div class="row my-container">
