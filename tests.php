@@ -24,7 +24,7 @@
         <p class="flow-text">The time to complete the test ran out. Your results will be calculated based on the questions you have <i>answered and submitted</i> so far.</p>
         </div>
         <div class="modal-footer">
-        <a class="modal-action waves-effect waves-green btn t_complete_test" data-redirect-url="tests.php?complete_test=1">>GET YOUR RESULTS</a>
+        <a class="modal-action waves-effect waves-green btn t_complete_test" data-redirect-url="tests.php?complete_test=1" id="complete_test">GET YOUR RESULTS</a>
         </div>
     </div>
         <?php
@@ -678,7 +678,7 @@
             //When the complete test button is clicked
             $("#complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
-
+                
                 question_data = GetQuestionData(redirect_url);
 
                 $.post("handlers/db_handler.php",{"action":"UpdateTestQuestion","q_data":question_data},function(data,status){
@@ -693,7 +693,7 @@
             $(".t_complete_test").click(function(){
                 var redirect_url = $(this).attr("data-redirect-url");
                 var test_id = $(document).getUrlParam("tid");//Test Id, the id of the test
-
+                
                 //Marking the last question
                 var answers_provided = ($(".t_test_answer").is(":checked"));//True if answers have been provided
 

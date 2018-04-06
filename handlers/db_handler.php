@@ -855,7 +855,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
     {
         global $dbCon; #db connection string
         $update_query = "";#the query that is used to update/insert records into the database. By default, blank
-
+        
         foreach($answers_data as $ans_data)
         {
             #if the answer already exists in the database
@@ -872,7 +872,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
             if($update_stmt = $dbCon->prepare($update_query))
             {
                 $ans_data["answer_index"] = (int)$ans_data["answer_index"];
-                $update_stmt->bind_param("isiii",$q_id,$ans_data["answer_text"],$ans_data["right_answer"],$ans_data["marks_attainable"],$ans_data["answer_index"]);
+                $update_stmt->bind_param("isidi",$q_id,$ans_data["answer_text"],$ans_data["right_answer"],$ans_data["marks_attainable"],$ans_data["answer_index"]);
                // echo "<br>Answer index:".$ans_data["answer_index"];
 
                 if($update_stmt->execute())
@@ -1007,6 +1007,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
     //Update Test retake ~ only used internally by other functions (private function)
     private static function UpdateTestRetake($test_id,$user_info)
     {
+        return;//TODO : Remove this
         global $dbCon;
         $date_taken = NULL; $retake_date=NULL; #Initialization to make the variables accessible in the scope of the function
 
@@ -1103,7 +1104,6 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
             $max_grade = (int)$test["max_grade"];
         }
 
-
         //Get the question submissions for the currently test taker
         if($submissions = DbInfo::GetSpecificTestSubmissions($test_id,$user_info))
         {
@@ -1111,6 +1111,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
 
             //Associative array storing results information. Db info to be printed in a pdf
             $results = array("test_id"=>$test_id,"taker_id"=>"","taker_type"=>"","first_name"=>$user_info["first_name"],"last_name"=>$user_info["last_name"],"full_name"=>$user_info["full_name"],"grade"=>"","max_grade"=>$max_grade,"percentage"=>"","grade_text"=>"","answers_right"=>0,"answers_wrong"=>0,"date_generated"=>"","completion_time"=>"","verdict"=>"PASS");
+
 
             #Variables for storing the information on the various questions
             $total_marks = 0;
@@ -1151,7 +1152,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
                             }
                             else #Answer was not found in the database
                             {
-                                echo "Answer was not found in the database";
+                                echo json_encode(array("message"=>"Answer was not found in the database"));
                             }
                         }
                     }
@@ -1162,7 +1163,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
                 }
                 else
                 {
-                    echo "Could not find the question in the database";
+                    echo json_encode(array("message"=>"Could not find the question in the database"));
                     continue 1;
                 }
 
@@ -1201,6 +1202,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
             }
             self::UpdateTestRetake($test_id,$user_info);
             self::StoreTestResults($results); # Store the test results in the database
+            
             return $results;
         }
         else
@@ -1257,7 +1259,7 @@ protected static function UpdateComment($comment_category,$comment_id,$comment_t
             $report .= "<li>Answers right : ".$results["answers_right"]."</li>";
             $report .= "<li>Answers wrong : ".$results["answers_wrong"]."</li>";
         $report .= "</ul>";
-
+        
         return $report;
     }
 
@@ -1554,7 +1556,7 @@ if(isset($_POST['action'])) {
             DbHandler::UpdateTestQuestionSubmission($q_data);//Add the current question submission
 
             //If the test has already been taken
-            if($retake_info = Dbinfo::GetTestRetake($test_id,$user_info))
+            if($retake_info = DbInfo::GetTestRetake($test_id,$user_info))
             {
                 $retake_date_time = strtotime($retake_info["retake_date"]);
                 $time_has_elapsed = EsomoDate::DateTimeHasElapsed($retake_date_time);
@@ -1563,7 +1565,8 @@ if(isset($_POST['action'])) {
                 if($time_has_elapsed)
                 {
                     $test_results = DbHandler::MarkTest($test_id,$user_info);
-                    DbHandler::GenerateTestResultsReport($test_results);
+                    $results = DbHandler::GenerateTestResultsReport($test_results);
+                    echo json_encode($test_results);//Print the results as a JSON response which can be parsed and printed as results
                 }
                 else
                 {

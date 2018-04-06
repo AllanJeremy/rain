@@ -147,7 +147,7 @@ class Test
                 
                 <div class="card-action">
                     <p class="center">
-                        <a href="#" class="btn t_complete_test" data-redirect-url="tests.php?complete_test=1">GET YOUR RESULTS</a>
+                        <a href="#" class="btn t_complete_test" data-redirect-url="tests.php?complete_test=1" id="complete_test">GET YOUR RESULTS</a>
                     </p>
                 </div>
             </div>
