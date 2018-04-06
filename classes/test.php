@@ -46,7 +46,7 @@ class Test
             <br><h4>Tips</h4>
             <p>We have prepared some tips for your test creation experience that will hopefully make your work easier.</p>
             <ul class="grey-text test_tips">
-                <li>> A question can either be single choice or multiple choice</li>
+                <!-- <li>> A question can either be single choice or multiple choice</li> -->
                 <li>> You can save the question without refreshing the page by clicking the save button on the submenu</li>
                 <li>> You can dynamically change the number of answers for your question without refreshing the page</li>
             </ul>
@@ -390,8 +390,8 @@ class Test
                         </div>
                     </div>
 
-                    <!--Question type-->
-                    <p class="grey-text text-darken-2">Question type</p>
+                    <!--Question type : Note - Temporarily disabled-->
+<!--                     <p class="grey-text text-darken-2">Question type</p>
                     <div class="row">
                         <div class="col s12 m4">
                             <input name="test_question_type" type="radio" id="test_qtype_single" class="test_q_type" value="single_choice" <?php echo $single_choice_selected; ?> data-toggle-qid="<?php echo $q_id;?>"/>
@@ -402,14 +402,13 @@ class Test
                             <label for="test_qtype_multiple">Multiple Choice Question</label>
                         </div>
 
-                    </div>
+                    </div> 
                     <div class="divider"></div>
-
-                    <br><br>
+-->
 
                     <!--Single choice question-->
                     <div class="row single_choice_question <?php echo $single_choice_visibility;?>" data-qid="<?php echo $q_id;?>">
-                        <p class="grey-text text-darken-2">Single choice Question</p>
+                        <!-- <p class="grey-text text-darken-2">Single choice Question</p> -->
                         <div class="divider col s12"></div><br>
                         <!--Default settings for the question-->
                         <div class="col s12 m6">
