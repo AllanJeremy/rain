@@ -1142,6 +1142,12 @@ class DbInfo
         return self::SinglePropertyExists("test_results","test_id",$test_id,"i");
     }
 
+    //Get test results for a specific test
+    public static function GetTestResult($result_id)
+    {
+        return self::SinglePropertyExists("test_results","result_id",$result_id,"i");
+    }
+
     //Get the test retake information for a given taker
     public static function GetTestRetake($test_id,$user_info)
     {
